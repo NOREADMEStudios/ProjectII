@@ -30,7 +30,7 @@ enum MainState
 	EXIT
 };
 
-j1App* App = NULL;
+App* App = NULL;
 
 int main(int argc, char* args[])
 {
@@ -48,7 +48,7 @@ int main(int argc, char* args[])
 			case CREATE:
 			LOG("CREATION PHASE ===============================");
 
-			App = new j1App(argc, args);
+			App = new App(argc, args);
 
 			if(App != NULL)
 				state = AWAKE;

@@ -1,18 +1,18 @@
-#ifndef __j1APP_H__
-#define __j1APP_H__
+#ifndef __APP_H__
+#define __APP_H__
 
 #include "p2List.h"
-#include "j1Module.h"
+#include "Module.h"
 #include "j1PerfTimer.h"
 #include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
 
 // Modules
-class j1Window;
-class j1Input;
-class j1Render;
-class j1Textures;
-class j1Audio;
+class ModuleWindow;
+class ModuleInput;
+class ModuleRender;
+class ModuleTextures;
+class ModuleAudio;
 class j1Scene;
 class j1Map;
 class j1Entities;
@@ -22,15 +22,15 @@ class j1Fonts;
 class j1Gui;
 class j1Transition;
 
-class j1App
+class App
 {
 public:
 
 	// Constructor
-	j1App(int argc, char* args[]);
+	App(int argc, char* args[]);
 
 	// Destructor
-	virtual ~j1App();
+	virtual ~App();
 
 	// Called before render is available
 	bool Awake();
@@ -45,7 +45,7 @@ public:
 	bool CleanUp();
 
 	// Add a new module to handle
-	void AddModule(j1Module* module);
+	void AddModule(Module* module);
 
 	// Exposing some properties for reading
 	int GetArgc() const;
@@ -92,11 +92,11 @@ private:
 public:
 
 	// Modules
-	j1Window*			win = nullptr;
+	ModuleWindow*			win = nullptr;
 	j1Input*			input = nullptr;
-	j1Render*			render = nullptr;
-	j1Textures*			tex = nullptr;
-	j1Audio*			audio = nullptr;
+	ModuleRender*			render = nullptr;
+	ModuleTextures*			tex = nullptr;
+	ModuleAudio*			audio = nullptr;
 	j1Scene*			scene = nullptr;
 	j1Map*				map = nullptr;
 	j1Entities*			entities = nullptr;
@@ -110,7 +110,7 @@ public:
 
 private:
 
-	p2List<j1Module*>	modules;
+	p2List<Module*>	modules;
 	uint				frames = 0;
 	float				dt = .0f;
 	float				time_scale = 1.0f;
@@ -139,6 +139,6 @@ private:
 	uint32				prev_last_sec_frame_count = 0;
 };
 
-extern j1App* App; // No student is asking me about that ... odd :-S
+extern App* App; // No student is asking me about that ... odd :-S
 
 #endif

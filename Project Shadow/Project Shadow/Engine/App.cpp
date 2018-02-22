@@ -1,36 +1,29 @@
 #include <iostream> 
 
-#include "p2Defs.h"
-#include "p2Log.h"
+//#include "p2Defs.h"
+//#include "p2Log.h"
 
-#include "j1Window.h"
-#include "j1Input.h"
-#include "j1Render.h"
-#include "j1Textures.h"
-#include "j1Audio.h"
-#include "j1Scene.h"
-#include "j1Map.h"
-#include "j1App.h"
-#include "j1Entities.h"
-#include "j1Collision.h"
-#include "j1Pathfinding.h"
-#include "j1Fonts.h"
-#include "j1Gui.h"
-#include "j1Transition.h"
+#include "App.h"
+#include "ModuleInput.h"
+#include "ModuleWindow.h"
+#include "ModuleRender.h"
+#include "ModuleTextures.h"
+#include "ModuleAudio.h"
+
 
 // Constructor
-j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
+App::App(int argc, char* args[]) : argc(argc), args(args)
 {
-	PERF_START(ptimer);
+	//PERF_START(ptimer);
 
 	frames = 0;
 	want_to_save = want_to_load = false;
 
-	input = new j1Input();
-	win = new j1Window();
-	render = new j1Render();
-	tex = new j1Textures();
-	audio = new j1Audio();
+	input = new ModuleInput();
+	win = new ModuleWindow();
+	render = new ModuleRender();
+	tex = new ModuleTextures();
+	audio = new ModuleAudio();
 	scene = new j1Scene();
 	map = new j1Map();
 	entities = new j1Entities();
@@ -62,7 +55,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 }
 
 // Destructor
-j1App::~j1App()
+App::~App()
 {
 	// release modules
 	p2List_item<j1Module*>* item = modules.end;
@@ -76,14 +69,14 @@ j1App::~j1App()
 	modules.clear();
 }
 
-void j1App::AddModule(j1Module* module)
+void App::AddModule(Module* module)
 {
 	module->Init();
 	modules.add(module);
 }
 
 // Called before render is available
-bool j1App::Awake()
+bool App::Awake()
 {
 	PERF_START(ptimer);
 
@@ -123,7 +116,7 @@ bool j1App::Awake()
 }
 
 // Called before the first frame
-bool j1App::Start()
+bool App::Start()
 {
 	PERF_START(ptimer);
 
@@ -142,7 +135,7 @@ bool j1App::Start()
 }
 
 // Called each loop iteration
-bool j1App::Update()
+bool App::Update()
 {
 	bool ret = true;
 	PrepareUpdate();
@@ -165,7 +158,7 @@ bool j1App::Update()
 }
 
 // ---------------------------------------------
-pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
+pugi::xml_node App::LoadConfig(pugi::xml_document& config_file) const
 {
 	pugi::xml_node ret;
 
@@ -180,7 +173,7 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 }
 
 // ---------------------------------------------
-void j1App::PrepareUpdate()
+void App::PrepareUpdate()
 {
 	frame_count++;
 	last_sec_frame_count++;
@@ -191,7 +184,7 @@ void j1App::PrepareUpdate()
 }
 
 // ---------------------------------------------
-void j1App::FinishUpdate()
+void App::FinishUpdate()
 {
 	if(want_to_save == true)
 		SavegameNow();
@@ -232,18 +225,18 @@ void j1App::FinishUpdate()
 	LOG("Expected frame delay: %d, Actual frame delay: %d", delay_ms, wait_ms);
 }
 
-uint32 j1App::GetFramerateCap() const
+uint32 App::GetFramerateCap() const
 {
 	return framerate_cap;
 }
 
-void j1App::SetFramerateCap(uint32 cap)
+void App::SetFramerateCap(uint32 cap)
 {
 	framerate_cap = cap;
 }
 
 // Call modules before each loop iteration
-bool j1App::PreUpdate()
+bool App::PreUpdate()
 {
 	bool ret = true;
 	p2List_item<j1Module*>* item;
@@ -265,7 +258,7 @@ bool j1App::PreUpdate()
 }
 
 // Call modules on each loop iteration
-bool j1App::DoUpdate()
+bool App::DoUpdate()
 {
 	bool ret = true;
 	p2List_item<j1Module*>* item;
@@ -287,7 +280,7 @@ bool j1App::DoUpdate()
 }
 
 // Call modules after each loop iteration
-bool j1App::PostUpdate()
+bool App::PostUpdate()
 {
 	bool ret = true;
 	p2List_item<j1Module*>* item;
@@ -308,7 +301,7 @@ bool j1App::PostUpdate()
 }
 
 // Called before quitting
-bool j1App::CleanUp()
+bool App::CleanUp()
 {
 	PERF_START(ptimer);
 
@@ -344,13 +337,13 @@ bool j1App::CleanUp()
 }
 
 // ---------------------------------------
-int j1App::GetArgc() const
+int App::GetArgc() const
 {
 	return argc;
 }
 
 // ---------------------------------------
-const char* j1App::GetArgv(int index) const
+const char* App::GetArgv(int index) const
 {
 	if(index < argc)
 		return args[index];
@@ -359,19 +352,19 @@ const char* j1App::GetArgv(int index) const
 }
 
 // ---------------------------------------
-const char* j1App::GetTitle() const
+const char* App::GetTitle() const
 {
 	return title.GetString();
 }
 
 // ---------------------------------------
-const char* j1App::GetOrganization() const
+const char* App::GetOrganization() const
 {
 	return organization.GetString();
 }
 
 // Load / Save
-void j1App::LoadGame()
+void App::LoadGame()
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
@@ -379,7 +372,7 @@ void j1App::LoadGame()
 }
 
 // ---------------------------------------
-void j1App::SaveGame() const
+void App::SaveGame() const
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list ... should we overwrite ?
@@ -388,12 +381,12 @@ void j1App::SaveGame() const
 }
 
 // ---------------------------------------
-void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
+void App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 {
 	// need to add functionality to file_system module for this to work
 }
 
-bool j1App::LoadGameNow()
+bool App::LoadGameNow()
 {
 	bool ret = false;
 
@@ -430,7 +423,7 @@ bool j1App::LoadGameNow()
 	return ret;
 }
 
-bool j1App::SavegameNow() const
+bool App::SavegameNow() const
 {
 	bool ret = true;
 
@@ -463,7 +456,7 @@ bool j1App::SavegameNow() const
 	return ret;
 }
 
-bool j1App::ReloadNow() {
+bool App::ReloadNow() {
 
 	pugi::xml_document	config_file;
 	pugi::xml_node		config;
@@ -515,16 +508,16 @@ bool j1App::ReloadNow() {
 	return ret;
 }
 
-float j1App::GetTimeScale() const
+float App::GetTimeScale() const
 {
 	return time_scale;
 }
 
-void j1App::SetTimeScale(float ts)
+void App::SetTimeScale(float ts)
 {
 	time_scale = ts;
 }
 
-void j1App::Reload() {
+void App::Reload() {
 	want_to_reload = true;
 }

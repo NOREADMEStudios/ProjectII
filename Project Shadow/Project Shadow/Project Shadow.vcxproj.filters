@@ -58,5 +58,8 @@
     <ClInclude Include="Engine\ModuleAudio.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Defs.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

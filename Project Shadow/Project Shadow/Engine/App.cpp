@@ -69,7 +69,8 @@ App::~App()
 	}
 
 	//we must use this structure now with stl:
-	for (std::list<Module*>::reverse_iterator item = modules.rend(); item != modules.rbegin(); item++) {
+	//we need to be careful with the use of "iterator" and "reverse_iterator" and use them for their intended purposes (front-to-back and back-to-front)
+	for (std::list<Module*>::reverse_iterator item = modules.rbegin(); item != modules.rend(); item++) {
 		RELEASE(*item);
 	}
 	modules.clear();

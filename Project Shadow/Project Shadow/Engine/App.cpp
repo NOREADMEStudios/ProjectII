@@ -24,14 +24,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new ModuleRender();
 	tex = new ModuleTextures();
 	audio = new ModuleAudio();
-	scene = new j1Scene();
+	/*scene = new j1Scene();
 	map = new j1Map();
 	entities = new j1Entities();
 	collision = new j1Collision();
 	pathfinding = new j1PathFinding();
 	font = new j1Fonts();
 	gui = new j1Gui();
-	transition = new j1Transition();
+	transition = new j1Transition();*/
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -39,25 +39,27 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(map);
+	/*AddModule(map);
 	AddModule(scene);
 	AddModule(entities);
 	AddModule(collision);
 	AddModule(pathfinding);
 	AddModule(font);
 	AddModule(gui);
-	AddModule(transition);
+	AddModule(transition);*/
 
 	// render last to swap buffer
 	AddModule(render);
 
-	PERF_PEEK(ptimer);
+	//PERF_PEEK(ptimer);
 }
 
 // Destructor
 App::~App()
 {
 	// release modules
+
+	//Where we previously used this to iterate through list items:
 	p2List_item<j1Module*>* item = modules.end;
 
 	while(item != NULL)
@@ -66,6 +68,10 @@ App::~App()
 		item = item->prev;
 	}
 
+	//we must use this structure now with stl:
+	for (std::list<Module*>::reverse_iterator item = modules.rend(); item != modules.rbegin(); item++) {
+		RELEASE(*item);
+	}
 	modules.clear();
 }
 

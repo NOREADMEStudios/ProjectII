@@ -1,11 +1,12 @@
 #ifndef __APP_H__
 #define __APP_H__
 
-#include "p2List.h"
+#include <list>
+#include "Defs.h"
 #include "Module.h"
-#include "j1PerfTimer.h"
-#include "j1Timer.h"
-#include "PugiXml\src\pugixml.hpp"
+//#include "j1PerfTimer.h"
+//#include "j1Timer.h"
+#include "../PugiXml/src/pugixml.hpp"
 
 // Modules
 class ModuleWindow;
@@ -56,7 +57,7 @@ public:
 	void LoadGame();
 	void SaveGame() const;
 	void Reload();
-	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
+	void GetSaveGames(std::list<std::string>& list_to_fill) const;
 
 	uint32 GetFramerateCap() const;
 	void SetFramerateCap(uint32 cap);
@@ -93,7 +94,7 @@ public:
 
 	// Modules
 	ModuleWindow*			win = nullptr;
-	j1Input*			input = nullptr;
+	ModuleInput*			input = nullptr;
 	ModuleRender*			render = nullptr;
 	ModuleTextures*			tex = nullptr;
 	ModuleAudio*			audio = nullptr;
@@ -110,31 +111,31 @@ public:
 
 private:
 
-	p2List<Module*>	modules;
+	std::list<Module*>	modules;
 	uint				frames = 0;
 	float				dt = .0f;
 	float				time_scale = 1.0f;
 	int					argc;
 	char**				args;
 
-	p2SString			title;
-	p2SString			organization;
+	std::string			title;
+	std::string			organization;
 
 	mutable bool		want_to_save = false;
 	bool				want_to_load = false;
 	bool				want_to_reload = false;
-	p2SString			load_game = "save_game.xml";
-	mutable p2SString	save_game = "save_game.xml";
+	std::string			load_game = "save_game.xml";
+	mutable std::string	save_game = "save_game.xml";
 
-	j1PerfTimer			ptimer;
+	//j1PerfTimer			ptimer;
 	uint64				frame_count = 0;
 	uint32				framerate_cap = 0;
 	uint32				delta_time = 0;
-	j1Timer				delay_time;
+	/*j1Timer				delay_time;
 	j1Timer				startup_time;
 	j1Timer				ten_sec_timer;
 	j1Timer				frame_time;
-	j1Timer				last_sec_frame_time;
+	j1Timer				last_sec_frame_time;*/
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
 };

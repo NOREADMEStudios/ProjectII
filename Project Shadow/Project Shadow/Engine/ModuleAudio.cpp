@@ -1,10 +1,9 @@
-#include "p2Defs.h"
+#include "Defs.h"
 #include "p2Log.h"
 #include "ModuleAudio.h"
-#include "p2List.h"
 
-#include "SDL/include/SDL.h"
-#include "SDL_mixer\include\SDL_mixer.h"
+#include "../SDL/include/SDL.h"
+#include "../SDL_mixer/include/SDL_mixer.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 #define DEFAULT_VOLUME_LEVEL MIX_MAX_VOLUME/2
@@ -12,7 +11,7 @@
 ModuleAudio::ModuleAudio() : Module()
 {
 	music = NULL;
-	name.create("audio");
+	name = "audio";
 
 	currentfxvolume = DEFAULT_VOLUME_LEVEL;
 	currentmusicvolume = DEFAULT_VOLUME_LEVEL;

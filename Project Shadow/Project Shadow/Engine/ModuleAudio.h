@@ -2,8 +2,8 @@
 #define __AUDIO_H__
 
 #include "Module.h"
-#include "SDL_mixer\include\SDL_mixer.h"
-#include "p2List.h"
+#include <list>
+#include "../SDL_mixer/include/SDL_mixer.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -53,7 +53,7 @@ private:
 
 
 	_Mix_Music*			music;
-	p2List<Mix_Chunk*>	fx;
+	std::list<Mix_Chunk*>	fx;
 };
 
 #endif // __AUDIO_H__

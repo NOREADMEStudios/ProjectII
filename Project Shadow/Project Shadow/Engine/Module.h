@@ -6,8 +6,8 @@
 #ifndef __MODULE_H__
 #define __MODULE_H__
 
-#include "p2SString.h"
-#include "PugiXml\src\pugixml.hpp"
+#include <string>
+#include "../PugiXml/src/pugixml.hpp"
 
 struct Collider;
 
@@ -80,11 +80,11 @@ public:
 
 	}
 
-	virtual bool OnEventChange(UI_Elem* elem, ButtonEvent event)  { return true; }
+	virtual bool OnEventChange(UI_Elem* elem, ButtonEvent event)  { return true; } //?
 
 public:
 
-	p2SString	name;
+	std::string	name;
 	bool		active;
 
 };

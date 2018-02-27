@@ -60,18 +60,18 @@ App::~App()
 	// release modules
 
 	//Where we previously used this to iterate through list items:
-	p2List_item<j1Module*>* item = modules.end;
+	/*p2List_item<j1Module*>* item = modules.end;
 
 	while(item != NULL)
 	{
 		RELEASE(item->data);
 		item = item->prev;
-	}
+	}*/
 
 	//we must use this structure now with stl:
 	//we need to be careful with the use of "iterator" and "reverse_iterator" and use them for their intended purposes (front-to-back and back-to-front)
 	for (std::list<Module*>::reverse_iterator item = modules.rbegin(); item != modules.rend(); item++) {
-		RELEASE(*item);
+		Release(*item);
 	}
 	modules.clear();
 }
@@ -79,13 +79,13 @@ App::~App()
 void App::AddModule(Module* module)
 {
 	module->Init();
-	modules.add(module);
+	modules.push_back(module);
 }
 
 // Called before render is available
 bool App::Awake()
 {
-	PERF_START(ptimer);
+	//PERF_START(ptimer);
 
 	pugi::xml_document	config_file;
 	pugi::xml_node		config;
@@ -100,8 +100,8 @@ bool App::Awake()
 		// self-config
 		ret = true;
 		app_config = config.child("app");
-		title.create(app_config.child("title").child_value());
-		organization.create(app_config.child("organization").child_value());
+		title = app_config.child("title").child_value();
+		organization = app_config.child("organization").child_value();
 		framerate_cap = app_config.attribute("framerate_cap").as_uint();
 	}
 

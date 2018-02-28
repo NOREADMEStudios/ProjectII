@@ -10,6 +10,7 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 
+typedef std::list<Module*> ModuleList;
 
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
@@ -70,7 +71,7 @@ App::~App()
 
 	//we must use this structure now with stl:
 	//we need to be careful with the use of "iterator" and "reverse_iterator" and use them for their intended purposes (front-to-back and back-to-front)
-	for (std::list<Module*>::reverse_iterator item = modules.rbegin(); item != modules.rend(); item++) {
+	for (ModuleList::reverse_iterator item = modules.rbegin(); item != modules.rend(); item++) {
 		Release(*item);
 	}
 	modules.clear();
@@ -107,17 +108,21 @@ bool App::Awake()
 
 	if(ret == true)
 	{
-		p2List_item<j1Module*>* item;
+		/*p2List_item<j1Module*>* item;
 		item = modules.start;
 
 		while(item != NULL && ret == true)
 		{
 			ret = item->data->Awake(config.child(item->data->name.GetString()));
 			item = item->next;
+		}*/
+
+		for (ModuleList::iterator item = modules.begin(); item != modules.end(); item++) {
+			ret = (*item)->Awake(config.child((*item)->name.c_str()));
 		}
 	}
 
-	PERF_PEEK(ptimer);
+	//PERF_PEEK(ptimer);
 
 	return ret;
 }
@@ -125,19 +130,23 @@ bool App::Awake()
 // Called before the first frame
 bool App::Start()
 {
-	PERF_START(ptimer);
+	//PERF_START(ptimer);
 
 	bool ret = true;
-	p2List_item<j1Module*>* item;
+	/*p2List_item<j1Module*>* item;
 	item = modules.start;
 
 	while(item != NULL && ret == true)
 	{
 		ret = item->data->Start();
 		item = item->next;
+	}*/
+
+	for (ModuleList::iterator item = modules.begin(); item != modules.end() && ret == true; item++) {
+		ret = (*item)->Start();
 	}
 
-	PERF_PEEK(ptimer);
+	//PERF_PEEK(ptimer);
 	return ret;
 }
 

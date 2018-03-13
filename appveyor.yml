@@ -1,0 +1,22 @@
+version: 1.0.{build}
+skip_non_tags: true
+image: Visual Studio 2017
+configuration:
+- Debug
+- Release
+build:
+  verbosity: minimal
+before_package:
+- ps: Copy-Item C:\projects\ProjectII\$env:CONFIGURATION\ProjectII.exe C:\projects\ProjectII\Game\.
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: VleM8M5bC+JTZXu3dY0WWirD8F6QJUxLhF6Sa/F38toXCzhsLXVeSrgLkKNlGc2R10wjSz0I+uW9RP7l5aaHsgb6PxpAzB88uFceop7i6wQ=
+  draft: true
+notifications:
+- provider: Email
+  to:
+  - marcmoreno2@gmail.com
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: true

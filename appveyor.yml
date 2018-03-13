@@ -1,4 +1,7 @@
 version: 1.0.{build}
+branches:
+  only:
+  - Engine-development
 skip_non_tags: true
 image: Visual Studio 2017
 configuration:

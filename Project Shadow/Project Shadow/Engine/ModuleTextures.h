@@ -33,7 +33,7 @@ public:
 
 public:
 
-	p2List<SDL_Texture*>	textures;
+	std::list<SDL_Texture*>	textures;
 };
 
 

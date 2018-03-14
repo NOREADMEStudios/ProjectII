@@ -1,15 +1,15 @@
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "App.h"
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
-#include "SDL/include/SDL.h"
+#include "../SDL/include/SDL.h"
 
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput() : Module()
 {
-	name.create("input");
+	name="input";
 
 	keyboard = new j1KeyState[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(j1KeyState) * MAX_KEYS);

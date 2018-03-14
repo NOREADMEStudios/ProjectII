@@ -1,17 +1,17 @@
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "App.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 
 #include "ModuleInput.h"
-#include "Brofiler/Brofiler.h"	
+#include "../Brofiler/Brofiler.h"	
 
 #define CAMERA_SPEED 3
 
 ModuleRender::ModuleRender() : Module()
 {
-	name.create("renderer");
+	name="renderer";
 	background.r = 0;
 	background.g = 0;
 	background.b = 0;

@@ -1,16 +1,16 @@
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "App.h"
 #include "ModuleWindow.h"
 
-#include "SDL/include/SDL.h"
+#include "../SDL/include/SDL.h"
 
 
 ModuleWindow::ModuleWindow() : Module()
 {
 	window = NULL;
 	screen_surface = NULL;
-	name.create("window");
+	name = "window";
 }
 
 // Destructor

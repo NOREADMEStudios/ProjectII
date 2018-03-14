@@ -12,6 +12,9 @@
     <Filter Include="Engine\Modules">
       <UniqueIdentifier>{fdc7c933-9eed-4a46-b119-65077ae34c86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Tools">
+      <UniqueIdentifier>{3f282fec-0ff3-45af-a488-8d2a781d304e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\App.cpp">
@@ -36,7 +39,10 @@
       <Filter>Engine\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Defs.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Log.cpp">
+      <Filter>Engine\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,7 +68,10 @@
       <Filter>Engine\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Defs.h">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Log.h">
+      <Filter>Engine\Tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

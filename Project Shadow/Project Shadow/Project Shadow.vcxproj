@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\App.cpp" />
     <ClCompile Include="Engine\Defs.cpp" />
+    <ClCompile Include="Engine\Log.cpp" />
     <ClCompile Include="Engine\ModuleAudio.cpp" />
     <ClCompile Include="Engine\ModuleInput.cpp" />
     <ClCompile Include="Engine\ModuleRender.cpp" />
@@ -127,6 +128,7 @@
   <ItemGroup>
     <ClInclude Include="Engine\App.h" />
     <ClInclude Include="Engine\Defs.h" />
+    <ClInclude Include="Engine\Log.h" />
     <ClInclude Include="Engine\ModuleAudio.h" />
     <ClInclude Include="Engine\ModuleInput.h" />
     <ClInclude Include="Engine\ModuleRender.h" />

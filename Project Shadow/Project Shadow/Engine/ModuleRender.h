@@ -2,7 +2,6 @@
 #define __RENDER_H__
 
 #include "../SDL/include/SDL.h"
-#include "p2Point.h"
 #include "Module.h"
 
 class ModuleRender : public Module
@@ -47,7 +46,7 @@ public:
 	void SetBackgroundColor(SDL_Color color);
 	void SetCameraInitialPos();
 
-	iPoint ScreenToWorld(int x, int y) const;
+	SDL_Point ScreenToWorld(int x, int y) const;
 
 public:
 

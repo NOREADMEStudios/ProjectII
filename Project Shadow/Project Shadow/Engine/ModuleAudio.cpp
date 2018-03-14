@@ -4,7 +4,7 @@
 
 #include "../SDL/include/SDL.h"
 #include "../SDL_mixer/include/SDL_mixer.h"
-#pragma comment( lib, "../SDL_mixer/libx86/SDL2_mixer.lib" )
+_//#pragma comment( lib, "../SDL_mixer/libx86/SDL2_mixer.lib" )
 
 #define DEFAULT_VOLUME_LEVEL MIX_MAX_VOLUME/2
 
@@ -69,7 +69,7 @@ bool ModuleAudio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	p2List_item<Mix_Chunk*>* item;
+	std::list<Mix_Chunk*>* item;
 	for(item = fx.start; item != NULL; item = item->next)
 		Mix_FreeChunk(item->data);
 

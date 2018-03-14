@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "Defs.h"
-//#include "p2Log.h"
+#include "Log.h"
 #include "App.h"
 
 
@@ -9,8 +9,8 @@
 // This is needed here because SDL redefines main function
 // do not add any other libraries here, instead put them in their modules
 #include "../SDL/include/SDL.h"
-#pragma comment( lib, "SDL/libx86/SDL2.lib" )
-#pragma comment( lib, "SDL/libx86/SDL2main.lib" )
+#pragma comment( lib, "../SDL/libx86/SDL2.lib" )
+#pragma comment( lib, "../SDL/libx86/SDL2main.lib" )
 
 
 

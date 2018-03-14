@@ -255,9 +255,9 @@ void ModuleRender::SetCameraInitialPos()
 	camera.x = 0;
 }
 
-iPoint ModuleRender::ScreenToWorld(int x, int y) const
+SDL_Point ModuleRender::ScreenToWorld(int x, int y) const
 {
-	iPoint ret;
+	SDL_Point ret;
 	int scale = App->win->GetScale();
 
 	ret.x = (x - camera.x / scale);

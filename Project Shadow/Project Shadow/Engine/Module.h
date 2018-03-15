@@ -11,7 +11,7 @@
 
 struct Collider;
 
-class App;
+class Application;
 
 class UI_Elem;
 

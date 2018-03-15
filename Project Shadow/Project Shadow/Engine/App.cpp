@@ -13,7 +13,7 @@
 typedef std::list<Module*> ModuleList;
 
 // Constructor
-App::App(int argc, char* args[]) : argc(argc), args(args)
+Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
 	//PERF_START(ptimer);
 
@@ -56,7 +56,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 }
 
 // Destructor
-App::~App()
+Application::~Application()
 {
 	// release modules
 
@@ -77,14 +77,14 @@ App::~App()
 	modules.clear();
 }
 
-void App::AddModule(Module* module)
+void Application::AddModule(Module* module)
 {
 	module->Init();
 	modules.push_back(module);
 }
 
 // Called before render is available
-bool App::Awake()
+bool Application::Awake()
 {
 	//PERF_START(ptimer);
 
@@ -128,7 +128,7 @@ bool App::Awake()
 }
 
 // Called before the first frame
-bool App::Start()
+bool Application::Start()
 {
 	//PERF_START(ptimer);
 
@@ -151,7 +151,7 @@ bool App::Start()
 }
 
 // Called each loop iteration
-bool App::Update()
+bool Application::Update()
 {
 	bool ret = true;
 	PrepareUpdate();
@@ -174,7 +174,7 @@ bool App::Update()
 }
 
 // ---------------------------------------------
-pugi::xml_node App::LoadConfig(pugi::xml_document& config_file) const
+pugi::xml_node Application::LoadConfig(pugi::xml_document& config_file) const
 {
 	pugi::xml_node ret;
 
@@ -189,7 +189,7 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& config_file) const
 }
 
 // ---------------------------------------------
-void App::PrepareUpdate()
+void Application::PrepareUpdate()
 {
 	frame_count++;
 	last_sec_frame_count++;
@@ -200,7 +200,7 @@ void App::PrepareUpdate()
 }
 
 // ---------------------------------------------
-void App::FinishUpdate()
+void Application::FinishUpdate()
 {
 	if(want_to_save == true)
 		SavegameNow();
@@ -230,7 +230,7 @@ void App::FinishUpdate()
 	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu ",
 		avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
-	App->win->SetTitle(title);
+	win->SetTitle(title);
 
 	delay_time.Start();
 	int delay_ms = (1000 / framerate_cap) - last_frame_ms;
@@ -241,25 +241,25 @@ void App::FinishUpdate()
 	LOG("Expected frame delay: %d, Actual frame delay: %d", delay_ms, wait_ms);
 }
 
-uint32 App::GetFramerateCap() const
+uint32 Application::GetFramerateCap() const
 {
 	return framerate_cap;
 }
 
-void App::SetFramerateCap(uint32 cap)
+void Application::SetFramerateCap(uint32 cap)
 {
 	framerate_cap = cap;
 }
 
 // Call modules before each loop iteration
-bool App::PreUpdate()
+bool Application::PreUpdate()
 {
 	bool ret = true;
-	std::list<Module*>::iterator item;
+	ModuleList::iterator item;
 	item = modules.begin();
 	Module* pModule = NULL;
 
-	for(item = modules.begin(); *item != nullptr && ret == true; item++)
+	for(item = modules.begin(); item != modules.end() && ret == true; item++)
 	{
 		pModule = *item;
 
@@ -267,17 +267,17 @@ bool App::PreUpdate()
 			continue;
 		}
 
-		ret = item->data->PreUpdate();
+		ret = (*item)->PreUpdate();
 	}
 
 	return ret;
 }
 
 // Call modules on each loop iteration
-bool App::DoUpdate()
+bool Application::DoUpdate()
 {
 	bool ret = true;
-	std::list<Module*>::iterator item;
+	ModuleList::iterator item;
 	item = modules.begin();
 	Module* pModule = NULL;
 
@@ -296,10 +296,10 @@ bool App::DoUpdate()
 }
 
 // Call modules after each loop iteration
-bool App::PostUpdate()
+bool Application::PostUpdate()
 {
 	bool ret = true;
-	std::list<Module*>::iterator item;
+	ModuleList::iterator item;
 	Module* pModule = NULL;
 
 	for(item = modules.begin(); *item != nullptr && ret == true; item++)
@@ -317,7 +317,7 @@ bool App::PostUpdate()
 }
 
 // Called before quitting
-bool App::CleanUp()
+bool Application::CleanUp()
 {
 	PERF_START(ptimer);
 
@@ -337,7 +337,7 @@ bool App::CleanUp()
 		framerate_cap = app_config.attribute("framerate_cap").as_uint();
 	}
 
-	std::list<Module*>::iterator item;
+	ModuleList::iterator item;
 	item = modules.end();
 
 	while(*item != nullptr && ret == true)
@@ -353,13 +353,13 @@ bool App::CleanUp()
 }
 
 // ---------------------------------------
-int App::GetArgc() const
+int Application::GetArgc() const
 {
 	return argc;
 }
 
 // ---------------------------------------
-const char* App::GetArgv(int index) const
+const char* Application::GetArgv(int index) const
 {
 	if(index < argc)
 		return args[index];
@@ -368,19 +368,19 @@ const char* App::GetArgv(int index) const
 }
 
 // ---------------------------------------
-const char* App::GetTitle() const
+const char* Application::GetTitle() const
 {
 	return title.data;
 }
 
 // ---------------------------------------
-const char* App::GetOrganization() const
+const char* Application::GetOrganization() const
 {
 	return organization.data;
 }
 
 // Load / Save
-void App::LoadGame()
+void Application::LoadGame()
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
@@ -388,7 +388,7 @@ void App::LoadGame()
 }
 
 // ---------------------------------------
-void App::SaveGame() const
+void Application::SaveGame() const
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list ... should we overwrite ?
@@ -397,12 +397,12 @@ void App::SaveGame() const
 }
 
 // ---------------------------------------
-void App::GetSaveGames(std::list<std::string>& list_to_fill) const
+void Application::GetSaveGames(std::list<std::string>& list_to_fill) const
 {
 	// need to add functionality to file_system module for this to work
 }
 
-bool App::LoadGameNow()
+bool Application::LoadGameNow()
 {
 	bool ret = false;
 
@@ -417,7 +417,7 @@ bool App::LoadGameNow()
 
 		root = data.child("game_state");
 
-		std::list<Module*>::iterator item = modules.begin();
+		ModuleList::iterator item = modules.begin();
 		ret = true;
 
 		while(*item != nullptr && ret == true)
@@ -439,7 +439,7 @@ bool App::LoadGameNow()
 	return ret;
 }
 
-bool App::SavegameNow() const
+bool Application::SavegameNow() const
 {
 	bool ret = true;
 
@@ -472,7 +472,7 @@ bool App::SavegameNow() const
 	return ret;
 }
 
-bool App::ReloadNow() {
+bool Application::ReloadNow() {
 
 	pugi::xml_document	config_file;
 	pugi::xml_node		config;
@@ -524,16 +524,16 @@ bool App::ReloadNow() {
 	return ret;
 }
 
-float App::GetTimeScale() const
+float Application::GetTimeScale() const
 {
 	return time_scale;
 }
 
-void App::SetTimeScale(float ts)
+void Application::SetTimeScale(float ts)
 {
 	time_scale = ts;
 }
 
-void App::Reload() {
+void Application::Reload() {
 	want_to_reload = true;
 }

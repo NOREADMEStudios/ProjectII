@@ -23,15 +23,15 @@ class j1Fonts;
 class j1Gui;
 class j1Transition;
 
-class App
+class Application
 {
 public:
 
 	// Constructor
-	App(int argc, char* args[]);
+	Application(int argc, char* args[]);
 
 	// Destructor
-	virtual ~App();
+	virtual ~Application();
 
 	// Called before render is available
 	bool Awake();
@@ -127,19 +127,19 @@ private:
 	std::string			load_game = "save_game.xml";
 	mutable std::string	save_game = "save_game.xml";
 
-	//j1PerfTimer			ptimer;
+	PerfTimer			ptimer;
 	uint64				frame_count = 0;
 	uint32				framerate_cap = 0;
 	uint32				delta_time = 0;
-	/*j1Timer				delay_time;
-	j1Timer				startup_time;
-	j1Timer				ten_sec_timer;
-	j1Timer				frame_time;
-	j1Timer				last_sec_frame_time;*/
+	Timer				delay_time;
+	Timer				startup_time;
+	Timer				ten_sec_timer;
+	Timer				frame_time;
+	Timer				last_sec_frame_time;
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
 };
 
-extern App* App; // No student is asking me about that ... odd :-S
+extern Application* App;
 
 #endif

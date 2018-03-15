@@ -3,7 +3,6 @@ void Release(void* object) {
 	delete object;
 }
 
-void ReleaseArray(void* array)
-{
+void ReleaseArray(void* array) {
 	delete[] array;
 }

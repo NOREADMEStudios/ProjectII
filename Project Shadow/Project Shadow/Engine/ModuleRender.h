@@ -14,22 +14,22 @@ public:
 	virtual ~ModuleRender();
 
 	// Called before render is available
-	bool Awake(pugi::xml_node&);
+	bool Awake(pugi::xml_node&) override;
 
 	// Called before the first frame
-	bool Start();
+	bool Start() override;
 
 	// Called each loop iteration
-	bool PreUpdate();
-	bool Update(float dt);
-	bool PostUpdate();
+	bool PreUpdate() override;
+	bool Update(float dt) override;
+	bool PostUpdate() override;
 
 	// Called before quitting
-	bool CleanUp();
+	bool CleanUp(pugi::xml_node&) override;
 
 	// Load / Save
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;
+	bool Load(pugi::xml_node&) override;
+	bool Save(pugi::xml_node&) const override;
 
 	int camera_speed;
 	bool vsync = false;

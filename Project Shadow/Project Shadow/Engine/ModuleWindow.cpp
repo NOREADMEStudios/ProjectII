@@ -80,7 +80,7 @@ bool ModuleWindow::Awake(pugi::xml_node& config)
 }
 
 // Called before quitting
-bool ModuleWindow::CleanUp()
+bool ModuleWindow::CleanUp(pugi::xml_node&)
 {
 	LOG("Destroying SDL window and quitting all SDL systems");
 

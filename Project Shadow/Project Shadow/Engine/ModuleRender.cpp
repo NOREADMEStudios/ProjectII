@@ -85,7 +85,7 @@ bool ModuleRender::PostUpdate()
 	return true;
 }
 
-bool ModuleRender::CleanUp()
+bool ModuleRender::CleanUp(pugi::xml_node&)
 {
 	LOG("Destroying SDL render");
 	SDL_DestroyRenderer(renderer);

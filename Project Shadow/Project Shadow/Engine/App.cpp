@@ -117,7 +117,8 @@ bool Application::Awake()
 		}*/
 
 		for (ModuleList::iterator item = modules.begin(); item != modules.end(); item++) {
-			ret = (*item)->Awake(config.child((*item)->name.c_str()));
+			pugi::xml_node node = config.child((*item)->name.c_str());
+			ret = (*item)->Awake(node);
 		}
 	}
 
@@ -336,13 +337,10 @@ bool Application::CleanUp()
 		framerate_cap = app_config.attribute("framerate_cap").as_uint();
 	}
 
-	ModuleList::iterator item;
-	item = modules.end();
-
-	while(*item != nullptr && ret == true)
+	for(ModuleList::reverse_iterator item = modules.rbegin(); item != modules.rend() && ret == true; item++)
 	{
-		ret = (*item)->CleanUp(config.child((*item)->name.c_str()));
-		item--;
+		pugi::xml_node node = config.child((*item)->name.c_str());
+		ret = (*item)->CleanUp(node);
 	}
 
 	config_file.save_file("config.xml");
@@ -416,13 +414,14 @@ bool Application::LoadGameNow()
 
 		root = data.child("game_state");
 
-		ModuleList::iterator item = modules.begin();
+		
 		ret = true;
+		ModuleList::iterator item;
 
-		while(*item != nullptr && ret == true)
+		for(item = modules.begin(); item != modules.end() && ret == true; item++)
 		{
-			ret = (*item)->Load(root.child((*item)->name.c_str()));
-			item++;
+			pugi::xml_node node = root.child((*item)->name.c_str());
+			ret = (*item)->Load(node);
 		}
 
 		data.reset();
@@ -454,7 +453,8 @@ bool Application::SavegameNow() const
 
 	for(; item != modules.end() && ret == true; item++)
 	{
-		ret = (*item)->Save(root.append_child((*item)->name.c_str()));
+		pugi::xml_node node = root.append_child((*item)->name.c_str());
+		ret = (*item)->Save(node);
 		item++;
 	}
 
@@ -493,7 +493,7 @@ bool Application::ReloadNow() {
 	}
 
 	if (ret)
-		ret = tex->CleanUp(config.child(tex->name.c_str()));
+		//ret = tex->CleanUp(config.child(tex->name.c_str()));
 		//pathfinding->CleanUp(config.child(pathfinding->name.GetString())) &
 		//map->CleanUp(config.child(map->name.GetString())) &
 		//scene->CleanUp(config.child(scene->name.GetString())) &
@@ -503,9 +503,9 @@ bool Application::ReloadNow() {
 		//gui->CleanUp(config.child(gui->name.GetString()));
 
 	if (ret)
-		ret = tex->Awake(config.child(tex->name.c_str())) &
+		//ret = tex->Awake(config.child(tex->name.c_str())) &
 		//map->Awake(config.child(map->name.GetString())) &
-		audio->Awake(config.child(audio->name.c_str()));
+		//audio->Awake(config.child(audio->name.c_str()));
 		//scene->Awake(config.child(scene->name.GetString())) &
 		//entities->Awake(config.child(entities->name.GetString())) &
 		//font->Awake(config.child(font->name.GetString())) &

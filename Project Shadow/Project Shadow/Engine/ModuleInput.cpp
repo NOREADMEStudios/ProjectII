@@ -132,7 +132,7 @@ bool ModuleInput::PreUpdate()
 }
 
 // Called before quitting
-bool ModuleInput::CleanUp()
+bool ModuleInput::CleanUp(pugi::xml_node&)
 {
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);

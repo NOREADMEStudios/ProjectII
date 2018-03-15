@@ -43,7 +43,7 @@ bool ModuleTextures::Start()
 }
 
 // Called before quitting
-bool ModuleTextures::CleanUp()
+bool ModuleTextures::CleanUp(pugi::xml_node&)
 {
 	LOG("Freeing textures and Image library");
 	std::list<SDL_Texture*>::iterator item;

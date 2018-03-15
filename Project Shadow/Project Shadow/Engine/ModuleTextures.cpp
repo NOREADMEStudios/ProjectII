@@ -50,7 +50,7 @@ bool ModuleTextures::CleanUp()
 
 	for(item = textures.begin(); item != textures.end(); item++)
 	{
-		SDL_DestroyTexture(item._Getcont);
+		SDL_DestroyTexture(*item);
 	}
 
 	textures.clear();

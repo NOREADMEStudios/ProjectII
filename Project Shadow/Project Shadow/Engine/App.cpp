@@ -1,7 +1,7 @@
 #include <iostream> 
 
-//#include "p2Defs.h"
-//#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 
 #include "App.h"
 #include "ModuleInput.h"
@@ -255,13 +255,13 @@ void App::SetFramerateCap(uint32 cap)
 bool App::PreUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	item = modules.start;
-	j1Module* pModule = NULL;
+	std::list<Module*>::iterator item;
+	item = modules.begin();
+	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for(item = modules.begin(); *item != nullptr && ret == true; item++)
 	{
-		pModule = item->data;
+		pModule = *item;
 
 		if(pModule->active == false) {
 			continue;
@@ -277,13 +277,13 @@ bool App::PreUpdate()
 bool App::DoUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	item = modules.start;
-	j1Module* pModule = NULL;
+	std::list<Module*>::iterator item;
+	item = modules.begin();
+	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for(item = modules.begin(); *item != nullptr && ret == true; item++)
 	{
-		pModule = item->data;
+		pModule = *item;
 
 		if(pModule->active == false) {
 			continue;
@@ -299,18 +299,18 @@ bool App::DoUpdate()
 bool App::PostUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	j1Module* pModule = NULL;
+	std::list<Module*>::iterator item;
+	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for(item = modules.begin(); *item != nullptr && ret == true; item++)
 	{
-		pModule = item->data;
+		pModule = *item;
 
 		if(pModule->active == false) {
 			continue;
 		}
 
-		ret = item->data->PostUpdate();
+		ret = *item->PostUpdate();
 	}
 
 	return ret;
@@ -337,12 +337,12 @@ bool App::CleanUp()
 		framerate_cap = app_config.attribute("framerate_cap").as_uint();
 	}
 
-	p2List_item<j1Module*>* item;
-	item = modules.end;
+	std::list<Module*>::iterator item;
+	item = modules.end();
 
-	while(item != NULL && ret == true)
+	while(*item != nullptr && ret == true)
 	{
-		ret = item->data->CleanUp(config.child(item->data->name.GetString()));
+		ret = item->data->CleanUp(config.child(item->data->name.data));
 		item = item->prev;
 	}
 
@@ -370,13 +370,13 @@ const char* App::GetArgv(int index) const
 // ---------------------------------------
 const char* App::GetTitle() const
 {
-	return title.GetString();
+	return title.data;
 }
 
 // ---------------------------------------
 const char* App::GetOrganization() const
 {
-	return organization.GetString();
+	return organization.data;
 }
 
 // Load / Save
@@ -397,7 +397,7 @@ void App::SaveGame() const
 }
 
 // ---------------------------------------
-void App::GetSaveGames(p2List<p2SString>& list_to_fill) const
+void App::GetSaveGames(std::list<std::string>& list_to_fill) const
 {
 	// need to add functionality to file_system module for this to work
 }
@@ -409,18 +409,18 @@ bool App::LoadGameNow()
 	pugi::xml_document data;
 	pugi::xml_node root;
 
-	pugi::xml_parse_result result = data.load_file(load_game.GetString());
+	pugi::xml_parse_result result = data.load_file(load_game.data);
 
 	if(result != NULL)
 	{
-		LOG("Loading new Game State from %s...", load_game.GetString());
+		LOG("Loading new Game State from %s...", load_game.data);
 
 		root = data.child("game_state");
 
-		p2List_item<j1Module*>* item = modules.start;
+		std::list<Module*>::iterator item = modules.begin();
 		ret = true;
 
-		while(item != NULL && ret == true)
+		while(*item != nullptr && ret == true)
 		{
 			ret = item->data->Load(root.child(item->data->name.GetString()));
 			item = item->next;
@@ -430,10 +430,10 @@ bool App::LoadGameNow()
 		if(ret == true)
 			LOG("...finished loading");
 		else
-			LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
+			LOG("...loading process interrupted with error on module %s", (*item != nullptr) ? item->data->name.data : "unknown");
 	}
 	else
-		LOG("Could not parse game state xml file %s. pugi error: %s", load_game.GetString(), result.description());
+		LOG("Could not parse game state xml file %s. pugi error: %s", load_game.data, result.description());
 
 	want_to_load = false;
 	return ret;
@@ -443,7 +443,7 @@ bool App::SavegameNow() const
 {
 	bool ret = true;
 
-	LOG("Saving Game State to %s...", save_game.GetString());
+	LOG("Saving Game State to %s...", save_game.data);
 
 	// xml object were we will store all data
 	pugi::xml_document data;
@@ -461,7 +461,7 @@ bool App::SavegameNow() const
 
 	if(ret == true)
 	{
-		data.save_file(save_game.GetString());
+		data.save_file(save_game.data);
 		LOG("... finished saving", );
 	}
 	else

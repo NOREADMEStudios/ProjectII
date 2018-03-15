@@ -69,9 +69,9 @@ bool ModuleAudio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	std::list<Mix_Chunk*>* item;
-	for(item = fx.start; item != NULL; item = item->next)
-		Mix_FreeChunk(item->data);
+	std::list<Mix_Chunk*>::iterator item;
+	for(item = fx.begin(); item != fx.end(); item++)
+		Mix_FreeChunk(*item);
 
 	fx.clear();
 

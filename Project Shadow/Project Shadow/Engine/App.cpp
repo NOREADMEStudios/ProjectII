@@ -489,37 +489,37 @@ bool Application::ReloadNow() {
 		// self-config
 		ret = true;
 		app_config = config.child("app");
-		title.create(app_config.child("title").child_value());
-		organization.create(app_config.child("organization").child_value());
+		title= app_config.child("title").child_value();
+		organization = app_config.child("organization").child_value();
 	}
 
 	if (ret)
-		ret = tex->CleanUp(config.child(tex->name.GetString())) &
+		ret = tex->CleanUp(config.child(tex->name.data));
 		//pathfinding->CleanUp(config.child(pathfinding->name.GetString())) &
-		map->CleanUp(config.child(map->name.GetString())) &
-		scene->CleanUp(config.child(scene->name.GetString())) &
-		entities->CleanUp(config.child(entities->name.GetString())) &
+		//map->CleanUp(config.child(map->name.GetString())) &
+		//scene->CleanUp(config.child(scene->name.GetString())) &
+		//entities->CleanUp(config.child(entities->name.GetString())) &
 		//audio->CleanUp(config.child(audio->name.GetString())) &
-		font->CleanUp(config.child(font->name.GetString())) &
-		gui->CleanUp(config.child(gui->name.GetString()));
+		//font->CleanUp(config.child(font->name.GetString())) &
+		//gui->CleanUp(config.child(gui->name.GetString()));
 
 	if (ret)
-		ret = tex->Awake(config.child(tex->name.GetString())) &
-		map->Awake(config.child(map->name.GetString())) &
-		//audio->Awake(config.child(audio->name.GetString())) &
-		scene->Awake(config.child(scene->name.GetString())) &
-		entities->Awake(config.child(entities->name.GetString())) &
-		font->Awake(config.child(font->name.GetString())) &
-		gui->Awake(config.child(gui->name.GetString()));
+		ret = tex->Awake(config.child(tex->name.data)) &
+		//map->Awake(config.child(map->name.GetString())) &
+		audio->Awake(config.child(audio->name.data));
+		//scene->Awake(config.child(scene->name.GetString())) &
+		//entities->Awake(config.child(entities->name.GetString())) &
+		//font->Awake(config.child(font->name.GetString())) &
+		//gui->Awake(config.child(gui->name.GetString()));
 
 	if (ret)
 		ret = tex->Start() &&
-		map->Start() &&
-		//audio->Start() &&
-		scene->Start() &&
-		entities->Start() &&
-		font->Start() &&
-		gui->Start();
+		//map->Start() &&
+		audio->Start();
+		//scene->Start() &&
+		//entities->Start() &&
+		//font->Start() &&
+		//gui->Start();
 
 	return ret;
 }

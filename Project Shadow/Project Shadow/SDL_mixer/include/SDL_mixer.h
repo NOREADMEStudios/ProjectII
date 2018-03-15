@@ -626,6 +626,6 @@ extern DECLSPEC void SDLCALL Mix_CloseAudio(void);
 #ifdef __cplusplus
 }
 #endif
-#include "SDL/include/close_code.h"
+#include "../SDL/include/close_code.h"
 
 #endif /* _SDL_MIXER_H */

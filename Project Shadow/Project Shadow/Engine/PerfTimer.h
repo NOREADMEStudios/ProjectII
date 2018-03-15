@@ -1,13 +1,13 @@
-#ifndef __j1PERFTIMER_H__
-#define __j1PERFTIMER_H__
+#ifndef __PERFTIMER_H__
+#define __PERFTIMER_H__
 
-#include "p2Defs.h"
+#include "Defs.h"
 
-class j1PerfTimer
+class PerfTimer
 {
 public:
 
-	j1PerfTimer();
+	PerfTimer();
 
 	void Start();
 	double ReadMs() const;
@@ -18,4 +18,4 @@ private:
 	static uint64 frequency;
 };
 
-#endif //__j1PERFTIMER_H__
+#endif //__PERFTIMER_H__

@@ -1,4 +1,5 @@
 #include <iostream> 
+#include <cstdlib>
 
 #include "Defs.h"
 #include "Log.h"
@@ -406,7 +407,7 @@ bool Application::LoadGameNow()
 	pugi::xml_document data;
 	pugi::xml_node root;
 
-	pugi::xml_parse_result result = data.load_file(load_game.c_str());
+	pugi::xml_parse_result result = data.load_file((char*)load_game.c_str());
 
 	if(result != NULL)
 	{
@@ -460,7 +461,7 @@ bool Application::SavegameNow() const
 
 	if(ret == true)
 	{
-		data.save_file(save_game.c_str());
+		data.save_file((char*)save_game.c_str(),"\t");
 		LOG("... finished saving", );
 	}
 	else

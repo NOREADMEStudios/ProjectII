@@ -10,7 +10,6 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 
-typedef std::list<Module*> ModuleList;
 
 // Constructor
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
@@ -450,10 +449,10 @@ bool Application::SavegameNow() const
 	pugi::xml_node root;
 	
 	root = data.append_child("game_state");
+	
+	ModuleList::const_iterator item = modules.begin();
 
-	std::list<Module*>::iterator item = modules.begin();
-
-	while(item != modules.end() && ret == true)
+	for(; item != modules.end() && ret == true; item++)
 	{
 		ret = (*item)->Save(root.append_child((*item)->name.data));
 		item++;

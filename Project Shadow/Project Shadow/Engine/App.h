@@ -4,9 +4,12 @@
 #include <list>
 #include "Defs.h"
 #include "Module.h"
-//#include "j1PerfTimer.h"
-//#include "j1Timer.h"
+#include "PerfTimer.h"
+#include "Timer.h"
 #include "../PugiXml/src/pugixml.hpp"
+
+
+typedef std::list<Module*> ModuleList;
 
 // Modules
 class ModuleWindow;
@@ -111,7 +114,7 @@ public:
 
 private:
 
-	std::list<Module*>	modules;
+	ModuleList			modules;
 	uint				frames = 0;
 	float				dt = .0f;
 	float				time_scale = 1.0f;

@@ -60,7 +60,7 @@ public:
 	}
 
 	// Called before quitting
-	virtual bool CleanUp()
+	virtual bool CleanUp(pugi::xml_node&)
 	{
 		return true;
 	}

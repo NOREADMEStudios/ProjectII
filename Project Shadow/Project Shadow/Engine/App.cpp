@@ -341,7 +341,7 @@ bool Application::CleanUp()
 
 	while(*item != nullptr && ret == true)
 	{
-		ret = (*item)->CleanUp(config.child((*item)->name.data));
+		ret = (*item)->CleanUp(config.child((*item)->name.c_str()));
 		item--;
 	}
 
@@ -369,13 +369,13 @@ const char* Application::GetArgv(int index) const
 // ---------------------------------------
 const char* Application::GetTitle() const
 {
-	return title.data;
+	return title.c_str();
 }
 
 // ---------------------------------------
 const char* Application::GetOrganization() const
 {
-	return organization.data;
+	return organization.c_str();
 }
 
 // Load / Save
@@ -408,11 +408,11 @@ bool Application::LoadGameNow()
 	pugi::xml_document data;
 	pugi::xml_node root;
 
-	pugi::xml_parse_result result = data.load_file(load_game.data);
+	pugi::xml_parse_result result = data.load_file(load_game.c_str());
 
 	if(result != NULL)
 	{
-		LOG("Loading new Game State from %s...", load_game.data);
+		LOG("Loading new Game State from %s...", load_game.c_str());
 
 		root = data.child("game_state");
 
@@ -421,7 +421,7 @@ bool Application::LoadGameNow()
 
 		while(*item != nullptr && ret == true)
 		{
-			ret = (*item)->Load(root.child((*item)->name.data));
+			ret = (*item)->Load(root.child((*item)->name.c_str()));
 			item++;
 		}
 
@@ -429,10 +429,10 @@ bool Application::LoadGameNow()
 		if(ret == true)
 			LOG("...finished loading");
 		else
-			LOG("...loading process interrupted with error on module %s", (*item != nullptr) ? (*item)->name.data : "unknown");
+			LOG("...loading process interrupted with error on module %s", (*item != nullptr) ? (*item)->name.c_str() : "unknown");
 	}
 	else
-		LOG("Could not parse game state xml file %s. pugi error: %s", load_game.data, result.description());
+		LOG("Could not parse game state xml file %s. pugi error: %s", load_game.c_str(), result.description());
 
 	want_to_load = false;
 	return ret;
@@ -442,7 +442,7 @@ bool Application::SavegameNow() const
 {
 	bool ret = true;
 
-	LOG("Saving Game State to %s...", save_game.data);
+	LOG("Saving Game State to %s...", save_game.c_str());
 
 	// xml object were we will store all data
 	pugi::xml_document data;
@@ -454,17 +454,17 @@ bool Application::SavegameNow() const
 
 	for(; item != modules.end() && ret == true; item++)
 	{
-		ret = (*item)->Save(root.append_child((*item)->name.data));
+		ret = (*item)->Save(root.append_child((*item)->name.c_str()));
 		item++;
 	}
 
 	if(ret == true)
 	{
-		data.save_file(save_game.data);
+		data.save_file(save_game.c_str());
 		LOG("... finished saving", );
 	}
 	else
-		LOG("Save process halted from an error in module %s", (*item != nullptr) ? (*item)->name.data : "unknown");
+		LOG("Save process halted from an error in module %s", (*item != nullptr) ? (*item)->name.c_str() : "unknown");
 
 	data.reset();
 	want_to_save = false;
@@ -493,7 +493,7 @@ bool Application::ReloadNow() {
 	}
 
 	if (ret)
-		ret = tex->CleanUp(config.child(tex->name.data));
+		ret = tex->CleanUp(config.child(tex->name.c_str()));
 		//pathfinding->CleanUp(config.child(pathfinding->name.GetString())) &
 		//map->CleanUp(config.child(map->name.GetString())) &
 		//scene->CleanUp(config.child(scene->name.GetString())) &
@@ -503,9 +503,9 @@ bool Application::ReloadNow() {
 		//gui->CleanUp(config.child(gui->name.GetString()));
 
 	if (ret)
-		ret = tex->Awake(config.child(tex->name.data)) &
+		ret = tex->Awake(config.child(tex->name.c_str())) &
 		//map->Awake(config.child(map->name.GetString())) &
-		audio->Awake(config.child(audio->name.data));
+		audio->Awake(config.child(audio->name.c_str()));
 		//scene->Awake(config.child(scene->name.GetString())) &
 		//entities->Awake(config.child(entities->name.GetString())) &
 		//font->Awake(config.child(font->name.GetString())) &

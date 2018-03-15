@@ -310,7 +310,7 @@ bool Application::PostUpdate()
 			continue;
 		}
 
-		ret = *item->PostUpdate();
+		ret = (*item)->PostUpdate();
 	}
 
 	return ret;
@@ -319,7 +319,7 @@ bool Application::PostUpdate()
 // Called before quitting
 bool Application::CleanUp()
 {
-	PERF_START(ptimer);
+	//PERF_START(ptimer);
 
 	pugi::xml_document	config_file;
 	pugi::xml_node		config;
@@ -342,13 +342,13 @@ bool Application::CleanUp()
 
 	while(*item != nullptr && ret == true)
 	{
-		ret = item->data->CleanUp(config.child(item->data->name.data));
-		item = item->prev;
+		ret = (*item)->CleanUp(config.child((*item)->name.data));
+		item--;
 	}
 
 	config_file.save_file("config.xml");
 
-	PERF_PEEK(ptimer);
+	//PERF_PEEK(ptimer);
 	return ret;
 }
 
@@ -422,15 +422,15 @@ bool Application::LoadGameNow()
 
 		while(*item != nullptr && ret == true)
 		{
-			ret = item->data->Load(root.child(item->data->name.GetString()));
-			item = item->next;
+			ret = (*item)->Load(root.child((*item)->name.data));
+			item++;
 		}
 
 		data.reset();
 		if(ret == true)
 			LOG("...finished loading");
 		else
-			LOG("...loading process interrupted with error on module %s", (*item != nullptr) ? item->data->name.data : "unknown");
+			LOG("...loading process interrupted with error on module %s", (*item != nullptr) ? (*item)->name.data : "unknown");
 	}
 	else
 		LOG("Could not parse game state xml file %s. pugi error: %s", load_game.data, result.description());
@@ -451,12 +451,12 @@ bool Application::SavegameNow() const
 	
 	root = data.append_child("game_state");
 
-	p2List_item<j1Module*>* item = modules.start;
+	std::list<Module*>::iterator item = modules.begin();
 
-	while(item != NULL && ret == true)
+	while(item != modules.end() && ret == true)
 	{
-		ret = item->data->Save(root.append_child(item->data->name.GetString()));
-		item = item->next;
+		ret = (*item)->Save(root.append_child((*item)->name.data));
+		item++;
 	}
 
 	if(ret == true)
@@ -465,7 +465,7 @@ bool Application::SavegameNow() const
 		LOG("... finished saving", );
 	}
 	else
-		LOG("Save process halted from an error in module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
+		LOG("Save process halted from an error in module %s", (*item != nullptr) ? (*item)->name.data : "unknown");
 
 	data.reset();
 	want_to_save = false;

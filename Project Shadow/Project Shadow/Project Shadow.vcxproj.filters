@@ -44,6 +44,12 @@
     <ClCompile Include="Engine\Log.cpp">
       <Filter>Engine\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\PerfTimer.cpp">
+      <Filter>Engine\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Timer.cpp">
+      <Filter>Engine\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -71,6 +77,12 @@
       <Filter>Engine\Tools</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Log.h">
+      <Filter>Engine\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PerfTimer.h">
+      <Filter>Engine\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Timer.h">
       <Filter>Engine\Tools</Filter>
     </ClInclude>
   </ItemGroup>

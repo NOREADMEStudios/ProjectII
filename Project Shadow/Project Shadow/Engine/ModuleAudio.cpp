@@ -69,9 +69,9 @@ bool ModuleAudio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	std::list<Mix_Chunk*>::iterator item;
-	for(item = fx.begin(); item != fx.end(); item++)
-		Mix_FreeChunk(*item);
+	
+	for(int i = 0;i < fx.size(); i++)
+		Mix_FreeChunk(fx[i]);
 
 	fx.clear();
 
@@ -137,8 +137,7 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 }
 
 // Load WAV
-unsigned int ModuleAudio::LoadFx(const char* path)
-{
+unsigned int ModuleAudio::LoadFx(const char* path){
 	unsigned int ret = 0;
 
 	if(!active)
@@ -154,22 +153,21 @@ unsigned int ModuleAudio::LoadFx(const char* path)
 	else
 	{
 		Mix_VolumeChunk(chunk, currentfxvolume);
-		fx.add(chunk);
-		ret = fx.count();
+		fx.push_back(chunk);
+		ret = fx.size();
 	}
 
 	return ret;
 }
 
 // Play WAV
-bool ModuleAudio::PlayFx(unsigned int id, int repeat)
-{
+bool ModuleAudio::PlayFx(unsigned int id, int repeat){
 	bool ret = false;
 
 	if(!active)
 		return false;
 
-	if(id > 0 && id <= fx.count())
+	if(id > 0 && id <= fx.size())
 	{
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
 	}
@@ -177,8 +175,7 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 	return ret;
 }
 
-bool ModuleAudio::CleanFx()
-{
+bool ModuleAudio::CleanFx(){
 	fx.clear();
 	return true;
 }
@@ -194,9 +191,9 @@ void ModuleAudio::SetFxVolume(float volume) {
 
 	if (volume > MIX_MAX_VOLUME) { volume = MIX_MAX_VOLUME; }
 
-	p2List_item<Mix_Chunk*>* item;
-	for (item = fx.start; item != NULL; item = item->next) {
-		Mix_VolumeChunk(item->data, volume);	
+	
+	for (int i = 0; i < fx.size(); i++) {
+		Mix_VolumeChunk(fx[i], volume);	
 	}
 	currentfxvolume = volume;
 }

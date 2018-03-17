@@ -4,7 +4,7 @@
 
 #include "../SDL/include/SDL.h"
 #include "../SDL_mixer/include/SDL_mixer.h"
-//#pragma comment( lib, "../SDL_mixer/libx86/SDL2_mixer.lib" )
+#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 #define DEFAULT_VOLUME_LEVEL MIX_MAX_VOLUME/2
 

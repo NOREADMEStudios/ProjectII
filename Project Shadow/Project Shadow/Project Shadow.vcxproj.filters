@@ -15,6 +15,12 @@
     <Filter Include="Engine\Tools">
       <UniqueIdentifier>{3f282fec-0ff3-45af-a488-8d2a781d304e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\External">
+      <UniqueIdentifier>{193e3d09-0233-4e92-b2b4-5dc0485976e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\External\PugiXML">
+      <UniqueIdentifier>{4d64b51a-e4af-415c-a388-2bce786c39fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\App.cpp">
@@ -50,6 +56,9 @@
     <ClCompile Include="Engine\Timer.cpp">
       <Filter>Engine\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="PugiXml\src\pugixml.cpp">
+      <Filter>Engine\External\PugiXML</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -84,6 +93,12 @@
     </ClInclude>
     <ClInclude Include="Engine\Timer.h">
       <Filter>Engine\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugixml.hpp">
+      <Filter>Engine\External\PugiXML</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
+      <Filter>Engine\External\PugiXML</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

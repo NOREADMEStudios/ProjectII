@@ -1,8 +1,8 @@
 version: 1.0.{build}
 branches:
   only:
-  - Engine-development
-skip_non_tags: true
+  - master
+  - develop
 image: Visual Studio 2017
 configuration:
 - Debug
@@ -10,16 +10,14 @@ configuration:
 build:
   verbosity: minimal
 before_package:
-- ps: Copy-Item C:\projects\ProjectII\$env:CONFIGURATION\ProjectII.exe C:\projects\ProjectII\Game\.
+- ps: Copy-Item C:\projects\ProjectII\Project Shadow\$env:CONFIGURATION\Project Shadow.exe C:\projects\ProjectII\Project Shadow\Build\.
+artifacts:
+- path: Project Shadow\Build
+  name: GameFiles
+  type: WebDeployPackage
 deploy:
 - provider: GitHub
+  description: Auto-generated Release
   auth_token:
-    secure: VleM8M5bC+JTZXu3dY0WWirD8F6QJUxLhF6Sa/F38toXCzhsLXVeSrgLkKNlGc2R10wjSz0I+uW9RP7l5aaHsgb6PxpAzB88uFceop7i6wQ=
+    secure: KdH0NT5IlDpQJWf5J6eeVtZml712MZ7Yut5wSD7ILT9zyejqDwfUmSoqIW9dV+FLjmojFhJT6o6EZHNsf5chcVcWjDRRItpC3sBdG7Z7AhA=
   draft: true
-notifications:
-- provider: Email
-  to:
-  - marcmoreno2@gmail.com
-  on_build_success: true
-  on_build_failure: true
-  on_build_status_changed: true

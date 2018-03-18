@@ -11,7 +11,7 @@ platform: x86
 build:
   verbosity: minimal
 before_package:
-- ps: Copy-Item C:\projects\ProjectII\Project Shadow\$env:CONFIGURATION\Project Shadow.exe C:\projects\ProjectII\Project Shadow\Build\.
+- ps: Copy-Item "C:\projects\ProjectII\Project Shadow\$env:CONFIGURATION\Project Shadow.exe" "C:\projects\ProjectII\Project Shadow\Build\."
 artifacts:
 - path: Project Shadow\Build
   name: GameFiles

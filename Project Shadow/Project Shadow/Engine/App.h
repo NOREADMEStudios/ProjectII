@@ -1,18 +1,22 @@
-#ifndef __j1APP_H__
-#define __j1APP_H__
+#ifndef __APP_H__
+#define __APP_H__
 
-#include "p2List.h"
-#include "j1Module.h"
-#include "j1PerfTimer.h"
-#include "j1Timer.h"
-#include "PugiXml\src\pugixml.hpp"
+#include <list>
+#include "Defs.h"
+#include "Module.h"
+#include "PerfTimer.h"
+#include "Timer.h"
+#include "../PugiXml/src/pugixml.hpp"
+
+
+typedef std::list<Module*> ModuleList;
 
 // Modules
-class j1Window;
-class j1Input;
-class j1Render;
-class j1Textures;
-class j1Audio;
+class ModuleWindow;
+class ModuleInput;
+class ModuleRender;
+class ModuleTextures;
+class ModuleAudio;
 class j1Scene;
 class j1Map;
 class j1Entities;
@@ -22,15 +26,15 @@ class j1Fonts;
 class j1Gui;
 class j1Transition;
 
-class j1App
+class Application
 {
 public:
 
 	// Constructor
-	j1App(int argc, char* args[]);
+	Application(int argc, char* args[]);
 
 	// Destructor
-	virtual ~j1App();
+	virtual ~Application();
 
 	// Called before render is available
 	bool Awake();
@@ -45,7 +49,7 @@ public:
 	bool CleanUp();
 
 	// Add a new module to handle
-	void AddModule(j1Module* module);
+	void AddModule(Module* module);
 
 	// Exposing some properties for reading
 	int GetArgc() const;
@@ -56,7 +60,7 @@ public:
 	void LoadGame();
 	void SaveGame() const;
 	void Reload();
-	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
+	void GetSaveGames(std::list<std::string>& list_to_fill) const;
 
 	uint32 GetFramerateCap() const;
 	void SetFramerateCap(uint32 cap);
@@ -92,11 +96,11 @@ private:
 public:
 
 	// Modules
-	j1Window*			win = nullptr;
-	j1Input*			input = nullptr;
-	j1Render*			render = nullptr;
-	j1Textures*			tex = nullptr;
-	j1Audio*			audio = nullptr;
+	ModuleWindow*			win = nullptr;
+	ModuleInput*			input = nullptr;
+	ModuleRender*			render = nullptr;
+	ModuleTextures*			tex = nullptr;
+	ModuleAudio*			audio = nullptr;
 	j1Scene*			scene = nullptr;
 	j1Map*				map = nullptr;
 	j1Entities*			entities = nullptr;
@@ -110,35 +114,35 @@ public:
 
 private:
 
-	p2List<j1Module*>	modules;
+	ModuleList			modules;
 	uint				frames = 0;
 	float				dt = .0f;
 	float				time_scale = 1.0f;
 	int					argc;
 	char**				args;
 
-	p2SString			title;
-	p2SString			organization;
+	std::string			title;
+	std::string			organization;
 
 	mutable bool		want_to_save = false;
 	bool				want_to_load = false;
 	bool				want_to_reload = false;
-	p2SString			load_game = "save_game.xml";
-	mutable p2SString	save_game = "save_game.xml";
+	std::string			load_game = "save_game.xml";
+	mutable std::string	save_game = "save_game.xml";
 
-	j1PerfTimer			ptimer;
+	PerfTimer			ptimer;
 	uint64				frame_count = 0;
 	uint32				framerate_cap = 0;
 	uint32				delta_time = 0;
-	j1Timer				delay_time;
-	j1Timer				startup_time;
-	j1Timer				ten_sec_timer;
-	j1Timer				frame_time;
-	j1Timer				last_sec_frame_time;
+	Timer				delay_time;
+	Timer				startup_time;
+	Timer				ten_sec_timer;
+	Timer				frame_time;
+	Timer				last_sec_frame_time;
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
 };
 
-extern j1App* App; // No student is asking me about that ... odd :-S
+extern Application* App;
 
 #endif

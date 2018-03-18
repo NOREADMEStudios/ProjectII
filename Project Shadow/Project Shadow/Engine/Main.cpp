@@ -1,23 +1,21 @@
 #include <stdlib.h>
-
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "App.h"
-
 
 
 // This is needed here because SDL redefines main function
 // do not add any other libraries here, instead put them in their modules
-#include "SDL/include/SDL.h"
+#include "../SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 
-
-
-#include "Brofiler\Brofiler.h"
+#include "../Brofiler/Brofiler.h"
 #pragma comment( lib, "Brofiler/ProfilerCore32.lib" )
 
-
+#ifdef main
+#undef main
+#endif
 
 enum MainState
 {
@@ -30,7 +28,7 @@ enum MainState
 	EXIT
 };
 
-j1App* App = NULL;
+Application* App = NULL;
 
 int main(int argc, char* args[])
 {
@@ -48,7 +46,7 @@ int main(int argc, char* args[])
 			case CREATE:
 			LOG("CREATION PHASE ===============================");
 
-			App = new j1App(argc, args);
+			App = new Application(argc, args);
 
 			if(App != NULL)
 				state = AWAKE;
@@ -99,7 +97,7 @@ int main(int argc, char* args[])
 			LOG("CLEANUP PHASE ===============================");
 			if(App->CleanUp() == true)
 			{
-				RELEASE(App);
+				Release(App);
 				result = EXIT_SUCCESS;
 				state = EXIT;
 			}

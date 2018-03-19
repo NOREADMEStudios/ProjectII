@@ -19,7 +19,7 @@ class ModuleTextures;
 class ModuleAudio;
 class ModuleSceneManager;
 //class j1Map;
-//class j1Entities;
+class ModuleEntityManager;
 //class j1Collision;
 //class j1PathFinding;
 //class j1Fonts;
@@ -110,7 +110,7 @@ public:
 	ModuleAudio*			audio = nullptr;
 	ModuleSceneManager*		scenes = nullptr;
 	//j1Map*				map = nullptr;
-	//j1Entities*			entities = nullptr;
+	ModuleEntityManager*	entities = nullptr;
 	//j1Collision*		collision = nullptr;
 	//j1PathFinding*		pathfinding = nullptr;
 	//j1Fonts*			font = nullptr;

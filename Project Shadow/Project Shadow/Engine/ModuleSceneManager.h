@@ -1,5 +1,5 @@
-#ifndef __ENTITYMANAGER_H__
-#define __ENTITYMANAGER_H__
+#ifndef __SCENEMANAGER_H__
+#define __SCENEMANAGER_H__
 
 #include "Scene.h"
 #include "Module.h"
@@ -39,4 +39,4 @@ private:
 
 };
 
-#endif // !__ENTITYMANAGER_H__
+#endif // !__SCENEMANAGER_H__

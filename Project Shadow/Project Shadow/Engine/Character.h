@@ -1,17 +1,18 @@
-#ifndef __SCENE_H__
-#define __SCENE_H__
+#ifndef __CHARACTER_H__
+#define __CHARACTER_H__
 
 #include "Module.h"
+#include "Entity.h"
 
 
-class Scene : public Module
+class Character : public Entity
 {
 public:
-	Scene();
-	~Scene();
+	Character();
+	~Character();
 
 
-	bool Awake(pugi::xml_node&) override;
+	bool Awake(pugi::xml_node&) override { return true; }
 
 	bool Start()override { return true; }
 
@@ -21,14 +22,13 @@ public:
 
 	bool PostUpdate()override { return true; }
 
-	bool CleanUp(pugi::xml_node&)override;
+	bool CleanUp(pugi::xml_node&)override { return true; }
 
 	bool Load(pugi::xml_node&) override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
 
-	bool loaded = false;
+	
 };
 #endif
-
 
 

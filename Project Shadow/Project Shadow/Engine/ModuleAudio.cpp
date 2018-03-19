@@ -28,7 +28,7 @@ bool ModuleAudio::Awake(pugi::xml_node& config)
 	bool ret = true;
 	SDL_Init(0);
 
-	assetsPath = "Assets/";
+	assetsPath = ASSETS_ROOT;
 	assetsPath.append(config.attribute("folder").as_string());
 
 	if (!filesystem::exists(assetsPath)) {
@@ -36,13 +36,13 @@ bool ModuleAudio::Awake(pugi::xml_node& config)
 		filesystem::create_directory(assetsPath);
 	}
 
-	if (!filesystem::exists(filesystem::path(assetsPath).append("FX/"))) {
+	if (!filesystem::exists(filesystem::path(assetsPath).append(AUDIO_FX_FOLDER))) {
 		LOG("Missing audio folders, creating default ones");
-		filesystem::create_directory(filesystem::path(assetsPath).append("FX/"));
+		filesystem::create_directory(filesystem::path(assetsPath).append(AUDIO_FX_FOLDER));
 	}
-	if (!filesystem::exists(filesystem::path(assetsPath).append("BGM/"))) {
+	if (!filesystem::exists(filesystem::path(assetsPath).append(AUDIO_BGM_FOLDER))) {
 		LOG("Missing audio folders, creating default ones");
-		filesystem::create_directory(filesystem::path(assetsPath).append("BGM/"));
+		filesystem::create_directory(filesystem::path(assetsPath).append(AUDIO_BGM_FOLDER));
 	}
 
 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
@@ -52,7 +52,7 @@ bool ModuleAudio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
-	// load support for the JPG and PNG image formats
+	// load support for the OGG audio formats
 	int flags = MIX_INIT_OGG;
 	int init = Mix_Init(flags);
 

@@ -1,6 +1,10 @@
 #ifndef __DEFS_H__
 #define __DEFS_H__
 
+#define ASSETS_ROOT "Assets/"
+#define AUDIO_FX_FOLDER "FX/"
+#define AUDIO_BGM_FOLDER "BGM/"
+
 typedef unsigned int uint32;
 typedef unsigned int uint;
 typedef unsigned long int uint64;

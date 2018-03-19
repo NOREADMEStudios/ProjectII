@@ -24,7 +24,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	input = new ModuleInput();
 	win = new ModuleWindow();
 	render = new ModuleRender();
-	tex = new ModuleTextures();
+	textures = new ModuleTextures();
 	audio = new ModuleAudio();
 	/*scene = new j1Scene();
 	map = new j1Map();
@@ -39,7 +39,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	// Reverse order of CleanUp
 	AddModule(input);
 	AddModule(win);
-	AddModule(tex);
+	AddModule(textures);
 	AddModule(audio);
 	/*AddModule(map);
 	AddModule(scene);
@@ -208,7 +208,7 @@ xmlNode Application::LoadConfig(xmlDocument& config_file) const {
 bool Application::CheckFileStructure(const xmlNode & config) const
 {
 	using namespace std::experimental;
-	filesystem::path assetsPath = "Assets/";
+	filesystem::path assetsPath = ASSETS_ROOT;
 	bool exists = filesystem::exists(assetsPath);
 
 	if (!exists) filesystem::create_directory(assetsPath);
@@ -519,7 +519,7 @@ bool Application::ReloadNow() {
 	}
 
 	if (ret)
-		//ret = tex->CleanUp(config.child(tex->name.c_str()));
+		//ret = textures->CleanUp(config.child(textures->name.c_str()));
 		//pathfinding->CleanUp(config.child(pathfinding->name.GetString())) &
 		//map->CleanUp(config.child(map->name.GetString())) &
 		//scene->CleanUp(config.child(scene->name.GetString())) &
@@ -529,7 +529,7 @@ bool Application::ReloadNow() {
 		//gui->CleanUp(config.child(gui->name.GetString()));
 
 	if (ret)
-		//ret = tex->Awake(config.child(tex->name.c_str())) &
+		//ret = textures->Awake(config.child(textures->name.c_str())) &
 		//map->Awake(config.child(map->name.GetString())) &
 		//audio->Awake(config.child(audio->name.c_str()));
 		//scene->Awake(config.child(scene->name.GetString())) &
@@ -538,7 +538,7 @@ bool Application::ReloadNow() {
 		//gui->Awake(config.child(gui->name.GetString()));
 
 	if (ret)
-		ret = tex->Start() &&
+		ret = textures->Start() &&
 		//map->Start() &&
 		audio->Start();
 		//scene->Start() &&

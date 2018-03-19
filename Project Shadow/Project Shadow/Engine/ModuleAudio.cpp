@@ -23,7 +23,7 @@ ModuleAudio::~ModuleAudio()
 // Called before render is available
 bool ModuleAudio::Awake(pugi::xml_node& config)
 {
-	using namespace std::experimental;
+	namespace filesystem = std::experimental::filesystem;
 	LOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);
@@ -45,8 +45,7 @@ bool ModuleAudio::Awake(pugi::xml_node& config)
 		filesystem::create_directory(filesystem::path(assetsPath).append(AUDIO_BGM_FOLDER));
 	}
 
-	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
-	{
+	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
 		LOG("SDL_INIT_AUDIO could not initialize! SDL_Error: %s\n", SDL_GetError());
 		active = false;
 		ret = true;
@@ -56,16 +55,14 @@ bool ModuleAudio::Awake(pugi::xml_node& config)
 	int flags = MIX_INIT_OGG;
 	int init = Mix_Init(flags);
 
-	if((init & flags) != flags)
-	{
+	if((init & flags) != flags) {
 		LOG("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
 		active = false;
 		ret = true;
 	}
 
 	//Initialize SDL_mixer
-	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-	{
+	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 		LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		active = false;
 		ret = true;

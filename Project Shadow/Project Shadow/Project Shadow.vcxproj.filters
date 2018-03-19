@@ -59,6 +59,9 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Engine\External\PugiXML</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ModuleMapLoader.cpp">
+      <Filter>Engine\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -99,6 +102,15 @@
     </ClInclude>
     <ClInclude Include="PugiXml\src\pugiconfig.hpp">
       <Filter>Engine\External\PugiXML</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleMapLoader.h">
+      <Filter>Engine\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Point.h">
+      <Filter>Engine\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rect.h">
+      <Filter>Engine\Tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

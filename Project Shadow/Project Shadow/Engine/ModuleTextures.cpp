@@ -19,8 +19,18 @@ ModuleTextures::~ModuleTextures()
 // Called before render is available
 bool ModuleTextures::Awake(pugi::xml_node& config)
 {
+	namespace filesystem = std::experimental::filesystem;
 	LOG("Init Image library");
 	bool ret = true;
+
+	assetsPath = ASSETS_ROOT;
+	assetsPath.append(config.attribute("folder").as_string());
+
+	if (!filesystem::exists(assetsPath)) {
+		LOG("Missing audio folder, creating default one");
+		filesystem::create_directory(assetsPath);
+	}
+	
 	// load support for the PNG image format
 	int flags = IMG_INIT_PNG;
 	int init = IMG_Init(flags);

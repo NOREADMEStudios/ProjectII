@@ -21,6 +21,9 @@
     <Filter Include="Engine\External\PugiXML">
       <UniqueIdentifier>{4d64b51a-e4af-415c-a388-2bce786c39fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Scenes">
+      <UniqueIdentifier>{297e13d7-661f-445e-a212-83f4a360d191}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\App.cpp">
@@ -58,6 +61,12 @@
     </ClCompile>
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Engine\External\PugiXML</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene.cpp">
+      <Filter>Engine\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ModuleSceneManager.cpp">
+      <Filter>Engine\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +108,12 @@
     </ClInclude>
     <ClInclude Include="PugiXml\src\pugiconfig.hpp">
       <Filter>Engine\External\PugiXML</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene.h">
+      <Filter>Engine\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleSceneManager.h">
+      <Filter>Engine\Modules</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

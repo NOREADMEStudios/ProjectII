@@ -11,7 +11,7 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
-
+#include "ModuleSceneManager.h"
 
 // Constructor
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
@@ -26,8 +26,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	render = new ModuleRender();
 	tex = new ModuleTextures();
 	audio = new ModuleAudio();
-	/*scene = new j1Scene();
-	map = new j1Map();
+	scenes = new ModuleSceneManager();
+	/*map = new j1Map();
 	entities = new j1Entities();
 	collision = new j1Collision();
 	pathfinding = new j1PathFinding();
@@ -41,9 +41,9 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	/*AddModule(map);
-	AddModule(scene);
-	AddModule(entities);
+	//AddModule(map);
+	AddModule(scenes);
+	/*AddModule(entities);
 	AddModule(collision);
 	AddModule(pathfinding);
 	AddModule(font);

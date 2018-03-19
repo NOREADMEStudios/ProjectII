@@ -117,7 +117,9 @@
   <ItemGroup>
     <ClCompile Include="Engine\App.cpp" />
     <ClCompile Include="Engine\Defs.cpp" />
+    <ClCompile Include="Engine\ModuleSceneManager.cpp" />
     <ClCompile Include="Engine\PerfTimer.cpp" />
+    <ClCompile Include="Engine\Scene.cpp" />
     <ClCompile Include="Engine\Timer.cpp" />
     <ClCompile Include="Engine\Log.cpp" />
     <ClCompile Include="Engine\ModuleAudio.cpp" />
@@ -131,7 +133,9 @@
   <ItemGroup>
     <ClInclude Include="Engine\App.h" />
     <ClInclude Include="Engine\Defs.h" />
+    <ClInclude Include="Engine\ModuleSceneManager.h" />
     <ClInclude Include="Engine\PerfTimer.h" />
+    <ClInclude Include="Engine\Scene.h" />
     <ClInclude Include="Engine\Timer.h" />
     <ClInclude Include="Engine\Log.h" />
     <ClInclude Include="Engine\ModuleAudio.h" />

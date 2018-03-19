@@ -17,7 +17,7 @@ class ModuleInput;
 class ModuleRender;
 class ModuleTextures;
 class ModuleAudio;
-class j1Scene;
+class ModuleSceneManager;
 class j1Map;
 class j1Entities;
 class j1Collision;
@@ -108,7 +108,7 @@ public:
 	ModuleRender*			render = nullptr;
 	ModuleTextures*			tex = nullptr;
 	ModuleAudio*			audio = nullptr;
-	j1Scene*			scene = nullptr;
+	ModuleSceneManager*		scenes = nullptr;
 	j1Map*				map = nullptr;
 	j1Entities*			entities = nullptr;
 	j1Collision*		collision = nullptr;
@@ -116,6 +116,7 @@ public:
 	j1Fonts*			font = nullptr;
 	j1Gui*				gui = nullptr;
 	j1Transition*		transition = nullptr;
+
 
 	bool debug = false;
 

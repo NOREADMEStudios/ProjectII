@@ -23,9 +23,27 @@ ModuleAudio::~ModuleAudio()
 // Called before render is available
 bool ModuleAudio::Awake(pugi::xml_node& config)
 {
+	using namespace std::experimental;
 	LOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);
+
+	assetsPath = "Assets/";
+	assetsPath.append(config.attribute("folder").as_string());
+
+	if (!filesystem::exists(assetsPath)) {
+		LOG("Missing audio folder, creating default one");
+		filesystem::create_directory(assetsPath);
+	}
+
+	if (!filesystem::exists(filesystem::path(assetsPath).append("FX/"))) {
+		LOG("Missing audio folders, creating default ones");
+		filesystem::create_directory(filesystem::path(assetsPath).append("FX/"));
+	}
+	if (!filesystem::exists(filesystem::path(assetsPath).append("BGM/"))) {
+		LOG("Missing audio folders, creating default ones");
+		filesystem::create_directory(filesystem::path(assetsPath).append("BGM/"));
+	}
 
 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
 	{

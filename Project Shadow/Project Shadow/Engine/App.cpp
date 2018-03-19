@@ -1,5 +1,6 @@
 #include <iostream> 
 #include <cstdlib>
+#include <filesystem>
 
 #include "Defs.h"
 #include "Log.h"
@@ -88,9 +89,9 @@ bool Application::Awake()
 {
 	//PERF_START(ptimer);
 
-	pugi::xml_document	config_file;
-	pugi::xml_node		config;
-	pugi::xml_node		app_config;
+	xmlDocument	config_file;
+	xmlNode		config;
+	xmlNode		app_config;
 
 	bool ret = false;
 		
@@ -101,24 +102,18 @@ bool Application::Awake()
 		// self-config
 		ret = true;
 		app_config = config.child("app");
-		title = app_config.child("title").child_value();
-		organization = app_config.child("organization").child_value();
+		title = app_config.child("title").attribute("value").as_string();
+		organization = app_config.child("organization").attribute("value").as_string();
 		framerate_cap = app_config.attribute("framerate_cap").as_uint();
+
+		//Checking file structure
+		CheckFileStructure(config);
 	}
 
 	if(ret == true)
 	{
-		/*p2List_item<j1Module*>* item;
-		item = modules.start;
-
-		while(item != NULL && ret == true)
-		{
-			ret = item->data->Awake(config.child(item->data->name.GetString()));
-			item = item->next;
-		}*/
-
-		for (ModuleList::iterator item = modules.begin(); item != modules.end(); item++) {
-			pugi::xml_node node = config.child((*item)->name.c_str());
+		for (ModuleList::iterator item = modules.begin(); item != modules.end() && ret == true; item++) {
+			xmlNode node = config.child((*item)->name.c_str());
 			ret = (*item)->Awake(node);
 		}
 	}
@@ -134,14 +129,6 @@ bool Application::Start()
 	//PERF_START(ptimer);
 
 	bool ret = true;
-	/*p2List_item<j1Module*>* item;
-	item = modules.start;
-
-	while(item != NULL && ret == true)
-	{
-		ret = item->data->Start();
-		item = item->next;
-	}*/
 
 	for (ModuleList::iterator item = modules.begin(); item != modules.end() && ret == true; item++) {
 		ret = (*item)->Start();
@@ -152,8 +139,7 @@ bool Application::Start()
 }
 
 // Called each loop iteration
-bool Application::Update()
-{
+bool Application::Update() {
 	bool ret = true;
 	PrepareUpdate();
 
@@ -174,24 +160,63 @@ bool Application::Update()
 	return ret;
 }
 
+void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
+	xmlNode app = configNode.append_child("app");
+	app.append_attribute("framerateCap").set_value(60);
+	app.append_child("Title").append_attribute("value") = "Shadow Engine";
+	app.append_child("organisation").append_attribute("value") = "NoReadme Studio";
+	configNode.append_child("renderer").append_child("vsync").append_attribute("value") = "false";
+	xmlNode window = configNode.append_child("window");
+	xmlNode winRes = window.append_child("resolution");
+	winRes.append_attribute("width") = 1920;
+	winRes.append_attribute("height") = 1080;
+	winRes.append_attribute("scale") = 1.0f;
+	window.append_child("fullscreen").append_attribute("value") = 0;
+	window.append_child("borderless").append_attribute("value") = 0;
+	window.append_child("resizable").append_attribute("value") = 0;
+	window.append_child("fullscreenWindow").append_attribute("value") = 0;
+	configNode.append_child("scenes").append_attribute("folder") = "Scenes/";
+	configNode.append_child("map").append_attribute("folder") = "Maps/";
+	configNode.append_child("entities").append_attribute("folder") = "Entities/";
+	configNode.append_child("textures").append_attribute("folder") = "Textures/";
+	xmlNode audio = configNode.append_child("audio");
+	audio.append_attribute("volumeFX") = 1.0f;
+	audio.append_attribute("volumeBGM") = 1.0f;
+	audio.append_attribute("folder") = "Audio/";
+	configNode.append_child("input").append_attribute("folder") = "Input/";
+}
+
 // ---------------------------------------------
-pugi::xml_node Application::LoadConfig(pugi::xml_document& config_file) const
-{
-	pugi::xml_node ret;
+xmlNode Application::LoadConfig(xmlDocument& config_file) const {
+	xmlNode ret;
 
 	pugi::xml_parse_result result = config_file.load_file("config.xml");
 
-	if(result == NULL)
+	if (result == NULL) {
 		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
+		LOG("Creating default config.xml file...");
+		ret = config_file.append_child("config");
+		CreateDefaultConfigFile(ret);
+		config_file.save_file("config.xml");
+	}
 	else
 		ret = config_file.child("config");
 
 	return ret;
 }
 
-// ---------------------------------------------
-void Application::PrepareUpdate()
+bool Application::CheckFileStructure(const xmlNode & config) const
 {
+	using namespace std::experimental;
+	filesystem::path assetsPath = "Assets/";
+	bool exists = filesystem::exists(assetsPath);
+
+	if (!exists) filesystem::create_directory(assetsPath);
+	return exists;
+}
+
+// ---------------------------------------------
+void Application::PrepareUpdate() {
 	frame_count++;
 	last_sec_frame_count++;
 
@@ -322,9 +347,9 @@ bool Application::CleanUp()
 {
 	//PERF_START(ptimer);
 
-	pugi::xml_document	config_file;
-	pugi::xml_node		config;
-	pugi::xml_node		app_config;
+	xmlDocument	config_file;
+	xmlNode		config;
+	xmlNode		app_config;
 
 	bool ret = false;
 
@@ -340,7 +365,7 @@ bool Application::CleanUp()
 
 	for(ModuleList::reverse_iterator item = modules.rbegin(); item != modules.rend() && ret == true; item++)
 	{
-		pugi::xml_node node = config.child((*item)->name.c_str());
+		xmlNode node = config.child((*item)->name.c_str());
 		ret = (*item)->CleanUp(node);
 	}
 
@@ -404,8 +429,8 @@ bool Application::LoadGameNow()
 {
 	bool ret = false;
 
-	pugi::xml_document data;
-	pugi::xml_node root;
+	xmlDocument data;
+	xmlNode root;
 
 	pugi::xml_parse_result result = data.load_file((char*)load_game.c_str());
 
@@ -421,7 +446,7 @@ bool Application::LoadGameNow()
 
 		for(item = modules.begin(); item != modules.end() && ret == true; item++)
 		{
-			pugi::xml_node node = root.child((*item)->name.c_str());
+			xmlNode node = root.child((*item)->name.c_str());
 			ret = (*item)->Load(node);
 		}
 
@@ -445,8 +470,8 @@ bool Application::SavegameNow() const
 	LOG("Saving Game State to %s...", save_game.c_str());
 
 	// xml object were we will store all data
-	pugi::xml_document data;
-	pugi::xml_node root;
+	xmlDocument data;
+	xmlNode root;
 	
 	root = data.append_child("game_state");
 	
@@ -454,7 +479,7 @@ bool Application::SavegameNow() const
 
 	for(; item != modules.end() && ret == true; item++)
 	{
-		pugi::xml_node node = root.append_child((*item)->name.c_str());
+		xmlNode node = root.append_child((*item)->name.c_str());
 		ret = (*item)->Save(node);
 		item++;
 	}
@@ -474,9 +499,9 @@ bool Application::SavegameNow() const
 
 bool Application::ReloadNow() {
 
-	pugi::xml_document	config_file;
-	pugi::xml_node		config;
-	pugi::xml_node		app_config;
+	xmlDocument	config_file;
+	xmlNode		config;
+	xmlNode		app_config;
 
 	bool ret = false;
 

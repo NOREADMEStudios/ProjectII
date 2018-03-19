@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include <vector>
+#include <filesystem>
 #include "../SDL_mixer/include/SDL_mixer.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
@@ -36,16 +37,14 @@ public:
 
 	bool CleanFx();
 
-	bool Load(pugi::xml_node&)override;
-	bool Save(pugi::xml_node&)const override;
+	bool Load(pugi::xml_node&) override;
+	bool Save(pugi::xml_node&) const override;
 
 	void SetMusicVolume(float volume);
-	float GetMusicVolume()const;
+	float GetMusicVolume() const;
 
 	void SetFxVolume(float volume);
-	float GetFxVolume()const;
-
-
+	float GetFxVolume() const;
 
 private:
 	float currentmusicvolume;
@@ -54,6 +53,7 @@ private:
 
 	_Mix_Music*			music;
 	std::vector<Mix_Chunk*>	fx;
+	std::experimental::filesystem::path assetsPath;
 };
 
 #endif // __AUDIO_H__

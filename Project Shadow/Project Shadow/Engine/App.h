@@ -69,9 +69,16 @@ public:
 	void SetTimeScale(float ts);
 
 private:
+	// Sets the provided node with the default structure of the config file
+	void CreateDefaultConfigFile(xmlNode&) const;
 
 	// Load config file
-	pugi::xml_node LoadConfig(pugi::xml_document&) const;
+	xmlNode LoadConfig(xmlDocument&) const;
+
+	// Checks wether the file structure of the project matches the one specified in the config file or not
+	// Returns true if Assets/ folder is present, false otherwise
+	// Will create missing folders if Assets/ is present
+	bool CheckFileStructure(const xmlNode&) const;
 
 	// Call modules before each loop iteration
 	void PrepareUpdate();

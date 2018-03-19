@@ -11,7 +11,8 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
-
+#include "ModuleSceneManager.h"
+#include "ModuleEntityManager.h"
 
 // Constructor
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
@@ -26,9 +27,9 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	render = new ModuleRender();
 	textures = new ModuleTextures();
 	audio = new ModuleAudio();
-	/*scene = new j1Scene();
-	map = new j1Map();
-	entities = new j1Entities();
+	scenes = new ModuleSceneManager();
+	entities = new ModuleEntityManager();
+	/*map = new j1Map();	
 	collision = new j1Collision();
 	pathfinding = new j1PathFinding();
 	font = new j1Fonts();
@@ -41,10 +42,10 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(textures);
 	AddModule(audio);
-	/*AddModule(map);
-	AddModule(scene);
+	//AddModule(map);
+	AddModule(scenes);
 	AddModule(entities);
-	AddModule(collision);
+	/*AddModule(collision);
 	AddModule(pathfinding);
 	AddModule(font);
 	AddModule(gui);
@@ -102,9 +103,9 @@ bool Application::Awake()
 		// self-config
 		ret = true;
 		app_config = config.child("app");
-		title = app_config.child("title").attribute("value").as_string();
-		organization = app_config.child("organization").attribute("value").as_string();
-		framerate_cap = app_config.attribute("framerate_cap").as_uint();
+		title = app_config.child("Title").attribute("value").as_string();
+		organization = app_config.child("organisation").attribute("value").as_string();
+		framerate_cap = app_config.attribute("framerateCap").as_uint();
 
 		//Checking file structure
 		CheckFileStructure(config);
@@ -307,7 +308,7 @@ bool Application::DoUpdate()
 	item = modules.begin();
 	Module* pModule = NULL;
 
-	for(item = modules.begin(); *item != nullptr && ret == true; item++)
+	for(item = modules.begin(); item != modules.end() && ret == true; item++)
 	{
 		pModule = *item;
 
@@ -328,7 +329,7 @@ bool Application::PostUpdate()
 	ModuleList::iterator item;
 	Module* pModule = NULL;
 
-	for(item = modules.begin(); *item != nullptr && ret == true; item++)
+	for(item = modules.begin(); item != modules.end() && ret == true; item++)
 	{
 		pModule = *item;
 

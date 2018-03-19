@@ -25,6 +25,8 @@ class j1PathFinding;
 class j1Fonts;
 class j1Gui;
 class j1Transition;
+class ModuleSceneManager;
+class ModuleEntityManager;
 
 class Application
 {
@@ -116,6 +118,8 @@ public:
 	j1Fonts*			font = nullptr;
 	j1Gui*				gui = nullptr;
 	j1Transition*		transition = nullptr;
+	ModuleSceneManager*		scenes = nullptr;
+	ModuleEntityManager*	entities = nullptr;
 
 	bool debug = false;
 

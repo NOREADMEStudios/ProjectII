@@ -13,18 +13,18 @@ public:
 
 	bool Awake(pugi::xml_node&) override;
 
-	bool Start()override;
+	bool Start()override { return true; }
 
-	bool PreUpdate()override;
+	bool PreUpdate()override { return true; }
 
-	bool Update(float dt)override;
+	bool Update(float dt)override { return true; }
 
-	bool PostUpdate()override;
+	bool PostUpdate()override { return true; }
 
 	bool CleanUp(pugi::xml_node&)override;
 
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;
+	bool Load(pugi::xml_node&) override { return true; };
+	bool Save(pugi::xml_node&) const override { return true; };
 
 	bool loaded = false;
 };

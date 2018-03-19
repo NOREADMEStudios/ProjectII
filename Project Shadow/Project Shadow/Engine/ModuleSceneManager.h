@@ -17,19 +17,19 @@ public:
 
 	bool Start()override;
 
-	bool PreUpdate()override;
+	bool PreUpdate()override { return true; }
 
 	bool Update(float dt)override;
 
-	bool PostUpdate()override;
+	bool PostUpdate()override { return true; }
 
 	bool CleanUp(pugi::xml_node&)override;
 
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;
+	bool Load(pugi::xml_node&) { return true; }
+	bool Save(pugi::xml_node&) const { return true; }
 
 	void LoadScene(Scene* scene);
-	Scene* ChangeScene(Scene* scene_to_change);
+	void ChangeScene(Scene* scene_to_change);
 	void UnloadScene(Scene* scene);
 
 private:

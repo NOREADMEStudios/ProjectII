@@ -102,9 +102,9 @@ bool Application::Awake()
 		// self-config
 		ret = true;
 		app_config = config.child("app");
-		title = app_config.child("title").attribute("value").as_string();
-		organization = app_config.child("organization").attribute("value").as_string();
-		framerate_cap = app_config.attribute("framerate_cap").as_uint();
+		title = app_config.child("Title").attribute("value").as_string();
+		organization = app_config.child("organisation").attribute("value").as_string();
+		framerate_cap = app_config.attribute("framerateCap").as_uint();
 
 		//Checking file structure
 		CheckFileStructure(config);
@@ -307,7 +307,7 @@ bool Application::DoUpdate()
 	item = modules.begin();
 	Module* pModule = NULL;
 
-	for(item = modules.begin(); *item != nullptr && ret == true; item++)
+	for(item = modules.begin(); item != modules.end() && ret == true; item++)
 	{
 		pModule = *item;
 
@@ -328,7 +328,7 @@ bool Application::PostUpdate()
 	ModuleList::iterator item;
 	Module* pModule = NULL;
 
-	for(item = modules.begin(); *item != nullptr && ret == true; item++)
+	for(item = modules.begin(); item != modules.end() && ret == true; item++)
 	{
 		pModule = *item;
 

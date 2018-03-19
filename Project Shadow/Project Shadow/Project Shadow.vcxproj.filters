@@ -132,6 +132,7 @@
     </ClInclude>
     <ClInclude Include="Engine\Rect.h">
       <Filter>Engine\Tools</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Scene.h">
       <Filter>Engine\Scenes</Filter>
     </ClInclude>

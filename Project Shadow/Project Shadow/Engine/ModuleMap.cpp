@@ -3,7 +3,7 @@
 #include "App.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
-#include "ModuleMapLoader.h"
+#include "ModuleMap.h"
 #include <math.h>
 #include <stdlib.h>
 
@@ -22,7 +22,8 @@ bool ModuleMap::Awake(pugi::xml_node& config) {
 	LOG("Loading Map Parser");
 	bool ret = true;
 
-	folder = config.child("folder").child_value();
+	folder = ASSETS_ROOT;
+	folder.append(config.attribute("folder").as_string());
 
 	return ret;
 }
@@ -35,18 +36,18 @@ void ModuleMap::Draw() {
 	if(map_loaded == false)
 		return;
 	//App->render->Blit(background, -200, -200, 0, 0.7f);
-	for (std::list<MapLayer>::iterator iter = data.layers.begin(); iter != data.layers.end(); iter++) {
+	for (std::list<MapLayer*>::iterator iter = data.layers.begin(); iter != data.layers.end(); iter++) {
 		uint tile = 0;
-			for (uint y = 0; y < iter->height; y++) {
-				for (uint x = 0; x < iter->width; x++) {
-					if (iter->tiles[tile] != 0) {
-						for (std::list<TileSet>::iterator tileset = data.tilesets.begin(); tileset != data.tilesets.end(); tileset++) {
-							if (tileset->firstgid + tileset->tileCount < iter->tiles[tile])
+			for (uint y = 0; y < (*iter)->height; y++) {
+				for (uint x = 0; x < (*iter)->width; x++) {
+					if ((*iter)->tiles[tile] != 0) {
+						for (std::list<TileSet*>::reverse_iterator tileset = data.tilesets.rbegin(); tileset != data.tilesets.rend(); tileset++) {
+							if ((*tileset)->firstgid > (*iter)->tiles[tile])
 								continue;
 
 							iPoint tile_pos = MapToWorld(x, y);
-							SDL_Rect tile_rect = tileset->GetTileRect(iter->tiles[tile]);
-							App->render->Blit(tileset->texture, tile_pos.x, tile_pos.y, &tile_rect, iter->parallax_speed);
+							SDL_Rect tile_rect = (*tileset)->GetTileRect((*iter)->tiles[tile]);
+							App->render->Blit((*tileset)->texture, tile_pos.x, tile_pos.y, &tile_rect, (*iter)->parallax_speed);
 					}
 					tile++;
 				}
@@ -112,16 +113,16 @@ bool ModuleMap::CleanUp(pugi::xml_node&)
 	LOG("Unloading map");
 
 	// Remove all tilesets
-	/*for (std::list<TileSet*>::reverse_iterator tileset = data.tilesets.rbegin(); tileset != data.tilesets.rend(); tileset++) {
+	for (std::list<TileSet*>::reverse_iterator tileset = data.tilesets.rbegin(); tileset != data.tilesets.rend(); tileset++) {
 		Release(*tileset);
-	}*/
+	}
 	data.tilesets.clear();
 
 	
 	// Remove all layers
-	/*for (std::list<MapLayer*>::reverse_iterator layer = data.layers.rbegin(); layer != data.layers.rend(); layer++) {
+	for (std::list<MapLayer*>::reverse_iterator layer = data.layers.rbegin(); layer != data.layers.rend(); layer++) {
 		Release(*layer);
-	}*/
+	}
 	data.layers.clear();
 
 	// Clean up the pugi tree
@@ -131,16 +132,17 @@ bool ModuleMap::CleanUp(pugi::xml_node&)
 }
 
 // Load new map
-bool ModuleMap::Load(const char* file_name)
+bool ModuleMap::Load(const char* fileName)
 {
 	bool ret = true;
-	filesystem::path tmp(folder.concat(file_name));
+	std::string tmp(folder);
+	tmp.append(fileName);
 	
 	pugi::xml_parse_result result = map_file.load_file(tmp.c_str());
 
 	if(result == NULL)
 	{
-		LOG("Could not load map xml file %s. pugi error: %s", file_name, result.description());
+		LOG("Could not load map xml file %s. pugi error: %s", fileName, result.description());
 		ret = false;
 	}
 
@@ -154,16 +156,16 @@ bool ModuleMap::Load(const char* file_name)
 	pugi::xml_node tileset;
 	for(tileset = map_file.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
 	{
-		TileSet set;
+		TileSet* set = new TileSet();
 
 		if(ret == true)
 		{
-			ret = LoadTilesetDetails(tileset, set);
+			ret = LoadTilesetDetails(tileset, *set);
 		}
 
 		if(ret == true)
 		{
-			ret = LoadTilesetImage(tileset, set);
+			ret = LoadTilesetImage(tileset, *set);
 		}
 
 		data.tilesets.push_back(set);
@@ -171,7 +173,7 @@ bool ModuleMap::Load(const char* file_name)
 
 	
 	// Load layer info ----------------------------------------------
-	/*pugi::xml_node node_layer;
+	pugi::xml_node node_layer;
 	uint i = 0;
 	for (node_layer = map_file.child("map").child("layer"); node_layer && ret; node_layer = node_layer.next_sibling("layer"))
 	{
@@ -179,19 +181,19 @@ bool ModuleMap::Load(const char* file_name)
 
 		if (ret == true)
 		{
-			ret = LoadLayer(node_layer, layer);
-			App->pathfinding->SetMap(layer); //Load pathfinding map
-			App->pathfinding->SetGroundMap(layer);
+			ret = LoadLayer(node_layer, *layer);
+			//App->pathfinding->SetMap(layer); //Load pathfinding map
+			//App->pathfinding->SetGroundMap(layer);
 		}
 
-		data.layers.add(layer);
-	}*/
+		data.layers.push_back(layer);
+	}
 
 	pugi::xml_node node_layer_objects;
 	for (node_layer_objects = map_file.child("map").child("objectgroup"); node_layer_objects && ret; node_layer_objects = node_layer_objects.next_sibling("objectgroup"))
 	{
-		for (pugi::xml_node object : node_layer_objects.children()) {
-			/*if (!strcmp(object.attribute("name").as_string(), "Player")) {
+		/*for (pugi::xml_node object : node_layer_objects.children()) {
+			if (!strcmp(object.attribute("name").as_string(), "Player")) {
 				initial_player_pos.x = object.attribute("x").as_float();
 				initial_player_pos.y = object.attribute("y").as_float();
 			}
@@ -215,30 +217,30 @@ bool ModuleMap::Load(const char* file_name)
 				}
 		
 				App->entities->Add_Enemy(static_cast<BaseEnemy::Type>(type), { x, y }, static_cast<LayerID>(layer));
-			}*/
-		}
+			}
+		}*/
 	}
 
 	//background = App->textures->Load("textures/grid.png");
 
 	if(ret == true)
 	{
-		LOG("Successfully parsed map XML file: %s", file_name);
+		LOG("Successfully parsed map XML file: %s", fileName);
 		LOG("width: %d height: %d", data.width, data.height);
 		LOG("tile_width: %d tile_height: %d", data.tile_width, data.tile_height);
 
-		for (std::list<TileSet>::iterator tileset = data.tilesets.begin(); tileset != data.tilesets.end(); tileset++) {
+		for (std::list<TileSet*>::iterator tileset = data.tilesets.begin(); tileset != data.tilesets.end(); tileset++) {
 			LOG("Tileset ----");
-			LOG("name: %s firstgid: %d", tileset->name.c_str(), tileset->firstgid);
-			LOG("tile width: %d tile height: %d", tileset->tile_width, tileset->tile_height);
-			LOG("spacing: %d margin: %d", tileset->spacing, tileset->margin);
+			LOG("name: %s firstgid: %d", (*tileset)->name.c_str(), (*tileset)->firstgid);
+			LOG("tile width: %d tile height: %d", (*tileset)->tile_width, (*tileset)->tile_height);
+			LOG("spacing: %d margin: %d", (*tileset)->spacing, (*tileset)->margin);
 		}
 
 		
-		for (std::list<MapLayer>::iterator layer = data.layers.begin(); layer != data.layers.end(); layer++) {
+		for (std::list<MapLayer*>::iterator layer = data.layers.begin(); layer != data.layers.end(); layer++) {
 			LOG("Layer ----");
-			LOG("name: %s", layer->name.c_str());
-			LOG("tile width: %d tile height: %d", layer->width, layer->height);
+			LOG("name: %s", (*layer)->name.c_str());
+			LOG("tile width: %d tile height: %d", (*layer)->width, (*layer)->height);
 		}
 	}
 
@@ -318,6 +320,7 @@ bool ModuleMap::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet& set)
 	bool ret = true;
 	set.name = tileset_node.attribute("name").as_string();
 	set.firstgid = tileset_node.attribute("firstgid").as_int();
+	set.tileCount = tileset_node.attribute("tilecount").as_int();
 	set.tile_width = tileset_node.attribute("tilewidth").as_int();
 	set.tile_height = tileset_node.attribute("tileheight").as_int();
 	set.margin = tileset_node.attribute("margin").as_int();

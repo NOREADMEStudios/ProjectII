@@ -71,8 +71,11 @@ bool ModuleTextures::CleanUp(pugi::xml_node&)
 // Load new texture from file path
 SDL_Texture* const ModuleTextures::Load(const char* path)
 {
+	std::string tmp = assetsPath;
+	tmp.append(path);
+
 	SDL_Texture* texture = NULL;
-	SDL_Surface* surface = IMG_Load(path);
+	SDL_Surface* surface = IMG_Load(tmp.c_str());
 
 	if(surface == NULL)
 	{

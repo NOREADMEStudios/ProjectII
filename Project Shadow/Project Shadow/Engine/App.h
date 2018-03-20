@@ -17,14 +17,13 @@ class ModuleInput;
 class ModuleRender;
 class ModuleTextures;
 class ModuleAudio;
-class j1Scene;
 class ModuleMap;
-class j1Entities;
+/*class j1Scene;
 class j1Collision;
 class j1PathFinding;
 class j1Fonts;
 class j1Gui;
-class j1Transition;
+class j1Transition;*/
 class ModuleSceneManager;
 class ModuleEntityManager;
 
@@ -110,14 +109,13 @@ public:
 	ModuleRender*			render = nullptr;
 	ModuleTextures*			textures = nullptr;
 	ModuleAudio*			audio = nullptr;
-	j1Scene*			scene = nullptr;
 	ModuleMap*				map = nullptr;
-	j1Entities*			entities = nullptr;
+	/*j1Scene*			scene = nullptr;
 	j1Collision*		collision = nullptr;
 	j1PathFinding*		pathfinding = nullptr;
 	j1Fonts*			font = nullptr;
 	j1Gui*				gui = nullptr;
-	j1Transition*		transition = nullptr;
+	j1Transition*		transition = nullptr;*/
 	ModuleSceneManager*		scenes = nullptr;
 	ModuleEntityManager*	entities = nullptr;
 

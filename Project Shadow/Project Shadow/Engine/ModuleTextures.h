@@ -35,7 +35,7 @@ public:
 public:
 
 	std::list<SDL_Texture*>	textures;
-	std::experimental::filesystem::path assetsPath;
+	std::string assetsPath;
 };
 
 

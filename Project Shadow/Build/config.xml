@@ -8,7 +8,7 @@
 		<vsync value="false" />
 	</renderer>
 	<window>
-		<resolution width="1920" height="1080" scale="1" />
+		<resolution width="1600" height="900" scale="1" />
 		<fullscreen value="0" />
 		<borderless value="0" />
 		<resizable value="0" />

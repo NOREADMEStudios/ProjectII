@@ -11,6 +11,7 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
+#include "ModuleMap.h"
 #include "ModuleSceneManager.h"
 #include "ModuleEntityManager.h"
 
@@ -29,8 +30,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	audio = new ModuleAudio();
 	scenes = new ModuleSceneManager();
 	entities = new ModuleEntityManager();
-	/*map = new j1Map();	
-	collision = new j1Collision();
+	map = new ModuleMap();	
+	/*collision = new j1Collision();
 	pathfinding = new j1PathFinding();
 	font = new j1Fonts();
 	gui = new j1Gui();
@@ -42,7 +43,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(textures);
 	AddModule(audio);
-	//AddModule(map);
+	AddModule(map);
 	AddModule(scenes);
 	AddModule(entities);
 	/*AddModule(collision);
@@ -169,8 +170,8 @@ void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
 	configNode.append_child("renderer").append_child("vsync").append_attribute("value") = "false";
 	xmlNode window = configNode.append_child("window");
 	xmlNode winRes = window.append_child("resolution");
-	winRes.append_attribute("width") = 1920;
-	winRes.append_attribute("height") = 1080;
+	winRes.append_attribute("width") = 1600;
+	winRes.append_attribute("height") = 900;
 	winRes.append_attribute("scale") = 1.0f;
 	window.append_child("fullscreen").append_attribute("value") = 0;
 	window.append_child("borderless").append_attribute("value") = 0;
@@ -208,7 +209,7 @@ xmlNode Application::LoadConfig(xmlDocument& config_file) const {
 
 bool Application::CheckFileStructure(const xmlNode & config) const
 {
-	using namespace std::experimental;
+	namespace filesystem = std::experimental::filesystem;
 	filesystem::path assetsPath = ASSETS_ROOT;
 	bool exists = filesystem::exists(assetsPath);
 

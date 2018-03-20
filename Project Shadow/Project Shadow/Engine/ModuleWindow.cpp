@@ -36,7 +36,7 @@ bool ModuleWindow::Awake(pugi::xml_node& config)
 		bool fullscreen = config.child("fullscreen").attribute("value").as_bool(false);
 		bool borderless = config.child("borderless").attribute("value").as_bool(false);
 		bool resizable = config.child("resizable").attribute("value").as_bool(false);
-		bool fullscreen_window = config.child("fullscreen_window").attribute("value").as_bool(false);
+		bool fullscreen_window = config.child("fullscreenWindow").attribute("value").as_bool(false);
 
 		width = config.child("resolution").attribute("width").as_int(SCREEN_WIDTH);
 		height = config.child("resolution").attribute("height").as_int(SCREEN_HEIGHT);

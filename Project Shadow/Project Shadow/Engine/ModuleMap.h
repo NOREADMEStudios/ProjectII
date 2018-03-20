@@ -72,18 +72,18 @@ struct MapData
 	int					tile_height = 0;
 	SDL_Color			background_color;
 	MapTypes			type = MAPTYPE_UNKNOWN;
-	std::list<TileSet>	tilesets;
-	std::list<MapLayer>	layers;
+	std::list<TileSet*>	tilesets;
+	std::list<MapLayer*>	layers;
 
 	~MapData() {
 
-		for (std::list<TileSet>::iterator it = tilesets.begin(); it != tilesets.end(); it++) {
-			//Release(*it);
+		for (std::list<TileSet*>::iterator it = tilesets.begin(); it != tilesets.end(); it++) {
+			Release(*it);
 		}
 		tilesets.clear();
 
-		for (std::list<MapLayer>::iterator it = layers.begin(); it != layers.end(); it++) {
-			//Release(*it);
+		for (std::list<MapLayer*>::iterator it = layers.begin(); it != layers.end(); it++) {
+			Release(*it);
 		}
 		layers.clear();
 	}
@@ -131,7 +131,7 @@ private:
 	pugi::xml_document	map_file;
 	bool				map_loaded = false;
 	MapData				data;
-	filesystem::path	folder = "";
+	std::string			folder = "";
 };
 
 #endif // __j1MAP_H__

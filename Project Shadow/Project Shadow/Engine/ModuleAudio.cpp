@@ -23,31 +23,46 @@ ModuleAudio::~ModuleAudio()
 // Called before render is available
 bool ModuleAudio::Awake(pugi::xml_node& config)
 {
+	namespace filesystem = std::experimental::filesystem;
 	LOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);
 
-	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
-	{
+	assetsPath = ASSETS_ROOT;
+	assetsPath.append(config.attribute("folder").as_string());
+
+	if (!filesystem::exists(assetsPath)) {
+		LOG("Missing audio folder, creating default one");
+		filesystem::create_directory(assetsPath);
+	}
+
+	if (!filesystem::exists(filesystem::path(assetsPath).append(AUDIO_FX_FOLDER))) {
+		LOG("Missing audio folders, creating default ones");
+		filesystem::create_directory(filesystem::path(assetsPath).append(AUDIO_FX_FOLDER));
+	}
+	if (!filesystem::exists(filesystem::path(assetsPath).append(AUDIO_BGM_FOLDER))) {
+		LOG("Missing audio folders, creating default ones");
+		filesystem::create_directory(filesystem::path(assetsPath).append(AUDIO_BGM_FOLDER));
+	}
+
+	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
 		LOG("SDL_INIT_AUDIO could not initialize! SDL_Error: %s\n", SDL_GetError());
 		active = false;
 		ret = true;
 	}
 
-	// load support for the JPG and PNG image formats
+	// load support for the OGG audio formats
 	int flags = MIX_INIT_OGG;
 	int init = Mix_Init(flags);
 
-	if((init & flags) != flags)
-	{
+	if((init & flags) != flags) {
 		LOG("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
 		active = false;
 		ret = true;
 	}
 
 	//Initialize SDL_mixer
-	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-	{
+	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 		LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		active = false;
 		ret = true;

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config>
+	<app framerateCap="60">
+		<Title value="Shadow Engine" />
+		<organisation value="NoReadme Studio" />
+	</app>
+	<renderer>
+		<vsync value="false" />
+	</renderer>
+	<window>
+		<resolution width="1600" height="900" scale="1" />
+		<fullscreen value="0" />
+		<borderless value="0" />
+		<resizable value="0" />
+		<fullscreenWindow value="0" />
+	</window>
+	<scenes folder="Scenes/" />
+	<map folder="Maps/" />
+	<entities folder="Entities/" />
+	<textures folder="Textures/" />
+	<audio volumeFX="1" volumeBGM="1" folder="Audio/" />
+	<input folder="Input/" />
+</config>

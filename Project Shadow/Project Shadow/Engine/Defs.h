@@ -2,6 +2,7 @@
 #define __DEFS_H__
 
 #include <string>
+#include <functional>
 
 #define ASSETS_ROOT "Assets/"
 #define AUDIO_FX_FOLDER "FX/"
@@ -10,6 +11,8 @@
 typedef unsigned int uint32;
 typedef unsigned int uint;
 typedef unsigned long int uint64;
+
+typedef std::function<void(void)> Callback_v;
 
 void Release(void* object);
 void ReleaseArray(void* array);

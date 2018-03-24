@@ -35,7 +35,7 @@ void ModuleMap::Draw() {
 	bool player_blit = false;
 	if(map_loaded == false)
 		return;
-	//App->render->Blit(background, -200, -200, 0, 0.7f);
+
 	for (std::list<MapLayer*>::iterator iter = data.layers.begin(); iter != data.layers.end(); iter++) {
 		uint tile = 0;
 			for (uint y = 0; y < (*iter)->height; y++) {

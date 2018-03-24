@@ -1,12 +1,12 @@
 #include "Button.h"
-#include "j1Fonts.h"
+#include "..\ModuleGUI.h"
 #include "InterfaceElement.h"
 #include "j1Input.h"
 #include "j1Render.h"
 #include "j1Audio.h"
 #include "j1Scene.h"
 
-Button::Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
+Button::Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback_c callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
 	: Sprite(_x, _y, _tex, _anim, _enabled)
 {
 	type = BUTTON;
@@ -103,4 +103,13 @@ bool Button::PreUpdate()
 void Button::setLabel(Label * label)
 {
 	this->label = label;
+}
+
+void callback(int n_params) {
+
+}
+
+void func() {
+	Button b;
+	b.callback = &callback;
 }

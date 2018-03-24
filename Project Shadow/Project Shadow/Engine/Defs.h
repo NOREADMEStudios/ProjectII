@@ -12,7 +12,7 @@ typedef unsigned int uint32;
 typedef unsigned int uint;
 typedef unsigned long int uint64;
 
-typedef std::function<void(void)> Callback_v;
+typedef std::function<void(int)> Callback_c;
 
 void Release(void* object);
 void ReleaseArray(void* array);

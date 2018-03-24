@@ -9,7 +9,7 @@ class Button :
 	public Sprite
 {
 public:
-	Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim = { 0, 0, 0, 0 }, SDL_Rect _pressed_anim = { 0, 0, 0, 0 });
+	Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback_c callback, SDL_Rect _hovered_anim = { 0, 0, 0, 0 }, SDL_Rect _pressed_anim = { 0, 0, 0, 0 });
 	~Button();
 	
 	enum STATE {
@@ -20,7 +20,7 @@ public:
 	} state;
 	
 	void OnHover();
-	Callback OnClick = nullptr;
+	Callback_c OnClick = nullptr;
 	bool PreUpdate() override;
 	void setLabel(Label* label);
 

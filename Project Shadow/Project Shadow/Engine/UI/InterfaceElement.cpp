@@ -1,7 +1,7 @@
 #include "InterfaceElement.h"
-#include "j1Render.h"
-#include "j1Window.h"
-#include "j1Gui.h"
+#include "..\ModuleRender.h"
+#include "..\ModuleWindow.h"
+#include "..\ModuleGUI.h"
 
 
 
@@ -46,14 +46,15 @@ bool InterfaceElement::PreUpdate()
 
 	ComputeRects();
 
-	for (p2List_item<InterfaceElement*>* current_element = elements.end;
-		current_element != nullptr && ret;
-		current_element = current_element->prev)
+	for (std::list<InterfaceElement*>::reverse_iterator current_element = elements.rbegin();
+		current_element != elements.rend() && ret == true;
+		current_element++)
 	{
-		current_element->data->enabled = current_element->data->next_frame_enabled;
+		InterfaceElement* ele = (*current_element);
+		ele->enabled = ele->next_frame_enabled;
 
-		if (current_element->data->isEnabled())
-			ret = current_element->data->PreUpdate();
+		if (ele->isEnabled())
+			ret = ele->PreUpdate();
 	}
 	return ret;
 }

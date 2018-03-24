@@ -305,11 +305,9 @@ bool Application::PreUpdate()
 bool Application::DoUpdate()
 {
 	bool ret = true;
-	ModuleList::iterator item;
-	item = modules.begin();
 	Module* pModule = NULL;
 
-	for(item = modules.begin(); item != modules.end() && ret == true; item++)
+	for(ModuleList::iterator item = modules.begin(); item != modules.end() && ret == true; item++)
 	{
 		pModule = *item;
 

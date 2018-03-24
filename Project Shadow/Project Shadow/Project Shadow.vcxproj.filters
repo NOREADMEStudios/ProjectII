@@ -104,6 +104,12 @@
     <ClCompile Include="Engine\UI\InterfaceElement.cpp">
       <Filter>Engine\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ModuleGUI.cpp">
+      <Filter>Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\Sprite.cpp">
+      <Filter>Engine\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -191,6 +197,12 @@
       <Filter>Engine\UI</Filter>
     </ClInclude>
     <ClInclude Include="Engine\UI\Button.h">
+      <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleGUI.h">
+      <Filter>Engine\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\UI\Sprite.h">
       <Filter>Engine\UI</Filter>
     </ClInclude>
   </ItemGroup>

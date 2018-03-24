@@ -345,6 +345,8 @@ bool ModuleMap::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet& set)
 {
 	bool ret = true;
 	pugi::xml_node image = tileset_node.child("image");
+	std::string source = "Maps/";
+	source.append(image.attribute("source").as_string());
 
 	if(image == NULL)
 	{
@@ -353,7 +355,7 @@ bool ModuleMap::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet& set)
 	}
 	else
 	{
-		set.texture = App->textures->Load(image.attribute("source").as_string());
+		set.texture = App->textures->Load(source.c_str());
 		int w, h;
 		SDL_QueryTexture(set.texture, NULL, NULL, &w, &h);
 		set.tex_width = image.attribute("width").as_int();

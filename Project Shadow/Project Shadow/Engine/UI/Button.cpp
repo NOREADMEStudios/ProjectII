@@ -1,10 +1,10 @@
 #include "Button.h"
 #include "..\ModuleGUI.h"
 #include "InterfaceElement.h"
-#include "j1Input.h"
-#include "j1Render.h"
-#include "j1Audio.h"
-#include "j1Scene.h"
+#include "..\ModuleInput.h"
+#include "..\ModuleRender.h"
+#include "..\ModuleAudio.h"
+#include "..\Scene.h"
 
 Button::Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback_c callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
 	: Sprite(_x, _y, _tex, _anim, _enabled)
@@ -41,12 +41,10 @@ bool Button::PreUpdate()
 
 	if (label == nullptr) //Auto set label
 	{
-		for (p2List_item<InterfaceElement*>* current_element = elements.start;
-			current_element != nullptr;
-			current_element = current_element->next)
+		for (std::list<InterfaceElement*>::iterator current_element = elements.begin(); current_element != elements.end(); current_element++)
 		{
-			if (current_element->data->type == LABEL)
-				label = (Label*)current_element->data;
+			if ((*current_element)->type == LABEL)
+				label = (Label*)(*current_element);
 		}
 	}
 

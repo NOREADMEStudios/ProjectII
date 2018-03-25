@@ -1,6 +1,6 @@
 #include "Label.h"
-#include "j1Fonts.h"
-#include "SDL\include\SDL.h"
+#include "..\ModuleFonts.h"
+//#include "../SDL/include/SDL.h"
 
 
 Label::Label() : InterfaceElement()

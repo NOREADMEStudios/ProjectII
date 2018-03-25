@@ -2,8 +2,8 @@
 #include "Window.h"
 #include "Button.h"
 #include "Label.h"
-#include "j1Input.h"
-#include "j1Window.h"
+#include "..\ModuleInput.h"
+#include "..\ModuleWindow.h"
 
 
 Window::Window(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled) : Sprite(_x,_y, _tex, _anim, _enabled)

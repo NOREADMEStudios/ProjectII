@@ -1,5 +1,5 @@
 #include "Sprite.h"
-#include "j1Render.h"
+#include "..\ModuleRender.h"
 
 Sprite::Sprite(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim) : InterfaceElement()
 {

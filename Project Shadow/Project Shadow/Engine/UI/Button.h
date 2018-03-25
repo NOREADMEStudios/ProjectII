@@ -3,7 +3,7 @@
 
 #include "Sprite.h"
 #include "Label.h"
-#include "j1Gui.h"
+#include "..\ModuleGui.h"
 
 class Button :
 	public Sprite

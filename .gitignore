@@ -11,6 +11,7 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
+**/config.xml
 
 # Build results
 [Dd]ebug/

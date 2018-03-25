@@ -79,7 +79,7 @@ private:
 	// Checks wether the file structure of the project matches the one specified in the config file or not
 	// Returns true if Assets/ folder is present, false otherwise
 	// Will create missing folders if Assets/ is present
-	bool CheckFileStructure(const xmlNode&) const;
+	void CheckFileStructure(const xmlNode&) const;
 
 	// Call modules before each loop iteration
 	void PrepareUpdate();

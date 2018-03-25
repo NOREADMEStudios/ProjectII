@@ -5,15 +5,14 @@
 #include "ModuleWindow.h"
 #include "../SDL/include/SDL.h"
 
-#define MAX_KEYS 300
 
 ModuleInput::ModuleInput() : Module()
 {
-	name="input";
+	name = "input";
 
-	keyboard = new j1KeyState[MAX_KEYS];
-	memset(keyboard, KEY_IDLE, sizeof(j1KeyState) * MAX_KEYS);
-	memset(mouse_buttons, KEY_IDLE, sizeof(j1KeyState) * NUM_MOUSE_BUTTONS);
+	keyboard = new keyEvent[MAX_KEYS];
+	memset(keyboard, { KEY_IDLE }, sizeof(keyEvent) * MAX_KEYS);
+	memset(mouse_buttons, { KEY_IDLE }, sizeof(keyEvent) * NUM_MOUSE_BUTTONS);
 }
 
 // Destructor
@@ -49,81 +48,86 @@ bool ModuleInput::Start()
 bool ModuleInput::PreUpdate()
 {
 	static SDL_Event event;
-	
+
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
-	for(int i = 0; i < MAX_KEYS; ++i)
+	mouse_x = mouse_x_prev;
+	mouse_y = mouse_y_prev;
+
+	for (int i = 0; i < MAX_KEYS; ++i)
 	{
-		if(keys[i] == 1)
+		if (keys[i] == 1)
 		{
-			if(keyboard[i] == KEY_IDLE)
-				keyboard[i] = KEY_DOWN;
+			keyboard[i].blocked = false;
+			if (keyboard[i].keyState == KEY_IDLE)
+				keyboard[i].keyState = KEY_DOWN;
 			else
-				keyboard[i] = KEY_REPEAT;
+				keyboard[i].keyState = KEY_REPEAT;
 		}
 		else
 		{
-			if(keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
-				keyboard[i] = KEY_UP;
+			if (keyboard[i].keyState == KEY_REPEAT || keyboard[i].keyState == KEY_DOWN)
+				keyboard[i].keyState = KEY_UP;
 			else
-				keyboard[i] = KEY_IDLE;
+				keyboard[i].keyState = KEY_IDLE;
 		}
 	}
 
-	for(int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
+	for (int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
 	{
-		if(mouse_buttons[i] == KEY_DOWN)
-			mouse_buttons[i] = KEY_REPEAT;
+		mouse_buttons[i].blocked = false;
+		if (mouse_buttons[i].keyState == KEY_DOWN)
+			mouse_buttons[i].keyState = KEY_REPEAT;
 
-		if(mouse_buttons[i] == KEY_UP)
-			mouse_buttons[i] = KEY_IDLE;
+		if (mouse_buttons[i].keyState == KEY_UP)
+			mouse_buttons[i].keyState = KEY_IDLE;
 	}
 
-	while(SDL_PollEvent(&event) != 0)
+	while (SDL_PollEvent(&event) != 0)
 	{
-		switch(event.type)
+		switch (event.type)
 		{
-			case SDL_QUIT:
-				windowEvents[WE_QUIT] = true;
+		case SDL_QUIT:
+			windowEvents[WE_QUIT] = true;
 			break;
 
-			case SDL_WINDOWEVENT:
-				switch(event.window.event)
-				{
-					//case SDL_WINDOWEVENT_LEAVE:
-					case SDL_WINDOWEVENT_HIDDEN:
-					case SDL_WINDOWEVENT_MINIMIZED:
-					case SDL_WINDOWEVENT_FOCUS_LOST:
-					windowEvents[WE_HIDE] = true;
-					break;
+		case SDL_WINDOWEVENT:
+			switch (event.window.event)
+			{
+				//case SDL_WINDOWEVENT_LEAVE:
+			case SDL_WINDOWEVENT_HIDDEN:
+			case SDL_WINDOWEVENT_MINIMIZED:
+			case SDL_WINDOWEVENT_FOCUS_LOST:
+				windowEvents[WE_HIDE] = true;
+				break;
 
-					//case SDL_WINDOWEVENT_ENTER:
-					case SDL_WINDOWEVENT_SHOWN:
-					case SDL_WINDOWEVENT_FOCUS_GAINED:
-					case SDL_WINDOWEVENT_MAXIMIZED:
-					case SDL_WINDOWEVENT_RESTORED:
-					windowEvents[WE_SHOW] = true;
-					break;
-				}
+				//case SDL_WINDOWEVENT_ENTER:
+			case SDL_WINDOWEVENT_SHOWN:
+			case SDL_WINDOWEVENT_FOCUS_GAINED:
+			case SDL_WINDOWEVENT_MAXIMIZED:
+			case SDL_WINDOWEVENT_RESTORED:
+				windowEvents[WE_SHOW] = true;
+				break;
+			}
 			break;
 
-			case SDL_MOUSEBUTTONDOWN:
-				mouse_buttons[event.button.button - 1] = KEY_DOWN;
-				//LOG("Mouse button %d down", event.button.button-1);
+		case SDL_MOUSEBUTTONDOWN:
+			mouse_buttons[event.button.button - 1].keyState = KEY_DOWN;
+			//LOG("Mouse button %d down", event.button.button-1);
 			break;
 
-			case SDL_MOUSEBUTTONUP:
-				mouse_buttons[event.button.button - 1] = KEY_UP;
-				//LOG("Mouse button %d up", event.button.button-1);
+		case SDL_MOUSEBUTTONUP:
+			mouse_buttons[event.button.button - 1].keyState = KEY_UP;
+			//LOG("Mouse button %d up", event.button.button-1);
 			break;
 
-			case SDL_MOUSEMOTION:
-				int scale = App->win->GetScale();
-				mouse_motion_x = event.motion.xrel / scale;
-				mouse_motion_y = event.motion.yrel / scale;
-				mouse_x = event.motion.x / scale;
-				mouse_y = event.motion.y / scale;
-				//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
+		case SDL_MOUSEMOTION:
+			float scale = (int)App->win->GetScale();
+			mouse_motion_x = event.motion.xrel / scale;
+			mouse_motion_y = event.motion.yrel / scale;
+			mouse_x = mouse_x_prev = event.motion.x / scale;
+			mouse_y = mouse_y_prev = event.motion.y / scale;
+			//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
 			break;
 		}
 	}
@@ -139,7 +143,7 @@ bool ModuleInput::CleanUp(pugi::xml_node&)
 	return true;
 }
 
-bool ModuleInput::GetWindowEvent(j1EventWindow ev)
+bool ModuleInput::GetWindowEvent(WindowEvent ev)
 {
 	return windowEvents[ev];
 }

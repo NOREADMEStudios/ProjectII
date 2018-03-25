@@ -5,11 +5,15 @@
 
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
+#define MAX_KEYS 300
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
-struct SDL_Rect;
+typedef struct {
+	KeyState keyState = KEY_IDLE;
+	bool blocked = false;
+} keyEvent;
 
-enum j1EventWindow
+enum WindowEvent
 {
 	WE_QUIT = 0,
 	WE_HIDE = 1,
@@ -17,7 +21,7 @@ enum j1EventWindow
 	WE_COUNT
 };
 
-enum j1KeyState
+enum KeyState
 {
 	KEY_IDLE = 0,
 	KEY_DOWN,
@@ -48,17 +52,21 @@ public:
 	bool CleanUp(pugi::xml_node&) override;
 
 	// Gather relevant win events
-	bool GetWindowEvent(j1EventWindow ev);
+	bool GetWindowEvent(WindowEvent ev);
 
 	// Check key states (includes mouse and joy buttons)
-	j1KeyState GetKey(int id) const
+	KeyState GetKey(int id) const
 	{
-		return keyboard[id];
+		if (keyboard[id].blocked)
+			return KEY_IDLE;
+		return keyboard[id].keyState;
 	}
 
-	j1KeyState GetMouseButtonDown(int id) const
+	KeyState GetMouseButtonDown(int id) const
 	{
-		return mouse_buttons[id - 1];
+		if (mouse_buttons[id - 1].blocked)
+			return KEY_IDLE;
+		return mouse_buttons[id - 1].keyState;
 	}
 
 	// Check if a certain window event happened
@@ -68,14 +76,39 @@ public:
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
+
+	bool BlockMouseEvent(int event_id) {
+		if (mouse_buttons[event_id - 1].blocked)
+			return false;
+		mouse_buttons[event_id - 1].blocked = true;
+		return true;
+	}
+
+	bool BlockKeyboardEvent(int event_id) {
+		if (keyboard[event_id].blocked)
+			return false;
+		keyboard[event_id].blocked = true;
+		return true;
+	}
+
+	void BlockMouse() {
+		mouse_x = mouse_y = INT_MAX - 2;
+	}
+
+	void BlockKeyboard() {
+		for (uint i = 0; i < MAX_KEYS; i++) {
+			keyboard[i].blocked = true;
+		}
+	}
+
 private:
 	bool		windowEvents[WE_COUNT];
-	j1KeyState*	keyboard;
-	j1KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
+	keyEvent*	keyboard;
+	keyEvent	mouse_buttons[NUM_MOUSE_BUTTONS];
 	int			mouse_motion_x;
 	int			mouse_motion_y;
-	int			mouse_x;
-	int			mouse_y;
+	int			mouse_x, mouse_x_prev;
+	int			mouse_y, mouse_y_prev;
 };
 
 #endif // __INPUT_H__

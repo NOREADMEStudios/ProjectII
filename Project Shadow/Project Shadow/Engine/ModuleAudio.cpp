@@ -31,20 +31,6 @@ bool ModuleAudio::Awake(pugi::xml_node& config)
 	assetsPath = ASSETS_ROOT;
 	assetsPath.append(config.attribute("folder").as_string());
 
-	if (!filesystem::exists(assetsPath)) {
-		LOG("Missing audio folder, creating default one");
-		filesystem::create_directory(assetsPath);
-	}
-
-	if (!filesystem::exists(filesystem::path(assetsPath).append(AUDIO_FX_FOLDER))) {
-		LOG("Missing audio folders, creating default ones");
-		filesystem::create_directory(filesystem::path(assetsPath).append(AUDIO_FX_FOLDER));
-	}
-	if (!filesystem::exists(filesystem::path(assetsPath).append(AUDIO_BGM_FOLDER))) {
-		LOG("Missing audio folders, creating default ones");
-		filesystem::create_directory(filesystem::path(assetsPath).append(AUDIO_BGM_FOLDER));
-	}
-
 	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
 		LOG("SDL_INIT_AUDIO could not initialize! SDL_Error: %s\n", SDL_GetError());
 		active = false;

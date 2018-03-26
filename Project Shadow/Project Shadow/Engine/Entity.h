@@ -3,8 +3,33 @@
 
 #include "Module.h"
 #include "ModuleSceneManager.h"
+#include "Point.h"
+#include "Animation.h"
+#include "Defs.h"
 
 enum EntityTypes;
+
+enum EntityState
+{
+	IDLE,
+	JUMP,
+	WALK,
+	RUN,
+	DASH,
+};
+
+struct EntityStats
+{
+	int atk = 0;
+	int def = 0;
+	int spd = 0;
+	int mgk = 0;
+};
+
+struct Items
+{
+	EntityStats stats;
+};
 
 class Entity : public Module
 {
@@ -28,7 +53,47 @@ public:
 	bool Load(pugi::xml_node&) override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
 
+	EntityState GetState();
+	fPoint GetPos();
+	bool IsActive();
+	float GetPosX();
+	float GetPosY();
+	fPoint GetSpeed();
+	EntityTypes GetType();
+
+
+	void SetPos(float x, float y);
+	void SetActive(bool sactive);
+
+
+
+
+	virtual void Move(float delta_time);
+	virtual void Break(float delta_time);
+	void Accelerate(float x, float y, float delta_time);
+
 	EntityTypes type;
+
+protected:
+
+	bool active = true;
+	fPoint position{ 0,0 };
+	fPoint speedVector{ 0,0 };
+
+	// Collider has to be a struct Collider instead of an SDL_Rect
+	iRect collider{ 0,0,0,0 };
+	EntityState state = IDLE;
+	Animation* currentAnimation = nullptr;
+	EntityStats stats;
+
+
+	// Should be same numeration as the states
+	std::list<Animation> animations;
+	std::list<Items> items;
+
+
+
+
 };
 #endif
 

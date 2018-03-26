@@ -157,5 +157,11 @@
     <ClInclude Include="Game\TestScene.h">
       <Filter>Engine\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\PerfTimer.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Animation.h">
+      <Filter>Engine\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

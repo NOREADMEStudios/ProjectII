@@ -80,7 +80,7 @@ protected:
 	fPoint position{ 0,0 };
 	fPoint speedVector{ 0,0 };
 
-	// Collider has to be a struct Collider instead of an SDL_Rect
+	// Collider has to be a struct Collider instead of an iRect
 	iRect collider{ 0,0,0,0 };
 	EntityState state = IDLE;
 	Animation* currentAnimation = nullptr;

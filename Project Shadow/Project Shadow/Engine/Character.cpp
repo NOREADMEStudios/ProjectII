@@ -1,5 +1,6 @@
 #include "Character.h"
-
+#include "ModuleRender.h"
+#include "App.h"
 
 
 Character::Character()
@@ -20,20 +21,26 @@ bool Character::Awake(pugi::xml_node&)
 bool Character::Start()
 { 
 	//Meh
-	currentAnimation = &animations.front();
-	
+	//currentAnimation = &animations.front();
+	collider = { 50 , 50 , 50, 50 };
 
 	return true; 
 }
 
 bool Character::PreUpdate()
 {
-	collider = currentAnimation->CurrentFrame().rect;
+	//collider = currentAnimation->CurrentFrame().rect;
+
 	return true; 
 }
 
 bool Character::Update(float dt)
 { 
+	//App->render->Blit()
+
+	//Only for first testings
+	SDL_Rect provisional_rect{ position.x, position.y,collider.w,collider.h };
+	App->render->DrawQuad(provisional_rect, 255, 0, 0);
 
 	return true; 
 }

@@ -19,6 +19,7 @@ public:
 	bool loop = true;
 	float speed = 1.0f;
 	std::vector<AnimationFrame> frames;
+
 	const char* name;
 
 private:

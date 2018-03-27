@@ -47,6 +47,7 @@ public:
 	void DestroyEntity(Entity* entity);
 
 
+
 private:
 
 	std::list<Entity*> entities;

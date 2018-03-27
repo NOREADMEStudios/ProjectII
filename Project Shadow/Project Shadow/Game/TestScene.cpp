@@ -16,7 +16,7 @@ TestScene::~TestScene()
 bool TestScene::Start()
 {
 	App->map->Load("map.tmx");
-	App->entities->CreateEntity({ CHARACTER });
+	App->entities->CreateEntity({ CHARACTER,{100,500} });
 	return false;
 }
 

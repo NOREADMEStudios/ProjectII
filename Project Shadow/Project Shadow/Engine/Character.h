@@ -29,6 +29,8 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; };
 
 	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
+	
+	void UpdateInputs(float dt);
 };
 #endif
 

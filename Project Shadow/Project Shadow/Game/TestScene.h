@@ -2,6 +2,7 @@
 #define __SCENE_TEST_H__
 
 #include "..\Engine\Scene.h"
+
 class TestScene :
 	public Scene
 {
@@ -24,6 +25,8 @@ public:
 	bool Load(pugi::xml_node&) override { return true; };
 
 	bool Save(pugi::xml_node&) const override { return true; };
+
+
 };
 
 #endif

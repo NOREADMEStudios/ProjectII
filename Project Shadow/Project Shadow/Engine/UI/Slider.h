@@ -12,6 +12,9 @@ public:
 	iRect upper_rect;
 
 	void DragSlider();
+
+	float GetValue();
+
 	bool PreUpdate() override;
 
 	void Focus();

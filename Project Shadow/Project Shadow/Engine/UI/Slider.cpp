@@ -53,8 +53,7 @@ bool Slider::PreUpdate()
 	{
 		DragSlider();
 		if (OnClick != nullptr) {
-			float percent = (axis) ? (float)(rel_pos.x - initial_pos.x + parent->content_rect.w * parent->GetAnchorX()) / (float)parent->content_rect.w :
-				(float)(rel_pos.y - initial_pos.y + parent->content_rect.h * parent->GetAnchorY()) / (float)parent->content_rect.h;
+			float percent = GetValue();
 			OnClick(&percent);
 		}
 		App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
@@ -78,6 +77,12 @@ void Slider::DragSlider()
 		rel_pos.y = Mouse.y + delta_pos_mouse.y - (abs_pos.y - rel_pos.y);
 		rel_pos.y = CLAMP(rel_pos.y, 0, parent->content_rect.h);
 	}
+}
+
+float Slider::GetValue()
+{
+	return (axis) ? (float)(rel_pos.x - initial_pos.x + parent->content_rect.w * parent->GetAnchorX()) / (float)parent->content_rect.w :
+		(float)(rel_pos.y - initial_pos.y + parent->content_rect.h * parent->GetAnchorY()) / (float)parent->content_rect.h;
 }
 
 

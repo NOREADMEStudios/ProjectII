@@ -2,8 +2,8 @@
 #define __SPRITE_H__
 
 #include "InterfaceElement.h"
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "..\Defs.h"
+#include "..\Log.h"
 #include "..\App.h"
 #include "..\ModuleRender.h"
 #include "..\ModuleTextures.h"
@@ -15,7 +15,7 @@ class Sprite :
 public:
 	Sprite(uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, bool _enabled = false, SDL_Rect* _anim = nullptr);
 	~Sprite();
-	bool PostUpdate() override;
+	bool Update(float dt) override;
 
 	SDL_Rect idle_anim;
 };

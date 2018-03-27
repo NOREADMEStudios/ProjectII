@@ -10,9 +10,9 @@ ModuleInput::ModuleInput() : Module()
 {
 	name = "input";
 
-	keyboard = new keyEvent[MAX_KEYS];
-	memset(keyboard, { KEY_IDLE }, sizeof(keyEvent) * MAX_KEYS);
-	memset(mouse_buttons, { KEY_IDLE }, sizeof(keyEvent) * NUM_MOUSE_BUTTONS);
+	keyboard = new KeyEvent[MAX_KEYS];
+	memset(keyboard, { KEY_IDLE }, sizeof(KeyEvent) * MAX_KEYS);
+	memset(mouse_buttons, { KEY_IDLE }, sizeof(KeyEvent) * NUM_MOUSE_BUTTONS);
 }
 
 // Destructor

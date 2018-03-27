@@ -125,7 +125,7 @@ bool Label::RenderFont()
 		tex = nullptr;
 	}
 
-	tex = App->font->Print(string.GetString(), color_fg, font, render_mode, color_bg);
+	tex = App->font->Print(string.c_str(), color_fg, font, render_mode, color_bg);
 
 	if (tex == nullptr)
 		ret = false;
@@ -215,13 +215,13 @@ void Label::setString(const char* format, ...)
 		va_end(ap);
 
 		if (res > 0)
-			string.create(tmp);
+			string = tmp;
 
 		text_changed = true;
 	}
 }
 
-void Label::setString(p2SString string)
+void Label::setString(std::string string)
 {
 	this->string = string;
 	text_changed = true;
@@ -229,10 +229,10 @@ void Label::setString(p2SString string)
 
 void Label::getString(const char* string) const
 {
-	string = this->string.GetString();
+	string = this->string.c_str();
 }
 
-void Label::getString(p2SString& string) const
+void Label::getString(std::string& string) const
 {
 	string = this->string;
 }

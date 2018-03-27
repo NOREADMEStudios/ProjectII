@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "..\SDL\include\SDL_pixels.h"
 #include <list>
+#include "UI\Label.h"
 
 #define DEFAULT_FONT "fonts/open_sans/OpenSans-Regular.ttf"
 #define DEFAULT_FONT_SIZE 40
@@ -28,17 +29,18 @@ public:
 
 	// Load Font
 	_TTF_Font* const Load(const char* path, int size = 12);
+	bool Unload(_TTF_Font* font);
 
 	// Create a surface from text
-	SDL_Texture* Print(const char* text, SDL_Color color = {255, 255, 255, 255}, _TTF_Font* font = NULL);
+	SDL_Texture* Print(const char* text, SDL_Color color = { 255, 255, 255, 255 }, _TTF_Font* font = NULL, Label::RenderMode render_mode = Label::RenderMode::BLENDED, SDL_Color bg_color = { 0, 0, 0, 0 });
 
 	bool CalcSize(const char* text, int& width, int& height, _TTF_Font* font = NULL) const;
 
 public:
 
 	std::list<_TTF_Font*>	fonts;
-	_TTF_Font*			default;
-	_TTF_Font*			wow_font;
+	_TTF_Font*				defaultFont;
+	_TTF_Font*				wow_font;
 };
 
 

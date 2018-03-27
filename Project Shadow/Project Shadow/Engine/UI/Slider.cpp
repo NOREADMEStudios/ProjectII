@@ -1,6 +1,6 @@
 #include "Slider.h"
 #include "Button.h"
-#include "j1Input.h"
+#include "..\ModuleInput.h"
 
 Slider::Slider(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim, bool _axis)
 	: Button(_x, _y, _tex, _anim, _enabled, callback, _hovered_anim, _pressed_anim)
@@ -55,7 +55,7 @@ bool Slider::PreUpdate()
 		if (OnClick != nullptr) {
 			float percent = (axis) ? (float)(rel_pos.x - initial_pos.x + parent->content_rect.w * parent->GetAnchorX()) / (float)parent->content_rect.w :
 				(float)(rel_pos.y - initial_pos.y + parent->content_rect.h * parent->GetAnchorY()) / (float)parent->content_rect.h;
-			OnClick(1, percent);
+			OnClick(&percent);
 		}
 		App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 	}
@@ -83,9 +83,9 @@ void Slider::DragSlider()
 
 void Slider::Focus()
 {
-	p2List_item<InterfaceElement*>* curr = elements.start;
+	/*LIST_ITERATOR(InterfaceElement*) curr = elements.begin();
 
-	while (curr != NULL)
+	while (curr != elements.end())
 	{
 		if (curr->data->in_focus)
 		{
@@ -119,6 +119,6 @@ void Slider::Focus()
 		}
 
 		curr = curr->next;
-	}
+	}*/
 
 }

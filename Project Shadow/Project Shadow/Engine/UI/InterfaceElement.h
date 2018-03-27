@@ -72,6 +72,9 @@ public:
 	bool enabled = true;
 
 protected:
+
+	void DebugDraw();
+
 	InterfaceElement* AddElement(InterfaceElement* elem);
 	std::list<InterfaceElement*> elements;
 	InterfaceElement* parent = nullptr;

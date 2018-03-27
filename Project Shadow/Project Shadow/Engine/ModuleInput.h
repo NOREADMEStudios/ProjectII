@@ -8,11 +8,6 @@
 #define MAX_KEYS 300
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
-typedef struct {
-	KeyState keyState = KEY_IDLE;
-	bool blocked = false;
-} keyEvent;
-
 enum WindowEvent
 {
 	WE_QUIT = 0,
@@ -27,6 +22,11 @@ enum KeyState
 	KEY_DOWN,
 	KEY_REPEAT,
 	KEY_UP
+};
+
+struct KeyEvent {
+	KeyState keyState = KEY_IDLE;
+	bool blocked = false;
 };
 
 class ModuleInput : public Module
@@ -103,8 +103,8 @@ public:
 
 private:
 	bool		windowEvents[WE_COUNT];
-	keyEvent*	keyboard;
-	keyEvent	mouse_buttons[NUM_MOUSE_BUTTONS];
+	KeyEvent*	keyboard;
+	KeyEvent	mouse_buttons[NUM_MOUSE_BUTTONS];
 	int			mouse_motion_x;
 	int			mouse_motion_y;
 	int			mouse_x, mouse_x_prev;

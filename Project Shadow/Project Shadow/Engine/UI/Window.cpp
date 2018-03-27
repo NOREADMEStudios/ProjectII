@@ -6,7 +6,7 @@
 #include "..\ModuleWindow.h"
 
 
-Window::Window(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled) : Sprite(_x,_y, _tex, _anim, _enabled)
+Window::Window(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled) : Sprite(_x,_y, _tex, _enabled, &_anim)
 {
 	type = Interfacetype::WINDOW;
 	culled = false;
@@ -80,7 +80,7 @@ void Window::DragWindow()
 
 void Window::Focus()
 {
-	p2List_item<InterfaceElement*>* curr = elements.start;
+	/*p2List_item<InterfaceElement*>* curr = elements.start;
 
 	while(curr != NULL)
 	{
@@ -116,7 +116,7 @@ void Window::Focus()
 		}
 			
 		curr = curr->next;
-	}
+	}*/
 	
 }
 

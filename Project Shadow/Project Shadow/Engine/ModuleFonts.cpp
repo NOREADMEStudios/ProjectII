@@ -32,8 +32,7 @@ bool ModuleFonts::Awake(pugi::xml_node& conf)
 	{
 		const char* path = conf.child("default_font").attribute("file").as_string(DEFAULT_FONT);
 		int size = conf.child("default_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
-		default = Load(path, size);
-		
+		defaultFont = Load(path, size);		
 	}
 
 	return ret;
@@ -73,13 +72,38 @@ TTF_Font* const ModuleFonts::Load(const char* path, int size)
 	return font;
 }
 
+bool ModuleFonts::Unload(_TTF_Font * font)
+{
+	bool ret = true;
+	if (font != nullptr) {
+		TTF_CloseFont(font);
+		fonts.remove(font);
+	}
+	else ret = false;
+	return ret;
+}
+
 // Print text using font
-SDL_Texture* ModuleFonts::Print(const char* text, SDL_Color color, TTF_Font* font)
+SDL_Texture* ModuleFonts::Print(const char* text, SDL_Color color, TTF_Font* font, Label::RenderMode render_mode, SDL_Color bg_color)
 {
 	SDL_Texture* ret = NULL;
-	SDL_Surface* surface = TTF_RenderText_Blended((font) ? font : default, text, color);
+	SDL_Surface* surface = nullptr;
+	switch (render_mode) {
+	case Label::RenderMode::SOLID:
+		surface = TTF_RenderText_Solid((font) ? font : defaultFont, text, color);
+		break;
+	case Label::RenderMode::BLENDED:
+		surface = TTF_RenderText_Blended((font) ? font : defaultFont, text, color);
+		break;
+	case Label::RenderMode::SHADED:
+		surface = TTF_RenderText_Shaded((font) ? font : defaultFont, text, color, bg_color);
+		break;
+	default:
+		surface = TTF_RenderText_Solid((font) ? font : defaultFont, text, color);
+		break;
+	}
 
-	if(surface == NULL)
+	if (surface == NULL)
 	{
 		LOG("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
 	}
@@ -97,7 +121,7 @@ bool ModuleFonts::CalcSize(const char* text, int& width, int& height, _TTF_Font*
 {
 	bool ret = false;
 
-	if(TTF_SizeText((font) ? font : default, text, &width, &height) != 0)
+	if(TTF_SizeText((font) ? font : defaultFont, text, &width, &height) != 0)
 		LOG("Unable to calc size of text surface! SDL_ttf Error: %s\n", TTF_GetError());
 	else
 		ret = true;

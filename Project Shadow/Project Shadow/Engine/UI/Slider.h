@@ -1,6 +1,7 @@
-#pragma once
+#ifndef __SLIDER_H__
+#define __SLIDER_H__
 #include "Button.h"
-#include "Rect.h"
+#include "..\Rect.h"
 class Slider :
 	public Button
 {
@@ -24,3 +25,4 @@ public:
 
 };
 
+#endif

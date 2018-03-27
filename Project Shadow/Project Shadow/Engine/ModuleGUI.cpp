@@ -3,7 +3,7 @@
 #include "App.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
-#include "j1Fonts.h"
+#include "ModuleFonts.h"
 #include "ModuleInput.h"
 #include "ModuleGUI.h"
 #include "ModuleWindow.h"
@@ -45,10 +45,10 @@ bool ModuleGUI::Start()
 // Update all guis
 bool ModuleGUI::PreUpdate()
 {
-	//BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::DarkKhaki);
+	BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::DarkKhaki);
 	std::list<InterfaceElement*>::reverse_iterator current_element;
 	
-	for (current_element = elements.rend(); current_element != elements.rbegin(); current_element--) {
+	for (current_element = elements.rbegin(); current_element != elements.rend(); current_element++) {
 		(*current_element)->enabled = (*current_element)->next_frame_enabled;
 		if ((*current_element)->isEnabled())
 			(*current_element)->PreUpdate();
@@ -61,7 +61,7 @@ bool ModuleGUI::PreUpdate()
 
 bool ModuleGUI::Update(float dt)
 {
-	//BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::DarkMagenta);
+	BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::DarkMagenta);
 	std::list<InterfaceElement*>::iterator current_element;
 
 	for (current_element = elements.begin(); current_element != elements.end(); current_element++) {
@@ -91,10 +91,9 @@ bool ModuleGUI::CleanUp(pugi::xml_node& )
 	LOG("Freeing GUI");
 	std::list<InterfaceElement*>::reverse_iterator current_element;
 
-	for (current_element = elements.rend(); current_element != elements.rbegin(); current_element--) {
+	for (current_element = elements.rbegin(); current_element != elements.rend(); current_element++) {
 		(*current_element)->enabled = (*current_element)->next_frame_enabled;
-		
-			(*current_element)->CleanUp();
+		(*current_element)->CleanUp();
 	}
 	elements.clear();
 
@@ -130,9 +129,7 @@ InterfaceElement * ModuleGUI::getFocusedItem()
 
 InterfaceElement * ModuleGUI::AddElement(InterfaceElement * elem)
 {
-	elements.push_back(elem); // push back or front?
-
-
+	elements.push_back(elem);
 	return elem;
 }
 
@@ -144,7 +141,7 @@ void ModuleGUI::RemoveElement(InterfaceElement * elem)
 
 Sprite* ModuleGUI::AddSprite(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled)
 {
-	Sprite* aux = new Sprite(x, y, tex, anim, enabled);
+	Sprite* aux = new Sprite(x, y, tex, enabled, &anim);
 	AddElement(aux);
 	return aux;
 }
@@ -172,7 +169,7 @@ Label* ModuleGUI::AddLabel(int x, int y, int psize, const char * font_path, SDL_
 	return aux;
 }
 
-Button* ModuleGUI::AddButton(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback_c callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
+Button* ModuleGUI::AddButton(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
 {
 	Button* aux = new Button(_x, _y, _tex, _anim, _enabled, callback, _hovered_anim, _pressed_anim);
 
@@ -180,7 +177,7 @@ Button* ModuleGUI::AddButton(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, 
 	return aux;
 }
 
-Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback_c callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim, bool _axis, InterfaceElement* parent)
+Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim, bool _axis, InterfaceElement* parent)
 {
 	Slider* aux = new Slider(_x, _y, _tex, _anim, _enabled, callback, _hovered_anim, _pressed_anim, _axis);
 	

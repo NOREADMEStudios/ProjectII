@@ -2,8 +2,8 @@
 #define __LABEL_H__
 
 #include "InterfaceElement.h"
-#include "SDL_ttf\include\SDL_ttf.h"
-#include "SDL\include\SDL_pixels.h"
+#include "..\..\SDL_ttf\include\SDL_ttf.h"
+#include "..\..\SDL\include\SDL_pixels.h"
 
 typedef _TTF_Font Font;
 
@@ -55,9 +55,9 @@ public:
 	void setColor(SDL_Color fg, SDL_Color bg = { 0,0,0,0 });
 	void getColor(SDL_Color* fg, SDL_Color* bg = nullptr);
 	void setString(const char* string, ...);
-	void setString(p2SString string);
+	void setString(std::string string);
 	void getString(const char* string) const;
-	void getString(p2SString& string) const;
+	void getString(std::string& string) const;
 	void setFont(Font* font); // Use at your own risk, you are accountable for the memory management of the font
 	void setFont(const char* font_path, int pSize = -1); // Recommended since it uses the fonts module and doesn't require external memory management
 	Font* getFont();
@@ -69,7 +69,7 @@ public:
 protected:
 	Font* font = nullptr;
 	SDL_Color color_fg, color_bg;
-	p2SString string;
+	std::string string;
 	Alignment alignment;
 	bool text_changed = false, font_changed = false;
 	RenderMode render_mode = SOLID;

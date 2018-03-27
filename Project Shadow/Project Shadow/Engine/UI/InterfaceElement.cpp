@@ -63,23 +63,16 @@ bool InterfaceElement::Update(float dt)
 {
 	bool ret = true;
 
-	for (p2List_item<InterfaceElement*>* current_element = elements.start;
-		current_element != nullptr && ret;
-		current_element = current_element->next)
+	for (std::list<InterfaceElement*>::iterator current_element = elements.begin();
+		current_element != elements.end() && ret;
+		current_element++)
 	{
-		if (current_element->data->isEnabled())
-			ret = current_element->data->Update(dt);
+		if ((*current_element)->isEnabled())
+			ret = (*current_element)->Update(dt);
 	}
 
 	if (App->debug) {
-		SDL_Rect r = content_rect;
-		App->render->DrawQuad(result_rect, 255, 0, 0, 255, 0.0f, false, false, false);
-		App->render->DrawQuad(rect, 0, 0, 255, 255, 0.0f, false, false, false);
-		App->render->DrawQuad(r, 0, 255, 0, 255, 0.0f, false, false, false);
-		App->render->DrawLine(r.x, r.y + (int)(r.h * anchor_point.y), r.x + r.w, r.y + (int)(r.h * anchor_point.y), 0, 0, 255, 255, false, false);
-		App->render->DrawLine(r.x + (int)(r.w * anchor_point.x), r.y, r.x + (int)(r.w * anchor_point.x), r.y + r.h, 0, 0, 255, 255, false, false);
-		if (parent != nullptr)
-			App->render->DrawLine(parent->abs_pos.x, parent->abs_pos.y, abs_pos.x, abs_pos.y, 255, 255, 0, 255, false, false);
+		DebugDraw();
 	}
 
 	return ret;
@@ -89,12 +82,10 @@ bool InterfaceElement::PostUpdate()
 {
 	bool ret = true;
 
-	for (p2List_item<InterfaceElement*>* current_element = elements.start;
-		current_element != nullptr && ret;
-		current_element = current_element->next)
-	{
-		if (current_element->data->isEnabled())
-			ret = current_element->data->PostUpdate();
+	for (LIST_ITERATOR(InterfaceElement*) current_element = elements.begin();
+		current_element != elements.end() && ret; current_element++) {
+		if ((*current_element)->isEnabled())
+			ret = (*current_element)->PostUpdate();
 	}
 
 	return ret;
@@ -103,12 +94,10 @@ bool InterfaceElement::PostUpdate()
 bool InterfaceElement::CleanUp()
 {
 	bool ret = true;
-	for (p2List_item<InterfaceElement*>* current_element = elements.end;
-		current_element != nullptr && ret;
-		current_element = current_element->prev)
-	{
-		ret = current_element->data->CleanUp();
-		delete current_element->data;
+	for (LIST_REVERSE_ITERATOR(InterfaceElement*) current_element = elements.rbegin();
+		current_element != elements.rend() && ret; current_element++) {
+		ret = (*current_element)->CleanUp();
+		Release(*current_element);
 	}
 
 	elements.clear();
@@ -202,18 +191,30 @@ float InterfaceElement::GetAnchorY() const
 	return anchor_point.y;
 }
 
+void InterfaceElement::DebugDraw()
+{
+	SDL_Rect r = content_rect;
+
+	App->render->DrawQuad(result_rect, 255, 0, 0, 255, false, false);
+	App->render->DrawQuad(rect, 0, 0, 255, 255, false, false);
+	App->render->DrawQuad(r, 0, 255, 0, 255, false, false);
+	App->render->DrawLine(r.x, r.y + (int)(r.h * anchor_point.y), r.x + r.w, r.y + (int)(r.h * anchor_point.y), 0, 0, 255, 255, false);
+	App->render->DrawLine(r.x + (int)(r.w * anchor_point.x), r.y, r.x + (int)(r.w * anchor_point.x), r.y + r.h, 0, 0, 255, 255, false);
+	if (parent != nullptr)
+		App->render->DrawLine(parent->abs_pos.x, parent->abs_pos.y, abs_pos.x, abs_pos.y, 255, 255, 0, 255, false);
+}
+
 InterfaceElement * InterfaceElement::AddElement(InterfaceElement * elem)
 {
-	return elements.add(elem)->data;
+	elements.push_back(elem);
+	return elem;
 }
 
 void InterfaceElement::SetParent(InterfaceElement * parent)
 {
 	if (this->parent != nullptr)	// Erase the element from its previous parent if it already has one
 	{
-		int index = this->parent->elements.find(this);
-		if (index > -1)
-			this->parent->elements.del(this->parent->elements.At(index));
+		REMOVE_FROM_LIST(this, this->parent->elements, InterfaceElement*);
 	}
 
 	this->parent = parent;

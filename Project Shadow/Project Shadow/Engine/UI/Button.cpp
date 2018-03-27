@@ -6,8 +6,8 @@
 #include "..\ModuleAudio.h"
 #include "..\Scene.h"
 
-Button::Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback_c callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
-	: Sprite(_x, _y, _tex, _anim, _enabled)
+Button::Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
+	: Sprite(_x, _y, _tex, _enabled, &_anim)
 {
 	type = BUTTON;
 
@@ -63,9 +63,9 @@ bool Button::PreUpdate()
 			//SetFocus();
 			if (OnClick != nullptr)
 			{
-				OnClick(0);
-				if (type != SLIDER)
-					App->audio->PlayFx(App->scene->button_sound);
+				OnClick(nullptr);
+				if (type != SLIDER && clickSound >= 0)
+					App->audio->PlayFx(clickSound);
 			}
 
 		}
@@ -75,7 +75,7 @@ bool Button::PreUpdate()
 			current_anim = &pressed_anim;
 
 			if (OnClick != nullptr)
-				OnClick(0);
+				OnClick(nullptr);
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
 		{
@@ -101,13 +101,4 @@ bool Button::PreUpdate()
 void Button::setLabel(Label * label)
 {
 	this->label = label;
-}
-
-void callback(int n_params) {
-
-}
-
-void func() {
-	Button b;
-	b.callback = &callback;
 }

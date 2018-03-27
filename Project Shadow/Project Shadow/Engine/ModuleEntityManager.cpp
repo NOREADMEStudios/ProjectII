@@ -82,7 +82,8 @@ Entity* ModuleEntityManager::CreateEntity(EntityInfo entityInfo) {
 	}
 	else
 	{
-		ret = new Entity();
+		//ret = new Entity();
+		return nullptr;//
 	}
 
 	ret->type = entityInfo.type;

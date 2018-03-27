@@ -11,6 +11,11 @@ struct AnimationFrame {
 	iRect rect;
 	iPoint pivot;
 	iRect result_rect;
+
+public:
+	SDL_Rect GetRectSDL() {
+		return { rect.x, rect.y, rect.w, rect.h };
+	}
 };
 
 class Animation
@@ -39,10 +44,11 @@ public:
 
 	void PushBack(const SDL_Rect& rect, const iPoint& pivot = { 0, 0 })
 	{
-		iRect new_rect = rect;
+		iRect new_rect = { rect.x, rect.y, rect.w, rect.h};
 		frames.push_back({ new_rect, pivot, new_rect - pivot });
 		last_frame++;
 	}
+	
 
 	AnimationFrame& CurrentFrame()
 	{

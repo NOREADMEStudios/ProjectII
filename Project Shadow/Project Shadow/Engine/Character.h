@@ -3,6 +3,8 @@
 
 #include "Module.h"
 #include "Entity.h"
+#include "ModuleEntityManager.h"
+#include "Animation.h"
 
 
 
@@ -31,6 +33,10 @@ public:
 	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
 	
 	void UpdateInputs(float dt);
+
+	void LoadAnimations();
+
+	Animation idle;
 };
 #endif
 

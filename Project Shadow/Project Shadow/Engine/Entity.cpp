@@ -1,13 +1,19 @@
 #include "Entity.h"
+#include "App.h"
+#include "ModuleRender.h"
 
 
-
-Entity::Entity() {}
+Entity::Entity(EntityTypes type) {}
 
 
 Entity::~Entity() {}
 
+void Entity::Draw() {
 
+	
+
+	App->render->Blit(sprites, position.x, position.y, &(currentAnimation->CurrentFrame().GetRectSDL()));///
+}
 
 void Entity::Move(float delta_time) {
 	position.x += speedVector.x * delta_time;

@@ -5,8 +5,10 @@
 #include "ModuleSceneManager.h"
 #include "Point.h"
 #include "Animation.h"
+
 #include "Defs.h"
 
+struct SDL_Texture;
 enum EntityTypes;
 
 enum EntityState
@@ -34,7 +36,7 @@ struct Items
 class Entity : public Module
 {
 public:
-	Entity();
+	Entity(EntityTypes type);
 	~Entity();
 
 
@@ -65,7 +67,7 @@ public:
 	void SetPos(float x, float y);
 	void SetActive(bool sactive);
 
-
+	void Draw();
 
 
 	virtual void Move(float delta_time);
@@ -85,6 +87,7 @@ protected:
 	EntityState state = IDLE;
 	Animation* currentAnimation = nullptr;
 	EntityStats stats;
+	SDL_Texture* sprites;
 
 
 	// Should be same numeration as the states

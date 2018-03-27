@@ -4,8 +4,9 @@
 #include "App.h"
 
 
-Character::Character()
+Character::Character() :Entity(EntityTypes::CHARACTER)
 {
+	LoadAnimations();
 }
 
 
@@ -15,7 +16,6 @@ Character::~Character()
 
 bool Character::Awake(pugi::xml_node&)
 { 
-
 	return true;
 }
 
@@ -27,6 +27,7 @@ bool Character::Start()
 	//Testing things
 	collider = { 50 , 50 , 50, 50 };
 	stats.spd = 300;
+	currentAnimation = &idle;
 	return true; 
 }
 
@@ -39,7 +40,7 @@ bool Character::PreUpdate()
 
 bool Character::Update(float dt)
 { 
-	//App->render->Blit()
+	
 
 
 	UpdateInputs(dt);
@@ -50,6 +51,7 @@ bool Character::Update(float dt)
 	SDL_Rect provisional_rect{ position.x, position.y,collider.w,collider.h };
 	App->render->DrawQuad(provisional_rect, 255, 0, 0);
 
+	Draw();
 
 	return true; 
 }
@@ -106,4 +108,10 @@ void Character::UpdateInputs(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		Accelerate(0, stats.spd, dt);
+}
+
+void Character::LoadAnimations() {
+
+	//idle.PushBack({});
+
 }

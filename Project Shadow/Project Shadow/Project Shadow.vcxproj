@@ -159,7 +159,6 @@
     <ClInclude Include="Engine\Entity.h" />
     <ClInclude Include="Engine\ModuleEntityManager.h" />
     <ClInclude Include="Engine\ModuleSceneManager.h" />
-    <ClInclude Include="Engine\PerfTimer.h" />
     <ClInclude Include="Engine\Scene.h" />
     <ClInclude Include="Engine\Timer.h" />
     <ClInclude Include="Engine\Log.h" />

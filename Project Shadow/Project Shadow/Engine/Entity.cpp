@@ -3,16 +3,17 @@
 #include "ModuleRender.h"
 
 
+
 Entity::Entity(EntityTypes type) {}
 
 
 Entity::~Entity() {}
 
-void Entity::Draw() {
+void Entity::Draw(float dt) {
 
 	
 
-	App->render->Blit(sprites, position.x, position.y, &(currentAnimation->CurrentFrame().GetRectSDL()));///
+	App->render->Blit(sprites, position.x, position.y, &(currentAnimation->GetCurrentFrame(dt).GetRectSDL()));///
 }
 
 void Entity::Move(float delta_time) {

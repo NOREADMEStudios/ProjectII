@@ -37,6 +37,7 @@ public:
 	void LoadAnimations();
 
 	Animation idle;
+	Animation walking;
 };
 #endif
 

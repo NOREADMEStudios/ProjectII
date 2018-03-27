@@ -1,7 +1,9 @@
 #include "Character.h"
 #include "ModuleRender.h"
 #include "ModuleInput.h"
+#include "ModuleTextures.h"
 #include "App.h"
+
 
 
 Character::Character() :Entity(EntityTypes::CHARACTER)
@@ -23,6 +25,7 @@ bool Character::Start()
 { 
 	//Meh
 	//currentAnimation = &animations.front();
+	sprites = App->textures->Load("Fighter_sprites.png");
 
 	//Testing things
 	collider = { 50 , 50 , 50, 50 };
@@ -40,7 +43,7 @@ bool Character::PreUpdate()
 
 bool Character::Update(float dt)
 { 
-	
+	currentAnimation = &idle;
 
 
 	UpdateInputs(dt);
@@ -51,7 +54,7 @@ bool Character::Update(float dt)
 	SDL_Rect provisional_rect{ position.x, position.y,collider.w,collider.h };
 	App->render->DrawQuad(provisional_rect, 255, 0, 0);
 
-	Draw();
+	Draw(dt);
 
 	return true; 
 }
@@ -97,12 +100,14 @@ void Character::ModifyStats(int attack, int defense, int speed, int magic)
 
 void Character::UpdateInputs(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
 		Accelerate(-stats.spd, 0, dt);
-
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		currentAnimation = &walking;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
+		currentAnimation = &walking;
 		Accelerate(stats.spd, 0, dt);
-
+	}
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		Accelerate(0, -stats.spd, dt);
 
@@ -112,6 +117,10 @@ void Character::UpdateInputs(float dt)
 
 void Character::LoadAnimations() {
 
-	//idle.PushBack({});
-
+	idle.PushBack({19, 22, 63, 74});
+	walking.PushBack({ 21,114,65,75 });
+	walking.PushBack({ 94,114,65,75 });
+	walking.PushBack({ 167,114,65,75 });
+	walking.loop = true;
+	walking.speed = 4.0f;
 }

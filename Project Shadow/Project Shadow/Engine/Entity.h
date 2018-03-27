@@ -67,7 +67,7 @@ public:
 	void SetPos(float x, float y);
 	void SetActive(bool sactive);
 
-	void Draw();
+	void Draw(float dt);
 
 
 	virtual void Move(float delta_time);

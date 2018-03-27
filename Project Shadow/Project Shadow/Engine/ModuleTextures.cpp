@@ -27,7 +27,7 @@ bool ModuleTextures::Awake(pugi::xml_node& config)
 	assetsPath.append(config.attribute("folder").as_string());
 
 	if (!filesystem::exists(assetsPath)) {
-		LOG("Missing audio folder, creating default one");
+		LOG("Missing texture folder, creating default one");
 		filesystem::create_directory(assetsPath);
 	}
 	

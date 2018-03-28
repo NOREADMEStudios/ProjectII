@@ -16,6 +16,9 @@
 #include "ModuleFonts.h"
 #include "ModuleSceneManager.h"
 #include "ModuleEntityManager.h"
+#include "ModuleCollision.h"
+
+#include "..\Brofiler\Brofiler.h"
 
 // Constructor
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
@@ -33,8 +36,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	scenes = new ModuleSceneManager();
 	entities = new ModuleEntityManager();
 	map = new ModuleMap();	
-	/*collision = new j1Collision();
-	pathfinding = new j1PathFinding();*/
+	collision = new ModuleCollision();
+	/*pathfinding = new j1PathFinding();*/
 	font = new ModuleFonts();
 	gui = new ModuleGUI();
 	//transition = new j1Transition();
@@ -48,8 +51,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scenes);
 	AddModule(entities);
-	/*AddModule(collision);
-	AddModule(pathfinding);*/
+	AddModule(collision);
+	/*AddModule(pathfinding);*/
 	AddModule(font);
 	AddModule(gui);
 	//AddModule(transition);
@@ -197,8 +200,8 @@ void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
 	configNode.append_child("renderer").append_child("vsync").append_attribute("value") = "false";
 	xmlNode window = configNode.append_child("window");
 	xmlNode winRes = window.append_child("resolution");
-	winRes.append_attribute("width") = 1600;
-	winRes.append_attribute("height") = 900;
+	winRes.append_attribute("width") = DEFAULT_RESOLUTION_X;
+	winRes.append_attribute("height") = DEFAULT_RESOLUTION_Y;
 	winRes.append_attribute("scale") = 1.0f;
 	window.append_child("fullscreen").append_attribute("value") = 0;
 	window.append_child("borderless").append_attribute("value") = 0;
@@ -245,6 +248,7 @@ void Application::CheckFileStructure(const xmlNode & config) const
 		filesystem::create_directory(path);
 	}
 
+	// Iterate through nodes to check and create if needed all the assets directories
 	for (xmlNode iter = assets.first_child(); iter;) {
 		path = path + iter.attribute("folder").as_string();
 		if (!filesystem::exists(path)) {

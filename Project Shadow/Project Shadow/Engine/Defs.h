@@ -17,6 +17,9 @@
 #define ENTITIES_DIR "Entities/"
 #define INPUT_DIR "Input/"
 
+#define DEFAULT_RESOLUTION_X 1600
+#define DEFAULT_RESOLUTION_Y 900
+
 typedef unsigned int uint32;
 typedef unsigned int uint;
 typedef unsigned long int uint64;

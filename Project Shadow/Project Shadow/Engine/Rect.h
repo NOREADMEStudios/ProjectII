@@ -1,6 +1,8 @@
 #ifndef __RECT_H__
 #define __RECT_H__
 
+#include "Point.h"
+
 template<class TYPE>
 struct Rect {
 	TYPE x, y, w, h;

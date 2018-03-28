@@ -9,14 +9,6 @@
 #include <string>
 #include "../PugiXml/src/pugixml.hpp"
 
-struct Collider;
-
-class Application;
-
-class UI_Elem;
-
-enum ButtonEvent;
-
 class Module
 {
 public:
@@ -75,12 +67,6 @@ public:
 		return true;
 	}
 
-	virtual void OnCollision(Collider* c1, Collider* c2)
-	{
-
-	}
-
-	virtual bool OnEventChange(UI_Elem* elem, ButtonEvent event)  { return true; } //?
 
 public:
 

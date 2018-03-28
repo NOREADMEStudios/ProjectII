@@ -27,6 +27,9 @@
     <Filter Include="Engine\Entities">
       <UniqueIdentifier>{78cc683e-8b5a-48c5-8633-5283db298f19}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Scenes">
+      <UniqueIdentifier>{0bb1c964-22ba-4621-912c-32c3ca57296e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\App.cpp">
@@ -84,7 +87,7 @@
       <Filter>Engine\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Game\TestScene.cpp">
-      <Filter>Engine\Scenes</Filter>
+      <Filter>Game\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -154,8 +157,11 @@
     <ClInclude Include="Engine\ModuleMap.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\PerfTimer.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
     <ClInclude Include="Game\TestScene.h">
-      <Filter>Engine\Scenes</Filter>
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

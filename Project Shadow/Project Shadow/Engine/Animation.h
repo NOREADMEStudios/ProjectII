@@ -84,7 +84,7 @@ public:
 		return (int)current_frame;
 	}
 
-	/*Animation &operator =(const Animation &anim) 
+	Animation &operator =(const Animation &anim) 
 	{
 		loop = anim.loop;
 		speed = anim.speed;
@@ -97,7 +97,7 @@ public:
 			frames.push_back({ anim.frames[i].rect, anim.frames[i].pivot, anim.frames[i].result_rect });
 
 		return *this;
-	}*/
+	}
 };
 
 #endif

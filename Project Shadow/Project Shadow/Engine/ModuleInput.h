@@ -55,19 +55,8 @@ public:
 	bool GetWindowEvent(WindowEvent ev);
 
 	// Check key states (includes mouse and joy buttons)
-	KeyState GetKey(int id) const
-	{
-		if (keyboard[id].blocked)
-			return KEY_IDLE;
-		return keyboard[id].keyState;
-	}
-
-	KeyState GetMouseButtonDown(int id) const
-	{
-		if (mouse_buttons[id - 1].blocked)
-			return KEY_IDLE;
-		return mouse_buttons[id - 1].keyState;
-	}
+	KeyState GetKey(int id) const;
+	KeyState GetMouseButton(int id) const;
 
 	// Check if a certain window event happened
 	bool GetWindowEvent(int code);
@@ -76,30 +65,11 @@ public:
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
+	void BlockMouse();
+	void BlockKeyboard();
 
-	bool BlockMouseEvent(int event_id) {
-		if (mouse_buttons[event_id - 1].blocked)
-			return false;
-		mouse_buttons[event_id - 1].blocked = true;
-		return true;
-	}
-
-	bool BlockKeyboardEvent(int event_id) {
-		if (keyboard[event_id].blocked)
-			return false;
-		keyboard[event_id].blocked = true;
-		return true;
-	}
-
-	void BlockMouse() {
-		mouse_x = mouse_y = INT_MAX - 2;
-	}
-
-	void BlockKeyboard() {
-		for (uint i = 0; i < MAX_KEYS; i++) {
-			keyboard[i].blocked = true;
-		}
-	}
+	void BlockMouseEvent(int event_id);
+	void BlockKeyboardEvent(int event_id);
 
 private:
 	bool		windowEvents[WE_COUNT];

@@ -1,14 +1,12 @@
 #include "Button.h"
 #include "..\ModuleGUI.h"
-#include "InterfaceElement.h"
 #include "..\ModuleInput.h"
 #include "..\ModuleRender.h"
 #include "..\ModuleAudio.h"
-#include "..\Scene.h"
 
 Button::Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
-	: Sprite(_x, _y, _tex, _enabled, &_anim)
-{
+	: Sprite(_x, _y, _tex, _enabled, &_anim) {
+	
 	type = BUTTON;
 
 	if (_hovered_anim.w == 0 && _hovered_anim.h == 0)
@@ -27,16 +25,13 @@ Button::Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enable
 	interactuable = true;
 }
 
-Button::~Button()
-{
+Button::~Button() {
 }
 
-void Button::OnHover()
-{
+void Button::OnHover() {
 }
 
-bool Button::PreUpdate()
-{
+bool Button::PreUpdate() {
 	bool ret = InterfaceElement::PreUpdate();
 
 	if (label == nullptr) //Auto set label
@@ -54,10 +49,8 @@ bool Button::PreUpdate()
 	Mouse.h = CURSOR_WIDTH;
 
 	SDL_Rect result;
-	if (SDL_IntersectRect(&result_rect, &Mouse, &result) == SDL_TRUE)
-	{
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
+	if (SDL_IntersectRect(&result_rect, &Mouse, &result) == SDL_TRUE) {
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 			current_anim = &pressed_anim;
 			//SetFocus();
@@ -69,16 +62,14 @@ bool Button::PreUpdate()
 			}
 
 		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
-		{
+		else if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 			App->input->BlockMouseEvent(SDL_BUTTON_RIGHT);
 			current_anim = &pressed_anim;
 
 			if (OnClick != nullptr)
 				OnClick(nullptr);
 		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
-		{
+		else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_IDLE) {
 			current_anim = &hovered_anim;
 
 			if (label != nullptr)
@@ -86,8 +77,7 @@ bool Button::PreUpdate()
 			OnHover();
 		}
 	}
-	else
-	{
+	else {
 		current_anim = &idle_anim;
 		SDL_Color curr;
 		label->getColor(&curr);
@@ -98,7 +88,6 @@ bool Button::PreUpdate()
 	return ret;
 }
 
-void Button::setLabel(Label * label)
-{
+void Button::setLabel(Label * label) {
 	this->label = label;
 }

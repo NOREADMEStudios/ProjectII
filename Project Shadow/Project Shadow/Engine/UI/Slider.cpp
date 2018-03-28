@@ -29,7 +29,7 @@ bool Slider::PreUpdate()
 	r = (parent == nullptr) ? rect : result_rect;
 	if (SDL_IntersectRect(&r, &Mouse, &result) == SDL_TRUE)
 	{
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			current_anim = &pressed_anim;
 			App->gui->setFocus(this);
 			dragging = true;
@@ -37,7 +37,7 @@ bool Slider::PreUpdate()
 			delta_pos_mouse = abs_pos - m;
 			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE) {
+		else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_IDLE) {
 			current_anim = &hovered_anim;
 
 			if (label != nullptr)
@@ -49,7 +49,7 @@ bool Slider::PreUpdate()
 		current_anim = &idle_anim;
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus && dragging)
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus && dragging)
 	{
 		DragSlider();
 		if (OnClick != nullptr) {
@@ -58,7 +58,7 @@ bool Slider::PreUpdate()
 		}
 		App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && dragging)
+	else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && dragging)
 		dragging = false;
 
 	return ret;

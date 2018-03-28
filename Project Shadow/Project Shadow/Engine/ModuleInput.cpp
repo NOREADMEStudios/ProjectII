@@ -6,8 +6,7 @@
 #include "../SDL/include/SDL.h"
 
 
-ModuleInput::ModuleInput() : Module()
-{
+ModuleInput::ModuleInput() : Module() {
 	name = "input";
 
 	keyboard = new KeyEvent[MAX_KEYS];
@@ -16,14 +15,12 @@ ModuleInput::ModuleInput() : Module()
 }
 
 // Destructor
-ModuleInput::~ModuleInput()
-{
+ModuleInput::~ModuleInput() {
 	delete[] keyboard;
 }
 
 // Called before render is available
-bool ModuleInput::Awake(pugi::xml_node& config)
-{
+bool ModuleInput::Awake(pugi::xml_node& config) {
 	LOG("Init SDL input event system");
 	bool ret = true;
 	SDL_Init(0);
@@ -38,15 +35,13 @@ bool ModuleInput::Awake(pugi::xml_node& config)
 }
 
 // Called before the first frame
-bool ModuleInput::Start()
-{
+bool ModuleInput::Start() {
 	SDL_StopTextInput();
 	return true;
 }
 
 // Called each loop iteration
-bool ModuleInput::PreUpdate()
-{
+bool ModuleInput::PreUpdate() {
 	static SDL_Event event;
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
@@ -136,26 +131,52 @@ bool ModuleInput::PreUpdate()
 }
 
 // Called before quitting
-bool ModuleInput::CleanUp(pugi::xml_node&)
-{
+bool ModuleInput::CleanUp(pugi::xml_node&) {
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
 
-bool ModuleInput::GetWindowEvent(WindowEvent ev)
-{
+bool ModuleInput::GetWindowEvent(WindowEvent ev) {
 	return windowEvents[ev];
 }
 
-void ModuleInput::GetMousePosition(int& x, int& y)
-{
+KeyState ModuleInput::GetKey(int id) const {
+	if (keyboard[id].blocked)
+		return KEY_IDLE;
+	return keyboard[id].keyState;
+}
+
+KeyState ModuleInput::GetMouseButton(int id) const {
+	if (mouse_buttons[id - 1].blocked)
+		return KEY_IDLE;
+	return mouse_buttons[id - 1].keyState;
+}
+
+void ModuleInput::GetMousePosition(int& x, int& y) {
 	x = mouse_x;
 	y = mouse_y;
 }
 
-void ModuleInput::GetMouseMotion(int& x, int& y)
-{
+void ModuleInput::GetMouseMotion(int& x, int& y) {
 	x = mouse_motion_x;
 	y = mouse_motion_y;
+}
+
+void ModuleInput::BlockMouseEvent(int event_id) {
+	mouse_buttons[event_id - 1].blocked = true;
+}
+
+void ModuleInput::BlockKeyboardEvent(int event_id) {
+	keyboard[event_id].blocked = true;
+}
+
+void ModuleInput::BlockMouse() {
+	mouse_x = mouse_y = INT_MAX - 2;
+}
+
+void ModuleInput::BlockKeyboard() {
+	for (uint i = 0; i < MAX_KEYS; i++) {
+		keyboard[i].blocked = true;
+	}
 }

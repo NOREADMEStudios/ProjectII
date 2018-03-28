@@ -56,20 +56,20 @@ public:
 
 	void ComputeRects();
 
-	SDL_Texture* tex = nullptr;
-	Interfacetype type = NONE;
-	SDL_Rect rect;
-	SDL_Rect content_rect, content_rect_margins;
-	SDL_Rect result_rect;
-	float scale = 1.0f;
-	iPoint rel_pos;
-	iPoint abs_pos;
-	iPoint initial_pos;
-	bool in_focus = false;
-	bool culled = true;
-
-	bool next_frame_enabled = true;
-	bool enabled = true;
+	SDL_Texture*		tex = nullptr;
+	Interfacetype		type = NONE;
+	SDL_Rect			rect,
+						content_rect,
+						content_rect_margins,
+						result_rect;
+	iPoint				rel_pos,
+						abs_pos,
+						initial_pos;
+	float				scale = 1.0f;
+	bool				in_focus = false,
+						culled = true,
+						next_frame_enabled = true,
+						enabled = true;
 
 protected:
 

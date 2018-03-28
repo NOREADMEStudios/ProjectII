@@ -6,30 +6,25 @@
 #include "..\ModuleWindow.h"
 
 
-Window::Window(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled) : Sprite(_x,_y, _tex, _enabled, &_anim)
-{
+Window::Window(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled) : Sprite(_x,_y, _tex, _enabled, &_anim) {
 	type = Interfacetype::WINDOW;
 	culled = false;
 	interactuable = true;
+	locked = false;
 }
 
-Window::Window(const Window_Info & info) : Window(info.x, info.y, info.tex, info.anim, info.enabled)
-{
+Window::Window(const Window_Info & info) : Window(info.x, info.y, info.tex, info.anim, info.enabled) {
 	OnClose = info.OnClose;
 	SetContentRect(info.content_rect_margins.x, info.content_rect_margins.y, info.content_rect_margins.w, info.content_rect_margins.h);
 }
 
 
-Window::~Window()
-{
+Window::~Window() {
 	if (in_focus)
 		App->gui->setFocus(parent);
 }
 
-bool Window::PreUpdate()
-{
-	//ComputeRects();
-	
+bool Window::PreUpdate() {
 	bool ret = InterfaceElement::PreUpdate();
 
 	//Focus();
@@ -40,10 +35,8 @@ bool Window::PreUpdate()
 
 	SDL_Rect result, r;
 	r = (parent == nullptr) ? rect : result_rect;
-	if (SDL_IntersectRect(&r, &Mouse, &result) == SDL_TRUE)
-	{
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
+	if (SDL_IntersectRect(&r, &Mouse, &result) == SDL_TRUE) {
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			App->gui->setFocus(this);
 			dragging = true;
 			iPoint m = { Mouse.x, Mouse.y };
@@ -52,12 +45,11 @@ bool Window::PreUpdate()
 		}
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus && dragging && !locked)
-	{
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus && dragging && !locked) {
 		App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 		DragWindow();
 	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && dragging)
+	else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && dragging)
 		dragging = false;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
@@ -66,7 +58,7 @@ bool Window::PreUpdate()
 			OnClose(0);
 	}
 
-	App->input->BlockMouse();
+	//App->input->BlockMouse();
 	App->input->BlockKeyboard();
 
 	return ret;

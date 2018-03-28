@@ -93,7 +93,7 @@ bool Application::Awake()
 
 	xmlDocument	config_file;
 	xmlNode		config;
-	xmlNode		app_config;
+	xmlNode		appConfig;
 
 	bool ret = false;
 		
@@ -102,14 +102,14 @@ bool Application::Awake()
 	if(config.empty() == false)
 	{
 		// self-config
-		ret = true;
-		app_config = config.child("app");
-		title = app_config.child("Title").attribute("value").as_string();
-		organization = app_config.child("organisation").attribute("value").as_string();
-		framerate_cap = app_config.attribute("framerateCap").as_uint();
+		ret = true; 
+		appConfig = config.child("app");
+		title = appConfig.child("Title").attribute("value").as_string();
+		organization = appConfig.child("organisation").attribute("value").as_string();
+		framerate_cap = appConfig.attribute("framerateCap").as_uint();
 
 		//Checking file structure
-		CheckFileStructure(config);
+		CheckFileStructure(appConfig);
 	}
 
 	if(ret == true)
@@ -167,6 +167,31 @@ void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
 	app.append_attribute("framerateCap").set_value(60);
 	app.append_child("Title").append_attribute("value") = "Shadow Engine";
 	app.append_child("organisation").append_attribute("value") = "NoReadme Studio";
+
+	// Assets folder structure
+	xmlNode assetsStructure = app.append_child("Assets");
+	assetsStructure.append_attribute("folder") = ASSETS_ROOT;
+	xmlNode anims = assetsStructure.append_child("Animations");
+	anims.append_attribute("folder") = ANIMATIONS_DIR;
+	anims.append_child("Characters").append_attribute("folder") = CHARACTERS_DIR;
+	anims.append_child("Enemies").append_attribute("folder") = ENEMIES_DIR;
+
+	xmlNode audio = assetsStructure.append_child("Audio");
+	audio.append_attribute("folder") = AUDIO_DIR;
+	audio.append_child("BGM").append_attribute("folder") = AUDIO_BGM_DIR;
+	audio.append_child("FX").append_attribute("folder") = AUDIO_FX_DIR;
+
+	assetsStructure.append_child("Maps").append_attribute("folder") = MAPS_DIR;
+	assetsStructure.append_child("Scenes").append_attribute("folder") = SCENES_DIR;
+
+	xmlNode textures = assetsStructure.append_child("Textures");
+	textures.append_attribute("folder") = TEXTURES_DIR;
+	textures.append_child("Characters").append_attribute("folder") = CHARACTERS_DIR;
+	textures.append_child("Enemies").append_attribute("folder") = ENEMIES_DIR;
+	textures.append_child("Maps").append_attribute("folder") = MAPS_DIR;
+
+	assetsStructure.append_child("Input").append_attribute("folder") = INPUT_DIR;
+
 	configNode.append_child("renderer").append_child("vsync").append_attribute("value") = "false";
 	xmlNode window = configNode.append_child("window");
 	xmlNode winRes = window.append_child("resolution");
@@ -177,15 +202,15 @@ void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
 	window.append_child("borderless").append_attribute("value") = 0;
 	window.append_child("resizable").append_attribute("value") = 0;
 	window.append_child("fullscreenWindow").append_attribute("value") = 0;
-	configNode.append_child("scenes").append_attribute("folder") = "Scenes/";
-	configNode.append_child("map").append_attribute("folder") = "Maps/";
-	configNode.append_child("entities").append_attribute("folder") = "Entities/";
-	configNode.append_child("textures").append_attribute("folder") = "Textures/";
-	xmlNode audio = configNode.append_child("audio");
+	configNode.append_child("scenes").append_attribute("folder") = SCENES_DIR;
+	configNode.append_child("map").append_attribute("folder") = MAPS_DIR;
+	configNode.append_child("entities").append_attribute("folder") = ENTITIES_DIR;
+	configNode.append_child("textures").append_attribute("folder") = TEXTURES_DIR;
+	audio = configNode.append_child("audio");
+	audio.append_attribute("folder") = AUDIO_DIR;
 	audio.append_attribute("volumeFX") = 1.0f;
 	audio.append_attribute("volumeBGM") = 1.0f;
-	audio.append_attribute("folder") = "Audio/";
-	configNode.append_child("input").append_attribute("folder") = "Input/";
+	configNode.append_child("input").append_attribute("folder") = INPUT_DIR;
 }
 
 // ---------------------------------------------
@@ -207,14 +232,40 @@ xmlNode Application::LoadConfig(xmlDocument& config_file) const {
 	return ret;
 }
 
-bool Application::CheckFileStructure(const xmlNode & config) const
+void Application::CheckFileStructure(const xmlNode & config) const
 {
 	namespace filesystem = std::experimental::filesystem;
-	filesystem::path assetsPath = ASSETS_ROOT;
-	bool exists = filesystem::exists(assetsPath);
+	xmlNode assets = config.child("Assets");
 
-	if (!exists) filesystem::create_directory(assetsPath);
-	return exists;
+	std::string path = assets.attribute("folder").as_string();
+	if (!filesystem::exists(path)) {
+		LOG("Missing folder %s, creating default one", path.c_str());
+		filesystem::create_directory(path);
+	}
+
+	for (xmlNode iter = assets.first_child(); iter;) {
+		path = path + iter.attribute("folder").as_string();
+		if (!filesystem::exists(path)) {
+			LOG("Missing folder %s, creating default one", path.c_str());
+			filesystem::create_directory(path);
+		}
+
+		if (iter.first_child() != nullptr) {
+			iter = iter.first_child();
+		}
+		else if (iter.next_sibling() != nullptr) {
+			int pos = path.find(iter.attribute("folder").as_string(), 0);
+			path = path.substr(0, pos);
+			iter = iter.next_sibling();
+		}
+		else {
+			int pos = path.find(iter.attribute("folder").as_string(), 0);
+			path = path.substr(0, pos);
+			pos = path.find(iter.parent().attribute("folder").as_string());
+			path = path.substr(0, pos);
+			iter = iter.parent().next_sibling();
+		}
+	}
 }
 
 // ---------------------------------------------

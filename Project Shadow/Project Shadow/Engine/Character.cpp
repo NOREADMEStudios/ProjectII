@@ -66,6 +66,7 @@ bool Character::PostUpdate()
 
 bool Character::CleanUp(pugi::xml_node&)
 { 
+	App->textures->UnLoad(sprites);
 	return true;
 }
 

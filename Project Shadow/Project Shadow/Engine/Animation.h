@@ -6,6 +6,8 @@
 #include "Rect.h"
 #include <vector>
 
+#define 
+
 
 struct AnimationFrame {
 	iRect rect;
@@ -32,6 +34,8 @@ private:
 	int last_frame = 0;
 	int loops = 0;
 
+	pugi::xml_document animationFile;
+
 public:
 
 	Animation()
@@ -40,6 +44,18 @@ public:
 	Animation(const Animation& anim) : loop(anim.loop), speed(anim.speed), last_frame(anim.last_frame), frames(anim.frames)
 	{
 		//SDL_memcpy(&frames, anim.frames, sizeof(frames));
+	}
+
+	bool LoadAnimationsfromXML(std::string animationName, std::string file_name) {
+		pugi::xml_parse_result result = animationFile.load_file(file_name.data);
+		if (result != NULL) {
+			for (pugi::xml_node anim = animationFile.child("map").child("objectgroup"); anim; anim = anim.next_sibling("objectgroup")) {
+				if (anim.attribute("name").as_string() == animationName.data) {
+					anim = anim.child("properties").child("prperty")
+				}
+			}
+		}
+		return false;
 	}
 
 	void PushBack(const SDL_Rect& rect, const iPoint& pivot = { 0, 0 })

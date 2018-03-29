@@ -97,7 +97,7 @@ bool InterfaceElement::CleanUp()
 	for (LIST_REVERSE_ITERATOR(InterfaceElement*) current_element = elements.rbegin();
 		current_element != elements.rend() && ret; current_element++) {
 		ret = (*current_element)->CleanUp();
-		Release(*current_element);
+		Utils::Release(*current_element);
 	}
 
 	elements.clear();

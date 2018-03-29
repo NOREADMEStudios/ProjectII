@@ -116,6 +116,9 @@
     <ClCompile Include="Engine\ModuleFonts.cpp">
       <Filter>Engine\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ModuleCollision.cpp">
+      <Filter>Engine\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -218,6 +221,9 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ModuleFonts.h">
+      <Filter>Engine\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleCollision.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
   </ItemGroup>

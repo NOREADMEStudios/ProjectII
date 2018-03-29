@@ -3,23 +3,28 @@
 
 #include "Module.h"
 #include "Defs.h"
-#include <list>
 #include "Rect.h"
+
+#define MAX_TAGS 16
+
+class Entity;
 
 struct Collider {
 	enum Type {
 		TRIGGER,
-		PHYSIC
+		PHYSIC,
+		Number
 	} type;
 	iRect collider;
-	Callback callback = nullptr;
+	Entity* callback = nullptr;
+	String	tag;
 };
 
 class ModuleCollision
 	: public Module
 {
 public:
-	ModuleCollision() {};
+	ModuleCollision();
 	virtual ~ModuleCollision() {};
 
 	bool Awake(xmlNode& config) override;
@@ -35,6 +40,8 @@ public:
 private:
 
 	LIST(Collider*) colliders;
+	ARRAY(String) tagList;
+	bool interactionTable [MAX_TAGS][MAX_TAGS];
 
 };
 

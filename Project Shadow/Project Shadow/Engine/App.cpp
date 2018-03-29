@@ -80,7 +80,7 @@ Application::~Application()
 	//we must use this structure now with stl:
 	//we need to be careful with the use of "iterator" and "reverse_iterator" and use them for their intended purposes (front-to-back and back-to-front)
 	for (ModuleList::reverse_iterator item = modules.rbegin(); item != modules.rend(); item++) {
-		Release(*item);
+		Utils::Release(*item);
 	}
 	modules.clear();
 }

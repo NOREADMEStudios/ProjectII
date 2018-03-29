@@ -12,6 +12,8 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModuleMap.h"
+#include "ModuleGUI.h"
+#include "ModuleFonts.h"
 #include "ModuleSceneManager.h"
 #include "ModuleEntityManager.h"
 #include "../Brofiler/Brofiler.h"
@@ -33,10 +35,10 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	entities = new ModuleEntityManager();
 	map = new ModuleMap();	
 	/*collision = new j1Collision();
-	pathfinding = new j1PathFinding();
-	font = new j1Fonts();
-	gui = new j1Gui();
-	transition = new j1Transition();*/
+	pathfinding = new j1PathFinding();*/
+	font = new ModuleFonts();
+	gui = new ModuleGUI();
+	//transition = new j1Transition();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -48,10 +50,10 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scenes);
 	AddModule(entities);
 	/*AddModule(collision);
-	AddModule(pathfinding);
+	AddModule(pathfinding);*/
 	AddModule(font);
 	AddModule(gui);
-	AddModule(transition);*/
+	//AddModule(transition);
 
 	// render last to swap buffer
 	AddModule(render);
@@ -361,11 +363,9 @@ bool Application::PreUpdate()
 bool Application::DoUpdate()
 {
 	bool ret = true;
-	ModuleList::iterator item;
-	item = modules.begin();
 	Module* pModule = NULL;
 
-	for(item = modules.begin(); item != modules.end() && ret == true; item++)
+	for(ModuleList::iterator item = modules.begin(); item != modules.end() && ret == true; item++)
 	{
 		pModule = *item;
 

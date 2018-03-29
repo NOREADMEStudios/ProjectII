@@ -21,9 +21,9 @@ class ModuleMap;
 /*class j1Scene;
 class j1Collision;
 class j1PathFinding;
-class j1Fonts;
-class j1Gui;
 class j1Transition;*/
+class ModuleFonts;
+class ModuleGUI;
 class ModuleSceneManager;
 class ModuleEntityManager;
 
@@ -112,10 +112,10 @@ public:
 	ModuleMap*				map = nullptr;
 	/*j1Scene*			scene = nullptr;
 	j1Collision*		collision = nullptr;
-	j1PathFinding*		pathfinding = nullptr;
-	j1Fonts*			font = nullptr;
-	j1Gui*				gui = nullptr;
+	j1PathFinding*		pathfinding = nullptr;	
 	j1Transition*		transition = nullptr;*/
+	ModuleFonts*			font = nullptr;
+	ModuleGUI*				gui = nullptr;
 	ModuleSceneManager*		scenes = nullptr;
 	ModuleEntityManager*	entities = nullptr;
 

@@ -29,6 +29,12 @@ struct KeyEvent {
 	bool blocked = false;
 };
 
+class Controller
+{
+	bool Y, X, A, B, LB, RB, LT, RT, DPAD_UP, DPAD_DOWN, DPAD_LEFT, DPAD_RIGHT, BACK, START;
+	float RSAxisY, RSAxisX, LSAxisY, LSAxisX, RT, LT;
+};
+
 class ModuleInput : public Module
 {
 

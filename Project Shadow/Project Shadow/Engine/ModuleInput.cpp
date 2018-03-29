@@ -10,6 +10,7 @@ ModuleInput::ModuleInput() : Module() {
 	name = "input";
 
 	keyboard = new KeyEvent[MAX_KEYS];
+	controller1 = 
 	memset(keyboard, { KEY_IDLE }, sizeof(KeyEvent) * MAX_KEYS);
 	memset(mouse_buttons, { KEY_IDLE }, sizeof(KeyEvent) * NUM_MOUSE_BUTTONS);
 }
@@ -30,6 +31,28 @@ bool ModuleInput::Awake(pugi::xml_node& config) {
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
+
+	if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0)
+	{
+		LOG("SDL_GAMEPAD could not initialize! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
+	else
+	{
+		if (SDL_NumJoysticks() > 0)
+		{
+			controller1 = SDL_GameControllerOpen(0);
+			if (controller1 == nullptr)
+			{
+				LOG("Controller couldn't be initialized SDL_Error: %s\n", SDL_GetError());
+			}
+			else
+			{
+				controller_connected == true;
+			}
+			controller2 = SDL_GameControllerOpen(1);
+		}
+	};
 
 	return ret;
 }

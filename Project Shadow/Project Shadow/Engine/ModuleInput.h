@@ -6,6 +6,7 @@
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
 #define MAX_KEYS 300
+#define MAX_BUTTONS 50
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
 enum WindowEvent
@@ -22,6 +23,14 @@ enum KeyState
 	KEY_DOWN,
 	KEY_REPEAT,
 	KEY_UP
+};
+
+enum BUTTON_STATE
+{
+	B_IDLE = 0,
+	B_DOWN,
+	B_REPEAT,
+	B_UP
 };
 
 struct KeyEvent {
@@ -85,6 +94,11 @@ private:
 	int			mouse_motion_y;
 	int			mouse_x, mouse_x_prev;
 	int			mouse_y, mouse_y_prev;
+
+	BUTTON_STATE controller1State[MAX_BUTTONS];
+	BUTTON_STATE controller2State[MAX_BUTTONS];
+	SDL_GameController* controller1 = nullptr;
+	SDL_GameController* controller2 = nullptr;
 };
 
 #endif // __INPUT_H__

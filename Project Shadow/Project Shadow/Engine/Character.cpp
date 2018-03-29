@@ -4,11 +4,12 @@
 #include "ModuleTextures.h"
 #include "App.h"
 
-
+#define CHARACTER_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
 
 Character::Character() :Entity(EntityTypes::CHARACTER)
 {
-	LoadAnimations();
+	idle.name = "idle";
+	walking.name = "walking";
 }
 
 
@@ -17,7 +18,7 @@ Character::~Character()
 }
 
 bool Character::Awake(pugi::xml_node&)
-{ 
+{ 	
 	return true;
 }
 
@@ -26,6 +27,7 @@ bool Character::Start()
 	//Meh
 	//currentAnimation = &animations.front();
 	sprites = App->textures->Load("Fighter_sprites.png");
+	LoadAnimations();
 
 	//Testing things
 	collider = { 50 , 50 , 50, 50 };
@@ -118,10 +120,6 @@ void Character::UpdateInputs(float dt)
 
 void Character::LoadAnimations() {
 
-	idle.PushBack({19, 22, 63, 74});
-	walking.PushBack({ 21,114,65,75 });
-	walking.PushBack({ 94,114,65,75 });
-	walking.PushBack({ 167,114,65,75 });
-	walking.loop = true;
-	walking.speed = 4.0f;
+	idle.LoadAnimationsfromXML(CHARACTER_SPRITE_ROOT);
+	walking.LoadAnimationsfromXML(CHARACTER_SPRITE_ROOT);
 }

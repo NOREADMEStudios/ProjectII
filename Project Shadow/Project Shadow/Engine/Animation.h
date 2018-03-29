@@ -6,8 +6,6 @@
 #include "Rect.h"
 #include <vector>
 
-#define 
-
 
 struct AnimationFrame {
 	iRect rect;
@@ -16,7 +14,7 @@ struct AnimationFrame {
 
 public:
 	SDL_Rect GetRectSDL() {
-		return { rect.x, rect.y, rect.w, rect.h };
+		return rect.toSDL_Rect();
 	}
 };
 
@@ -27,7 +25,7 @@ public:
 	float speed = 1.0f;
 	std::vector<AnimationFrame> frames;
 
-	const char* name;
+	std::string name;
 
 private:
 	float current_frame = 0.0f;
@@ -46,12 +44,26 @@ public:
 		//SDL_memcpy(&frames, anim.frames, sizeof(frames));
 	}
 
-	bool LoadAnimationsfromXML(std::string animationName, std::string file_name) {
-		pugi::xml_parse_result result = animationFile.load_file(file_name.data);
+	bool LoadAnimationsfromXML(std::string file_name) {
+		pugi::xml_parse_result result = animationFile.load_file(file_name.data());
 		if (result != NULL) {
+			std::string lop = "loop";
+			std::string spd = "speed";
 			for (pugi::xml_node anim = animationFile.child("map").child("objectgroup"); anim; anim = anim.next_sibling("objectgroup")) {
-				if (anim.attribute("name").as_string() == animationName.data) {
-					anim = anim.child("properties").child("prperty")
+				if (anim.attribute("name").as_string() == name) {
+					for (pugi::xml_node propert = anim.child("properties").child("property"); propert; propert = propert.next_sibling("property")) {
+						if (strcmp(propert.attribute("name").as_string(),lop.data())) {
+							loop = propert.attribute("value").as_bool();
+						}
+						else if (strcmp(propert.attribute("name").as_string(), spd.data())) {
+							speed = propert.attribute("value").as_float();
+						}
+					}
+					for (pugi::xml_node object = anim.child("object"); object; object=object.next_sibling("object")) {
+						iRect frame = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
+						this->PushBack(frame.toSDL_Rect());
+					}
+					return true;
 				}
 			}
 		}
@@ -100,7 +112,7 @@ public:
 		return (int)current_frame;
 	}
 
-	Animation &operator =(const Animation &anim) 
+	/*Animation &operator =(const Animation &anim) 
 	{
 		loop = anim.loop;
 		speed = anim.speed;
@@ -113,7 +125,7 @@ public:
 			frames.push_back({ anim.frames[i].rect, anim.frames[i].pivot, anim.frames[i].result_rect });
 
 		return *this;
-	}
+	}*/
 };
 
 #endif

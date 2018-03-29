@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "Module.h"
+#include "Character.h"
 
 #include <list>
 
@@ -15,7 +16,8 @@ enum EntityTypes {
 
 struct EntityInfo {
 
-	EntityTypes type;
+	EntityTypes type = NOTYPE;
+	iPoint pos{ 0, 0 };
 	
 };
 
@@ -43,6 +45,7 @@ public:
 
 	Entity* CreateEntity(EntityInfo entityInfo);
 	void DestroyEntity(Entity* entity);
+
 
 
 private:

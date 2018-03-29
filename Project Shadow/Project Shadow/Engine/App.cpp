@@ -16,6 +16,7 @@
 #include "ModuleFonts.h"
 #include "ModuleSceneManager.h"
 #include "ModuleEntityManager.h"
+#include "../Brofiler/Brofiler.h"
 
 // Constructor
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
@@ -92,6 +93,7 @@ void Application::AddModule(Module* module)
 bool Application::Awake()
 {
 	//PERF_START(ptimer);
+	BROFILER_CATEGORY("App_Awake", Profiler::Color::Red);
 
 	xmlDocument	config_file;
 	xmlNode		config;
@@ -131,6 +133,7 @@ bool Application::Awake()
 bool Application::Start()
 {
 	//PERF_START(ptimer);
+	BROFILER_CATEGORY("App_Start", Profiler::Color::Blue);
 
 	bool ret = true;
 
@@ -145,6 +148,8 @@ bool Application::Start()
 // Called each loop iteration
 bool Application::Update() {
 	bool ret = true;
+
+	BROFILER_CATEGORY("App_Update", Profiler::Color::Green);
 	PrepareUpdate();
 
 	if(input->GetWindowEvent(WE_QUIT) == true)
@@ -399,6 +404,7 @@ bool Application::PostUpdate()
 bool Application::CleanUp()
 {
 	//PERF_START(ptimer);
+	BROFILER_CATEGORY("App_CleanUp", Profiler::Color::Violet);
 
 	xmlDocument	config_file;
 	xmlNode		config;

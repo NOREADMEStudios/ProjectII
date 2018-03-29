@@ -220,5 +220,11 @@
     <ClInclude Include="Engine\ModuleFonts.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\PerfTimer.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Animation.h">
+      <Filter>Engine\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

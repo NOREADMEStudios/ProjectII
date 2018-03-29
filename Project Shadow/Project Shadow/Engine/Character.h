@@ -3,6 +3,9 @@
 
 #include "Module.h"
 #include "Entity.h"
+#include "ModuleEntityManager.h"
+#include "Animation.h"
+
 
 
 class Character : public Entity
@@ -12,22 +15,29 @@ public:
 	~Character();
 
 
-	bool Awake(pugi::xml_node&) override { return true; }
+	bool Awake(pugi::xml_node&) override;
 
-	bool Start()override { return true; }
+	bool Start()override;
 
-	bool PreUpdate()override { return true; }
+	bool PreUpdate()override;
 
-	bool Update(float dt)override { return true; }
+	bool Update(float dt)override;
 
-	bool PostUpdate()override { return true; }
+	bool PostUpdate()override;
 
-	bool CleanUp(pugi::xml_node&)override { return true; }
+	bool CleanUp(pugi::xml_node&)override;
 
 	bool Load(pugi::xml_node&) override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
 
+	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
 	
+	void UpdateInputs(float dt);
+
+	void LoadAnimations();
+
+	Animation idle;
+	Animation walking;
 };
 #endif
 

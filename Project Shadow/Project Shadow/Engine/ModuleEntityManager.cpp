@@ -72,9 +72,25 @@ bool ModuleEntityManager::Save(pugi::xml_node& n)const {
 	return true;
 }
 
-Entity* ModuleEntityManager::CreateEntity(EntityInfo) {
+Entity* ModuleEntityManager::CreateEntity(EntityInfo entityInfo) {
 
 	Entity* ret = nullptr;
+
+	if (entityInfo.type == CHARACTER)
+	{
+		ret = new Character();
+	}
+	else
+	{
+		//ret = new Entity();
+		return nullptr;//
+	}
+
+	ret->type = entityInfo.type;
+	ret->SetPos(entityInfo.pos.x, entityInfo.pos.y);
+
+	entities.push_back(ret);
+
 	return ret;
 }
 
@@ -83,3 +99,4 @@ void ModuleEntityManager::DestroyEntity(Entity* entity) {
 
 	
 }
+

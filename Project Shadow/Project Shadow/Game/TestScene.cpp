@@ -2,6 +2,7 @@
 #include "../Engine/ModuleMap.h"
 #include "../Engine/App.h"
 #include "../Engine/ModuleSceneManager.h"
+#include "../Engine/ModuleEntityManager.h"
 #include "../Engine/ModuleGUI.h"
 #include "../Engine/ModuleTextures.h"
 #include "../Engine/UI/Window.h"
@@ -17,6 +18,10 @@ TestScene::~TestScene()
 
 bool TestScene::Start()
 {
+
+	App->map->Load("map.tmx");
+	App->entities->CreateEntity({ CHARACTER,{100,500} });
+
 	//App->map->Load("map.tmx");
 	App->debug = true;
 	SDL_Texture* t = App->textures->Load("map2_spritesheet.png");
@@ -25,6 +30,7 @@ bool TestScene::Start()
 	s->SetParent(w);
 	s->culled = true;
 	w->SetContentRect(50, 50, 50, 50);
+
 	return false;
 }
 

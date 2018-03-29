@@ -71,6 +71,7 @@ public:
 	void BlockMouseEvent(int event_id);
 	void BlockKeyboardEvent(int event_id);
 
+
 private:
 	bool		windowEvents[WE_COUNT];
 	KeyEvent*	keyboard;

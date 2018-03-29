@@ -26,7 +26,7 @@ bool Character::Start()
 { 
 	//Meh
 	//currentAnimation = &animations.front();
-	sprites = App->textures->Load("Fighter_sprites.png");
+	sprites = App->textures->Load("Characters/Fighter_sprites.png");
 	LoadAnimations();
 
 	//Testing things

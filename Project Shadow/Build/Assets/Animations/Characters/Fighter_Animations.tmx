@@ -6,7 +6,7 @@
  <objectgroup name="idle">
   <properties>
    <property name="loop" type="bool" value="true"/>
-   <property name="speed" type="float" value="1"/>
+   <property name="speed" type="float" value="8"/>
   </properties>
   <object id="1" x="19" y="22" width="63" height="74"/>
   <object id="3" x="91" y="22" width="63" height="74"/>
@@ -16,7 +16,7 @@
  <objectgroup name="walking">
   <properties>
    <property name="loop" type="bool" value="true"/>
-   <property name="speed" type="float" value="1"/>
+   <property name="speed" type="float" value="8"/>
   </properties>
   <object id="7" x="22" y="113" width="65" height="76"/>
   <object id="11" x="95" y="113" width="65" height="76"/>

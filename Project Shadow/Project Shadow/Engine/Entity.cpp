@@ -10,9 +10,6 @@ Entity::Entity(EntityTypes type) {}
 Entity::~Entity() {}
 
 void Entity::Draw(float dt) {
-
-	
-
 	App->render->Blit(sprites, position.x, position.y, &(currentAnimation->GetCurrentFrame(dt).GetRectSDL()));///
 }
 

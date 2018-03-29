@@ -52,10 +52,10 @@ public:
 			for (pugi::xml_node anim = animationFile.child("map").child("objectgroup"); anim; anim = anim.next_sibling("objectgroup")) {
 				if (anim.attribute("name").as_string() == name) {
 					for (pugi::xml_node propert = anim.child("properties").child("property"); propert; propert = propert.next_sibling("property")) {
-						if (strcmp(propert.attribute("name").as_string(),lop.data())) {
+						if (strcmp(propert.attribute("name").as_string(), lop.data()) == 0) {
 							loop = propert.attribute("value").as_bool();
 						}
-						else if (strcmp(propert.attribute("name").as_string(), spd.data())) {
+						else if (strcmp(propert.attribute("name").as_string(), spd.data()) == 0) {
 							speed = propert.attribute("value").as_float();
 						}
 					}
@@ -82,6 +82,7 @@ public:
 	{
 		return frames[(int)current_frame];
 	}
+
 	AnimationFrame& GetCurrentFrame(float delta_time)
 	{
 		current_frame = current_frame + speed * delta_time;

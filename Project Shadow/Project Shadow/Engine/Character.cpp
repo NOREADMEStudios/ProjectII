@@ -4,6 +4,7 @@
 #include "ModuleTextures.h"
 #include "App.h"
 
+
 #define CHARACTER_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
 
 Character::Character() :Entity(EntityTypes::CHARACTER)
@@ -53,10 +54,12 @@ bool Character::Update(float dt)
 	Break(dt);
 
 	//Only for first testings
-	SDL_Rect provisional_rect{ position.x, position.y,collider.w,collider.h };
-	App->render->DrawQuad(provisional_rect, 255, 0, 0);
+	//SDL_Rect provisional_rect{ position.x, position.y,collider.w,collider.h };
+	//App->render->DrawQuad(provisional_rect, 255, 0, 0);
 
-	Draw(dt);
+	//Draw(dt);
+
+	App->render->FillQueue(this);
 
 	return true; 
 }

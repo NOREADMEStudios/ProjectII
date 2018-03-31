@@ -77,3 +77,13 @@ void Entity::SetActive(bool sactive)
 {
 	active = sactive;
 }
+
+uint Entity::GetPriority() const
+{
+	return priority;
+}
+
+iRect Entity::GetCollider() const
+{
+	return collider;
+}

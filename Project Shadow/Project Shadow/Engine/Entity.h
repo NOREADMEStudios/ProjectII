@@ -63,6 +63,8 @@ public:
 	float GetPosY();
 	fPoint GetSpeed();
 	EntityTypes GetType();
+	uint GetPriority() const;
+	iRect GetCollider() const;
 
 
 	void SetPos(float x, float y);
@@ -80,6 +82,7 @@ public:
 protected:
 
 	bool active = true;
+	uint priority = 0;
 	fPoint position{ 0,0 };
 	fPoint speedVector{ 0,0 };
 

@@ -37,6 +37,8 @@ bool ModuleEntityManager::Update(float dt) {
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->Update(dt);
 	}
+
+	PrintFromQueue(SpriteOrderer, dt);
 	return true;
 }
 
@@ -100,3 +102,22 @@ void ModuleEntityManager::DestroyEntity(Entity* entity) {
 	
 }
 
+void ModuleEntityManager::FillQueue(Entity* entity)
+{
+	if (SDL_HasIntersection(&App->render->camera, &entity->GetCollider().toSDL_Rect()))
+	{
+		SpriteOrderer.push(entity);
+	}
+}
+
+void ModuleEntityManager::PrintFromQueue(std::priority_queue<Entity*, std::vector<Entity*>, OrderCrit> Queue, float dt)
+{
+	while (Queue.empty() == false)
+	{
+		Entity* first = Queue.top();
+
+		first->Draw(dt);
+
+		Queue.pop();
+	}
+}

@@ -2,6 +2,7 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "ModuleEntityManager.h"
 #include "App.h"
 
 
@@ -58,8 +59,8 @@ bool Character::Update(float dt)
 	//App->render->DrawQuad(provisional_rect, 255, 0, 0);
 
 	//Draw(dt);
-
-	App->render->FillQueue(this);
+	priority = position.y;
+	App->entities->FillQueue(this);
 
 	return true; 
 }

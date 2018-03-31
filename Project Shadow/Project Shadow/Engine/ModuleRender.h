@@ -5,16 +5,9 @@
 #include "Module.h"
 #include "Entity.h"
 
-#include <queue>
 
 
-struct OrderCrit
-{
-	bool operator()(const Entity* entity_1, const Entity* entity_2)const
-	{
-		return entity_1->GetPriority() > entity_2->GetPriority();
-	}
-};
+
 
 class ModuleRender : public Module
 {
@@ -60,10 +53,7 @@ public:
 	void SetCameraInitialPos();
 
 	SDL_Point ScreenToWorld(int x, int y) const;
-	std::priority_queue<Entity*, std::vector<Entity*>, OrderCrit> SpriteOrderer;
 
-	void FillQueue(Entity* entity);
-	void PrintFromQueue(std::priority_queue<Entity*, std::vector<Entity*>, OrderCrit> queue, float dt);
 
 public:
 

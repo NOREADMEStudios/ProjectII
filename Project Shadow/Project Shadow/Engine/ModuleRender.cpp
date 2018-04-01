@@ -73,6 +73,7 @@ bool ModuleRender::PreUpdate()
 
 bool ModuleRender::Update(float dt)
 {
+	PrintFromQueue(SpriteOrderer, dt);
 	return true;
 }
 
@@ -330,5 +331,24 @@ SDL_Point ModuleRender::ScreenToWorld(int x, int y) const
 	return ret;
 }
 
+void ModuleRender::FillQueue(Entity* entity)
+{
+	if (SDL_HasIntersection(&App->render->camera, &entity->GetCollider().toSDL_Rect()))
+	{
+		SpriteOrderer.push(entity);
+	}
+}
 
+void ModuleRender::PrintFromQueue(std::priority_queue<Entity*, std::vector<Entity*>, OrderCrit>& Queue, float dt)
+{
+	while (Queue.empty() == false)
+	{
+		Entity* first = Queue.top();
+
+		first->Draw(dt);
+		
+		Queue.pop();
+
+	}
+}
 

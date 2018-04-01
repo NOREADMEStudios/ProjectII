@@ -8,7 +8,7 @@
 #include "ModuleRender.h"
 
 #include <list>
-#include <queue>
+
 
 enum EntityTypes {
 	NOTYPE,
@@ -24,13 +24,7 @@ struct EntityInfo {
 	
 };
 
-struct OrderCrit
-{
-	bool operator()(const Entity* entity_1, const Entity* entity_2)const
-	{
-		return entity_1->GetPriority() > entity_2->GetPriority();
-	}
-};
+
 
 class ModuleEntityManager : public Module
 {
@@ -55,11 +49,6 @@ public:
 
 	Entity* CreateEntity(EntityInfo entityInfo);
 	void DestroyEntity(Entity* entity);
-
-	std::priority_queue<Entity*, std::vector<Entity*>, OrderCrit> SpriteOrderer;
-
-	void FillQueue(Entity* entity);
-	void PrintFromQueue(std::priority_queue<Entity*, std::vector<Entity*>, OrderCrit> queue, float dt);
 
 private:
 

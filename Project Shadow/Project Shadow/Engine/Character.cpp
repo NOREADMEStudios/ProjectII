@@ -2,7 +2,6 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
-#include "ModuleEntityManager.h"
 #include "App.h"
 
 
@@ -26,14 +25,14 @@ bool Character::Awake(pugi::xml_node&)
 
 bool Character::Start()
 { 
-	//Meh
-	//currentAnimation = &animations.front();
+
 	sprites = App->textures->Load("Characters/Fighter_sprites.png");
 	LoadAnimations();
 
 	//Testing things
 	collider = { 50 , 50 , 50, 50 };
 	stats.spd = 300;
+
 	currentAnimation = &idle;
 	return true; 
 }
@@ -60,7 +59,9 @@ bool Character::Update(float dt)
 
 	//Draw(dt);
 	priority = position.y;
-	App->entities->FillQueue(this);
+	collider.x = position.x;
+	collider.y = position.y;
+	App->render->FillQueue(this);
 
 	return true; 
 }

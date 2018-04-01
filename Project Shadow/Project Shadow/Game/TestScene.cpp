@@ -20,7 +20,11 @@ bool TestScene::Start()
 {
 
 	App->map->Load("map.tmx");
+
+
 	App->entities->CreateEntity({ CHARACTER,{100,500} });
+	App->entities->CreateEntity({ CHARACTER,{ 100,450 } });
+	App->entities->CreateEntity({ CHARACTER,{ 100,400 } });
 
 	//App->map->Load("map.tmx");
 	App->debug = true;

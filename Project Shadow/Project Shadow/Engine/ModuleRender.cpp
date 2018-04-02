@@ -136,8 +136,8 @@ bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* sect
 	uint scale = App->win->GetScale();
 
 	SDL_Rect rect;
-	rect.x = (int)(-camera.x * speed) + x * scale;
-	rect.y = (int)(-camera.y * speed) + y * scale;
+	rect.x = (int)(-camera.x * speed * scale) + x * scale;
+	rect.y = (int)(-camera.y * speed * scale) + y * scale;
 
 	if(section != NULL)
 	{
@@ -331,14 +331,14 @@ void ModuleRender::CheckCameraPos()
 	float max_x = 0;
 
 	App->entities->CheckMidPos(mid_pos, min_x, max_x);
-	int mapwidth = App->map->GetMapWidth();
+	float mapwidth = App->map->GetMapWidth();
 	float scale = App->win->GetScale();
 	
-	int diference = max_x - min_x;
+	float diference = (max_x - min_x) + 100;
 
-	if (mid_pos.x - (camera.w  / 2  ) >= 0)
+	if (mid_pos.x - (camera.w  / (2* scale)  ) >= 0)
 	{
-		camera.x = (mid_pos.x - (camera.w / 2));
+		camera.x = (mid_pos.x - (camera.w / (2 * scale)));
 	}
 	else 
 	{
@@ -355,7 +355,8 @@ void ModuleRender::CheckCameraPos()
 	//}
 
 	// In 0 scale is max, in width the scale is min
-	float new_scale = (MAX_SCALE - ((diference * (MAX_SCALE - MIN_SCALE)) / mapwidth));
+	float new_scale = MAX_SCALE - (((diference * MAX_SCALE) / (mapwidth)) + MIN_SCALE);
+
 	App->win->SetScale(new_scale);
 	
 }

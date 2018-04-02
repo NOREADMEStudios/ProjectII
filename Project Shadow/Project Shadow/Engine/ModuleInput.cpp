@@ -10,7 +10,7 @@ ModuleInput::ModuleInput() : Module() {
 	name = "input";
 
 	keyboard = new KeyEvent[MAX_KEYS];
-	controller1 = 
+	controller1 = new Butt
 	memset(keyboard, { KEY_IDLE }, sizeof(KeyEvent) * MAX_KEYS);
 	memset(mouse_buttons, { KEY_IDLE }, sizeof(KeyEvent) * NUM_MOUSE_BUTTONS);
 }
@@ -99,6 +99,56 @@ bool ModuleInput::PreUpdate() {
 
 		if (mouse_buttons[i].keyState == KEY_UP)
 			mouse_buttons[i].keyState = KEY_IDLE;
+	}
+
+	Uint8 buttons1[MAX_BUTTONS];
+	buttons1[SDL_CONTROLLER_BUTTON_A] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_A);
+	buttons1[SDL_CONTROLLER_BUTTON_X] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_X);
+	buttons1[SDL_CONTROLLER_BUTTON_B] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_B);
+	buttons1[SDL_CONTROLLER_BUTTON_DPAD_UP] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_DPAD_UP);
+	buttons1[SDL_CONTROLLER_BUTTON_DPAD_DOWN] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+	buttons1[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+	buttons1[SDL_CONTROLLER_BUTTON_DPAD_LEFT] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+
+	Uint8 buttons2[MAX_BUTTONS];
+	buttons2[SDL_CONTROLLER_BUTTON_A] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_A);
+	buttons2[SDL_CONTROLLER_BUTTON_X] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_X);
+	buttons2[SDL_CONTROLLER_BUTTON_B] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_B);
+	buttons2[SDL_CONTROLLER_BUTTON_DPAD_UP] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_DPAD_UP);
+	buttons2[SDL_CONTROLLER_BUTTON_DPAD_DOWN] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+	buttons2[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+	buttons2[SDL_CONTROLLER_BUTTON_DPAD_LEFT] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+
+	for (int i = 0; i < MAX_BUTTONS; ++i)
+	{
+		if (buttons1[i] == 1)
+		{
+			if (controller1State[i] == B_IDLE)
+				controller1State[i] = B_DOWN;
+			else
+				controller1State[i] = B_REPEAT;
+		}
+		else
+		{
+			if (controller1State[i] == B_REPEAT)
+				controller1State[i] = B_UP;
+			else
+				controller1State[i] = B_IDLE;
+		}
+		if (buttons2[i] == 1)
+		{
+			if (controller2State[i] == B_IDLE)
+				controller2State[i] = B_DOWN;
+			else
+				controller2State[i] = B_REPEAT;
+		}
+		else
+		{
+			if (controller2State[i] == B_REPEAT)
+				controller2State[i] = B_UP;
+			else
+				controller2State[i] = B_IDLE;
+		}
 	}
 
 	while (SDL_PollEvent(&event) != 0)

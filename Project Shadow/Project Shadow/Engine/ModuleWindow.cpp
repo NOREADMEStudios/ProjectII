@@ -108,7 +108,12 @@ void ModuleWindow::GetWindowSize(uint& width, uint& height) const
 	height = this->height;
 }
 
-uint ModuleWindow::GetScale() const
+float ModuleWindow::GetScale() const
 {
 	return scale;
+}
+
+void ModuleWindow::SetScale(float sc)
+{
+	scale = sc;
 }

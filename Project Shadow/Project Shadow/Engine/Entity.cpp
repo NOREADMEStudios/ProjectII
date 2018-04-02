@@ -10,7 +10,8 @@ Entity::Entity(EntityTypes type) {}
 Entity::~Entity() {}
 
 void Entity::Draw(float dt) {
-	App->render->Blit(sprites, position.x, position.y, &(currentAnimation->GetCurrentFrame(dt).GetRectSDL()));///
+	AnimationFrame frame = currentAnimation->GetCurrentFrame(dt);
+	App->render->Blit(sprites, position.x, position.y, &frame.GetRectSDL(), 1.0f, 0.0, frame.pivot.x, frame.pivot.y);
 }
 
 void Entity::Move(float delta_time) {
@@ -76,4 +77,14 @@ void Entity::SetPos(float x, float y)
 void Entity::SetActive(bool sactive)
 {
 	active = sactive;
+}
+
+uint Entity::GetPriority() const
+{
+	return priority;
+}
+
+iRect Entity::GetCollider() const
+{
+	return collider;
 }

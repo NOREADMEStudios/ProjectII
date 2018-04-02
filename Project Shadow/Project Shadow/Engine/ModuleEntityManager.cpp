@@ -37,6 +37,7 @@ bool ModuleEntityManager::Update(float dt) {
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->Update(dt);
 	}
+
 	return true;
 }
 
@@ -79,6 +80,7 @@ Entity* ModuleEntityManager::CreateEntity(EntityInfo entityInfo) {
 	if (entityInfo.type == CHARACTER)
 	{
 		ret = new Character();
+		numofplayers++;
 	}
 	else
 	{
@@ -98,5 +100,36 @@ Entity* ModuleEntityManager::CreateEntity(EntityInfo entityInfo) {
 void ModuleEntityManager::DestroyEntity(Entity* entity) {
 
 	
+}
+
+void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
+{
+
+	uint current_players = 0;
+	min_x = 999999999999;
+	max_x = 0;
+
+	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
+		if ((*item)->GetType() == CHARACTER)
+		{
+			current_players++;
+
+
+			if ((*item)->GetPosX() < min_x)
+			{
+				min_x = (*item)->GetPosX();
+			}
+			else if ((*item)->GetPosX() > max_x)
+			{
+				max_x = (*item)->GetPosX();
+			}
+		}
+
+		if (current_players == numofplayers)
+		{
+			break;
+		}
+	}
+
 }
 

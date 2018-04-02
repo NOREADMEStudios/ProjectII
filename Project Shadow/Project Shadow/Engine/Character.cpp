@@ -4,6 +4,7 @@
 #include "ModuleTextures.h"
 #include "App.h"
 
+
 #define CHARACTER_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
 
 Character::Character() :Entity(EntityTypes::CHARACTER)
@@ -24,14 +25,14 @@ bool Character::Awake(pugi::xml_node&)
 
 bool Character::Start()
 { 
-	//Meh
-	//currentAnimation = &animations.front();
+
 	sprites = App->textures->Load("Characters/Fighter_sprites.png");
 	LoadAnimations();
 
 	//Testing things
 	collider = { 50 , 50 , 50, 50 };
 	stats.spd = 300;
+
 	currentAnimation = &idle;
 	return true; 
 }
@@ -53,10 +54,14 @@ bool Character::Update(float dt)
 	Break(dt);
 
 	//Only for first testings
-	SDL_Rect provisional_rect{ position.x, position.y,collider.w,collider.h };
-	App->render->DrawQuad(provisional_rect, 255, 0, 0);
+	//SDL_Rect provisional_rect{ position.x, position.y,collider.w,collider.h };
+	//App->render->DrawQuad(provisional_rect, 255, 0, 0);
 
-	Draw(dt);
+	//Draw(dt);
+	priority = position.y;
+	collider.x = position.x;
+	collider.y = position.y;
+	App->render->FillQueue(this);
 
 	return true; 
 }
@@ -116,6 +121,9 @@ void Character::UpdateInputs(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		Accelerate(0, stats.spd, dt);
+
+ 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		SetPos( rand() % 1000,0);
 }
 
 void Character::LoadAnimations() {

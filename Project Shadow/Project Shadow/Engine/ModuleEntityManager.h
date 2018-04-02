@@ -4,8 +4,11 @@
 #include "Entity.h"
 #include "Module.h"
 #include "Character.h"
+#include "App.h"
+#include "ModuleRender.h"
 
 #include <list>
+
 
 enum EntityTypes {
 	NOTYPE,
@@ -20,6 +23,7 @@ struct EntityInfo {
 	iPoint pos{ 0, 0 };
 	
 };
+
 
 
 class ModuleEntityManager : public Module
@@ -46,7 +50,9 @@ public:
 	Entity* CreateEntity(EntityInfo entityInfo);
 	void DestroyEntity(Entity* entity);
 
+	void CheckMidPos(float& min_x, float& max_x);
 
+	uint numofplayers = 0;
 
 private:
 

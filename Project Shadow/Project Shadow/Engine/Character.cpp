@@ -121,6 +121,9 @@ void Character::UpdateInputs(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		Accelerate(0, stats.spd, dt);
+
+ 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		SetPos( rand() % 1000,0);
 }
 
 void Character::LoadAnimations() {

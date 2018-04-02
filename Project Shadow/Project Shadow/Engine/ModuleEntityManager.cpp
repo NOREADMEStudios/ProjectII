@@ -80,6 +80,7 @@ Entity* ModuleEntityManager::CreateEntity(EntityInfo entityInfo) {
 	if (entityInfo.type == CHARACTER)
 	{
 		ret = new Character();
+		numofplayers++;
 	}
 	else
 	{
@@ -99,5 +100,36 @@ Entity* ModuleEntityManager::CreateEntity(EntityInfo entityInfo) {
 void ModuleEntityManager::DestroyEntity(Entity* entity) {
 
 	
+}
+
+void ModuleEntityManager::CheckMidPos(fPoint &mid_pos, float &min_x, float &max_x)
+{
+	fPoint total = { 0,0 };
+	uint current_players = 0;
+	min_x = (*entities.begin())->GetPosX();
+
+	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
+		if ((*item)->GetType() == CHARACTER)
+		{
+			current_players++;
+			total += (*item)->GetPos();
+
+			if ((*item)->GetPosX() < min_x)
+			{
+				min_x = (*item)->GetPosX();
+			}
+			else if ((*item)->GetPosX() > max_x)
+			{
+				max_x = (*item)->GetPosX();
+			}
+		}
+
+		if (current_players == numofplayers)
+		{
+			break;
+		}
+	}
+
+	mid_pos = { total.x / numofplayers, total.y / numofplayers };
 }
 

@@ -7,6 +7,9 @@
 
 #include <queue>
 
+#define MAX_SCALE 5
+#define MIN_SCALE 1
+
 struct OrderCrit
 {
 	bool operator()(const Entity* entity_1, const Entity* entity_2)const
@@ -58,6 +61,7 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 	void SetCameraInitialPos();
+	void CheckCameraPos();
 
 	SDL_Point ScreenToWorld(int x, int y) const;
 

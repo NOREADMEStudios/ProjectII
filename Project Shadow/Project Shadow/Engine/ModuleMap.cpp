@@ -508,3 +508,8 @@ TileSet::~TileSet() {
 	App->textures->UnLoad(texture);
 	texture = nullptr;
 }
+
+int ModuleMap::GetMapWidth()
+{
+	return data.width * data.tile_width;
+}

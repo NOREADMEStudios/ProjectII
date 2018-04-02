@@ -50,6 +50,10 @@ public:
 	Entity* CreateEntity(EntityInfo entityInfo);
 	void DestroyEntity(Entity* entity);
 
+	void CheckMidPos(fPoint& mid_pos, float& min_x, float& max_x);
+
+	uint numofplayers = 0;
+
 private:
 
 	std::list<Entity*> entities;

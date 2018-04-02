@@ -3,6 +3,9 @@
 #include "App.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleEntityManager.h"
+#include "ModuleMap.h"
+
 
 #include "ModuleInput.h"
 #include "../Brofiler/Brofiler.h"	
@@ -67,6 +70,7 @@ bool ModuleRender::Start()
 
 bool ModuleRender::PreUpdate()
 {
+
 	SDL_RenderClear(renderer);
 	return true;
 }
@@ -74,6 +78,7 @@ bool ModuleRender::PreUpdate()
 bool ModuleRender::Update(float dt)
 {
 	PrintFromQueue(SpriteOrderer, dt);
+	CheckCameraPos();
 	return true;
 }
 
@@ -131,8 +136,8 @@ bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* sect
 	uint scale = App->win->GetScale();
 
 	SDL_Rect rect;
-	rect.x = (int)(camera.x * speed) + x * scale;
-	rect.y = (int)(camera.y * speed) + y * scale;
+	rect.x = (int)(-camera.x * speed) + x * scale;
+	rect.y = (int)(-camera.y * speed) + y * scale;
 
 	if(section != NULL)
 	{
@@ -315,9 +320,44 @@ bool ModuleRender::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 
 
 void ModuleRender::SetCameraInitialPos()
 {
-
 	camera.y = 0;
 	camera.x = 0;
+}
+
+void ModuleRender::CheckCameraPos()
+{
+	fPoint mid_pos = { 0,0 };
+	float min_x = 0;
+	float max_x = 0;
+
+	App->entities->CheckMidPos(mid_pos, min_x, max_x);
+	int mapwidth = App->map->GetMapWidth();
+	float scale = App->win->GetScale();
+	
+	int diference = max_x - min_x;
+
+	if (mid_pos.x - (camera.w  / 2  ) >= 0)
+	{
+		camera.x = (mid_pos.x - (camera.w / 2));
+	}
+	else 
+	{
+		camera.x = 0;
+	}
+	
+	//if (mid_pos.y - (camera.h / 2) < 0)
+	//{
+	//	camera.y = -(mid_pos.y - (camera.h / 2));
+	//}
+	//else
+	//{
+	//	camera.y = 0;
+	//}
+
+	// In 0 scale is max, in width the scale is min
+	float new_scale = (MAX_SCALE - ((diference * (MAX_SCALE - MIN_SCALE)) / mapwidth));
+	App->win->SetScale(new_scale);
+	
 }
 
 SDL_Point ModuleRender::ScreenToWorld(int x, int y) const
@@ -345,8 +385,7 @@ void ModuleRender::PrintFromQueue(std::priority_queue<Entity*, std::vector<Entit
 	{
 		Entity* first = Queue.top();
 
-		first->Draw(dt);
-		
+		first->Draw(dt);		
 		Queue.pop();
 
 	}

@@ -334,7 +334,7 @@ void ModuleRender::CheckCameraPos()
 	float scale = App->win->GetScale();
 	float mid_pos = (((max_x - min_x)/2) + min_x);
 
-	float diference = (max_x - min_x + 100);
+	float diference = (max_x - min_x + 200);
 
 	if (mid_pos - (camera.w  / (2* scale)  ) >= 0)
 	{

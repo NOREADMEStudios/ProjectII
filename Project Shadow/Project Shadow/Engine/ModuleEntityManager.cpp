@@ -106,8 +106,8 @@ void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
 {
 
 	uint current_players = 0;
-	min_x = (*entities.begin())->GetPosX();
-	max_x = (*entities.begin())->GetPosX();
+	min_x = 999999999999;
+	max_x = 0;
 
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
 		if ((*item)->GetType() == CHARACTER)

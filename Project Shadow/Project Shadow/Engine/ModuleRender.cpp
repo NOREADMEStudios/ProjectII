@@ -326,19 +326,19 @@ void ModuleRender::SetCameraInitialPos()
 
 void ModuleRender::CheckCameraPos()
 {
-	fPoint mid_pos = { 0,0 };
 	float min_x = 0;
 	float max_x = 0;
 
-	App->entities->CheckMidPos(mid_pos, min_x, max_x);
+	App->entities->CheckMidPos(min_x, max_x);
 	float mapwidth = App->map->GetMapWidth();
 	float scale = App->win->GetScale();
-	
-	float diference = (max_x - min_x) + 100;
+	float mid_pos = (((max_x - min_x)/2) + min_x);
 
-	if (mid_pos.x - (camera.w  / (2* scale)  ) >= 0)
+	float diference = (max_x - min_x + 100);
+
+	if (mid_pos - (camera.w  / (2* scale)  ) >= 0)
 	{
-		camera.x = (mid_pos.x - (camera.w / (2 * scale)));
+		camera.x = (mid_pos - (camera.w / (2 * scale)));
 	}
 	else 
 	{

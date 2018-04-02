@@ -111,7 +111,7 @@ bool ModuleInput::PreUpdate() {
 				else
 					controllers[c].buttons[i] = B_REPEAT;
 
-				ControllerLogInputs();
+				ControllerLogInputs(c);
 			}
 			else
 			{
@@ -191,9 +191,10 @@ bool ModuleInput::GetWindowEvent(WindowEvent ev) {
 bool ModuleInput::CheckControllers()
 {
 	bool ret = false;
-	if (SDL_NumJoysticks() > 0)
+	int numSticks = SDL_NumJoysticks();
+	if (numSticks > 0)
 	{
-		for (uint i = 0; i < MAX_CONTROLLERS; i++) {
+		for (uint i = 0; i < numSticks; i++) {
 			if (controllers[i].connected) continue;
 			controllers[i].controller = SDL_GameControllerOpen(i);
 			if (controllers[i].controller == nullptr)
@@ -203,7 +204,7 @@ bool ModuleInput::CheckControllers()
 			else
 			{
 				ret = true;
-				controllers[i].connected == true;
+				controllers[i].connected = true;
 			}
 		}
 	}

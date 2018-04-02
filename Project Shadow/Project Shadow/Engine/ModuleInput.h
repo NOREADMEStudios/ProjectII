@@ -78,16 +78,21 @@ public:
 
 	//
 	bool CheckControllers();
-	void ControllerLogInputs() {
-		for (uint c = 0; c < MAX_CONTROLLERS; c++) {
+	void ControllerLogInputs(uint controller) {
+		//for (uint c = 0; c < MAX_CONTROLLERS; c++) {
+		if (controllers[controller].connected) {
 			for (uint i = 0; i < MAX_BUTTONS; i++) {
-				LOG("Button %d, input: %d", i, controllers[c].buttons[i]);
+				LOG("Button %d, input: %d", i, controllers[controller].buttons[i]);
 			}
 
 			for (uint i = 0; i < MAX_AXIS; i++) {
-				LOG("Axis %d, input: %f", i, controllers[c].axis[i]);
+				LOG("Axis %d, input: %f", i, controllers[controller].axis[i]);
 			}
 		}
+		else {
+			LOG("Controller %d disconnected", controller);
+		}
+		//}
 	}
 
 	// Check key states (includes mouse and joy buttons)

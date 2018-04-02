@@ -6,8 +6,13 @@
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
 #define MAX_KEYS 300
-#define MAX_BUTTONS 50
+#define MAX_BUTTONS 16
+#define MAX_AXIS 6
+#define MAX_CONTROLLERS 4
 //#define LAST_KEYS_PRESSED_BUFFER 50
+
+struct _SDL_GameController;
+typedef struct _SDL_GameController SDL_GameController;
 
 enum WindowEvent
 {
@@ -38,10 +43,12 @@ struct KeyEvent {
 	bool blocked = false;
 };
 
-class Controller
-{
-	bool Y, X, A, B, LB, RB, LT, RT, DPAD_UP, DPAD_DOWN, DPAD_LEFT, DPAD_RIGHT, BACK, START;
-	float RSAxisY, RSAxisX, LSAxisY, LSAxisX, RT, LT;
+class Controller {
+public:
+	BUTTON_STATE buttons[MAX_BUTTONS];
+	float axis[MAX_AXIS];
+	bool connected = false;
+	SDL_GameController* controller = nullptr;
 };
 
 class ModuleInput : public Module
@@ -69,6 +76,20 @@ public:
 	// Gather relevant win events
 	bool GetWindowEvent(WindowEvent ev);
 
+	//
+	bool CheckControllers();
+	void ControllerLogInputs() {
+		for (uint c = 0; c < MAX_CONTROLLERS; c++) {
+			for (uint i = 0; i < MAX_BUTTONS; i++) {
+				LOG("Button %d, input: %d", i, controllers[c].buttons[i]);
+			}
+
+			for (uint i = 0; i < MAX_AXIS; i++) {
+				LOG("Axis %d, input: %f", i, controllers[c].axis[i]);
+			}
+		}
+	}
+
 	// Check key states (includes mouse and joy buttons)
 	KeyState GetKey(int id) const;
 	KeyState GetMouseButton(int id) const;
@@ -95,10 +116,7 @@ private:
 	int			mouse_x, mouse_x_prev;
 	int			mouse_y, mouse_y_prev;
 
-	BUTTON_STATE controller1State[MAX_BUTTONS];
-	BUTTON_STATE controller2State[MAX_BUTTONS];
-	SDL_GameController* controller1 = nullptr;
-	SDL_GameController* controller2 = nullptr;
+	Controller controllers[MAX_CONTROLLERS];
 };
 
 #endif // __INPUT_H__

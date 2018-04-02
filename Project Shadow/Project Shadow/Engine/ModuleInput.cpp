@@ -10,7 +10,6 @@ ModuleInput::ModuleInput() : Module() {
 	name = "input";
 
 	keyboard = new KeyEvent[MAX_KEYS];
-	controller1 = new Butt
 	memset(keyboard, { KEY_IDLE }, sizeof(KeyEvent) * MAX_KEYS);
 	memset(mouse_buttons, { KEY_IDLE }, sizeof(KeyEvent) * NUM_MOUSE_BUTTONS);
 }
@@ -39,18 +38,8 @@ bool ModuleInput::Awake(pugi::xml_node& config) {
 	}
 	else
 	{
-		if (SDL_NumJoysticks() > 0)
-		{
-			controller1 = SDL_GameControllerOpen(0);
-			if (controller1 == nullptr)
-			{
-				LOG("Controller couldn't be initialized SDL_Error: %s\n", SDL_GetError());
-			}
-			else
-			{
-				controller_connected == true;
-			}
-			controller2 = SDL_GameControllerOpen(1);
+		if (!CheckControllers()) {
+			LOG("No controllers detected");
 		}
 	};
 
@@ -101,55 +90,40 @@ bool ModuleInput::PreUpdate() {
 			mouse_buttons[i].keyState = KEY_IDLE;
 	}
 
-	Uint8 buttons1[MAX_BUTTONS];
-	buttons1[SDL_CONTROLLER_BUTTON_A] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_A);
-	buttons1[SDL_CONTROLLER_BUTTON_X] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_X);
-	buttons1[SDL_CONTROLLER_BUTTON_B] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_B);
-	buttons1[SDL_CONTROLLER_BUTTON_DPAD_UP] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_DPAD_UP);
-	buttons1[SDL_CONTROLLER_BUTTON_DPAD_DOWN] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-	buttons1[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
-	buttons1[SDL_CONTROLLER_BUTTON_DPAD_LEFT] = SDL_GameControllerGetButton(App->input->controller1, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
 
-	Uint8 buttons2[MAX_BUTTONS];
-	buttons2[SDL_CONTROLLER_BUTTON_A] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_A);
-	buttons2[SDL_CONTROLLER_BUTTON_X] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_X);
-	buttons2[SDL_CONTROLLER_BUTTON_B] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_B);
-	buttons2[SDL_CONTROLLER_BUTTON_DPAD_UP] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_DPAD_UP);
-	buttons2[SDL_CONTROLLER_BUTTON_DPAD_DOWN] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-	buttons2[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
-	buttons2[SDL_CONTROLLER_BUTTON_DPAD_LEFT] = SDL_GameControllerGetButton(App->input->controller2, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+	for (uint c = 0; c < MAX_CONTROLLERS; c++) {
+		Uint8 controllerState[MAX_BUTTONS];
+		for (uint i = 0; i < MAX_BUTTONS; i++) {
+			controllerState[i] = SDL_GameControllerGetButton(controllers[c].controller, (SDL_GameControllerButton)i);
+		}
 
-	for (int i = 0; i < MAX_BUTTONS; ++i)
-	{
-		if (buttons1[i] == 1)
-		{
-			if (controller1State[i] == B_IDLE)
-				controller1State[i] = B_DOWN;
-			else
-				controller1State[i] = B_REPEAT;
+		for (uint i = 0; i < MAX_AXIS; i++) {
+			controllers[c].axis[i] = (float)SDL_GameControllerGetAxis(controllers[c].controller, (SDL_GameControllerAxis)i) / 32767;
 		}
-		else
+
+
+		for (int i = 0; i < MAX_BUTTONS; ++i)
 		{
-			if (controller1State[i] == B_REPEAT)
-				controller1State[i] = B_UP;
+			if (controllerState[i] == B_DOWN)
+			{
+				if (controllers[c].buttons[i] == B_IDLE)
+					controllers[c].buttons[i] = B_DOWN;
+				else
+					controllers[c].buttons[i] = B_REPEAT;
+
+				ControllerLogInputs();
+			}
 			else
-				controller1State[i] = B_IDLE;
-		}
-		if (buttons2[i] == 1)
-		{
-			if (controller2State[i] == B_IDLE)
-				controller2State[i] = B_DOWN;
-			else
-				controller2State[i] = B_REPEAT;
-		}
-		else
-		{
-			if (controller2State[i] == B_REPEAT)
-				controller2State[i] = B_UP;
-			else
-				controller2State[i] = B_IDLE;
+			{
+				if (controllers[c].buttons[i] == B_REPEAT || controllers[c].buttons[i] == B_DOWN)
+					controllers[c].buttons[i] = B_UP;
+				else
+					controllers[c].buttons[i] = B_IDLE;
+			}
 		}
 	}
+
+	CheckControllers();
 
 	while (SDL_PollEvent(&event) != 0)
 	{
@@ -212,6 +186,28 @@ bool ModuleInput::CleanUp(pugi::xml_node&) {
 
 bool ModuleInput::GetWindowEvent(WindowEvent ev) {
 	return windowEvents[ev];
+}
+
+bool ModuleInput::CheckControllers()
+{
+	bool ret = false;
+	if (SDL_NumJoysticks() > 0)
+	{
+		for (uint i = 0; i < MAX_CONTROLLERS; i++) {
+			if (controllers[i].connected) continue;
+			controllers[i].controller = SDL_GameControllerOpen(i);
+			if (controllers[i].controller == nullptr)
+			{
+				LOG("Controller couldn't be initialized SDL_Error: %s\n", SDL_GetError());
+			}
+			else
+			{
+				ret = true;
+				controllers[i].connected == true;
+			}
+		}
+	}
+	return ret;
 }
 
 KeyState ModuleInput::GetKey(int id) const {

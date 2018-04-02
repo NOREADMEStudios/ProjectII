@@ -5,6 +5,7 @@
 #include "../Engine/ModuleGUI.h"
 #include "../Engine/ModuleTextures.h"
 #include "../Engine/UI/Window.h"
+#include "../Engine/ModuleInput.h"
 
 TestScene::TestScene()
 {

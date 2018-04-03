@@ -26,12 +26,12 @@ bool Character::Awake(pugi::xml_node&)
 bool Character::Start()
 { 
 
-	sprites = App->textures->Load("Characters/Fighter_sprites.png");
+	sprites = App->textures->Load("Characters/new_sprites.png");
 	LoadAnimations();
 
 	//Testing things
 	collider = { 50 , 50 , 50, 50 };
-	stats.spd = 300;
+	stats.spd = 200;
 
 	currentAnimation = &idle;
 	return true; 

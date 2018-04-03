@@ -116,6 +116,9 @@
     <ClCompile Include="Engine\ModuleFonts.cpp">
       <Filter>Engine\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Enemy.cpp">
+      <Filter>Engine\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -225,6 +228,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Animation.h">
       <Filter>Engine\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Enemy.h">
+      <Filter>Engine\Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

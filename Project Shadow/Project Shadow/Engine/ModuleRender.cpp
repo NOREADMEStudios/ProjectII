@@ -133,7 +133,7 @@ void ModuleRender::ResetViewPort()
 bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	float scale = App->win->GetScale();
 
 	SDL_Rect rect;
 	rect.x = (int)(-camera.x * speed * scale) + x * scale;
@@ -239,7 +239,7 @@ bool ModuleRender::BlitGui(SDL_Texture * texture, int x, int y, const SDL_Rect *
 bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	float scale = App->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -267,7 +267,7 @@ bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uin
 bool ModuleRender::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	float scale = App->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -291,7 +291,7 @@ bool ModuleRender::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Ui
 bool ModuleRender::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	float scale = App->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -330,11 +330,11 @@ void ModuleRender::CheckCameraPos()
 	float max_x = 0;
 
 	App->entities->CheckMidPos(min_x, max_x);
-	float mapwidth = App->map->GetMapWidth();
+	int mapwidth = App->map->GetMapWidth();
 	float scale = App->win->GetScale();
 	float mid_pos = (((max_x - min_x)/2) + min_x);
 
-	float diference = (max_x - min_x + 200);
+	float diference = (max_x - min_x + 500);
 
 	if (mid_pos - (camera.w  / (2* scale)  ) >= 0)
 	{
@@ -343,6 +343,11 @@ void ModuleRender::CheckCameraPos()
 	else 
 	{
 		camera.x = 0;
+	}
+
+	if (mid_pos - (camera.w / (2 * scale)) >= mapwidth - (camera.w/2) - App->map->GetXTiles() + 1)
+	{
+		camera.x = mapwidth - (camera.w / 2) - App->map->GetXTiles() + 1;
 	}
 	
 	//if (mid_pos.y - (camera.h / 2) < 0)
@@ -354,6 +359,7 @@ void ModuleRender::CheckCameraPos()
 	//	camera.y = 0;
 	//}
 
+
 	// In 0 scale is max, in width the scale is min
 	float new_scale = MAX_SCALE - (((diference * MAX_SCALE) / (mapwidth)) + MIN_SCALE);
 
@@ -364,7 +370,7 @@ void ModuleRender::CheckCameraPos()
 SDL_Point ModuleRender::ScreenToWorld(int x, int y) const
 {
 	SDL_Point ret;
-	int scale = App->win->GetScale();
+	float scale = App->win->GetScale();
 
 	ret.x = (x - camera.x / scale);
 	ret.y = (y - camera.y / scale);

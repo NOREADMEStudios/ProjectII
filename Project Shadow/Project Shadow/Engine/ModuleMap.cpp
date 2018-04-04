@@ -38,13 +38,8 @@ void ModuleMap::Draw() {
 
 	for (std::list<MapLayer*>::iterator iter = data.layers.begin(); iter != data.layers.end(); iter++) {
 		uint tile = 0;
-		uint first_x = 0;
-		uint last_x = 0;
-		bool collided = 0;
 
-
-
-		iPoint tile_pos = MapToWorld(first_x, 0);
+		iPoint tile_pos = MapToWorld(0, 0);
 			for (uint y = 0; y < (*iter)->height; y++) {
 				tile_pos.x = 0;
 				for (uint x = 0; x < (*iter)->width; x++) {
@@ -492,4 +487,9 @@ TileSet::~TileSet() {
 int ModuleMap::GetMapWidth()
 {
 	return data.width * data.tile_width;
+}
+
+int ModuleMap::GetXTiles()
+{
+	return data.width;
 }

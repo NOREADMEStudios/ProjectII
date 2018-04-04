@@ -330,15 +330,25 @@ void ModuleRender::CheckCameraPos()
 	float max_x = 0;
 
 	App->entities->CheckMidPos(min_x, max_x);
-	float mapwidth = App->map->GetMapWidth();
+	int mapwidth = App->map->GetMapWidth();
 	float scale = App->win->GetScale();
 	float mid_pos = (((max_x - min_x)/2) + min_x);
 
 	float diference = (max_x - min_x + 500);
 
-	
+	if (mid_pos - (camera.w  / (2* scale)  ) >= 0)
+	{
 		camera.x = (mid_pos - (camera.w / (2 * scale)));
+	}
+	else 
+	{
+		camera.x = 0;
+	}
 
+	if (mid_pos - (camera.w / (2 * scale)) >= mapwidth - (camera.w/2) - App->map->GetXTiles() + 1)
+	{
+		camera.x = mapwidth - (camera.w / 2) - App->map->GetXTiles() + 1;
+	}
 	
 	//if (mid_pos.y - (camera.h / 2) < 0)
 	//{

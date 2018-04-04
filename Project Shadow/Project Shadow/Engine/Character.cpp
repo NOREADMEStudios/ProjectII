@@ -31,7 +31,7 @@ bool Character::Start()
 
 	//Testing things
 	collider = { 50 , 50 , 50, 50 };
-	stats.spd = 200;
+	stats.spd = 500;
 
 	currentAnimation = &idle;
 	return true; 

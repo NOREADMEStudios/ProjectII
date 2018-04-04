@@ -54,7 +54,7 @@ bool Entity::IsActive()
 
 float Entity::GetPosX()
 {
-	return position.x;
+	return position.x + (collider.w  / 2);
 }
 
 float Entity::GetPosY()

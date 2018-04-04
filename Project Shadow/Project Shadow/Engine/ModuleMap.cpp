@@ -38,50 +38,25 @@ void ModuleMap::Draw() {
 
 	for (std::list<MapLayer*>::iterator iter = data.layers.begin(); iter != data.layers.end(); iter++) {
 		uint tile = 0;
-		uint first_x = 0;
-		uint last_x = 0;
-		bool collided = 0;
 
-		//Loop to see which are the first and the last tile to blit in a row
-		for (uint x = 0; x < (*iter)->width; x++) {
-			uint y = 0;
-			iPoint tile_pos = MapToWorld(x, y);
-
-			SDL_Rect first_rect = { tile_pos.x, tile_pos.y ,data.tile_width, data.tile_height };
-
-			if (SDL_HasIntersection(&App->render->camera, &first_rect))
-			{
-				if (!collided)
-				{
-					first_x = x;
-					tile = x;
-				}			
-				collided = true;
-			}
-			else if (collided)
-			{
-				last_x = x;
-				break;
-			}								
-		}
-
-
+		iPoint tile_pos = MapToWorld(0, 0);
 			for (uint y = 0; y < (*iter)->height; y++) {
-				tile += first_x;
-				for (uint x = first_x; x < last_x; x++) {
+				tile_pos.x = 0;
+				for (uint x = 0; x < (*iter)->width; x++) {
 					if ((*iter)->tiles[tile] != 0) {
 						for (std::list<TileSet*>::reverse_iterator tileset = data.tilesets.rbegin(); tileset != data.tilesets.rend(); tileset++) {
 							if ((*tileset)->firstgid > (*iter)->tiles[tile])
 								continue;
 
-							iPoint tile_pos = MapToWorld(x, y);
 							SDL_Rect tile_rect = (*tileset)->GetTileRect((*iter)->tiles[tile]);
 							App->render->Blit((*tileset)->texture, tile_pos.x, tile_pos.y, &tile_rect, (*iter)->parallax_speed);
+							tile_pos.x += (data.tile_width / 2) - 1;
 					}
 					tile++;
 				}
 			}
-				tile += (*iter)->width - last_x;
+
+				tile_pos.y += (data.tile_height) -1;
 		}
 	}
 }
@@ -512,4 +487,9 @@ TileSet::~TileSet() {
 int ModuleMap::GetMapWidth()
 {
 	return data.width * data.tile_width;
+}
+
+int ModuleMap::GetXTiles()
+{
+	return data.width;
 }

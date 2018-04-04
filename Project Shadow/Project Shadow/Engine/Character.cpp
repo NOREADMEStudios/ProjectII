@@ -5,14 +5,11 @@
 
 
 Character::Character(CharacterTypes charType) : Entity(EntityTypes::CHARACTER)
-{
-	
-}
+{}
 
 
 Character::~Character()
-{
-}
+{}
 
 bool Character::Awake(pugi::xml_node&)
 { 	
@@ -22,7 +19,6 @@ bool Character::Awake(pugi::xml_node&)
 bool Character::Start()
 { 
 
-	
 	return true; 
 }
 

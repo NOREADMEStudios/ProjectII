@@ -119,6 +119,7 @@ public:
 	iPoint WorldToMap(int x, int y) const;
 	iPoint WorldToMap(const iPoint p) const;
 	int GetMapWidth();
+	int GetXTiles();
 
 private:
 

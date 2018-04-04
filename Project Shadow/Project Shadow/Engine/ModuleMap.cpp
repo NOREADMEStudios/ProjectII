@@ -65,23 +65,25 @@ void ModuleMap::Draw() {
 			}								
 		}
 
-
+		iPoint tile_pos = MapToWorld(first_x, 0);
 			for (uint y = 0; y < (*iter)->height; y++) {
 				tile += first_x;
+				tile_pos.x = first_x;
 				for (uint x = first_x; x < last_x; x++) {
 					if ((*iter)->tiles[tile] != 0) {
 						for (std::list<TileSet*>::reverse_iterator tileset = data.tilesets.rbegin(); tileset != data.tilesets.rend(); tileset++) {
 							if ((*tileset)->firstgid > (*iter)->tiles[tile])
 								continue;
 
-							iPoint tile_pos = MapToWorld(x, y);
 							SDL_Rect tile_rect = (*tileset)->GetTileRect((*iter)->tiles[tile]);
 							App->render->Blit((*tileset)->texture, tile_pos.x, tile_pos.y, &tile_rect, (*iter)->parallax_speed);
+							tile_pos.x += (data.tile_width / 2) - 1;
 					}
 					tile++;
 				}
 			}
 				tile += (*iter)->width - last_x;
+				tile_pos.y += (data.tile_height) -1;
 		}
 	}
 }

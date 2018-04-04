@@ -37,9 +37,6 @@ typedef void (*Callback)(void* ptr);
 #define LIST_ITERATOR(type) LIST(type)::iterator
 #define LIST_REVERSE_ITERATOR(type) LIST(type)::reverse_iterator
 
-#define MIN(x1, x2) (x1 > x2 ? x2 : x1)
-#define MAX(x1, x2) (x1 < x2 ? x2 : x1)
-#define CLAMP(val, min, max) (MIN(MAX(val, min), max))
 
 #define REMOVE_FROM_LIST(ptr, list, type)						\
 	LIST_ITERATOR(type) it;										\

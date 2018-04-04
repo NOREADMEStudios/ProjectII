@@ -25,7 +25,7 @@ public:
 	float speed = 1.0f;
 	std::vector<AnimationFrame> frames;
 
-	std::string name;
+	
 
 private:
 	float current_frame = 0.0f;
@@ -44,13 +44,13 @@ public:
 		//SDL_memcpy(&frames, anim.frames, sizeof(frames));
 	}
 
-	bool LoadAnimationsfromXML(std::string file_name) {
-		pugi::xml_parse_result result = animationFile.load_file(file_name.data());
+	bool LoadAnimationsfromXML(std::string animationName, std::string fileName) {
+		pugi::xml_parse_result result = animationFile.load_file(fileName.data());
 		if (result != NULL) {
 			std::string lop = "loop";
 			std::string spd = "speed";
 			for (pugi::xml_node anim = animationFile.child("map").child("objectgroup"); anim; anim = anim.next_sibling("objectgroup")) {
-				if (anim.attribute("name").as_string() == name) {
+				if (anim.attribute("name").as_string() == animationName) {
 					for (pugi::xml_node propert = anim.child("properties").child("property"); propert; propert = propert.next_sibling("property")) {
 						if (strcmp(propert.attribute("name").as_string(), lop.data()) == 0) {
 							loop = propert.attribute("value").as_bool();

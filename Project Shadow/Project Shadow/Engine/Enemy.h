@@ -1,12 +1,9 @@
 #ifndef __ENEMY_H__
 #define __ENEMY_H__
 
-#include "Module.h"
-#include "Character.h"
-#include "Entity.h"
 #include "ModuleEntityManager.h"
 #include "Animation.h"
-
+#include "Character.h"
 
 
 class Enemy : public Character
@@ -16,7 +13,7 @@ public:
 	~Enemy();
 
 
-	bool Awake(pugi::xml_node&) override;
+	bool Awake(pugi::xml_node&)override;
 
 	bool Start()override;
 

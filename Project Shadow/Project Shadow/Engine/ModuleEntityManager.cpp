@@ -1,4 +1,8 @@
 #include "ModuleEntityManager.h"
+#include "Character.h"
+#include "Enemy.h"
+#include "Hero.h"
+
 
 ModuleEntityManager::ModuleEntityManager()
 {
@@ -73,13 +77,18 @@ bool ModuleEntityManager::Save(pugi::xml_node& n)const {
 	return true;
 }
 
-Entity* ModuleEntityManager::CreateEntity(EntityInfo entityInfo) {
+Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
 	Entity* ret = nullptr;
 
-	if (entityInfo.type == CHARACTER)
+	if (charInfo.chType == CharacterTypes::ENEMY)
 	{
-		ret = new Character(entityInfo.chType);
+		ret = new Enemy();
+		numofplayers++;
+	}
+	else if (charInfo.chType == CharacterTypes::HERO)
+	{
+		ret = new Hero();
 		numofplayers++;
 	}
 	else
@@ -88,8 +97,8 @@ Entity* ModuleEntityManager::CreateEntity(EntityInfo entityInfo) {
 		return nullptr;//
 	}
 
-	ret->type = entityInfo.type;
-	ret->SetPos(entityInfo.pos.x, entityInfo.pos.y);
+	ret->type = CHARACTER;
+	ret->SetPos(charInfo.pos.x, charInfo.pos.y);
 
 	entities.push_back(ret);
 

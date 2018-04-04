@@ -1,12 +1,10 @@
-#include "Character.h"
 #include "ModuleRender.h"
-
 #include "ModuleTextures.h"
 #include "App.h"
+#include "Character.h"
 
 
-
-Character::Character(CharacterTypes charType) :Entity(EntityTypes::CHARACTER)
+Character::Character(CharacterTypes charType) : Entity(EntityTypes::CHARACTER)
 {
 	
 }

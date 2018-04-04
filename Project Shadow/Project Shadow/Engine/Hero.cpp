@@ -4,13 +4,12 @@
 #include "ModuleTextures.h"
 #include "App.h"
 
+
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
 
 
 Hero::Hero() : Character(CharacterTypes::HERO)
 {
-	idle.name = "idle";
-	walking.name = "walking";
 }
 
 Hero::~Hero()
@@ -45,8 +44,8 @@ bool Hero::PreUpdate()
 
 bool Hero::Update(float dt)
 {
-
 	currentAnimation = &idle;
+	
 
 
 	UpdateInputs(dt);
@@ -79,8 +78,8 @@ bool Hero::CleanUp(pugi::xml_node&)
 
 void Hero::LoadAnimations()
 {
-	idle.LoadAnimationsfromXML(HERO_SPRITE_ROOT);
-	walking.LoadAnimationsfromXML(HERO_SPRITE_ROOT);
+	idle.LoadAnimationsfromXML("idle",HERO_SPRITE_ROOT);
+	walking.LoadAnimationsfromXML("walking",HERO_SPRITE_ROOT);
 
 }
 

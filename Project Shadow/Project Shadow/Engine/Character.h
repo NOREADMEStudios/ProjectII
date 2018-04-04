@@ -2,11 +2,12 @@
 #define __CHARACTER_H__
 
 #include "Module.h"
-#include "Entity.h"
 #include "ModuleEntityManager.h"
 #include "Animation.h"
+#include "Entity.h"
 
 enum CharacterTypes;
+
 
 class Character : public Entity
 {

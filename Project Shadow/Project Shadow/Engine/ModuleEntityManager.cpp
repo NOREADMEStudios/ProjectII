@@ -79,7 +79,7 @@ Entity* ModuleEntityManager::CreateEntity(EntityInfo entityInfo) {
 
 	if (entityInfo.type == CHARACTER)
 	{
-		ret = new Character();
+		ret = new Character(entityInfo.chType);
 		numofplayers++;
 	}
 	else

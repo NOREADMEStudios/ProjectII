@@ -4,12 +4,18 @@
 #include "Entity.h"
 #include "Module.h"
 #include "Character.h"
+#include "Hero.h"
+#include "Enemy.h"
 #include "App.h"
 #include "ModuleRender.h"
 
 #include <list>
 
-
+enum CharacterTypes {
+	NONE,
+	ENEMY,
+	HERO
+};
 enum EntityTypes {
 	NOTYPE,
 	SPELLS,
@@ -20,6 +26,7 @@ enum EntityTypes {
 struct EntityInfo {
 
 	EntityTypes type = NOTYPE;
+	CharacterTypes chType = NONE;
 	iPoint pos{ 0, 0 };
 	
 };

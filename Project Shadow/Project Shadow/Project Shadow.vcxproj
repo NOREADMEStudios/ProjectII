@@ -129,6 +129,7 @@
     <ClCompile Include="Engine\ModuleEntityManager.cpp" />
     <ClCompile Include="Engine\ModuleSceneManager.cpp" />
     <ClCompile Include="Engine\PerfTimer.cpp" />
+    <ClCompile Include="Engine\Hero.cpp" />
     <ClCompile Include="Engine\Scene.cpp" />
     <ClCompile Include="Engine\Timer.cpp" />
     <ClCompile Include="Engine\Log.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Engine\ModuleGUI.h" />
     <ClInclude Include="Engine\ModuleMap.h" />
     <ClInclude Include="Engine\PerfTimer.h" />
+    <ClInclude Include="Engine\Hero.h" />
     <ClInclude Include="Engine\Point.h" />
     <ClInclude Include="Engine\Rect.h" />
     <ClInclude Include="Engine\Entity.h" />

@@ -6,12 +6,12 @@
 #include "ModuleEntityManager.h"
 #include "Animation.h"
 
-
+enum CharacterTypes;
 
 class Character : public Entity
 {
 public:
-	Character();
+	Character(CharacterTypes charType);
 	~Character();
 
 
@@ -32,12 +32,14 @@ public:
 
 	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
 	
-	void UpdateInputs(float dt);
+	
 
 	void LoadAnimations();
 
 	Animation idle;
 	Animation walking;
+
+	CharacterTypes charType;
 };
 #endif
 

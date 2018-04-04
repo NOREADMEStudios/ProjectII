@@ -1,19 +1,18 @@
-#ifndef __ENEMY_H__
-#define __ENEMY_H__
+#ifndef __HERO_H__
+#define __HERO_H__
 
 #include "Module.h"
 #include "Character.h"
-#include "Entity.h"
 #include "ModuleEntityManager.h"
 #include "Animation.h"
+#include "Entity.h"
 
 
-
-class Enemy : public Character
+class Hero : public Character 
 {
 public:
-	Enemy();
-	~Enemy();
+	Hero();
+	~Hero();
 
 
 	bool Awake(pugi::xml_node&) override;
@@ -31,7 +30,8 @@ public:
 	bool Load(pugi::xml_node&) override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
 
-		
+	void UpdateInputs(float dt);
+
 	void LoadAnimations();
 
 	Animation idle;

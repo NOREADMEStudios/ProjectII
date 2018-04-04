@@ -11,14 +11,7 @@
 struct SDL_Texture;
 enum EntityTypes;
 
-enum EntityState
-{
-	IDLE,
-	JUMP,
-	WALK,
-	RUN,
-	DASH,
-};
+
 
 struct EntityStats
 {
@@ -56,7 +49,7 @@ public:
 
 	bool Save(pugi::xml_node&) const override { return true; };
 
-	EntityState GetState();
+
 	fPoint GetPos();
 	bool IsActive();
 	float GetPosX();
@@ -79,6 +72,7 @@ public:
 
 	EntityTypes type;
 
+	uint hero_num = 0;
 protected:
 
 	bool active = true;
@@ -88,7 +82,6 @@ protected:
 
 	// Collider has to be a struct Collider instead of an iRect
 	iRect collider{ 0,0,0,0 };
-	EntityState state = IDLE;
 	Animation* currentAnimation = nullptr;
 	EntityStats stats;
 	SDL_Texture* sprites;

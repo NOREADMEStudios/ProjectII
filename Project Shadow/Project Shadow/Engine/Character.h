@@ -8,7 +8,35 @@
 
 enum CharacterTypes;
 
+enum Input
+{
+	NONEINPUT,
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT,
+	LIGHT_ATTACK,
+	HEAVY_ATTACK,
+	JUMPINPUT,
+	DEFEND
+};
 
+enum CharState
+{
+	IDLE,
+	JUMP,
+	WALK,
+	RUN,
+	DASH,
+	ATTACK_LIGHT,
+	ATTACK_HEAVY,
+	DEATH
+};
+
+struct Directions
+{
+	bool left, down, right, up = false;
+};
 class Character : public Entity
 {
 public:
@@ -33,14 +61,19 @@ public:
 
 	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
 	
-	
-
 	void LoadAnimations();
+
 
 	Animation idle;
 	Animation walking;
 
 	CharacterTypes charType;
+
+	CharState currentState = IDLE;
+	CharState wantedState = IDLE;
+	Directions directions;
+
+
 };
 #endif
 

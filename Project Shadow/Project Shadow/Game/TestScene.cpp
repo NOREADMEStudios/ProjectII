@@ -23,8 +23,11 @@ bool TestScene::Start()
 
 
 	App->entities->CreateCharacter({HERO,{100,100}});
-	App->entities->CreateCharacter({ ENEMY,{ 100,50 } });
+
+	App->entities->CreateCharacter({ HERO,{ 400,100 } });
+	//App->entities->CreateCharacter({ ENEMY,{ 100,50 } });
 	//App->entities->CreateEntity({ CHARACTER,HERO,{ 100,0 } });
+
 
 	//App->map->Load("map.tmx");
 	App->debug = true;

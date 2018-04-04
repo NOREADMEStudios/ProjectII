@@ -37,10 +37,10 @@ void Entity::Accelerate(float x, float y, float delta_time) {
 	speedVector.y = CLAMP(speedVector.y, -stats.spd, stats.spd);
 }
 
-EntityState Entity::GetState()
-{
-	return state;
-}
+//EntityState Entity::GetState()
+//{
+//	return state;
+//}
 
 fPoint Entity::GetPos()
 {

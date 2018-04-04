@@ -1,19 +1,19 @@
-#ifndef __CHARACTER_H__
-#define __CHARACTER_H__
+#ifndef __HERO_H__
+#define __HERO_H__
 
 #include "Module.h"
+#include "Character.h"
 #include "ModuleEntityManager.h"
 #include "Animation.h"
-#include "Entity.h"
-
-enum CharacterTypes;
+ 
 
 
-class Character : public Entity
+
+class Hero : public Character
 {
 public:
-	Character(CharacterTypes charType);
-	~Character();
+	Hero();
+	~Hero();
 
 
 	bool Awake(pugi::xml_node&) override;
@@ -28,20 +28,14 @@ public:
 
 	bool CleanUp(pugi::xml_node&)override;
 
-	bool Load(pugi::xml_node&) override { return true; };
+	bool Load(pugi::xml_node&)override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
 
-	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
-	
-	
+	void UpdateInputs(float dt);
 
 	void LoadAnimations();
 
 	Animation idle;
 	Animation walking;
-
-	CharacterTypes charType;
 };
 #endif
-
-

@@ -1,13 +1,16 @@
-#include "Entity.h"
 #include "App.h"
 #include "ModuleRender.h"
-
+#include "ModuleTextures.h"
+#include "Entity.h"
 
 
 Entity::Entity(EntityTypes type) {}
 
 
 Entity::~Entity() {}
+
+
+
 
 void Entity::Draw(float dt) {
 	AnimationFrame frame = currentAnimation->GetCurrentFrame(dt);
@@ -88,3 +91,4 @@ iRect Entity::GetCollider() const
 {
 	return collider;
 }
+

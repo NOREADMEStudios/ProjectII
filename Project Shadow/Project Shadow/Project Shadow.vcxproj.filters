@@ -33,6 +33,15 @@
     <Filter Include="Engine\UI">
       <UniqueIdentifier>{5bcc6b79-e5cc-4a68-aa05-2bf2c2ba21e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Entities\Character">
+      <UniqueIdentifier>{773c313f-806c-4e95-b52e-02c663cbcf96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Entities\Character\Enemy">
+      <UniqueIdentifier>{22fba009-1503-441a-8db1-1c34ab3b1339}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Entities\Character\Hero">
+      <UniqueIdentifier>{bce3fe1e-a5af-4c7b-9208-3be77bb6a26e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\App.cpp">
@@ -83,9 +92,6 @@
     <ClCompile Include="Engine\Entity.cpp">
       <Filter>Engine\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Character.cpp">
-      <Filter>Engine\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\ModuleMap.cpp">
       <Filter>Engine\Modules</Filter>
     </ClCompile>
@@ -115,6 +121,15 @@
     </ClCompile>
     <ClCompile Include="Engine\ModuleFonts.cpp">
       <Filter>Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Character.cpp">
+      <Filter>Engine\Entities\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Enemy.cpp">
+      <Filter>Engine\Entities\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Hero.cpp">
+      <Filter>Engine\Entities\Character\Hero</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -175,9 +190,6 @@
     <ClInclude Include="Engine\Entity.h">
       <Filter>Engine\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Character.h">
-      <Filter>Engine\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\PerfTimer.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -225,6 +237,15 @@
     </ClInclude>
     <ClInclude Include="Engine\Animation.h">
       <Filter>Engine\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Character.h">
+      <Filter>Engine\Entities\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Enemy.h">
+      <Filter>Engine\Entities\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Hero.h">
+      <Filter>Engine\Entities\Character\Hero</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

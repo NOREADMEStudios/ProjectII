@@ -3,13 +3,17 @@
 
 #include "Entity.h"
 #include "Module.h"
-#include "Character.h"
+
 #include "App.h"
 #include "ModuleRender.h"
 
 #include <list>
 
-
+enum CharacterTypes {
+	NONE,
+	ENEMY,
+	HERO
+};
 enum EntityTypes {
 	NOTYPE,
 	SPELLS,
@@ -17,9 +21,9 @@ enum EntityTypes {
 	CHARACTER
 };
 
-struct EntityInfo {
+struct CharacterInfo {
 
-	EntityTypes type = NOTYPE;
+	CharacterTypes chType = NONE;
 	iPoint pos{ 0, 0 };
 	
 };
@@ -47,7 +51,7 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	Entity* CreateEntity(EntityInfo entityInfo);
+	Entity* CreateCharacter(CharacterInfo charInfo);
 	void DestroyEntity(Entity* entity);
 
 	void CheckMidPos(float& min_x, float& max_x);

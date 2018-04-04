@@ -2,10 +2,17 @@
 #define __SCENE_TEST_H__
 
 #include "..\Engine\Scene.h"
+#include "..\Engine\ModuleCollision.h"
+
 class TestScene :
 	public Scene
 {
 public:
+
+	Collider c, c2;
+	Entity e, e2;
+	float angle = 0;
+
 	TestScene();
 	virtual ~TestScene();
 

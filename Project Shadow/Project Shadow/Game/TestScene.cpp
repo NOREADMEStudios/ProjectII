@@ -5,6 +5,7 @@
 #include "../Engine/ModuleGUI.h"
 #include "../Engine/ModuleTextures.h"
 #include "../Engine/UI/Window.h"
+#include "../Engine/ModuleCollision.h"
 
 TestScene::TestScene()
 {
@@ -25,11 +26,27 @@ bool TestScene::Start()
 	s->SetParent(w);
 	s->culled = true;
 	w->SetContentRect(50, 50, 50, 50);
+
+	c.collider = { 100, 100, 50, 50 };
+	c.type = Collider::TRIGGER;
+	c.tag = 0;
+
+	App->collision->AddCollider(&c, &e);
+
+	c2.collider = { 100, 100, 50, 50 };
+	c2.type = Collider::TRIGGER;
+	c2.tag = 0;
+	
+	App->collision->AddCollider(&c2, &e2);
+
+
 	return false;
 }
 
 bool TestScene::Update(float dt)
 {
 	App->map->Draw();
+	c2.collider.x += 10 * sin(angle);
+	angle += 0.01f;
 	return true;
 }

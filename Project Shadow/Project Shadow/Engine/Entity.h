@@ -5,6 +5,7 @@
 #include "ModuleSceneManager.h"
 
 enum EntityTypes;
+struct Collider;
 
 class Entity : public Module
 {
@@ -28,6 +29,12 @@ public:
 	bool Load(pugi::xml_node&) override { return true; };
 
 	bool Save(pugi::xml_node&) const override { return true; };
+
+	void OnCollisionEnter(Collider* _this, Collider* _other);
+
+	void OnCollisionStay(Collider* _this, Collider* _other);
+
+	void OnCollisionExit(Collider* _this, Collider* _other);
 
 	EntityTypes type;
 };

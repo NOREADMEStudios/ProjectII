@@ -4,20 +4,59 @@
 #include "Module.h"
 #include "Defs.h"
 #include "Rect.h"
+#include "Entity.h"
 
 #define MAX_TAGS 16
 
 class Entity;
+struct Collision;
 
 struct Collider {
 	enum Type {
 		TRIGGER,
 		PHYSIC,
-		Number
+		Amount
 	} type;
-	iRect collider;
-	Entity* callback = nullptr;
-	String	tag;
+
+	iRect				collider;
+	Entity*				entity = nullptr;
+	uint				tag;
+	LIST(Collision*)	collisions;
+};
+
+struct Collision {
+
+	Collision(Collider* _c1, Collider* _c2) {
+		c1 = _c1;
+		c2 = _c2;
+		state = ON_ENTER;
+	}
+
+	void CallOnStay() {
+		c1->entity->OnCollisionStay(c1, c2);
+		c2->entity->OnCollisionStay(c2, c1);
+	}
+
+	void CallOnEnter() {
+		c1->entity->OnCollisionEnter(c1, c2);
+		c2->entity->OnCollisionEnter(c2, c1);
+	}
+
+	void CallOnExit() {
+		c1->entity->OnCollisionExit(c1, c2);
+		c2->entity->OnCollisionExit(c2, c1);
+	}
+
+	enum State {
+		ON_ENTER,
+		ON_STAY,
+		ON_EXIT
+	} state;
+
+	Collider			*c1 = nullptr,
+						*c2 = nullptr;
+
+	iRect				collisionArea;
 };
 
 class ModuleCollision
@@ -37,9 +76,11 @@ public:
 
 	bool CleanUp(xmlNode& config) override;
 
+	void AddCollider(Collider*, Entity*);
+
 private:
 
-	LIST(Collider*) colliders;
+	ARRAY(Collider*) colliders;
 	ARRAY(String) tagList;
 	bool interactionTable [MAX_TAGS][MAX_TAGS];
 

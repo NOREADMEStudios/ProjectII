@@ -1,4 +1,4 @@
-#include "TestScene.h"
+#include "MainScene.h"
 #include "../Engine/ModuleMap.h"
 #include "../Engine/App.h"
 #include "../Engine/ModuleSceneManager.h"
@@ -8,16 +8,16 @@
 #include "../Engine/UI/Window.h"
 #include "../Engine/ModuleCollision.h"
 
-TestScene::TestScene()
+MainScene::MainScene()
 {
 }
 
 
-TestScene::~TestScene()
+MainScene::~MainScene()
 {
 }
 
-bool TestScene::Start()
+bool MainScene::Start()
 {
 
 	App->map->Load("map.tmx");
@@ -52,7 +52,7 @@ bool TestScene::Start()
 	return false;
 }
 
-bool TestScene::Update(float dt)
+bool MainScene::Update(float dt)
 {
 	App->map->Draw();
 	c2.collider.x += 10 * sin(angle);

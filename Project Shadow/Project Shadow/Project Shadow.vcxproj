@@ -146,7 +146,7 @@
     <ClCompile Include="Engine\UI\Slider.cpp" />
     <ClCompile Include="Engine\UI\Sprite.cpp" />
     <ClCompile Include="Engine\UI\Window.cpp" />
-    <ClCompile Include="Game\TestScene.cpp" />
+    <ClCompile Include="Game\MainScene.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,7 +181,7 @@
     <ClInclude Include="Engine\UI\Slider.h" />
     <ClInclude Include="Engine\UI\Sprite.h" />
     <ClInclude Include="Engine\UI\Window.h" />
-    <ClInclude Include="Game\TestScene.h" />
+    <ClInclude Include="Game\MainScene.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
   </ItemGroup>

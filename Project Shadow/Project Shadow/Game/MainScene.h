@@ -1,10 +1,10 @@
-#ifndef __SCENE_TEST_H__
-#define __SCENE_TEST_H__
+#ifndef __MAINSCENE_H__
+#define __MAINSCENE_H__
 
 #include "..\Engine\Scene.h"
 #include "..\Engine\ModuleCollision.h"
 
-class TestScene :
+class MainScene :
 	public Scene
 {
 public:
@@ -13,8 +13,8 @@ public:
 	Entity e, e2;
 	float angle = 0;
 
-	TestScene();
-	virtual ~TestScene();
+	MainScene();
+	virtual ~MainScene();
 
 	bool Awake(pugi::xml_node&) override { return true; };
 

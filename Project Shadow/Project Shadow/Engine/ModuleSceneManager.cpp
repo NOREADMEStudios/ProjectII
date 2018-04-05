@@ -1,5 +1,5 @@
 #include "ModuleSceneManager.h"
-#include "../Game/TestScene.h"
+#include "../Game/MainScene.h"
 
 
 
@@ -18,7 +18,7 @@ bool ModuleSceneManager::Awake(pugi::xml_node& n) {
 }
 
 bool ModuleSceneManager::Start() {
-	LoadScene(new TestScene());
+	LoadScene(new MainScene()); // need to change to the intro scenee
 	return true;
 }
 
@@ -41,9 +41,14 @@ void ModuleSceneManager::LoadScene(Scene* scene) {
 }
 
 void ModuleSceneManager::ChangeScene(Scene* scene_to_change) {
-	
+	UnloadScene(currentScene);
+	LoadScene(scene_to_change);	
 }
 
 void ModuleSceneManager::UnloadScene(Scene* scene) {
-	
+
+	pugi::xml_node n; // to fit with the argument of CleanUp
+	currentScene->active = false;
+	currentScene->CleanUp(n);
+	currentScene = nullptr;
 }

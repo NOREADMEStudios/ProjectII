@@ -1,12 +1,13 @@
 #include "MainScene.h"
-#include "../Engine/ModuleMap.h"
-#include "../Engine/App.h"
-#include "../Engine/ModuleSceneManager.h"
-#include "../Engine/ModuleEntityManager.h"
-#include "../Engine/ModuleGUI.h"
-#include "../Engine/ModuleTextures.h"
-#include "../Engine/UI/Window.h"
-#include "../Engine/ModuleCollision.h"
+#include "../../Engine/ModuleMap.h"
+#include "../../Engine/App.h"
+#include "../../Engine/ModuleSceneManager.h"
+#include "../../Engine/ModuleEntityManager.h"
+#include "../../Engine/ModuleGUI.h"
+#include "../../Engine/ModuleTextures.h"
+#include "../../Engine/UI/Window.h"
+#include "../../Engine/ModuleCollision.h"
+
 
 MainScene::MainScene()
 {

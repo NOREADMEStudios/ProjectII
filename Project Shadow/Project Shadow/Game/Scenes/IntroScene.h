@@ -1,28 +1,25 @@
-#ifndef __MAINSCENE_H__
-#define __MAINSCENE_H__
+#ifndef __INTROSCENE_H__
+#define __INTROSCENE_H__
 
-#include "..\Engine\Scene.h"
-#include "..\Engine\ModuleCollision.h"
+#include "..\..\Engine\Scene.h"
+#include "..\..\Engine\ModuleCollision.h"
 
-class MainScene :
+class IntroScene:
 	public Scene
 {
 public:
 
-	Collider c, c2;
-	Entity e, e2;
-	float angle = 0;
 
-	MainScene();
-	virtual ~MainScene();
+	IntroScene();
+	virtual ~IntroScene();
 
 	bool Awake(pugi::xml_node&) override { return true; };
 
-	bool Start() override;
+	bool Start() override { return true; };
 
 	bool PreUpdate() override { return true; }
 
-	bool Update(float dt) override;
+	bool Update(float dt) override { return true; };
 
 	bool PostUpdate() override { return true; }
 
@@ -31,7 +28,6 @@ public:
 	bool Load(pugi::xml_node&) override { return true; };
 
 	bool Save(pugi::xml_node&) const override { return true; };
-
 
 };
 

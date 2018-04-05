@@ -131,7 +131,16 @@
     <ClCompile Include="Engine\Hero.cpp">
       <Filter>Engine\Entities\Character\Hero</Filter>
     </ClCompile>
-    <ClCompile Include="Game\MainScene.cpp">
+    <ClCompile Include="Game\Scenes\EndScene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\IntroScene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\ItemSelecScene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\MainScene.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -247,7 +256,16 @@
     <ClInclude Include="Engine\Hero.h">
       <Filter>Engine\Entities\Character\Hero</Filter>
     </ClInclude>
-    <ClInclude Include="Game\MainScene.h">
+    <ClInclude Include="Game\Scenes\EndScene.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\IntroScene.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\ItemSelecScene.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\MainScene.h">
       <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>

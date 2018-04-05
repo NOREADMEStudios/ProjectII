@@ -78,6 +78,11 @@ public:
 
 	void AddCollider(Collider*, Entity*);
 
+	ARRAY(String) GetTags();
+	String GetTag(uint tag);
+	String GetTag(Collider* c);
+	String GetTag(const Collider& c);
+
 private:
 
 	ARRAY(Collider*) colliders;

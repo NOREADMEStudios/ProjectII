@@ -325,7 +325,7 @@ void Application::FinishUpdate()
 		SDL_Delay(delay_ms);
 
 	uint wait_ms = delay_time.Read();
-	LOG("Expected frame delay: %d, Actual frame delay: %d", delay_ms, wait_ms);
+	//LOG("Expected frame delay: %d, Actual frame delay: %d", delay_ms, wait_ms);
 }
 
 uint32 Application::GetFramerateCap() const

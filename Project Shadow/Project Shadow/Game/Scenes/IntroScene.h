@@ -9,17 +9,20 @@ class IntroScene:
 {
 public:
 
+	Collider c, c2;
+	Entity e, e2;
+	float angle = 0;
 
 	IntroScene();
 	virtual ~IntroScene();
 
 	bool Awake(pugi::xml_node&) override { return true; };
 
-	bool Start() override { return true; };
+	bool Start() override;
 
 	bool PreUpdate() override { return true; }
 
-	bool Update(float dt) override { return true; };
+	bool Update(float dt) override;
 
 	bool PostUpdate() override { return true; }
 

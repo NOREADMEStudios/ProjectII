@@ -17,7 +17,7 @@ public:
 
 	bool PreUpdate()override { return true; }
 
-	bool Update(float dt)override { return true; }
+	bool Update(float dt)override;
 
 	bool PostUpdate()override { return true; }
 

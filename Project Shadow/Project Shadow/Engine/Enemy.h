@@ -1,22 +1,19 @@
-#ifndef __CHARACTER_H__
-#define __CHARACTER_H__
+#ifndef __ENEMY_H__
+#define __ENEMY_H__
 
-#include "Module.h"
 #include "ModuleEntityManager.h"
 #include "Animation.h"
-#include "Entity.h"
-
-enum CharacterTypes;
+#include "Character.h"
 
 
-class Character : public Entity
+class Enemy : public Character
 {
 public:
-	Character(CharacterTypes charType);
-	~Character();
+	Enemy();
+	~Enemy();
 
 
-	bool Awake(pugi::xml_node&) override;
+	bool Awake(pugi::xml_node&)override;
 
 	bool Start()override;
 
@@ -31,17 +28,10 @@ public:
 	bool Load(pugi::xml_node&) override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
 
-	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
-	
-	
-
+		
 	void LoadAnimations();
 
 	Animation idle;
 	Animation walking;
-
-	CharacterTypes charType;
 };
 #endif
-
-

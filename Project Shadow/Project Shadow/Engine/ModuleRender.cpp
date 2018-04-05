@@ -3,6 +3,9 @@
 #include "App.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleEntityManager.h"
+#include "ModuleMap.h"
+
 
 #include "ModuleInput.h"
 #include "../Brofiler/Brofiler.h"	
@@ -67,13 +70,15 @@ bool ModuleRender::Start()
 
 bool ModuleRender::PreUpdate()
 {
+
 	SDL_RenderClear(renderer);
 	return true;
 }
 
 bool ModuleRender::Update(float dt)
 {
-
+	PrintFromQueue(SpriteOrderer, dt);
+	CheckCameraPos();
 	return true;
 }
 
@@ -128,11 +133,11 @@ void ModuleRender::ResetViewPort()
 bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	float scale = App->win->GetScale();
 
 	SDL_Rect rect;
-	rect.x = (int)(camera.x * speed) + x * scale;
-	rect.y = (int)(camera.y * speed) + y * scale;
+	rect.x = (int)(-camera.x * speed * scale) + x * scale;
+	rect.y = (int)(-camera.y * speed * scale) + y * scale;
 
 	if(section != NULL)
 	{
@@ -234,7 +239,7 @@ bool ModuleRender::BlitGui(SDL_Texture * texture, int x, int y, const SDL_Rect *
 bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	float scale = App->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -262,7 +267,7 @@ bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uin
 bool ModuleRender::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	float scale = App->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -286,7 +291,7 @@ bool ModuleRender::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Ui
 bool ModuleRender::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	float scale = App->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -315,18 +320,81 @@ bool ModuleRender::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 
 
 void ModuleRender::SetCameraInitialPos()
 {
-
 	camera.y = 0;
 	camera.x = 0;
+}
+
+void ModuleRender::CheckCameraPos()
+{
+	float min_x = 0;
+	float max_x = 0;
+
+	App->entities->CheckMidPos(min_x, max_x);
+	int mapwidth = App->map->GetMapWidth();
+	float scale = App->win->GetScale();
+	float mid_pos = (((max_x - min_x)/2) + min_x);
+
+	float diference = (max_x - min_x + 500);
+
+	if (mid_pos - (camera.w  / (2* scale)  ) >= 0)
+	{
+		camera.x = (mid_pos - (camera.w / (2 * scale)));
+	}
+	else 
+	{
+		camera.x = 0;
+	}
+
+	if (mid_pos - (camera.w / (2 * scale)) >= mapwidth - (camera.w/2) - App->map->GetXTiles() + 1)
+	{
+		camera.x = mapwidth - (camera.w / 2) - App->map->GetXTiles() + 1;
+	}
+	
+	//if (mid_pos.y - (camera.h / 2) < 0)
+	//{
+	//	camera.y = -(mid_pos.y - (camera.h / 2));
+	//}
+	//else
+	//{
+	//	camera.y = 0;
+	//}
+
+
+	// In 0 scale is max, in width the scale is min
+	float new_scale = MAX_SCALE - (((diference * MAX_SCALE) / (mapwidth)) + MIN_SCALE);
+
+	App->win->SetScale(new_scale);
+	
 }
 
 SDL_Point ModuleRender::ScreenToWorld(int x, int y) const
 {
 	SDL_Point ret;
-	int scale = App->win->GetScale();
+	float scale = App->win->GetScale();
 
 	ret.x = (x - camera.x / scale);
 	ret.y = (y - camera.y / scale);
 
 	return ret;
 }
+
+void ModuleRender::FillQueue(Entity* entity)
+{
+	if (SDL_HasIntersection(&App->render->camera, &entity->GetCollider().toSDL_Rect()))
+	{
+		SpriteOrderer.push(entity);
+	}
+}
+
+void ModuleRender::PrintFromQueue(std::priority_queue<Entity*, std::vector<Entity*>, OrderCrit>& Queue, float dt)
+{
+	while (Queue.empty() == false)
+	{
+		Entity* first = Queue.top();
+
+		first->Draw(dt);		
+		Queue.pop();
+
+	}
+}
+

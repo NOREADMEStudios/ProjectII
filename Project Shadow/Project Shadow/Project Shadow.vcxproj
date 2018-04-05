@@ -122,6 +122,7 @@
     <ClCompile Include="Engine\Character.cpp" />
     <ClCompile Include="Engine\Defs.cpp" />
     <ClCompile Include="Engine\ModuleCollision.cpp" />
+    <ClCompile Include="Engine\Enemy.cpp" />
     <ClCompile Include="Engine\ModuleFonts.cpp" />
     <ClCompile Include="Engine\ModuleGUI.cpp" />
     <ClCompile Include="Engine\ModuleMap.cpp" />
@@ -129,6 +130,7 @@
     <ClCompile Include="Engine\ModuleEntityManager.cpp" />
     <ClCompile Include="Engine\ModuleSceneManager.cpp" />
     <ClCompile Include="Engine\PerfTimer.cpp" />
+    <ClCompile Include="Engine\Hero.cpp" />
     <ClCompile Include="Engine\Scene.cpp" />
     <ClCompile Include="Engine\Timer.cpp" />
     <ClCompile Include="Engine\Log.cpp" />
@@ -148,14 +150,17 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Animation.h" />
     <ClInclude Include="Engine\App.h" />
     <ClInclude Include="Engine\Character.h" />
     <ClInclude Include="Engine\Defs.h" />
     <ClInclude Include="Engine\ModuleCollision.h" />
+    <ClInclude Include="Engine\Enemy.h" />
     <ClInclude Include="Engine\ModuleFonts.h" />
     <ClInclude Include="Engine\ModuleGUI.h" />
     <ClInclude Include="Engine\ModuleMap.h" />
     <ClInclude Include="Engine\PerfTimer.h" />
+    <ClInclude Include="Engine\Hero.h" />
     <ClInclude Include="Engine\Point.h" />
     <ClInclude Include="Engine\Rect.h" />
     <ClInclude Include="Engine\Entity.h" />

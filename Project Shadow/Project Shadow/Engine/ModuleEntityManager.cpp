@@ -1,4 +1,8 @@
 #include "ModuleEntityManager.h"
+#include "Character.h"
+#include "Enemy.h"
+#include "Hero.h"
+
 
 ModuleEntityManager::ModuleEntityManager()
 {
@@ -37,6 +41,7 @@ bool ModuleEntityManager::Update(float dt) {
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->Update(dt);
 	}
+
 	return true;
 }
 
@@ -72,9 +77,31 @@ bool ModuleEntityManager::Save(pugi::xml_node& n)const {
 	return true;
 }
 
-Entity* ModuleEntityManager::CreateEntity(EntityInfo) {
+Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
 	Entity* ret = nullptr;
+
+	if (charInfo.chType == CharacterTypes::ENEMY)
+	{
+		ret = new Enemy();
+		numofplayers++;
+	}
+	else if (charInfo.chType == CharacterTypes::HERO)
+	{
+		ret = new Hero();
+		numofplayers++;
+	}
+	else
+	{
+		//ret = new Entity();
+		return nullptr;//
+	}
+
+	ret->type = CHARACTER;
+	ret->SetPos(charInfo.pos.x, charInfo.pos.y);
+
+	entities.push_back(ret);
+
 	return ret;
 }
 
@@ -83,3 +110,35 @@ void ModuleEntityManager::DestroyEntity(Entity* entity) {
 
 	
 }
+
+void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
+{
+
+	uint current_players = 0;
+	min_x = 999999999999;
+	max_x = 0;
+
+	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
+		if ((*item)->GetType() == CHARACTER)
+		{
+			current_players++;
+
+
+			if ((*item)->GetPosX() < min_x)
+			{
+				min_x = (*item)->GetPosX();
+			}
+			else if ((*item)->GetPosX() > max_x)
+			{
+				max_x = (*item)->GetPosX();
+			}
+		}
+
+		if (current_players == numofplayers)
+		{
+			break;
+		}
+	}
+
+}
+

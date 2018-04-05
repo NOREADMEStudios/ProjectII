@@ -37,6 +37,12 @@ void Entity::Accelerate(float x, float y, float delta_time) {
 	speedVector.y = CLAMP(speedVector.y, -stats.spd, stats.spd);
 }
 
+
+//EntityState Entity::GetState()
+//{
+//	return state;
+//}
+
 void Entity::OnCollisionEnter(Collider * _this, Collider * _other)
 {
 }
@@ -49,10 +55,11 @@ void Entity::OnCollisionExit(Collider * _this, Collider * _other)
 {
 }
 
-EntityState Entity::GetState()
-{
-	return state;
-}
+//EntityState Entity::GetState()
+//{
+//	return state;
+//}
+
 
 fPoint Entity::GetPos()
 {

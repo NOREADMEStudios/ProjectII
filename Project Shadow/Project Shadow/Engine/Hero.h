@@ -35,7 +35,11 @@ public:
 
 	void LoadAnimations();
 
-	Animation idle;
-	Animation walking;
+	void RequestState();
+	void UpdateState();
+	void UpdateCurState(float dt);
+	void UpdateAnimation();
+
+
 };
 #endif

@@ -31,6 +31,14 @@ bool Hero::Start()
 	collider = { 50 , 50 , 50, 50 };
 	stats.spd = 300;
 
+
+	CharState light_attack_1 = CharState(ATTACK_LIGHT, ATTACK_L2);
+	attacks.push_back(light_attack_1);
+	CharState light_attack_2 = CharState(ATTACK_L2);
+
+
+
+
 	currentAnimation = &idle;
 	return true;
 }
@@ -108,7 +116,7 @@ void Hero::UpdateInputs(float dt)
 void Hero::RequestState() {
 
 
-	std::list<Input*> inputs; 
+	std::list<Input> inputs; 
 
 	if (hero_num == 1)
 	inputs = App->input->FirstPlayerConfig();
@@ -129,41 +137,41 @@ void Hero::RequestState() {
 	directions.left = false;
 	directions.right = false;
 
-	for (std::list<Input*>::iterator item = inputs.begin(); item != inputs.end(); item++) {
+	for (std::list<Input>::iterator item = inputs.begin(); item != inputs.end(); item++) {
 		
-		if ((**item) == DOWN)
+		if ((*item) == DOWN)
 		{
 			directions.down = true;
 		}
-		else if ((**item) == LEFT)
+		else if ((*item) == LEFT)
 		{
 			directions.left = true;
 		}
-		else if ((**item) == RIGHT)
+		else if ((*item) == RIGHT)
 		{
 			directions.right = true;
 		}
-		else if ((**item) == UP)
+		else if ((*item) == UP)
 		{
 			directions.up = true;
 		}
-		else if ((**item) == LIGHT_ATTACK)
+		else if ((*item) == LIGHT_ATTACK)
 		{
 			l_attack = true;
 		}
-		else if ((**item) == HEAVY_ATTACK)
+		else if ((*item) == HEAVY_ATTACK)
 		{
 			s_attack = true;
 		}
-		else if ((**item) == JUMPINPUT)
+		else if ((*item) == JUMPINPUT)
 		{
 			jump = true;
 		}
-		else if ((**item) == DEFEND)
+		else if ((*item) == DEFEND)
 		{
 			block = true;
 		}
-		else if ((**item) == RUN)
+		else if ((*item) == RUN)
 		{
 			run = true;
 		}

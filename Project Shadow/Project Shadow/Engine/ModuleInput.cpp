@@ -182,47 +182,47 @@ void ModuleInput::BlockKeyboard() {
 }
 
 
-std::list<Input*> ModuleInput::FirstPlayerConfig()
+std::list<Input> ModuleInput::FirstPlayerConfig()
 {
-	std::list<Input*> ret;
+	std::list<Input> ret;
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		ret.push_back(new Input(LEFT));
+		ret.push_back(Input(LEFT));
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		ret.push_back(new Input(RIGHT));
+		ret.push_back(Input(RIGHT));
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		ret.push_back(new Input(UP));
+		ret.push_back(Input(UP));
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		ret.push_back(new Input(DOWN));
+		ret.push_back(Input(DOWN));
 		
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		ret.push_back(new Input(Input::JUMPINPUT));
+		ret.push_back(Input(Input::JUMPINPUT));
 	
 
 	return ret;
 }
 
-std::list<Input*> ModuleInput::SecondPlayerConfig()
+std::list<Input> ModuleInput::SecondPlayerConfig()
 {
-	std::list<Input*> ret;
+	std::list<Input> ret;
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		ret.push_back(new Input(LEFT));
+		ret.push_back(Input(LEFT));
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-		ret.push_back(new Input(RIGHT));
+		ret.push_back(Input(RIGHT));
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-		ret.push_back(new Input(UP));
+		ret.push_back(Input(UP));
 
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-		ret.push_back(new Input(DOWN));
+		ret.push_back(Input(DOWN));
 
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-		ret.push_back(new Input(Input::JUMPINPUT));
+		ret.push_back(Input(Input::JUMPINPUT));
 
 
 	return ret;

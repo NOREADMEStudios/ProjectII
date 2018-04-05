@@ -72,8 +72,8 @@ public:
 	void BlockMouseEvent(int event_id);
 	void BlockKeyboardEvent(int event_id);
 
-	std::list<Input*> FirstPlayerConfig();
-	std::list<Input*> SecondPlayerConfig();
+	std::list<Input> FirstPlayerConfig();
+	std::list<Input> SecondPlayerConfig();
 
 
 private:

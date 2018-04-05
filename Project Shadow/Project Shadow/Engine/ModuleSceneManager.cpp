@@ -1,11 +1,24 @@
 #include "ModuleSceneManager.h"
 #include "../Game/Scenes/MainScene.h"
+#include "../Game/Scenes/IntroScene.h"
+#include "../Game/Scenes/ItemSelecScene.h"
+#include "../Game/Scenes/EndScene.h"
 
 
 
 ModuleSceneManager::ModuleSceneManager()
 {
-	name = "scenes";
+	name	=	"scenes";
+
+	introSc	=	new IntroScene();
+	itemSc	=	new ItemSelecScene();
+	mainSc	=	new MainScene();
+	endSc	=	new EndScene();
+
+	AddScene(introSc);
+	AddScene(itemSc);
+	AddScene(mainSc);
+	AddScene(endSc);
 }
 
 
@@ -18,7 +31,7 @@ bool ModuleSceneManager::Awake(pugi::xml_node& n) {
 }
 
 bool ModuleSceneManager::Start() {
-	LoadScene(new MainScene()); // need to change to the intro scenee
+	LoadScene(introSc); // need to change to the intro scenee
 	return true;
 }
 
@@ -33,6 +46,11 @@ bool ModuleSceneManager::CleanUp(pugi::xml_node& n) {
 		return currentScene->CleanUp(n);
 	return true;
 }
+
+void ModuleSceneManager::AddScene(Scene* scene) {
+	scenes.push_back(*scene);
+}
+
 
 void ModuleSceneManager::LoadScene(Scene* scene) {
 	currentScene = scene;

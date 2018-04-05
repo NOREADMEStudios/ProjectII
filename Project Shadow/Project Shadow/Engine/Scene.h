@@ -27,6 +27,8 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; };
 
 	bool loaded = false;
+
+
 };
 #endif
 

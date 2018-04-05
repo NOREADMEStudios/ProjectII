@@ -6,6 +6,10 @@
 
 #include <list>
 
+class IntroScene;
+class ItemSelecScene;
+class MainScene;
+class EndScene;
 
 class ModuleSceneManager : public Module
 {
@@ -28,9 +32,15 @@ public:
 	bool Load(pugi::xml_node&) { return true; }
 	bool Save(pugi::xml_node&) const { return true; }
 
+	void AddScene(Scene* scene);
 	void LoadScene(Scene* scene);
 	void ChangeScene(Scene* scene_to_change);
 	void UnloadScene(Scene* scene);
+
+	IntroScene* introSc;
+	ItemSelecScene* itemSc;
+	MainScene* mainSc;
+	EndScene* endSc;
 
 private:
 

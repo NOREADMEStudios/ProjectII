@@ -1,10 +1,13 @@
 #include "MainScene.h"
+#include "IntroScene.h"
 #include "../../Engine/ModuleMap.h"
 #include "../../Engine/App.h"
 #include "../../Engine/ModuleSceneManager.h"
 #include "../../Engine/ModuleEntityManager.h"
 #include "../../Engine/ModuleGUI.h"
 #include "../../Engine/ModuleTextures.h"
+#include "../../Engine/ModuleInput.h"
+#include "../../Engine/ModuleRender.h"
 #include "../../Engine/UI/Window.h"
 #include "../../Engine/ModuleCollision.h"
 
@@ -55,6 +58,9 @@ bool MainScene::Start()
 
 bool MainScene::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT) {
+		App->scenes->ChangeScene(App->scenes->introSc);
+	}
 	App->map->Draw();
 	c2.collider.x += 10 * sin(angle);
 	angle += 0.01f;

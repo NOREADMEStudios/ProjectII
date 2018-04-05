@@ -3,6 +3,7 @@
 
 #include <string>
 #include <list>
+#include <vector>
 
 #define ASSETS_ROOT "Assets/"
 
@@ -22,16 +23,24 @@
 #define ENTITIES_DIR "Entities/"
 #define INPUT_DIR "Input/"
 
+#define DEFAULT_RESOLUTION_X 1600
+#define DEFAULT_RESOLUTION_Y 900
 
 typedef unsigned int uint32;
 typedef unsigned int uint;
 typedef unsigned long int uint64;
+typedef std::string String;
 
-typedef void (*Callback)(void* ptr);
+struct Collider;
+
+typedef void (*Callback)(void*);
 
 
 #define CURSOR_WIDTH 2
 #define TMP_STRING_SIZE 4096
+
+#define VECTOR(type) std::vector<type>
+#define ARRAY(type) VECTOR(type)
 
 #define LIST(type) std::list<type>
 #define LIST_ITERATOR(type) LIST(type)::iterator
@@ -47,11 +56,15 @@ typedef void (*Callback)(void* ptr);
 		list.remove(*it);
 
 
-void Release(void* object);
-void ReleaseArray(void* array);
+namespace Utils {
 
-int ParseInt(std::string);
-int ParseInt(const char*);
+	void Release(void* object);
+	void ReleaseArray(void* array);
+
+	int ParseInt(std::string);
+	int ParseInt(const char*);
+
+};
 
 // Interpolates between two values at a cerain rate (step)
 template<class TYPE>

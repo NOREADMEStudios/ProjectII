@@ -122,6 +122,9 @@
     <ClCompile Include="Engine\ModuleFonts.cpp">
       <Filter>Engine\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ModuleCollision.cpp">
+      <Filter>Engine\Modules</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Character.cpp">
       <Filter>Engine\Entities\Character</Filter>
     </ClCompile>
@@ -232,9 +235,9 @@
     <ClInclude Include="Engine\ModuleFonts.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\PerfTimer.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
+    <ClInclude Include="Engine\ModuleCollision.h">
+      <Filter>Engine\Modules</Filter>
+	</ClInclude>
     <ClInclude Include="Engine\Animation.h">
       <Filter>Engine\Tools</Filter>
     </ClInclude>

@@ -18,8 +18,8 @@ class ModuleRender;
 class ModuleTextures;
 class ModuleAudio;
 class ModuleMap;
+class ModuleCollision;
 /*class j1Scene;
-class j1Collision;
 class j1PathFinding;
 class j1Transition;*/
 class ModuleFonts;
@@ -110,8 +110,8 @@ public:
 	ModuleTextures*			textures = nullptr;
 	ModuleAudio*			audio = nullptr;
 	ModuleMap*				map = nullptr;
+	ModuleCollision*		collision = nullptr;
 	/*j1Scene*			scene = nullptr;
-	j1Collision*		collision = nullptr;
 	j1PathFinding*		pathfinding = nullptr;	
 	j1Transition*		transition = nullptr;*/
 	ModuleFonts*			font = nullptr;

@@ -2,15 +2,15 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "Entity.h"
+#include "ModuleCollision.h"
+#include "Log.h"
 
 
 Entity::Entity(EntityTypes type) {}
 
+Entity::Entity() {}
 
 Entity::~Entity() {}
-
-
-
 
 void Entity::Draw(float dt) {
 	AnimationFrame frame = currentAnimation->GetCurrentFrame(dt);
@@ -35,6 +35,18 @@ void Entity::Accelerate(float x, float y, float delta_time) {
 
 	speedVector.x = CLAMP(speedVector.x, -stats.spd, stats.spd);
 	speedVector.y = CLAMP(speedVector.y, -stats.spd, stats.spd);
+}
+
+void Entity::OnCollisionEnter(Collider * _this, Collider * _other)
+{
+}
+
+void Entity::OnCollisionStay(Collider * _this, Collider * _other)
+{
+}
+
+void Entity::OnCollisionExit(Collider * _this, Collider * _other)
+{
 }
 
 EntityState Entity::GetState()
@@ -91,4 +103,3 @@ iRect Entity::GetCollider() const
 {
 	return collider;
 }
-

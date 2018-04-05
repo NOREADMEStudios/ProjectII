@@ -119,14 +119,14 @@ bool ModuleMap::CleanUp(pugi::xml_node&)
 
 	// Remove all tilesets
 	for (std::list<TileSet*>::reverse_iterator tileset = data.tilesets.rbegin(); tileset != data.tilesets.rend(); tileset++) {
-		Release(*tileset);
+		Utils::Release(*tileset);
 	}
 	data.tilesets.clear();
 
 	
 	// Remove all layers
 	for (std::list<MapLayer*>::reverse_iterator layer = data.layers.rbegin(); layer != data.layers.rend(); layer++) {
-		Release(*layer);
+		Utils::Release(*layer);
 	}
 	data.layers.clear();
 
@@ -436,7 +436,7 @@ bool ModuleMap::LoadLayer(pugi::xml_node& node, MapLayer& layer)
 				strncpy_s(buf, figures + 1 , &aux_buf[buffer_index - figures], _TRUNCATE);
 
 				std::string buffer(buf);
-				uint tile_id = (uint)ParseInt(buffer);
+				uint tile_id = (uint)Utils::ParseInt(buffer);
 				layer.tiles[tile_index] = tile_id;
 				figures = 0;
 				free(buf);

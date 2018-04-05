@@ -10,6 +10,7 @@
 
 struct SDL_Texture;
 enum EntityTypes;
+struct Collider;
 
 enum EntityState
 {
@@ -37,24 +38,8 @@ class Entity : public Module
 {
 public:
 	Entity(EntityTypes type);
-	~Entity();
-
-
-	bool Awake(pugi::xml_node&) override { return true; }
-
-	bool Start()override { return true; }
-
-	bool PreUpdate()override { return true; }
-
-	bool Update(float dt)override { return true; }
-
-	bool PostUpdate()override { return true; }
-
-	bool CleanUp(pugi::xml_node&)override { return true; }
-
-	bool Load(pugi::xml_node&) override { return true; };
-
-	bool Save(pugi::xml_node&) const override { return true; };
+	Entity();
+	virtual ~Entity();
 
 	EntityState GetState();
 	fPoint GetPos();
@@ -72,10 +57,16 @@ public:
 
 	void Draw(float dt);
 
-
 	virtual void Move(float delta_time);
 	virtual void Break(float delta_time);
 	void Accelerate(float x, float y, float delta_time);
+
+
+	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
+
+	virtual void OnCollisionStay(Collider* _this, Collider* _other);
+
+	virtual void OnCollisionExit(Collider* _this, Collider* _other);
 
 	EntityTypes type;
 
@@ -97,10 +88,6 @@ protected:
 	// Should be same numeration as the states
 	std::list<Animation> animations;
 	std::list<Items> items;
-
-
-
-
 };
 #endif
 

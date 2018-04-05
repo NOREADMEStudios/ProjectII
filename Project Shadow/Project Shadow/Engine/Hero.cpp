@@ -32,12 +32,6 @@ bool Hero::Start()
 	stats.spd = 300;
 
 
-	CharState light_attack_1 = CharState(ATTACK_LIGHT, ATTACK_L2);
-	attacks.push_back(light_attack_1);
-	CharState light_attack_2 = CharState(ATTACK_L2);
-
-
-
 
 	currentAnimation = &idle;
 	return true;

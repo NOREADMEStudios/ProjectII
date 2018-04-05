@@ -34,36 +34,7 @@ enum CharStateEnum
 	DEATH
 };
 
-struct CharState
- {
-	CharStateEnum state = IDLE;
-	std::list<CharStateEnum> linkers;
 
-
-	CharState(CharStateEnum init_state = IDLE, CharStateEnum first_linker = IDLE)
-	{
-		state = init_state;
-		if (first_linker != IDLE)
-		{
-			linkers.push_back(first_linker);
-		}
-	}
-
-	bool CanLink(CharStateEnum wanted_state)
-	{
-		for (std::list<CharStateEnum>::iterator item = linkers.begin(); item != linkers.end(); item++)
-		{
-			if (*item == wanted_state)
-				return true;
-		}
-		return false;
-	}
-
-	void AddLink(CharStateEnum linker)
-	{
-		linkers.push_back(linker);
-	}
-};
 
 struct Directions
 {
@@ -108,7 +79,6 @@ public:
 
 	//Attacks
 
-	std::list<CharState> attacks;
 
 
 };

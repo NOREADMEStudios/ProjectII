@@ -1,18 +1,18 @@
 #include "Defs.h"
 #include "Log.h"
 
-void Release(void* object) {
+void Utils::Release(void* object) {
 	delete object;
 }
 
-void ReleaseArray(void* array) {
+void Utils::ReleaseArray(void* array) {
 	delete[] array;
 }
 
 /**
 * Parse string to integers if possible
 */
-int ParseInt(std::string s) {
+int Utils::ParseInt(std::string s) {
 	uint i = 0;
 	int result = 0;
 	bool err = false;
@@ -42,7 +42,7 @@ int ParseInt(std::string s) {
 	return result;
 }
 
-int ParseInt(const char* s) {
+int Utils::ParseInt(const char* s) {
 	uint i = 0;
 	int result = 0;
 	bool err = false;

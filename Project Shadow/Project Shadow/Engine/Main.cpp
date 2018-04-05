@@ -97,7 +97,7 @@ int main(int argc, char* args[])
 			LOG("CLEANUP PHASE ===============================");
 			if(App->CleanUp() == true)
 			{
-				Release(App);
+				Utils::Release(App);
 				result = EXIT_SUCCESS;
 				state = EXIT;
 			}

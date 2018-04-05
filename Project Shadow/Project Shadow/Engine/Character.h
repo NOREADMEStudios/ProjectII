@@ -21,7 +21,7 @@ enum Input
 	DEFEND
 };
 
-enum CharState
+enum CharStateEnum
 {
 	IDLE,
 	JUMP,
@@ -31,6 +31,13 @@ enum CharState
 	ATTACK_LIGHT,
 	ATTACK_HEAVY,
 	DEATH
+};
+
+struct CharState
+ {
+	CharStateEnum state = IDLE;
+	std::list<CharStateEnum> linkers;
+
 };
 
 struct Directions
@@ -69,8 +76,8 @@ public:
 
 	CharacterTypes charType;
 
-	CharState currentState = IDLE;
-	CharState wantedState = IDLE;
+	CharStateEnum currentState;
+	CharStateEnum wantedState;
 	Directions directions;
 
 

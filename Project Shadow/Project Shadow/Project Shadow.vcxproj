@@ -121,6 +121,7 @@
     <ClCompile Include="Engine\App.cpp" />
     <ClCompile Include="Engine\Character.cpp" />
     <ClCompile Include="Engine\Defs.cpp" />
+    <ClCompile Include="Engine\ModuleCollision.cpp" />
     <ClCompile Include="Engine\Enemy.cpp" />
     <ClCompile Include="Engine\ModuleFonts.cpp" />
     <ClCompile Include="Engine\ModuleGUI.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Engine\App.h" />
     <ClInclude Include="Engine\Character.h" />
     <ClInclude Include="Engine\Defs.h" />
+    <ClInclude Include="Engine\ModuleCollision.h" />
     <ClInclude Include="Engine\Enemy.h" />
     <ClInclude Include="Engine\ModuleFonts.h" />
     <ClInclude Include="Engine\ModuleGUI.h" />

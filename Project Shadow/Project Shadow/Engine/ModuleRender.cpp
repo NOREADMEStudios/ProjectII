@@ -361,7 +361,7 @@ void ModuleRender::CheckCameraPos()
 
 
 	// In 0 scale is max, in width the scale is min
-	float new_scale = MAX_SCALE - (((diference * MAX_SCALE) / (mapwidth)) - MIN_SCALE);
+	float new_scale = MAX_SCALE - (((diference * MAX_SCALE) / (mapwidth)) + MIN_SCALE);
 
 	App->win->SetScale(new_scale);
 	

@@ -189,7 +189,18 @@ void Hero::RequestState() {
 	}
 
 	if (l_attack)
-		wantedState = ATTACK_LIGHT;
+	{
+		if (last_attack == ATTACK_LIGHT)
+		{
+			wantedState = ATTACK_L2;
+		}
+		else
+		{
+			wantedState = ATTACK_LIGHT;
+		}
+	
+	}
+		
 	else if (s_attack)
 		wantedState = ATTACK_HEAVY;
 
@@ -203,9 +214,18 @@ void Hero::UpdateState()
 	if (currentState == WALK || currentState == RUN || currentState == IDLE)
 	{
 		currentState = wantedState;
+
+		if (time_light_attack.Count(COMBO_MARGIN))
+		{
+			last_attack = IDLE;
+		}
 	}
 	else if (currentAnimation->Finished())
 	{
+		last_attack = currentState;
+		if (currentState == ATTACK_LIGHT || currentState == ATTACK_L2)
+			time_light_attack.Start();
+
 		currentState = IDLE;
 	}
 }
@@ -233,4 +253,11 @@ void Hero::UpdateAnimation()
 	{
 		currentAnimation = &idle;
 	}
+}
+
+
+void Hero::PushInBuffer(Input state)
+{
+	inputBuffer.pop_front();
+	inputBuffer.push_back(state);
 }

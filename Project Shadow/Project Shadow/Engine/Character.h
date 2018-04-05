@@ -40,7 +40,7 @@ struct CharState
 	std::list<CharStateEnum> linkers;
 
 
-	CharState(CharStateEnum init_state, CharStateEnum first_linker = IDLE)
+	CharState(CharStateEnum init_state = IDLE, CharStateEnum first_linker = IDLE)
 	{
 		state = init_state;
 		if (first_linker != IDLE)
@@ -103,6 +103,7 @@ public:
 
 	CharStateEnum currentState;
 	CharStateEnum wantedState;
+	CharStateEnum last_attack;
 	Directions directions;
 
 	//Attacks

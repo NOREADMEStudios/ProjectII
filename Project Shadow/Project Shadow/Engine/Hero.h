@@ -5,9 +5,9 @@
 #include "Character.h"
 #include "ModuleEntityManager.h"
 #include "Animation.h"
- 
+#include "Timer.h"
 
-
+#define COMBO_MARGIN 0.5
 
 class Hero : public Character
 {
@@ -39,7 +39,12 @@ public:
 	void UpdateState();
 	void UpdateCurState(float dt);
 	void UpdateAnimation();
+	void PushInBuffer(Input state);
 
+	LIST(Input) inputBuffer;
+
+	Timer time_light_attack;
+	Timer time_strong_attack;
 
 };
 #endif

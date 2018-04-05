@@ -237,6 +237,7 @@
     </ClInclude>
     <ClInclude Include="Engine\ModuleCollision.h">
       <Filter>Engine\Modules</Filter>
+	</ClInclude>
     <ClInclude Include="Engine\Animation.h">
       <Filter>Engine\Tools</Filter>
     </ClInclude>

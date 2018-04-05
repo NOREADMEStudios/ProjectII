@@ -38,13 +38,8 @@ class Entity : public Module
 {
 public:
 	Entity(EntityTypes type);
+	Entity();
 	virtual ~Entity();
-
-	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
-
-	virtual void OnCollisionStay(Collider* _this, Collider* _other);
-
-	virtual void OnCollisionExit(Collider* _this, Collider* _other);
 
 	EntityState GetState();
 	fPoint GetPos();
@@ -62,10 +57,16 @@ public:
 
 	void Draw(float dt);
 
-
 	virtual void Move(float delta_time);
 	virtual void Break(float delta_time);
 	void Accelerate(float x, float y, float delta_time);
+
+
+	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
+
+	virtual void OnCollisionStay(Collider* _this, Collider* _other);
+
+	virtual void OnCollisionExit(Collider* _this, Collider* _other);
 
 	EntityTypes type;
 
@@ -87,10 +88,6 @@ protected:
 	// Should be same numeration as the states
 	std::list<Animation> animations;
 	std::list<Items> items;
-
-
-
-
 };
 #endif
 

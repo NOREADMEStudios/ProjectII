@@ -8,6 +8,7 @@
 
 Entity::Entity(EntityTypes type) {}
 
+Entity::Entity() {}
 
 Entity::~Entity() {}
 
@@ -34,6 +35,18 @@ void Entity::Accelerate(float x, float y, float delta_time) {
 
 	speedVector.x = CLAMP(speedVector.x, -stats.spd, stats.spd);
 	speedVector.y = CLAMP(speedVector.y, -stats.spd, stats.spd);
+}
+
+void Entity::OnCollisionEnter(Collider * _this, Collider * _other)
+{
+}
+
+void Entity::OnCollisionStay(Collider * _this, Collider * _other)
+{
+}
+
+void Entity::OnCollisionExit(Collider * _this, Collider * _other)
+{
 }
 
 EntityState Entity::GetState()

@@ -230,7 +230,7 @@ void Hero::UpdateState()
 	{
 		currentState = wantedState;
 
-		if (time_light_attack.Count(COMBO_MARGIN))
+		if (time_attack.Count(COMBO_MARGIN))
 		{
 			last_attack = IDLE;
 		}
@@ -239,7 +239,7 @@ void Hero::UpdateState()
 	{
 		last_attack = currentState;
 		if (currentState == ATTACK_LIGHT || currentState == ATTACK_L2)
-			time_light_attack.Start();
+			time_attack.Start();
 		else if (currentState == DEATH)
 			Respawn();
 

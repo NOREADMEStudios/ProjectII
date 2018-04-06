@@ -50,8 +50,8 @@ public:
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 
 
-	Timer time_light_attack;
-	Timer time_strong_attack;
+	Timer time_attack;
+
 
 protected:
 	iPoint initialpos;

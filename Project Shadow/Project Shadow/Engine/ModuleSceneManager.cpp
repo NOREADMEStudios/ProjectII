@@ -46,6 +46,7 @@ bool ModuleSceneManager::PostUpdate() {
 		UnloadScene(currentScene);
 		LoadScene(nextScene);
 	}
+	nextScene = nullptr;
 	return true;
 }
 

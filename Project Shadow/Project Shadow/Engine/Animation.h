@@ -165,9 +165,6 @@ public:
 					iRect HitBoxColl(0, 0, 0, 0);
 					iRect AtkColl(0, 0, 0, 0);
 					for (pugi::xml_node object = objectgroup.child("object"); object; object = object.next_sibling("object")) {
-						//itera entre objects de idle colliders
-
-
 						pugi::xml_node prop = object.child("properties").child("property");
 						if (prop.attribute("name").as_string() == frame) {
 							if (prop.attribute("value").as_int() == i) {

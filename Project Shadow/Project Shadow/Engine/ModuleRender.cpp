@@ -335,7 +335,7 @@ void ModuleRender::CheckCameraPos()
 	float mid_pos = (((max_x - min_x)/2) + min_x);
 
 	float diference = (max_x - min_x);
-	diference += diference;
+	diference += diference / 2;
 
 	if (mid_pos - (camera.w  / (2* scale)  ) >= 0)
 	{
@@ -351,20 +351,11 @@ void ModuleRender::CheckCameraPos()
 		camera.x = mapwidth - (camera.w / 2) - App->map->GetXTiles() + 1;
 	}
 	
-	//if (mid_pos.y - (camera.h / 2) < 0)
-	//{
-	//	camera.y = -(mid_pos.y - (camera.h / 2));
-	//}
-	//else
-	//{
-	//	camera.y = 0;
-	//}
+
 	float min_scale = (float)camera.w / (mapwidth - (App->map->GetXTiles()*2) + 1);
 
-	if (diference > mapwidth)
-		diference = mapwidth;
 	// In 0 scale is max, in width the scale is min
-	float new_scale = MAX_SCALE - (((diference * (MAX_SCALE - min_scale)) / (mapwidth)));
+	float new_scale = MAX_SCALE - ((diference  / mapwidth)* (MAX_SCALE - min_scale));
 
 	App->win->SetScale(new_scale);
 	
@@ -383,10 +374,8 @@ SDL_Point ModuleRender::ScreenToWorld(int x, int y) const
 
 void ModuleRender::FillQueue(Entity* entity)
 {
-	if (SDL_HasIntersection(&App->render->camera, &entity->GetCollider().toSDL_Rect()))
-	{
 		SpriteOrderer.push(entity);
-	}
+	
 }
 
 void ModuleRender::PrintFromQueue(std::priority_queue<Entity*, std::vector<Entity*>, OrderCrit>& Queue, float dt)

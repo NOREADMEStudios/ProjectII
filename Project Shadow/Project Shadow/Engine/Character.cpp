@@ -91,6 +91,7 @@ void Character::UpdateCollidersPosition() {
 	collAtk.collider.y += this->position.y;
 }
 
+
 void Character::GetCollidersFromAnimation() {
 	collFeet.collider = currentAnimation->GetFeetColliderFromFrame();
 	collHitBox.collider = currentAnimation->GetHitBoxColliderFromFrame();

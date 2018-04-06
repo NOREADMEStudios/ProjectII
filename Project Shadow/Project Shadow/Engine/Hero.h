@@ -33,7 +33,7 @@ public:
 	bool Load(pugi::xml_node&)override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
 
-	void UpdateInputs(float dt);
+
 
 	void LoadAnimations();
 
@@ -43,7 +43,7 @@ public:
 	void UpdateAnimation();
 	void CalculateAtk();
 	bool StateisAtk();
-	Attack* GetCurAtk();
+	Attack* GetAtk(CharStateEnum atk);
 
 	void Respawn();
 

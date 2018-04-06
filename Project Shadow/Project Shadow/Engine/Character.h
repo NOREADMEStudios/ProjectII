@@ -40,16 +40,60 @@ struct Attack
 {
 	CharStateEnum state;
 	int damage = 0;
-	uint firstActiveFrame = 0;
-	uint activeFrames = 0;
+	LIST(Attack*) childs;
+	Input input;
 
-	Attack(CharStateEnum _state, int _damage = 0, uint _firstactive = 0, uint _actives = 0)
+	Attack(CharStateEnum _state, Input _input, int _damage = 0)
 	{
 		state = _state;
+		input = _input;
 		damage = _damage;
-		firstActiveFrame = _firstactive;
-		activeFrames = _actives;
+
 	}
+
+	void AddChild(Attack* _child)
+	{
+		childs.push_back(_child);
+	}
+
+	bool CheckChild(Attack* _child)
+	{
+		for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
+			if (*item == _child)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	bool CheckChildInput(Input input)
+	{
+
+		for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
+			if ((*item)->input == input)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	Attack* GetChildInput(Input input)
+	{
+
+		for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
+			if ((*item)->input == input)
+			{
+				return *item;
+			}
+		}
+
+		return nullptr;
+	}
+
 };
 
 struct Directions
@@ -93,7 +137,7 @@ public:
 	CharStateEnum last_attack;
 	Directions directions;
 
-	LIST(Attack) attacks;
+	LIST(Attack*) attacks;
 
 };
 #endif

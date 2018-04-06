@@ -39,8 +39,12 @@ bool Hero::Start()
 	initiallife = stats.life;
 	lives = 2;
 
-	Attack light_1 = Attack(ATTACK_LIGHT, 10);
+	Attack* light_1 = new Attack(ATTACK_LIGHT, LIGHT_ATTACK, 10);
+	Attack* light_2 = new Attack(ATTACK_L2, LIGHT_ATTACK, 12);
 	attacks.push_back(light_1);
+	attacks.push_back(light_2);
+
+	light_1->AddChild(light_2);
 
 	currentAnimation = &idle;
 	return true;
@@ -106,25 +110,6 @@ void Hero::LoadAnimations()
 
 }
 
-void Hero::UpdateInputs(float dt)
-{
-	//if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
-	//	Accelerate(-stats.spd, 0, dt);
-	//	currentAnimation = &walking;
-	//}
-	//if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
-	//	currentAnimation = &walking;
-	//	Accelerate(stats.spd, 0, dt);
-	//}
-	//if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-	//	Accelerate(0, -stats.spd, dt);
-
-	//if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	//	Accelerate(0, stats.spd, dt);
-
-	//if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	//	SetPos(rand() % 1000, 0);
-}
 
 
 
@@ -203,18 +188,9 @@ void Hero::RequestState() {
 			wantedState = WALK;
 	}
 
-	if (l_attack)
-	{
-		if (last_attack == ATTACK_LIGHT)
-		{
-			wantedState = ATTACK_L2;
-		}
-		else
-		{
-			wantedState = ATTACK_LIGHT;
-		}
+	if (l_attack)	
+		wantedState = ATTACK_LIGHT;			
 	
-	}
 		
 	else if (s_attack)
 		wantedState = ATTACK_HEAVY;
@@ -236,14 +212,30 @@ void Hero::UpdateState()
 		}
 	}
 	else if (currentAnimation->Finished())
-	{
-		last_attack = currentState;
-		if (currentState == ATTACK_LIGHT || currentState == ATTACK_L2)
-			time_attack.Start();
-		else if (currentState == DEATH)
-			Respawn();
+	{	
 
-		currentState = IDLE;
+		if (!StateisAtk())
+		{
+			currentState = wantedState;
+		}
+		else
+		{
+			last_attack = currentState;
+			Attack* wanted_atk = GetAtk(ATTACK_LIGHT);
+			Attack* current_atk = GetAtk(last_attack);
+
+			if (wanted_atk != nullptr && current_atk->CheckChildInput(wanted_atk->input))
+			{
+				currentState = current_atk->GetChildInput(wanted_atk->input)->state;
+			}
+
+			time_attack.Start();
+		}
+
+		if (wantedState == DEATH)
+			currentState = wantedState;
+		else
+			currentState = IDLE;
 	}
 }
 
@@ -251,11 +243,17 @@ void Hero::UpdateCurState(float dt)
 {
 	int y_dir =  directions.down - directions.up;
 	int x_dir =	 directions.right - directions.left;
-	switch (currentState) 
+	switch (currentState)
 	{
-	case WALK:
+		case WALK:
 		{
 			Accelerate(x_dir * stats.spd, y_dir * stats.spd, dt);
+			break;
+		}
+		case DEATH:
+		{
+			Respawn();
+			break;
 		}
 	}
 
@@ -292,7 +290,7 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 
 void Hero::CalculateAtk()
 {
-	stats.atk = GetCurAtk()->damage;		
+	stats.atk = GetAtk(currentState)->damage;		
 }
 
 bool Hero::StateisAtk()
@@ -300,15 +298,16 @@ bool Hero::StateisAtk()
 	return (currentState != WALK && currentState != RUN && currentState != IDLE && currentState != JUMP && currentState != DEATH && currentState != DEFEND);
 }
 
-Attack* Hero::GetCurAtk()
+Attack* Hero::GetAtk(CharStateEnum atk)
 {
 	Attack* ret = nullptr;
 
-	for (std::list<Attack>::iterator item = attacks.begin(); item != attacks.end(); item++) {
-		if ((*item).state == currentState)
+	for (std::list<Attack*>::iterator item = attacks.begin(); item != attacks.end(); item++) {
+		if ((**item).state == atk)
 		{
-			ret = &(*item);
+			ret = &(**item);
 		}
 	}
 	return ret;
 }
+

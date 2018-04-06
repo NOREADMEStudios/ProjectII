@@ -221,7 +221,7 @@ void Hero::UpdateState()
 		else
 		{
 			last_attack = currentState;
-			Attack* wanted_atk = GetAtk(ATTACK_LIGHT);
+			Attack* wanted_atk = GetAtk(wantedState);
 			Attack* current_atk = GetAtk(last_attack);
 
 			if (wanted_atk != nullptr && current_atk->CheckChildInput(wanted_atk->input))

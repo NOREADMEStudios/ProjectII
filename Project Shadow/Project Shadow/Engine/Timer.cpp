@@ -45,7 +45,7 @@ void Timer::AddTime(Timer nwtime) {
 bool Timer::Count(float num)
 {
 	bool ret = false;
-	if (num <= ((SDL_GetTicks() - started_at) / 1000.0f))
+	if (num <= ReadSec())
 	{
 		ret = true;
 	}

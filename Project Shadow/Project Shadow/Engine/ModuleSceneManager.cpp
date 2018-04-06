@@ -31,7 +31,7 @@ bool ModuleSceneManager::Awake(pugi::xml_node& n) {
 }
 
 bool ModuleSceneManager::Start() {
-	LoadScene(introSc); // need to change to the intro scenee
+	LoadScene(mainSc); // need to change to the intro scenee
 	return true;
 }
 
@@ -41,9 +41,17 @@ bool ModuleSceneManager::Update(float dt) {
 	return true;
 }
 
+bool ModuleSceneManager::PostUpdate() {
+	if (nextScene != nullptr) {
+		UnloadScene(currentScene);
+		LoadScene(nextScene);
+	}
+	return true;
+}
+
+
 bool ModuleSceneManager::CleanUp(pugi::xml_node& n) {
-	if (currentScene != nullptr)
-		return currentScene->CleanUp(n);
+	UnloadScene(currentScene);
 	return true;
 }
 
@@ -59,14 +67,11 @@ void ModuleSceneManager::LoadScene(Scene* scene) {
 }
 
 void ModuleSceneManager::ChangeScene(Scene* scene_to_change) {
-	UnloadScene(currentScene);
-	LoadScene(scene_to_change);	
+	nextScene = scene_to_change;
 }
 
 void ModuleSceneManager::UnloadScene(Scene* scene) {
-
-	pugi::xml_node n; // to fit with the argument of CleanUp
-	currentScene->active = false;
-	currentScene->CleanUp(n);
-	currentScene = nullptr;
+	scene->active = false;
+	scene->CleanUp();
+	scene = nullptr;
 }

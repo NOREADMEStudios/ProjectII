@@ -25,7 +25,7 @@ public:
 
 	bool Update(float dt)override;
 
-	bool PostUpdate()override { return true; }
+	bool PostUpdate()override;
 
 	bool CleanUp(pugi::xml_node&)override;
 
@@ -45,7 +45,8 @@ public:
 private:
 
 	std::list<Scene> scenes;
-	Scene* currentScene;
+	Scene* currentScene = nullptr;
+	Scene* nextScene = nullptr;
 
 };
 

@@ -60,6 +60,7 @@ bool Hero::Update(float dt)
 	priority = position.y;
 	collider.x = position.x;
 	collider.y = position.y;
+
 	App->render->FillQueue(this);
 
 	return true;

@@ -2,6 +2,7 @@
 #include "ModuleTextures.h"
 #include "App.h"
 #include "Character.h"
+#include "ModuleCollision.h"
 
 
 Character::Character(CharacterTypes charType) : Entity(EntityTypes::CHARACTER)
@@ -31,7 +32,7 @@ bool Character::PreUpdate()
 
 bool Character::Update(float dt)
 { 
-	
+	LOG("holi");
 	return true; 
 }
 
@@ -76,7 +77,8 @@ void Character::ModifyStats(int attack, int defense, int speed, int magic)
 }
 
 
-void Character::LoadAnimations() {
-
-	
+void Character::GetCollidersFromAnimation() {
+	collFeet->collider = currentAnimation->GetFeetColliderFromFrame();
+	collHitBox->collider = currentAnimation->GetHitBoxColliderFromFrame();
+	collAtk->collider = currentAnimation->GetAtkColliderFromFrame();
 }

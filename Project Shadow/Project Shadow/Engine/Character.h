@@ -7,7 +7,7 @@
 #include "Entity.h"
 
 enum CharacterTypes;
-
+struct Collider;
 
 class Character : public Entity
 {
@@ -35,10 +35,14 @@ public:
 	
 	
 
-	void LoadAnimations();
+	void GetCollidersFromAnimation();
 
 	Animation idle;
 	Animation walking;
+
+	Collider* collFeet;
+	Collider* collHitBox;
+	Collider* collAtk;
 
 	CharacterTypes charType;
 };

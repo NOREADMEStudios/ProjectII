@@ -31,10 +31,26 @@ enum CharStateEnum
 	ATTACK_LIGHT,
 	ATTACK_HEAVY,
 	ATTACK_L2,
+	HITTED,
+	KNOKED,
 	DEATH
 };
 
+struct Attack
+{
+	CharStateEnum state;
+	int damage = 0;
+	uint firstActiveFrame = 0;
+	uint activeFrames = 0;
 
+	Attack(CharStateEnum _state, int _damage = 0, uint _firstactive = 0, uint _actives = 0)
+	{
+		state = _state;
+		damage = _damage;
+		firstActiveFrame = _firstactive;
+		activeFrames = _actives;
+	}
+};
 
 struct Directions
 {
@@ -77,9 +93,7 @@ public:
 	CharStateEnum last_attack;
 	Directions directions;
 
-	//Attacks
-
-
+	LIST(Attack) attacks;
 
 };
 #endif

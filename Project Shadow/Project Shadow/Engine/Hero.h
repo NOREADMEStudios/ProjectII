@@ -9,6 +9,8 @@
 
 #define COMBO_MARGIN 0.5
 
+
+
 class Hero : public Character
 {
 public:
@@ -39,12 +41,22 @@ public:
 	void UpdateState();
 	void UpdateCurState(float dt);
 	void UpdateAnimation();
-	void PushInBuffer(Input state);
+	void CalculateAtk();
+	bool StateisAtk();
+	Attack* GetCurAtk();
 
-	LIST(Input) inputBuffer;
+	void Respawn();
+
+	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
+
 
 	Timer time_light_attack;
 	Timer time_strong_attack;
+
+protected:
+	iPoint initialpos;
+	int initiallife = 0;
+	uint lives = 0;
 
 };
 #endif

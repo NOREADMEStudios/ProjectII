@@ -2,10 +2,13 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "ModuleCollision.h"
 #include "App.h"
 
 
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
+
+
 
 
 Hero::Hero() : Character(CharacterTypes::HERO)
@@ -30,8 +33,14 @@ bool Hero::Start()
 	//Testing things
 	collider = { 50 , 50 , 50, 50 };
 	stats.spd = 300;
+	stats.life = 100;
 
+	initialpos = position;
+	initiallife = stats.life;
+	lives = 2;
 
+	Attack light_1 = Attack(ATTACK_LIGHT, 10);
+	attacks.push_back(light_1);
 
 	currentAnimation = &idle;
 	return true;
@@ -48,11 +57,23 @@ bool Hero::Update(float dt)
 {
 	currentAnimation = &idle;
 	
-	
-	RequestState();
+	if (stats.life > 0)
+		RequestState();
+	else
+		currentState = DEATH;
+
 	UpdateState();
 	UpdateCurState(dt);
 	UpdateAnimation();
+
+	if (StateisAtk())
+	{
+		CalculateAtk();
+	}
+	else
+	{
+		stats.atk = 0;
+	}
 
 	Move(dt);
 	Break(dt);
@@ -219,6 +240,8 @@ void Hero::UpdateState()
 		last_attack = currentState;
 		if (currentState == ATTACK_LIGHT || currentState == ATTACK_L2)
 			time_light_attack.Start();
+		else if (currentState == DEATH)
+			Respawn();
 
 		currentState = IDLE;
 	}
@@ -250,8 +273,42 @@ void Hero::UpdateAnimation()
 }
 
 
-void Hero::PushInBuffer(Input state)
+void Hero::Respawn()
 {
-	inputBuffer.pop_front();
-	inputBuffer.push_back(state);
+	position = initialpos;
+	stats.life = initiallife;
+	lives--;
+}
+void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
+{
+
+	//Dont know the hit tag
+	if (_this->tag != 5 && _other->tag == 4)
+	{
+		currentState = HITTED;
+		stats.life -= _other->entity->stats.atk;
+	}
+}
+
+void Hero::CalculateAtk()
+{
+	stats.atk = GetCurAtk()->damage;		
+}
+
+bool Hero::StateisAtk()
+{
+	return (currentState != WALK && currentState != RUN && currentState != IDLE && currentState != JUMP && currentState != DEATH && currentState != DEFEND);
+}
+
+Attack* Hero::GetCurAtk()
+{
+	Attack* ret = nullptr;
+
+	for (std::list<Attack>::iterator item = attacks.begin(); item != attacks.end(); item++) {
+		if ((*item).state == currentState)
+		{
+			ret = &(*item);
+		}
+	}
+	return ret;
 }

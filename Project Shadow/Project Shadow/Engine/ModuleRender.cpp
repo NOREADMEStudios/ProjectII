@@ -334,7 +334,8 @@ void ModuleRender::CheckCameraPos()
 	float scale = App->win->GetScale();
 	float mid_pos = (((max_x - min_x)/2) + min_x);
 
-	float diference = (max_x - min_x + 500);
+	float diference = (max_x - min_x);
+	diference += diference;
 
 	if (mid_pos - (camera.w  / (2* scale)  ) >= 0)
 	{
@@ -358,10 +359,12 @@ void ModuleRender::CheckCameraPos()
 	//{
 	//	camera.y = 0;
 	//}
+	float min_scale = (float)camera.w / (mapwidth - (App->map->GetXTiles()*2) + 1);
 
-
+	if (diference > mapwidth)
+		diference = mapwidth;
 	// In 0 scale is max, in width the scale is min
-	float new_scale = MAX_SCALE - (((diference * MAX_SCALE) / (mapwidth)) + MIN_SCALE);
+	float new_scale = MAX_SCALE - (((diference * (MAX_SCALE - min_scale)) / (mapwidth)));
 
 	App->win->SetScale(new_scale);
 	

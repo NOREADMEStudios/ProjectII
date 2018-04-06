@@ -13,6 +13,7 @@ struct AnimationFrame {
 	iPoint pivot;
 	iRect result_rect;
 
+
 public:
 	SDL_Rect GetRectSDL() {
 		return rect.toSDL_Rect();
@@ -77,18 +78,25 @@ public:
 		return false;
 	}
 	iRect GetFeetColliderFromFrame() {
+
 		int currFrame = this->current_frame;
-		return coll_frames.at(currFrame).feet;
+		iRect collider = coll_frames.at(currFrame).feet;
+		iRect frame = frames.at(currFrame).rect;
+		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
 
 	iRect GetHitBoxColliderFromFrame() {
 		int currFrame = this->current_frame;
-		return coll_frames.at(currFrame).hitbox;
+		iRect collider = coll_frames.at(currFrame).hitbox;
+		iRect frame = frames.at(currFrame).rect;
+		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
 
 	iRect GetAtkColliderFromFrame() {
 		int currFrame = this->current_frame;
-		return coll_frames.at(currFrame).attack;
+		iRect collider = coll_frames.at(currFrame).attack;
+		iRect frame = frames.at(currFrame).rect;
+		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
 
 	void PushBack(const SDL_Rect& rect, const iPoint& pivot = { 0, 0 })

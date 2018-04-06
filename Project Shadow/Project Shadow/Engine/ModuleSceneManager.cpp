@@ -3,6 +3,7 @@
 #include "../Game/Scenes/IntroScene.h"
 #include "../Game/Scenes/ItemSelecScene.h"
 #include "../Game/Scenes/EndScene.h"
+#include "ModuleEntityManager.h"
 
 
 
@@ -31,7 +32,7 @@ bool ModuleSceneManager::Awake(pugi::xml_node& n) {
 }
 
 bool ModuleSceneManager::Start() {
-	LoadScene(mainSc); // need to change to the intro scenee
+	LoadScene(introSc); // need to change to the intro scenee
 	return true;
 }
 
@@ -65,6 +66,7 @@ void ModuleSceneManager::LoadScene(Scene* scene) {
 	currentScene = scene;
 	currentScene->active = true;
 	currentScene->Start();
+	App->entities->Start();
 }
 
 void ModuleSceneManager::ChangeScene(Scene* scene_to_change) {

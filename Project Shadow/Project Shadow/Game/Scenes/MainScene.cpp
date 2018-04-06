@@ -28,11 +28,10 @@ bool MainScene::Start()
 	App->map->Load("map.tmx");
 
 
-	e = *(App->entities->CreateCharacter({HERO,{100,100}}));
-	e2 = *(App->entities->CreateCharacter({ ENEMY,{ 100,50 } }));
+	e = App->entities->CreateCharacter({HERO,{100,100}});
+	e2 = App->entities->CreateCharacter({ ENEMY,{ 100,50 } });
 	//App->entities->CreateEntity({ CHARACTER,HERO,{ 100,0 } });
 
-	//App->map->Load("map.tmx");
 	App->debug = true;
 	t = App->textures->Load("Maps/map2_spritesheet.png");
   
@@ -41,18 +40,6 @@ bool MainScene::Start()
 	s->SetParent(w);
 	s->culled = true;
 	w->SetContentRect(50, 50, 50, 50);*/
-
-	c.collider = { 100, 100, 50, 50 };
-	c.type = Collider::TRIGGER;
-	c.tag = 0;
-
-	App->collision->AddCollider(&c, &e);
-
-	c2.collider = { 100, 100, 50, 50 };
-	c2.type = Collider::TRIGGER;
-	c2.tag = 1;
-	
-	App->collision->AddCollider(&c2, &e2);
   
 	return false;
 }
@@ -64,8 +51,6 @@ bool MainScene::Update(float dt)
 		App->scenes->ChangeScene(App->scenes->introSc);
 	}
 	//App->map->Draw();
-	c2.collider.x += 10 * sin(angle);
-	angle += 0.01f;
 	return true;
 }
 
@@ -77,8 +62,8 @@ bool MainScene::PostUpdate()
 bool MainScene::CleanUp()
 {
 	pugi::xml_node n;
-	/*App->entities->DestroyEntity(&e);
-	App->entities->DestroyEntity(&e2);*/
+	App->entities->DestroyEntity(e);
+	App->entities->DestroyEntity(e2);
 	App->map->CleanUp(n);
 	App->textures->UnLoad(t);
 

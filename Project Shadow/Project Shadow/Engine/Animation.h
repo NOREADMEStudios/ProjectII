@@ -32,8 +32,6 @@ private:
 	int last_frame = 0;
 	int loops = 0;
 
-	pugi::xml_document animationFile;
-
 public:
 
 	Animation()
@@ -45,6 +43,7 @@ public:
 	}
 
 	bool LoadAnimationsfromXML(std::string animationName, std::string fileName) {
+		pugi::xml_document animationFile;
 		pugi::xml_parse_result result = animationFile.load_file(fileName.data());
 		if (result != NULL) {
 			std::string lop = "loop";

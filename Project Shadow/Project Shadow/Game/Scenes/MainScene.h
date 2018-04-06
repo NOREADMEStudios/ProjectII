@@ -10,9 +10,8 @@ class MainScene :
 {
 public:
 
-	Collider c, c2;
-	Entity e, e2;
-	float angle = 0;
+	
+	Entity* e,* e2;
 	SDL_Texture* t;
 
 	MainScene();

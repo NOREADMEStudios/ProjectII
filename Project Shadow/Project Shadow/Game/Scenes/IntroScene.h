@@ -26,7 +26,7 @@ public:
 
 	bool PostUpdate() override { return true; }
 
-	bool CleanUp(pugi::xml_node&) override { return true; };
+	bool CleanUp() override;
 
 	bool Load(pugi::xml_node&) override { return true; };
 

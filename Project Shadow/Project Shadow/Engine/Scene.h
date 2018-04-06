@@ -21,12 +21,13 @@ public:
 
 	bool PostUpdate()override { return true; }
 
-	bool CleanUp(pugi::xml_node&)override;
+	virtual bool CleanUp();
 
 	bool Load(pugi::xml_node&) override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
 
 	bool loaded = false;
+
 
 
 };

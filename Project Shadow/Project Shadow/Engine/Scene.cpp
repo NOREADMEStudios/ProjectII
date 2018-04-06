@@ -14,7 +14,7 @@ bool Scene::Awake(pugi::xml_node&) {
 	return true;
 }
 
-bool Scene::CleanUp(pugi::xml_node&) {
+bool Scene::CleanUp() {
 	loaded = false;
 	return true;
 }

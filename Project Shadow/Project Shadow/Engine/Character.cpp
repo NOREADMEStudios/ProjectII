@@ -2,10 +2,15 @@
 #include "ModuleTextures.h"
 #include "App.h"
 #include "Character.h"
+#include "ModuleCollision.h"
 
 
 Character::Character(CharacterTypes charType) : Entity(EntityTypes::CHARACTER)
-{}
+{
+	collAtk.type = Collider::ATK;
+	collHitBox.type = Collider::HITBOX;
+	collFeet.type = Collider::FEET;
+}
 
 
 Character::~Character()
@@ -31,7 +36,7 @@ bool Character::PreUpdate()
 
 bool Character::Update(float dt)
 { 
-	
+	LOG("holi");
 	return true; 
 }
 
@@ -76,9 +81,19 @@ void Character::ModifyStats(int attack, int defense, int speed, int magic)
 }
 
 
-void Character::LoadAnimations() {
-
-	
+void Character::UpdateCollidersPosition() {
+	//GetCollidersFromAnimation();
+	collFeet.collider.x += this->position.x;//pivot
+	collFeet.collider.y += this->position.y;//pivot
+	collHitBox.collider.x += this->position.x;
+	collHitBox.collider.y += this->position.y;
+	collAtk.collider.x += this->position.x;
+	collAtk.collider.y += this->position.y;
 }
 
 
+void Character::GetCollidersFromAnimation() {
+	collFeet.collider = currentAnimation->GetFeetColliderFromFrame();
+	collHitBox.collider = currentAnimation->GetHitBoxColliderFromFrame();
+	collAtk.collider = currentAnimation->GetAtkColliderFromFrame();
+}

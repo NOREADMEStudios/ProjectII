@@ -127,7 +127,7 @@ void ModuleCollision::AddCollider(Collider * c, Entity * e)
 	c->entity = e;
 	colliders.push_back(c);
 }
-
+ 
 ARRAY(String) ModuleCollision::GetTags()
 {
 	return tagList;

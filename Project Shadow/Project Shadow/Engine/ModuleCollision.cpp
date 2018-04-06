@@ -21,7 +21,7 @@ bool ModuleCollision::Awake(xmlNode & config) {
 	for (pugi::xml_node_iterator iter = tags.begin(); iter != tags.end(); iter++, tagPos++) {
 		const char* tag = iter->attribute("value").as_string();
 		tagList.push_back(tag);
-		interactionsRaw[tagPos] = iter->child_value();
+		interactionsRaw[tagPos] = iter->attribute("interactions").as_string();
 	}
 
 	for (size_t j = 0; j < tagPos; j++) {

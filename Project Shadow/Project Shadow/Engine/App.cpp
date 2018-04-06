@@ -221,7 +221,9 @@ void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
 	audio.append_attribute("volumeBGM") = 1.0f;
 	configNode.append_child("input").append_attribute("folder") = INPUT_DIR;
 	xmlNode tags = configNode.append_child("collision").append_child("colliderTags");
-	tags.append_child("tag").append_attribute("value") = "default";
+	xmlNode tag = tags.append_child("tag");
+	tag.append_attribute("value") = "default";
+	tag.append_attribute("interactions") = "default;default";
 }
 
 // ---------------------------------------------

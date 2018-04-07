@@ -108,7 +108,7 @@ bool ModuleCollision::PreUpdate() {
 bool ModuleCollision::Update(float dt) {
 	if (App->debug) {
 		for (std::vector<Collider*>::const_iterator c = colliders.begin(); c != colliders.end(); c++) {
-			App->render->DrawQuad((*c)->collider.toSDL_Rect(), 255 * (1 / ((*c)->tag + 1)), 255, 255, 128);
+			App->render->DrawQuad((*c)->collider.toSDL_Rect(), 255 * (1 / ((*c)->tag + 1)), 255 * (1 / ((*c)->tag + 1)), 255, 128);
 		}
 	}
 	return true;

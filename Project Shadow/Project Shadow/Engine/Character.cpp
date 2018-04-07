@@ -8,8 +8,11 @@
 Character::Character(CharacterTypes charType) : Entity(EntityTypes::CHARACTER)
 {
 	collAtk.type = Collider::ATK;
+	//collAtk.tag = 100;
 	collHitBox.type = Collider::HITBOX;
+	//collHitBox.tag = 2;
 	collFeet.type = Collider::FEET;
+	//collFeet.tag = 50;
 }
 
 
@@ -82,7 +85,7 @@ void Character::ModifyStats(int attack, int defense, int speed, int magic)
 
 
 void Character::UpdateCollidersPosition() {
-	//GetCollidersFromAnimation();
+	GetCollidersFromAnimation();
 	collFeet.collider.x += this->position.x;//pivot
 	collFeet.collider.y += this->position.y;//pivot
 	collHitBox.collider.x += this->position.x;

@@ -45,7 +45,7 @@ void Timer::AddTime(Timer nwtime) {
 bool Timer::Count(float num)
 {
 	bool ret = false;
-	if (num <= ReadSec())
+	if (num >= ReadSec())
 	{
 		ret = true;
 	}

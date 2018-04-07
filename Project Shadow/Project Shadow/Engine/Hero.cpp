@@ -206,7 +206,7 @@ void Hero::UpdateState()
 	{
 		currentState = wantedState;
 
-		if (time_attack.Count(COMBO_MARGIN))
+		if (time_attack.ReadSec() > COMBO_MARGIN)
 		{
 			last_attack = IDLE;
 		}
@@ -220,7 +220,7 @@ void Hero::UpdateState()
 		}
 		else
 		{
-			last_attack = currentState;
+			
 			Attack* wanted_atk = GetAtk(wantedState);
 			Attack* current_atk = GetAtk(last_attack);
 
@@ -230,6 +230,7 @@ void Hero::UpdateState()
 			}
 
 			time_attack.Start();
+			last_attack = currentState;
 		}
 
 		if (wantedState == DEATH)

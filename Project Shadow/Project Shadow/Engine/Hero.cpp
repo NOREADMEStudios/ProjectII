@@ -2,11 +2,15 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
-//#include "ModuleCollision.h"
+
+#include "ModuleCollision.h"
+
 #include "App.h"
 
 
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
+
+
 
 
 Hero::Hero() : Character(CharacterTypes::HERO)
@@ -39,14 +43,18 @@ bool Hero::Start()
 
 	collider = { 50 , 50 , 50, 50 };
 	stats.spd = 300;
+	stats.life = 100;
 
+	initialpos = position;
+	initiallife = stats.life;
+	lives = 2;
 
-	CharState light_attack_1 = CharState(ATTACK_LIGHT, ATTACK_L2);
-	attacks.push_back(light_attack_1);
-	CharState light_attack_2 = CharState(ATTACK_L2);
+	Attack* light_1 = new Attack(ATTACK_LIGHT, LIGHT_ATTACK, 10);
+	Attack* light_2 = new Attack(ATTACK_L2, LIGHT_ATTACK, 12);
+	attacks.push_back(light_1);
+	attacks.push_back(light_2);
 
-
-
+	light_1->AddChild(light_2);
 
 	currentAnimation = &idle;
 	return true;
@@ -63,11 +71,23 @@ bool Hero::Update(float dt)
 {
 	currentAnimation = &idle;
 	
-	
-	RequestState();
+	if (stats.life > 0)
+		RequestState();
+	else
+		currentState = DEATH;
+
 	UpdateState();
 	UpdateCurState(dt);
 	UpdateAnimation();
+
+	if (StateisAtk(currentState))
+	{
+		CalculateAtk();
+	}
+	else
+	{
+		stats.atk = 0;
+	}
 
 	Move(dt);
 	Break(dt);
@@ -102,25 +122,6 @@ void Hero::LoadAnimations()
 
 }
 
-void Hero::UpdateInputs(float dt)
-{
-	//if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
-	//	Accelerate(-stats.spd, 0, dt);
-	//	currentAnimation = &walking;
-	//}
-	//if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
-	//	currentAnimation = &walking;
-	//	Accelerate(stats.spd, 0, dt);
-	//}
-	//if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-	//	Accelerate(0, -stats.spd, dt);
-
-	//if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	//	Accelerate(0, stats.spd, dt);
-
-	//if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	//	SetPos(rand() % 1000, 0);
-}
 
 
 
@@ -200,9 +201,18 @@ void Hero::RequestState() {
 	}
 
 	if (l_attack)
+	{
 		wantedState = ATTACK_LIGHT;
+	}
+				
+	
+		
 	else if (s_attack)
+	{
+
 		wantedState = ATTACK_HEAVY;
+	}
+		
 
 
 
@@ -211,13 +221,40 @@ void Hero::RequestState() {
 
 void Hero::UpdateState()
 {
+
 	if (currentState == WALK || currentState == RUN || currentState == IDLE)
 	{
 		currentState = wantedState;
+
+		if (StateisAtk(wantedState) && last_attack != IDLE)
+		{
+			SetCombo();
+
+			time_attack.Start();
+		}
+	
 	}
 	else if (currentAnimation->Finished())
+	{	
+		last_attack = currentState;
+
+		if (!StateisAtk(last_attack))
+		{
+			currentState = wantedState;
+		}
+		else 
+		{
+			SetCombo();
+
+			time_attack.Start();
+	
+		}
+
+	}
+
+	if (time_attack.Count(COMBO_MARGIN))
 	{
-		currentState = IDLE;
+		last_attack = IDLE;
 	}
 }
 
@@ -225,11 +262,17 @@ void Hero::UpdateCurState(float dt)
 {
 	int y_dir =  directions.down - directions.up;
 	int x_dir =	 directions.right - directions.left;
-	switch (currentState) 
+	switch (currentState)
 	{
-	case WALK:
+		case WALK:
 		{
 			Accelerate(x_dir * stats.spd, y_dir * stats.spd, dt);
+			break;
+		}
+		case DEATH:
+		{
+			Respawn();
+			break;
 		}
 	}
 
@@ -243,5 +286,61 @@ void Hero::UpdateAnimation()
 	else if (currentState == IDLE)
 	{
 		currentAnimation = &idle;
+	}
+}
+
+
+void Hero::Respawn()
+{
+	position = initialpos;
+	stats.life = initiallife;
+	lives--;
+}
+void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
+{
+
+	//Dont know the hit tag
+	if (_this->tag != 5 && _other->tag == 4)
+	{
+		currentState = HITTED;
+		stats.life -= _other->entity->stats.atk;
+	}
+}
+
+void Hero::CalculateAtk()
+{
+	stats.atk = GetAtk(currentState)->damage;		
+}
+
+bool Hero::StateisAtk(CharStateEnum State)
+{
+	return (State != WALK && State != RUN && State != IDLE && State != JUMP && State != DEATH && State != DEFEND);
+}
+
+Attack* Hero::GetAtk(CharStateEnum atk)
+{
+	Attack* ret = nullptr;
+
+	for (std::list<Attack*>::iterator item = attacks.begin(); item != attacks.end(); item++) {
+		if ((**item).state == atk)
+		{
+			ret = &(**item);
+		}
+	}
+	return ret;
+}
+
+void Hero::SetCombo()
+{
+	Attack* wanted_atk = GetAtk(wantedState);
+	Attack* current_atk = GetAtk(last_attack);
+
+	if (wanted_atk != nullptr && current_atk->CheckChildInput(wanted_atk->input))
+	{
+		currentState = current_atk->GetChildInput(wanted_atk->input)->state;
+	}
+	else
+	{
+		currentState = wantedState;
 	}
 }

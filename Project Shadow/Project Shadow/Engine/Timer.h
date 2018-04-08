@@ -16,6 +16,7 @@ public:
 	bool IsZero()const;
 	void SubstractTime(Timer timer_to_substract_from);
 	void AddTime(Timer timer_to_add_from);
+	bool Count(float num);
 
 private:
 	uint32	started_at=0;

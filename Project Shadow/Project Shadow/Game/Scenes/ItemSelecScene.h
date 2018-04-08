@@ -5,6 +5,7 @@
 #include "..\..\Engine\ModuleCollision.h"
 
 class Button;
+class Label;
 
 class ItemSelecScene:
 	public Scene
@@ -14,6 +15,7 @@ public:
 	Button * item1;
 	Button * item2;
 	Button * item3;
+	Label * itemStats;
 
 	ItemSelecScene();
 	virtual ~ItemSelecScene();

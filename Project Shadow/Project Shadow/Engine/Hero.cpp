@@ -124,7 +124,7 @@ void Hero::LoadAnimations()
 	jumpProt.LoadAnimationsfromXML("jump_protect", HERO_SPRITE_ROOT);
 	kick.LoadAnimationsfromXML("kick", HERO_SPRITE_ROOT);
 	attack.LoadAnimationsfromXML("attack", HERO_SPRITE_ROOT);
-
+	death.LoadAnimationsfromXML("death", HERO_SPRITE_ROOT);
 }
 
 

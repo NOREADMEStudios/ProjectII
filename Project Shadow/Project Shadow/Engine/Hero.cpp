@@ -119,6 +119,12 @@ void Hero::LoadAnimations()
 	walking.LoadAnimationsfromXML("walking",HERO_SPRITE_ROOT);
 	jump.LoadAnimationsfromXML("jump", HERO_SPRITE_ROOT);
 	stop.LoadAnimationsfromXML("stop", HERO_SPRITE_ROOT);
+	run.LoadAnimationsfromXML("run", HERO_SPRITE_ROOT);
+	jumpAtk.LoadAnimationsfromXML("jump_attack", HERO_SPRITE_ROOT);
+	jumpProt.LoadAnimationsfromXML("jump_protect", HERO_SPRITE_ROOT);
+	kick.LoadAnimationsfromXML("kick", HERO_SPRITE_ROOT);
+	attack.LoadAnimationsfromXML("attack", HERO_SPRITE_ROOT);
+
 }
 
 

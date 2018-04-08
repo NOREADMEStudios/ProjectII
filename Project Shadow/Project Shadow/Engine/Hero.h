@@ -52,7 +52,7 @@ public:
 
 
 	Timer time_attack;
-	Animation jump, stop;
+	Animation jump, stop, run, jumpAtk, jumpProt, kick, attack;
 
 protected:
 	iPoint initialpos;

@@ -51,8 +51,7 @@ bool Button::PreUpdate() {
 			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 			current_anim = &pressed_anim;
 			//SetFocus();
-			if (OnClick != nullptr)
-			{
+			if (OnClick != nullptr) {
 				OnClick(nullptr);
 				if (type != SLIDER && clickSound >= 0)
 					App->audio->PlayFx(clickSound);
@@ -68,20 +67,17 @@ bool Button::PreUpdate() {
 		}
 		else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_IDLE) {
 			current_anim = &hovered_anim;
-
-			if (label != nullptr)
-				label->setColor({ 228, 204, 42, 255 });
-
+			
 			if (OnHover != nullptr)
 				OnHover();
 		}
 	}
 	else {
 		current_anim = &idle_anim;
-		SDL_Color curr;
+		/*SDL_Color curr;
 		label->getColor(&curr);
 		if (label != nullptr && (curr.r != 255 || curr.g != 255 || curr.b != 255 || curr.a != 255))
-			label->setColor({ 255, 255, 255, 255 });
+			label->setColor({ 255, 255, 255, 255 });*/
 	}
 
 	return ret;

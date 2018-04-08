@@ -32,7 +32,7 @@ bool Hero::Start()
 	sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
 	LoadAnimations();
 
-	collAtk = App->collision->CreateCollider({}, "player_attack", Collider::ATK);
+	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
 	collHitBox = App->collision->CreateCollider({}, "player_hitbox", Collider::HITBOX);
 	collFeet = App->collision->CreateCollider({}, "player_feet", Collider::FEET);
 	//Testing things
@@ -303,11 +303,10 @@ void Hero::Respawn()
 }
 void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 {
-
 	//Dont know the hit tag
-	if (_this->tag != 5 && _other->tag == 4)
+	if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack")
 	{
-		currentState = HITTED;
+		currentState = HIT;
 		stats.life -= _other->entity->stats.atk;
 	}
 }

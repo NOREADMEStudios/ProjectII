@@ -212,15 +212,14 @@ InterfaceElement * InterfaceElement::AddElement(InterfaceElement * elem)
 
 void InterfaceElement::SetParent(InterfaceElement * parent)
 {
-	if (this->parent != nullptr)	// Erase the element from its previous parent if it already has one
-	{
+	if (this->parent != nullptr) {	// Erase the element from its previous parent if it already has one
 		Utils::RemoveFromList(this, this->parent->elements);
-	}
+	} else
+		App->gui->RemoveElement(this);
 
 	this->parent = parent;
 	if (parent != nullptr) {
 		parent->AddElement(this);
-		App->gui->RemoveElement(this);
 	}
 	else
 		App->gui->AddElement(this);

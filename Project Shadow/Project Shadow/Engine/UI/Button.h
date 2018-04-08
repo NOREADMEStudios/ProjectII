@@ -20,11 +20,13 @@ public:
 		HOVERED,
 		DISABLED
 	} state;
-	
-	Callback OnHover;
+
+	Callback OnHoverEnter;
+	Callback OnHoverExit;
 	Callback OnClick;
 	bool PreUpdate() override;
 	void setLabel(Label* label);
+	Label* getLabel();
 
 protected:
 	Label* label = nullptr;

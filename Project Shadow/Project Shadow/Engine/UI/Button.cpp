@@ -28,9 +28,6 @@ Button::Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enable
 Button::~Button() {
 }
 
-void Button::OnHover() {
-}
-
 bool Button::PreUpdate() {
 	bool ret = InterfaceElement::PreUpdate();
 
@@ -74,7 +71,9 @@ bool Button::PreUpdate() {
 
 			if (label != nullptr)
 				label->setColor({ 228, 204, 42, 255 });
-			OnHover();
+
+			if (OnHover != nullptr)
+				OnHover();
 		}
 	}
 	else {

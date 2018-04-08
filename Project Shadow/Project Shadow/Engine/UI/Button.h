@@ -21,7 +21,7 @@ public:
 		DISABLED
 	} state;
 	
-	void OnHover();
+	Callback OnHover;
 	Callback OnClick;
 	bool PreUpdate() override;
 	void setLabel(Label* label);

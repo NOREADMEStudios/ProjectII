@@ -32,7 +32,7 @@ bool ModuleSceneManager::Awake(pugi::xml_node& n) {
 }
 
 bool ModuleSceneManager::Start() {
-	LoadScene(introSc); // need to change to the intro scenee
+	LoadScene(introSc); 
 	return true;
 }
 

@@ -35,11 +35,11 @@ bool MainScene::Start()
 	App->debug = true;
 	t = App->textures->Load("Maps/map2_spritesheet.png");
   
-	/*Window* w = App->gui->AddWindow(500, 500, t, {0,0,500,500}, true);
+	Window* w = App->gui->AddWindow(500, 500, t, {0,0,500,500}, true);
 	Window* s = App->gui->AddWindow(0, 0, t, { 350, 520, 300, 300 }, true);
 	s->SetParent(w);
 	s->culled = true;
-	w->SetContentRect(50, 50, 50, 50);*/
+	w->SetContentRect(50, 50, 50, 50);
   
 	return false;
 }
@@ -50,7 +50,7 @@ bool MainScene::Update(float dt)
 		App->input->BlockKeyboardEvent(SDL_SCANCODE_P);
 		App->scenes->ChangeScene(App->scenes->introSc);
 	}
-	//App->map->Draw();
+	App->map->Draw();
 	return true;
 }
 

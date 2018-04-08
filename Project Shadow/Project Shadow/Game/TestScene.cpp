@@ -25,11 +25,6 @@ bool TestScene::Start()
 
 	e = App->entities->CreateCharacter({ HERO,{ 100,100 } });
 	e2 = App->entities->CreateCharacter({ HERO,{ 200,100 } });
-	e2 = App->entities->CreateCharacter({ HERO,{ 300,100 } });
-	e2 = App->entities->CreateCharacter({ HERO,{ 400,100 } });
-	e2 = App->entities->CreateCharacter({ HERO,{ 500,100 } });
-	e2 = App->entities->CreateCharacter({ HERO,{ 600,100 } });
-	e2 = App->entities->CreateCharacter({ HERO,{ 700,100 } });
 
 	//App->entities->CreateCharacter({ HERO,{ 400,100 } });
 	//App->entities->CreateCharacter({ ENEMY,{ 100,50 } });

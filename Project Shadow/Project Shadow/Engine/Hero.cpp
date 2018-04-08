@@ -76,9 +76,10 @@ bool Hero::Update(float dt)
 	else
 		currentState = DEATH;
 
+	UpdateAnimation();
 	UpdateState();
 	UpdateCurState(dt);
-	UpdateAnimation();
+
 
 	if (StateisAtk(currentState)) {
 		CalculateAtk();
@@ -124,6 +125,7 @@ void Hero::LoadAnimations()
 	jumpProt.LoadAnimationsfromXML("jump_protect", HERO_SPRITE_ROOT);
 	kick.LoadAnimationsfromXML("kick", HERO_SPRITE_ROOT);
 	attack.LoadAnimationsfromXML("attack", HERO_SPRITE_ROOT);
+	death.LoadAnimationsfromXML("death", HERO_SPRITE_ROOT);
 
 }
 
@@ -280,6 +282,7 @@ void Hero::UpdateCurState(float dt)
 			Respawn();
 			break;
 		}
+
 	}
 
 }
@@ -301,6 +304,14 @@ void Hero::UpdateAnimation()
 	{
 		currentAnimation = &kick;
 	}
+	else if (currentState == HIT)
+	{
+		currentAnimation = &jumpProt;
+	}
+	else if (currentState == DEATH)
+	{
+		currentAnimation = &death;
+	}
 }
 
 
@@ -312,7 +323,6 @@ void Hero::Respawn()
 }
 void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 {
-	//Dont know the hit tag
 	if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack")
 	{
 		currentState = HIT;

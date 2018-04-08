@@ -33,7 +33,7 @@ enum CharStateEnum
 	ATTACK_LIGHT,
 	ATTACK_HEAVY,
 	ATTACK_L2,
-	HITTED,
+	HIT,
 	KNOKED,
 	DEATH
 };

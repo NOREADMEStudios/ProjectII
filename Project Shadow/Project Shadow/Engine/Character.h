@@ -5,8 +5,10 @@
 #include "ModuleEntityManager.h"
 #include "Animation.h"
 #include "Entity.h"
+#include "ModuleCollision.h"
 
 enum CharacterTypes;
+
 
 enum Input
 {
@@ -100,6 +102,7 @@ struct Directions
 {
 	bool left, down, right, up = false;
 };
+
 class Character : public Entity
 {
 public:
@@ -124,11 +127,20 @@ public:
 
 	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
 	
+
+	
+protected:
+	void GetCollidersFromAnimation();
+	void UpdateCollidersPosition();
+
 	void LoadAnimations();
+
 
 
 	Animation idle;
 	Animation walking;
+
+	Collider collFeet, collHitBox, collAtk;
 
 	CharacterTypes charType;
 

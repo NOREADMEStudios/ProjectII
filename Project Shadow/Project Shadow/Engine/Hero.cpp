@@ -2,7 +2,9 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
+
 #include "ModuleCollision.h"
+
 #include "App.h"
 
 
@@ -31,6 +33,11 @@ bool Hero::Start()
 	LoadAnimations();
 
 	//Testing things
+	App->collision->AddCollider(&collAtk, this);
+	App->collision->AddCollider(&collHitBox, this);
+	App->collision->AddCollider(&collFeet, this);
+	
+
 	collider = { 50 , 50 , 50, 50 };
 	stats.spd = 300;
 	stats.life = 100;
@@ -87,6 +94,8 @@ bool Hero::Update(float dt)
 	priority = position.y;
 	collider.x = position.x;
 	collider.y = position.y;
+
+	UpdateCollidersPosition();//Needed to change by the pivot position
 	App->render->FillQueue(this);
 
 	return true;

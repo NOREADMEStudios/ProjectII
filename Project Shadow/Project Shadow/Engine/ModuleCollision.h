@@ -12,7 +12,19 @@ class Entity;
 struct Collision;
 
 struct Collider {
+
+public:
+	~Collider() {
+		for (LIST_ITERATOR(Collision*) it = collisions.begin(); it != collisions.end(); it++) {
+			Utils::Release(*it);
+		}
+		collisions.clear();
+	}
+
 	enum Type {
+		FEET, 
+		HITBOX,
+		ATK,
 		TRIGGER,
 		PHYSIC,
 		Amount
@@ -22,6 +34,10 @@ struct Collider {
 	Entity*				entity = nullptr;
 	uint				tag;
 	LIST(Collision*)	collisions;
+
+private:
+	Collider() {}
+	friend class ModuleCollision;
 };
 
 struct Collision {
@@ -30,6 +46,10 @@ struct Collision {
 		c1 = _c1;
 		c2 = _c2;
 		state = ON_ENTER;
+	}
+	~Collision() {
+		Utils::RemoveFromList(this, c1->collisions);
+		Utils::RemoveFromList(this, c2->collisions);
 	}
 
 	void CallOnStay() {
@@ -76,7 +96,9 @@ public:
 
 	bool CleanUp(xmlNode& config) override;
 
+	Collider* CreateCollider(iRect dims, uint tag, Collider::Type type = Collider::TRIGGER);
 	void AddCollider(Collider*, Entity*);
+	bool RemoveCollider(Collider*);
 
 	ARRAY(String) GetTags();
 	String GetTag(uint tag);

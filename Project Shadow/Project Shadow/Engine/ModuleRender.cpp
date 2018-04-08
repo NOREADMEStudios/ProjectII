@@ -277,7 +277,7 @@ bool ModuleRender::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Ui
 	if(use_camera)
 		result = SDL_RenderDrawLine(renderer, camera.x + x1 * scale, camera.y + y1 * scale, camera.x + x2 * scale, camera.y + y2 * scale);
 	else
-		result = SDL_RenderDrawLine(renderer, x1 * scale, y1 * scale, x2 * scale, y2 * scale);
+		result = SDL_RenderDrawLine(renderer, x1 /** scale*/, y1 /** scale*/, x2 /** scale*/, y2 /** scale*/);
 
 	if(result != 0)
 	{
@@ -355,7 +355,9 @@ void ModuleRender::CheckCameraPos()
 	float min_scale = (float)camera.w / (mapwidth - (App->map->GetXTiles()*2) + 1);
 
 	// In 0 scale is max, in width the scale is min
+
 	float new_scale = MAX_SCALE - ((diference  / mapwidth)* (MAX_SCALE - min_scale));
+
 
 	App->win->SetScale(new_scale);
 	

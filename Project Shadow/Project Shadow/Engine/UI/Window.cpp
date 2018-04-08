@@ -35,8 +35,8 @@ bool Window::PreUpdate() {
 
 	SDL_Rect result, r;
 	r = (parent == nullptr) ? rect : result_rect;
-	if (SDL_IntersectRect(&r, &Mouse, &result) == SDL_TRUE) {
-		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
+		if (SDL_IntersectRect(&r, &Mouse, &result) == SDL_TRUE) {
 			App->gui->setFocus(this);
 			dragging = true;
 			iPoint m = { Mouse.x, Mouse.y };

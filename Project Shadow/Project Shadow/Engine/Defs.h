@@ -19,6 +19,7 @@
 #define ANIMATIONS_DIR "Animations/"
 #define TEXTURES_DIR "Textures/"
 #define CHARACTERS_DIR "Characters/"
+#define UI_DIR "UI/"
 #define ENEMIES_DIR "Enemies/"
 #define ENTITIES_DIR "Entities/"
 #define INPUT_DIR "Input/"

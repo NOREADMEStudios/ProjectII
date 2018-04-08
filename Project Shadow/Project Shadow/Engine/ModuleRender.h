@@ -7,8 +7,8 @@
 
 #include <queue>
 
-#define MAX_SCALE 4
-#define MIN_SCALE 1
+#define MAX_SCALE 3
+#define MIN_SCALE 0.5
 
 struct OrderCrit
 {

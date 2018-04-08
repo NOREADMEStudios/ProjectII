@@ -135,8 +135,7 @@ InterfaceElement * ModuleGUI::AddElement(InterfaceElement * elem)
 
 void ModuleGUI::RemoveElement(InterfaceElement * elem)
 {
-	elements.remove(elem);
-	
+	elements.remove(elem);	
 }
 
 Sprite* ModuleGUI::AddSprite(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled)

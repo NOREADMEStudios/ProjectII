@@ -12,17 +12,11 @@ struct SDL_Texture;
 enum EntityTypes;
 struct Collider;
 
-enum EntityState
-{
-	IDLE,
-	JUMP,
-	WALK,
-	RUN,
-	DASH,
-};
+
 
 struct EntityStats
 {
+	int life = 0;
 	int atk = 0;
 	int def = 0;
 	int spd = 0;
@@ -41,8 +35,8 @@ public:
 	Entity();
 	virtual ~Entity();
 
-	EntityState GetState();
-	fPoint GetPos();
+
+	iPoint GetPos();
 	bool IsActive();
 	float GetPosX();
 	float GetPosY();
@@ -52,7 +46,7 @@ public:
 	iRect GetCollider() const;
 
 
-	void SetPos(float x, float y);
+	void SetPos(int x, int y);
 	void SetActive(bool sactive);
 
 	void Draw(float dt);
@@ -69,19 +63,20 @@ public:
 	virtual void OnCollisionExit(Collider* _this, Collider* _other);
 
 	EntityTypes type;
+	EntityStats stats;
 
+	uint hero_num = 0;
 protected:
 
 	bool active = true;
 	uint priority = 0;
-	fPoint position{ 0,0 };
+	iPoint position{ 0,0 };
 	fPoint speedVector{ 0,0 };
 
 	// Collider has to be a struct Collider instead of an iRect
 	iRect collider{ 0,0,0,0 };
-	EntityState state = IDLE;
 	Animation* currentAnimation = nullptr;
-	EntityStats stats;
+
 	SDL_Texture* sprites;
 
 

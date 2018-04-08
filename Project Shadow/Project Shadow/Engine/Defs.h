@@ -42,48 +42,91 @@ typedef void (*Callback)(...);
 
 #define VECTOR(type) std::vector<type>
 #define ARRAY(type) VECTOR(type)
+#define VECTOR_ITERATOR(type) VECTOR(type)::iterator
+#define VECTOR_REVERSE_ITERATOR(type) VECTOR(type)::reverse_iterator
 
 #define LIST(type) std::list<type>
 #define LIST_ITERATOR(type) LIST(type)::iterator
 #define LIST_REVERSE_ITERATOR(type) LIST(type)::reverse_iterator
 
 
-#define REMOVE_FROM_LIST(ptr, list, type)						\
-	LIST_ITERATOR(type) it;										\
-	for (it = list.begin(); it != list.end(); it++) {			\
-		if (*it == ptr) break;									\
-	}															\
-	if (it != list.end())										\
-		list.remove(*it);
-
-
 namespace Utils {
-
 	void Release(void* object);
 	void ReleaseArray(void* array);
 
 	int ParseInt(std::string);
 	int ParseInt(const char*);
 
+	template<typename TYPE>
+	size_t FindInList(TYPE ptr, typename std::list<TYPE>& list) {
+		size_t pos = 0;
+		typename std::list<TYPE>::iterator it;
+		for (it = list.begin(); it != list.end(); pos++, it++) {
+			if (*it == ptr) break;
+		}
+
+		if (it != list.end()) {
+			return pos;
+		}
+		return -1;
+	}
+
+	template<typename TYPE>
+	size_t FindInVector(TYPE ptr, typename std::vector<TYPE>& vector) {
+		size_t pos = 0;
+		for (pos = 0; pos < vector.size(); pos++) {
+			if (vector[pos] == ptr) return pos;
+		}
+		return -1;
+	}
+	
+	template<typename TYPE>
+	bool RemoveFromList(TYPE ptr, typename std::list<TYPE>& list)
+	{
+		typename std::list<TYPE>::iterator it;
+		for (it = list.begin(); it != list.end(); it++) {
+				if (*it == ptr) break;
+		}
+
+		if (it != list.end()) {
+			list.remove(*it);
+			return true;
+		}
+		return false;
+	}
+
+	template<typename TYPE>
+	bool RemoveFromVector(TYPE ptr, typename std::vector<TYPE>& vector)
+	{
+		typename std::vector<TYPE>::iterator it;
+		for (it = vector.begin(); it != vector.end(); it++) {
+			if (*it == ptr) break;
+		}
+
+		if (it != vector.end()){
+			vector.erase(it);
+			return true;
+		}
+		return false;
+	}
+
+	// Interpolates between two values at a cerain rate (step)
+	template<typename TYPE>
+	TYPE Interpolate(TYPE val, TYPE target, TYPE step)
+	{
+		if (val > target)
+			if (val - target < step)
+				val = target;
+			else val = val - step;
+		else if (val < target)
+			if (target - val < step)
+				val = target;
+			else val = val + step;
+		else val = target;
+
+		return val;
+	}
+
 };
 
-// Interpolates between two values at a cerain rate (step)
-template<class TYPE>
-TYPE Interpolate(TYPE val, TYPE target, TYPE step)
-{
-	if (val > target)
-		if (val - target < step)
-			val = target;
-		else val = val - step;
-	else if (val < target)
-		if (target - val < step)
-			val = target;
-		else val = val + step;
-	else val = target;
-
-	return val;
-}
-
 #endif
-
-

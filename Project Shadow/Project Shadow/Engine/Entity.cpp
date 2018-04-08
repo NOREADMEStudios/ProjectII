@@ -25,8 +25,8 @@ void Entity::Move(float delta_time) {
 // HardCoded Valors Cough Cough -___-
 
 void Entity::Break(float delta_time) {
-	speedVector.x = Interpolate(speedVector.x, 0.0f, 10 * stats.spd * delta_time);
-	speedVector.y = Interpolate(speedVector.y, 0.0f, 10 * stats.spd * delta_time);
+	speedVector.x = Utils::Interpolate(speedVector.x, 0.0f, 10 * stats.spd * delta_time);
+	speedVector.y = Utils::Interpolate(speedVector.y, 0.0f, 10 * stats.spd * delta_time);
 }
 
 void Entity::Accelerate(float x, float y, float delta_time) {
@@ -36,6 +36,12 @@ void Entity::Accelerate(float x, float y, float delta_time) {
 	speedVector.x = CLAMP(speedVector.x, -stats.spd, stats.spd);
 	speedVector.y = CLAMP(speedVector.y, -stats.spd, stats.spd);
 }
+
+
+//EntityState Entity::GetState()
+//{
+//	return state;
+//}
 
 void Entity::OnCollisionEnter(Collider * _this, Collider * _other)
 {
@@ -49,12 +55,13 @@ void Entity::OnCollisionExit(Collider * _this, Collider * _other)
 {
 }
 
-EntityState Entity::GetState()
-{
-	return state;
-}
+//EntityState Entity::GetState()
+//{
+//	return state;
+//}
 
-fPoint Entity::GetPos()
+
+iPoint Entity::GetPos()
 {
 	return position;
 }
@@ -84,7 +91,7 @@ EntityTypes Entity::GetType()
 	return type;
 }
 
-void Entity::SetPos(float x, float y)
+void Entity::SetPos(int x, int y)
 {
 	position = { x,y };
 }

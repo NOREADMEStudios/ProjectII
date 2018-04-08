@@ -9,8 +9,8 @@ class IntroScene:
 {
 public:
 
-	Collider c, c2;
-	Entity e, e2;
+	Collider *c, *c2;
+	Entity *e, *e2;
 	float angle = 0;
 
 	IntroScene();

@@ -21,7 +21,7 @@ bool ModuleCollision::Awake(xmlNode & config) {
 	for (pugi::xml_node_iterator iter = tags.begin(); iter != tags.end(); iter++, tagPos++) {
 		const char* tag = iter->attribute("value").as_string();
 		tagList.push_back(tag);
-		interactionsRaw[tagPos] = iter->child_value();
+		interactionsRaw[tagPos] = iter->attribute("interactions").as_string();
 	}
 
 	for (size_t j = 0; j < tagPos; j++) {
@@ -108,7 +108,7 @@ bool ModuleCollision::PreUpdate() {
 bool ModuleCollision::Update(float dt) {
 	if (App->debug) {
 		for (std::vector<Collider*>::const_iterator c = colliders.begin(); c != colliders.end(); c++) {
-			App->render->DrawQuad((*c)->collider.toSDL_Rect(), 255 * (1 / ((*c)->tag + 1)), 255, 255, 128);
+			App->render->DrawQuad((*c)->collider.toSDL_Rect(), 255 * (1 / ((*c)->tag + 1)), 255 * (1 / ((*c)->tag + 1)), 255, 128);
 		}
 	}
 	return true;
@@ -119,13 +119,36 @@ bool ModuleCollision::PostUpdate() {
 }
 
 bool ModuleCollision::CleanUp(xmlNode & config) {
+	for (VECTOR_ITERATOR(Collider*) it = colliders.begin(); it != colliders.end(); it++) {
+		Utils::Release(*it);
+	}
+	colliders.clear();
 	return true;
+}
+
+Collider * ModuleCollision::CreateCollider(iRect dims, String tag, Collider::Type type)
+{
+	Collider* c = new Collider();
+	c->collider = dims;
+	c->sTag = tag;
+	c->type = type;
+	c->tag = Utils::FindInVector(tag, tagList);
+	if (c->tag == (uint)-1) {
+		c->tag = 0;
+		LOG("Collider tag not defined");
+	}
+	return c;
 }
 
 void ModuleCollision::AddCollider(Collider * c, Entity * e)
 {
 	c->entity = e;
 	colliders.push_back(c);
+}
+
+bool ModuleCollision::RemoveCollider(Collider * c)
+{
+	return Utils::RemoveFromVector<Collider*>(c, colliders);
 }
 
 ARRAY(String) ModuleCollision::GetTags()

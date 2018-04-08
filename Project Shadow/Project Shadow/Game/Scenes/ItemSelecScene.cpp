@@ -37,8 +37,11 @@ bool ItemSelecScene::Start()
 	item1 = App->gui->AddButton(200, 200, NULL, { 0,0,200,200 }, true, item1Callback);
 	item2 = App->gui->AddButton(800, 200, NULL, { 0,0,200,200 }, true, item2Callback);
 	item3 = App->gui->AddButton (1400, 200, NULL, { 0,0,200,200 }, true, item3Callback);
-	itemStats = App->gui->AddLabel(500, 600, 50, path, { 255, 255, 255, 255 });
+	itemStats = App->gui->AddLabel(0, 200, 50, path, { 255, 255, 255, 255 });
 	itemStats->setString(statsStr);
+	itemStats->SetParent(item1);
+	itemStats->SetAnchor(0, 0);
+
 	return false;
 }
 

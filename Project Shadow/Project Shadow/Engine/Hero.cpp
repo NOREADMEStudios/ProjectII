@@ -29,7 +29,7 @@ bool Hero::Awake(pugi::xml_node&)
 
 bool Hero::Start()
 {
-	sprites = App->textures->Load("Characters/Fighter_sprites.png");
+	sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
 	LoadAnimations();
 
 	//Testing things

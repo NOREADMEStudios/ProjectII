@@ -35,7 +35,7 @@ public:
 	uint				tag;
 	LIST(Collision*)	collisions;
 
-private:
+
 	Collider() {}
 	friend class ModuleCollision;
 };

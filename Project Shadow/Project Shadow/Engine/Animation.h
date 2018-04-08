@@ -161,7 +161,7 @@ public:
 	private:
 		bool LoadFrameCollidersFromXML(pugi::xml_node objectgroup, std::string name) {
 			std::string coll = "_colliders";
-			std::string frame = "Frame";
+			std::string frame = "frame";
 			std::string colltype = "collider_type";
 			coll = name + coll;
 			bool ret = false;

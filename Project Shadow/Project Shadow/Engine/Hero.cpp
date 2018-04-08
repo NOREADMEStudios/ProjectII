@@ -28,10 +28,13 @@ bool Hero::Start()
 	sprites = App->textures->Load("Characters/Fighter_sprites.png");
 	LoadAnimations();
 
+	collAtk = App->collision->CreateCollider({}, "player_attack", Collider::ATK);
+	collHitBox = App->collision->CreateCollider({}, "player_hitbox", Collider::HITBOX);
+	collFeet = App->collision->CreateCollider({}, "player_feet", Collider::FEET);
 	//Testing things
-	App->collision->AddCollider(&collAtk, this);
-	App->collision->AddCollider(&collHitBox, this);
-	App->collision->AddCollider(&collFeet, this);
+	App->collision->AddCollider(collAtk, this);
+	App->collision->AddCollider(collHitBox, this);
+	App->collision->AddCollider(collFeet, this);
 	
 
 	collider = { 50 , 50 , 50, 50 };

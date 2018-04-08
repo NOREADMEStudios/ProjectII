@@ -36,7 +36,7 @@ public:
 	uint				tag;
 	LIST(Collision*)	collisions;
 
-private:
+//private:
 	Collider() {}
 	friend class ModuleCollision;
 };
@@ -97,7 +97,7 @@ public:
 
 	bool CleanUp(xmlNode& config) override;
 
-	Collider* CreateCollider(iRect dims, uint tag, Collider::Type type = Collider::TRIGGER);
+	Collider* CreateCollider(iRect dims, String tag, Collider::Type type = Collider::TRIGGER);
 	void AddCollider(Collider*, Entity*);
 	bool RemoveCollider(Collider*);
 

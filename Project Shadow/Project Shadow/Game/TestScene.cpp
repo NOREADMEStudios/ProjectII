@@ -40,17 +40,11 @@ bool TestScene::Start()
 	s->culled = true;
 	w->SetContentRect(50, 50, 50, 50);*/
 
-	c.collider = { 100, 100, 50, 50 };
-	c.type = Collider::TRIGGER;
-	c.tag = 0;
+	c = App->collision->CreateCollider({ 100, 100, 50, 50 }, "default");
+	c2 = App->collision->CreateCollider({ 100, 100, 50, 50 }, "default");
 
-	App->collision->AddCollider(&c, &e);
-
-	c2.collider = { 100, 100, 50, 50 };
-	c2.type = Collider::TRIGGER;
-	c2.tag = 1;
-	
-	App->collision->AddCollider(&c2, &e2);
+	App->collision->AddCollider(c, e);
+	App->collision->AddCollider(c2, e2);
   
 	return false;
 }
@@ -58,7 +52,7 @@ bool TestScene::Start()
 bool TestScene::Update(float dt)
 {
 	App->map->Draw();
-	c2.collider.x += 10 * sin(angle);
+	c2->collider.x += 10 * sin(angle);
 	angle += 0.01f;
 	return true;
 }

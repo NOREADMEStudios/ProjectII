@@ -126,11 +126,11 @@ bool ModuleCollision::CleanUp(xmlNode & config) {
 	return true;
 }
 
-Collider * ModuleCollision::CreateCollider(iRect dims, uint tag, Collider::Type type)
+Collider * ModuleCollision::CreateCollider(iRect dims, String tag, Collider::Type type)
 {
 	Collider* c = new Collider();
 	c->collider = dims;
-	c->tag = tag;
+	c->sTag = tag;
 	c->type = type;
 	return c;
 }

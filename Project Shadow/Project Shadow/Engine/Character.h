@@ -103,13 +103,14 @@ protected:
 	void UpdateCollidersPosition();
 
 	void LoadAnimations();
-
-
+	
 
 	Animation idle;
 	Animation walking;
 
-	Collider collFeet, collHitBox, collAtk;
+	Collider	*collFeet		=	nullptr,
+				*collHitBox		=	nullptr,
+				*collAtk		=	nullptr;
 
 	CharacterTypes charType;
 

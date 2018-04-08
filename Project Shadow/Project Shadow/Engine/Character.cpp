@@ -7,12 +7,6 @@
 
 Character::Character(CharacterTypes charType) : Entity(EntityTypes::CHARACTER)
 {
-	collAtk.type = Collider::ATK;
-	//collAtk.tag = 100;
-	collHitBox.type = Collider::HITBOX;
-	//collHitBox.tag = 2;
-	collFeet.type = Collider::FEET;
-	//collFeet.tag = 50;
 }
 
 
@@ -20,13 +14,12 @@ Character::~Character()
 {}
 
 bool Character::Awake(pugi::xml_node&)
-{ 	
+{
 	return true;
 }
 
 bool Character::Start()
 { 
-
 	return true; 
 }
 
@@ -39,7 +32,6 @@ bool Character::PreUpdate()
 
 bool Character::Update(float dt)
 { 
-	LOG("holi");
 	return true; 
 }
 
@@ -83,20 +75,18 @@ void Character::ModifyStats(int attack, int defense, int speed, int magic)
 
 }
 
-
 void Character::UpdateCollidersPosition() {
 	GetCollidersFromAnimation();
-	collFeet.collider.x += this->position.x;//pivot
-	collFeet.collider.y += this->position.y;//pivot
-	collHitBox.collider.x += this->position.x;
-	collHitBox.collider.y += this->position.y;
-	collAtk.collider.x += this->position.x;
-	collAtk.collider.y += this->position.y;
+	collFeet->collider.x += this->position.x;//pivot
+	collFeet->collider.y += this->position.y;//pivot
+	collHitBox->collider.x += this->position.x;
+	collHitBox->collider.y += this->position.y;
+	collAtk->collider.x += this->position.x;
+	collAtk->collider.y += this->position.y;
 }
 
-
 void Character::GetCollidersFromAnimation() {
-	collFeet.collider = currentAnimation->GetFeetColliderFromFrame();
-	collHitBox.collider = currentAnimation->GetHitBoxColliderFromFrame();
-	collAtk.collider = currentAnimation->GetAtkColliderFromFrame();
+	collFeet->collider = currentAnimation->GetFeetColliderFromFrame();
+	collHitBox->collider = currentAnimation->GetHitBoxColliderFromFrame();
+	collAtk->collider = currentAnimation->GetAtkColliderFromFrame();
 }

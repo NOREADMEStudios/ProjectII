@@ -119,7 +119,20 @@ bool ModuleCollision::PostUpdate() {
 }
 
 bool ModuleCollision::CleanUp(xmlNode & config) {
+	for (VECTOR_ITERATOR(Collider*) it = colliders.begin(); it != colliders.end(); it++) {
+		Utils::Release(*it);
+	}
+	colliders.clear();
 	return true;
+}
+
+Collider * ModuleCollision::CreateCollider(iRect dims, uint tag, Collider::Type type)
+{
+	Collider* c = new Collider();
+	c->collider = dims;
+	c->tag = tag;
+	c->type = type;
+	return c;
 }
 
 void ModuleCollision::AddCollider(Collider * c, Entity * e)
@@ -127,7 +140,12 @@ void ModuleCollision::AddCollider(Collider * c, Entity * e)
 	c->entity = e;
 	colliders.push_back(c);
 }
- 
+
+bool ModuleCollision::RemoveCollider(Collider * c)
+{
+	return Utils::RemoveFromVector<Collider*>(c, colliders);
+}
+
 ARRAY(String) ModuleCollision::GetTags()
 {
 	return tagList;

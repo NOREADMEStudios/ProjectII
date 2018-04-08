@@ -23,7 +23,13 @@ bool TestScene::Start()
 	App->map->Load("map.tmx");
 
 
-	App->entities->CreateCharacter({HERO,{100,100}});
+	e = App->entities->CreateCharacter({ HERO,{ 100,100 } });
+	e2 = App->entities->CreateCharacter({ HERO,{ 200,100 } });
+	e2 = App->entities->CreateCharacter({ HERO,{ 300,100 } });
+	e2 = App->entities->CreateCharacter({ HERO,{ 400,100 } });
+	e2 = App->entities->CreateCharacter({ HERO,{ 500,100 } });
+	e2 = App->entities->CreateCharacter({ HERO,{ 600,100 } });
+	e2 = App->entities->CreateCharacter({ HERO,{ 700,100 } });
 
 	//App->entities->CreateCharacter({ HERO,{ 400,100 } });
 	//App->entities->CreateCharacter({ ENEMY,{ 100,50 } });
@@ -39,12 +45,6 @@ bool TestScene::Start()
 	s->SetParent(w);
 	s->culled = true;
 	w->SetContentRect(50, 50, 50, 50);*/
-
-	c = App->collision->CreateCollider({ 100, 100, 50, 50 }, "default");
-	c2 = App->collision->CreateCollider({ 100, 100, 50, 50 }, "default");
-
-	App->collision->AddCollider(c, e);
-	App->collision->AddCollider(c2, e2);
   
 	return false;
 }
@@ -52,7 +52,6 @@ bool TestScene::Start()
 bool TestScene::Update(float dt)
 {
 	App->map->Draw();
-	c2->collider.x += 10 * sin(angle);
 	angle += 0.01f;
 	return true;
 }

@@ -22,6 +22,9 @@ public:
 	}
 
 	enum Type {
+		FEET, 
+		HITBOX,
+		ATK,
 		TRIGGER,
 		PHYSIC,
 		Amount

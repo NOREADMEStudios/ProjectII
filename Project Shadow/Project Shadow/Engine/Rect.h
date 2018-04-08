@@ -24,6 +24,12 @@ struct Rect {
 		w = rect.w;
 		h = rect.h;
 	}
+	void ToZero() {
+		x = 0;
+		y =	0;
+		w = 0;
+		h = 0;
+	}
 
 	Rect operator *(int n) const {
 		Rect<TYPE> r(x * n, y * n, w * n, h * n);

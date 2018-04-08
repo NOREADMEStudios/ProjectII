@@ -5,6 +5,7 @@
 #include "Point.h"
 #include "Rect.h"
 #include <vector>
+#include "Log.h"
 
 
 struct AnimationFrame {
@@ -12,10 +13,16 @@ struct AnimationFrame {
 	iPoint pivot;
 	iRect result_rect;
 
+
 public:
 	SDL_Rect GetRectSDL() {
 		return rect.toSDL_Rect();
 	}
+};
+struct AnimColls {
+	iRect attack = { 0,0,0,0 };
+	iRect hitbox;
+	iRect feet;
 };
 
 class Animation
@@ -24,7 +31,7 @@ public:
 	bool loop = true;
 	float speed = 1.0f;
 	std::vector<AnimationFrame> frames;
-
+	std::vector<AnimColls> coll_frames;
 	
 
 private:
@@ -48,7 +55,7 @@ public:
 		pugi::xml_parse_result result = animationFile.load_file(fileName.data());
 		if (result != NULL) {
 			std::string lop = "loop";
-			std::string spd = "speed";
+			std::string spd = "speed";			
 			for (pugi::xml_node anim = animationFile.child("map").child("objectgroup"); anim; anim = anim.next_sibling("objectgroup")) {
 				if (anim.attribute("name").as_string() == animationName) {
 					for (pugi::xml_node propert = anim.child("properties").child("property"); propert; propert = propert.next_sibling("property")) {
@@ -63,11 +70,33 @@ public:
 						iRect frame = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
 						this->PushBack(frame.toSDL_Rect());
 					}
-					return true;
-				}
+					bool ret = LoadFrameCollidersFromXML(anim, animationName);
+					return ret;
+				}				
 			}
 		}
 		return false;
+	}
+	iRect GetFeetColliderFromFrame() {
+
+		int currFrame = this->current_frame;
+		iRect collider = coll_frames.at(currFrame).feet;
+		iRect frame = frames.at(currFrame).rect;
+		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
+	}
+
+	iRect GetHitBoxColliderFromFrame() {
+		int currFrame = this->current_frame;
+		iRect collider = coll_frames.at(currFrame).hitbox;
+		iRect frame = frames.at(currFrame).rect;
+		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
+	}
+
+	iRect GetAtkColliderFromFrame() {
+		int currFrame = this->current_frame;
+		iRect collider = coll_frames.at(currFrame).attack;
+		iRect frame = frames.at(currFrame).rect;
+		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
 
 	void PushBack(const SDL_Rect& rect, const iPoint& pivot = { 0, 0 })
@@ -113,6 +142,8 @@ public:
 		return (int)current_frame;
 	}
 
+	
+
 	/*Animation &operator =(const Animation &anim) 
 	{
 		loop = anim.loop;
@@ -127,6 +158,54 @@ public:
 
 		return *this;
 	}*/
+	private:
+		bool LoadFrameCollidersFromXML(pugi::xml_node objectgroup, std::string name) {
+			std::string coll = "_colliders";
+			std::string frame = "Frame";
+			std::string colltype = "collider_type";
+			coll = name + coll;
+			bool ret = false;
+			for (; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup")) {
+				if (objectgroup.attribute("name").as_string() == coll) {//dentro de idle_colliders
+					int i = 1;
+					ret = true;
+					iRect feetColl(0, 0, 0, 0);
+					iRect HitBoxColl(0, 0, 0, 0);
+					iRect AtkColl(0, 0, 0, 0);
+					for (pugi::xml_node object = objectgroup.child("object"); object; object = object.next_sibling("object")) {
+						pugi::xml_node prop = object.child("properties").child("property");
+						if (prop.attribute("name").as_string() == frame) {
+							if (prop.attribute("value").as_int() == i) {
+
+								prop = prop.next_sibling("property");
+								if (prop.attribute("name").as_string() == colltype) {
+
+									if (prop.attribute("value").as_int() == 1) {//collider atk
+										AtkColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
+									}
+									else if (prop.attribute("value").as_int() == 2) {//collider hitbox
+										HitBoxColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
+									}
+									else if (prop.attribute("value").as_int() == 3) {//collider feet
+										feetColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
+										this->coll_frames.push_back({ AtkColl, HitBoxColl, feetColl });
+										feetColl.ToZero();
+										HitBoxColl.ToZero();
+										AtkColl.ToZero();
+										i++;
+									}
+								}
+							}
+						}
+					}
+					return ret;
+				}
+			}
+			if (ret == false) {
+				LOG("Cannot find colliders for the animation");
+			}
+			return ret;
+		}
 };
 
 #endif

@@ -5,7 +5,9 @@
 #include "Character.h"
 #include "ModuleEntityManager.h"
 #include "Animation.h"
- 
+#include "Timer.h"
+
+#define COMBO_MARGIN 50
 
 
 
@@ -31,7 +33,7 @@ public:
 	bool Load(pugi::xml_node&)override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
 
-	void UpdateInputs(float dt);
+
 
 	void LoadAnimations();
 
@@ -39,7 +41,23 @@ public:
 	void UpdateState();
 	void UpdateCurState(float dt);
 	void UpdateAnimation();
+	void CalculateAtk();
+	bool StateisAtk(CharStateEnum State);
+	Attack* GetAtk(CharStateEnum atk);
+	void SetCombo();
 
+	void Respawn();
+
+	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
+
+
+	Timer time_attack;
+
+
+protected:
+	iPoint initialpos;
+	int initiallife = 0;
+	uint lives = 0;
 
 };
 #endif

@@ -33,38 +33,69 @@ enum CharStateEnum
 	ATTACK_LIGHT,
 	ATTACK_HEAVY,
 	ATTACK_L2,
+	HITTED,
+	KNOKED,
 	DEATH
 };
 
-struct CharState
- {
-	CharStateEnum state = IDLE;
-	std::list<CharStateEnum> linkers;
+struct Attack
+{
+	CharStateEnum state;
+	int damage = 0;
+	LIST(Attack*) childs;
+	Input input;
 
-
-	CharState(CharStateEnum init_state, CharStateEnum first_linker = IDLE)
+	Attack(CharStateEnum _state, Input _input, int _damage = 0)
 	{
-		state = init_state;
-		if (first_linker != IDLE)
-		{
-			linkers.push_back(first_linker);
-		}
+		state = _state;
+		input = _input;
+		damage = _damage;
+
 	}
 
-	bool CanLink(CharStateEnum wanted_state)
+	void AddChild(Attack* _child)
 	{
-		for (std::list<CharStateEnum>::iterator item = linkers.begin(); item != linkers.end(); item++)
-		{
-			if (*item == wanted_state)
+		childs.push_back(_child);
+	}
+
+	bool CheckChild(Attack* _child)
+	{
+		for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
+			if (*item == _child)
+			{
 				return true;
+			}
 		}
+
 		return false;
 	}
 
-	void AddLink(CharStateEnum linker)
+	bool CheckChildInput(Input input)
 	{
-		linkers.push_back(linker);
+
+		for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
+			if ((*item)->input == input)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
+
+	Attack* GetChildInput(Input input)
+	{
+
+		for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
+			if ((*item)->input == input)
+			{
+				return *item;
+			}
+		}
+
+		return nullptr;
+	}
+
 };
 
 struct Directions
@@ -115,12 +146,10 @@ protected:
 
 	CharStateEnum currentState;
 	CharStateEnum wantedState;
+	CharStateEnum last_attack;
 	Directions directions;
 
-	//Attacks
-
-	std::list<CharState> attacks;
-
+	LIST(Attack*) attacks;
 
 };
 #endif

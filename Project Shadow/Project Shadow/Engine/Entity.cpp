@@ -61,7 +61,7 @@ void Entity::OnCollisionExit(Collider * _this, Collider * _other)
 //}
 
 
-fPoint Entity::GetPos()
+iPoint Entity::GetPos()
 {
 	return position;
 }
@@ -91,7 +91,7 @@ EntityTypes Entity::GetType()
 	return type;
 }
 
-void Entity::SetPos(float x, float y)
+void Entity::SetPos(int x, int y)
 {
 	position = { x,y };
 }

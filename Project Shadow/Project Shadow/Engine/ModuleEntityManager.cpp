@@ -108,8 +108,9 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
 
 void ModuleEntityManager::DestroyEntity(Entity* entity) {
-
 	
+	entities.remove(entity);
+	entity = nullptr;
 }
 
 void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)

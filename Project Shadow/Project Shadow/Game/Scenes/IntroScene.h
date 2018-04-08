@@ -1,10 +1,10 @@
-#ifndef __SCENE_TEST_H__
-#define __SCENE_TEST_H__
+#ifndef __INTROSCENE_H__
+#define __INTROSCENE_H__
 
-#include "..\Engine\Scene.h"
-#include "..\Engine\ModuleCollision.h"
+#include "..\..\Engine\Scene.h"
+#include "..\..\Engine\ModuleCollision.h"
 
-class TestScene :
+class IntroScene:
 	public Scene
 {
 public:
@@ -13,8 +13,8 @@ public:
 	Entity *e, *e2;
 	float angle = 0;
 
-	TestScene();
-	virtual ~TestScene();
+	IntroScene();
+	virtual ~IntroScene();
 
 	bool Awake(pugi::xml_node&) override { return true; };
 
@@ -26,12 +26,11 @@ public:
 
 	bool PostUpdate() override { return true; }
 
-	bool CleanUp(pugi::xml_node&) override { return true; };
+	bool CleanUp() override;
 
 	bool Load(pugi::xml_node&) override { return true; };
 
 	bool Save(pugi::xml_node&) const override { return true; };
-
 
 };
 

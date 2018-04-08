@@ -95,9 +95,6 @@
     <ClCompile Include="Engine\ModuleMap.cpp">
       <Filter>Engine\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Game\TestScene.cpp">
-      <Filter>Game\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\UI\Label.cpp">
       <Filter>Engine\UI</Filter>
     </ClCompile>
@@ -133,6 +130,18 @@
     </ClCompile>
     <ClCompile Include="Engine\Hero.cpp">
       <Filter>Engine\Entities\Character\Hero</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\EndScene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\IntroScene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\ItemSelecScene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\MainScene.cpp">
+      <Filter>Game\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,9 +211,6 @@
     <ClInclude Include="Engine\PerfTimer.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Game\TestScene.h">
-      <Filter>Game\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\PerfTimer.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -237,7 +243,7 @@
     </ClInclude>
     <ClInclude Include="Engine\ModuleCollision.h">
       <Filter>Engine\Modules</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="Engine\Animation.h">
       <Filter>Engine\Tools</Filter>
     </ClInclude>
@@ -249,6 +255,18 @@
     </ClInclude>
     <ClInclude Include="Engine\Hero.h">
       <Filter>Engine\Entities\Character\Hero</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\EndScene.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\IntroScene.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\ItemSelecScene.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\MainScene.h">
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

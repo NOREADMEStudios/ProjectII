@@ -47,9 +47,9 @@ bool Sprite::Update(float dt)
 		actual_anim_rect.w += result_rect.w - rect.w;
 		actual_anim_rect.h += result_rect.h - rect.h;
 
-		App->render->BlitGui(tex, result_rect.x, result_rect.y, &actual_anim_rect);
+		App->render->BlitGui(tex, result_rect.x, result_rect.y, &actual_anim_rect, false);
 	}
-	else App->render->BlitGui(tex, rect.x, rect.y, current_anim);
+	else App->render->BlitGui(tex, rect.x, rect.y, current_anim, false);
 
 	bool ret = InterfaceElement::Update(dt);
 	return ret;

@@ -6,6 +6,10 @@
 
 #include <list>
 
+class IntroScene;
+class ItemSelecScene;
+class MainScene;
+class EndScene;
 
 class ModuleSceneManager : public Module
 {
@@ -21,21 +25,28 @@ public:
 
 	bool Update(float dt)override;
 
-	bool PostUpdate()override { return true; }
+	bool PostUpdate()override;
 
 	bool CleanUp(pugi::xml_node&)override;
 
 	bool Load(pugi::xml_node&) { return true; }
 	bool Save(pugi::xml_node&) const { return true; }
 
+	void AddScene(Scene* scene);
 	void LoadScene(Scene* scene);
 	void ChangeScene(Scene* scene_to_change);
 	void UnloadScene(Scene* scene);
 
+	IntroScene* introSc;
+	ItemSelecScene* itemSc;
+	MainScene* mainSc;
+	EndScene* endSc;
+
 private:
 
 	std::list<Scene> scenes;
-	Scene* currentScene;
+	Scene* currentScene = nullptr;
+	Scene* nextScene = nullptr;
 
 };
 

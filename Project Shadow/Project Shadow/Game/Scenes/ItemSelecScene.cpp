@@ -28,7 +28,9 @@ ItemSelecScene::~ItemSelecScene()
 bool ItemSelecScene::Start()
 {
 	App->debug = true;
-	Button* b = App->gui->AddButton(500, 500, NULL, { 0,0,500,500 }, true, CallbackButton);
+	item1 = App->gui->AddButton(200, 200, NULL, { 0,0,200,200 }, true, CallbackButton);
+	item2 = App->gui->AddButton(800, 200, NULL, { 0,0,200,200 }, true, CallbackButton);
+	item3 = App->gui->AddButton (1400, 200, NULL, { 0,0,200,200 }, true, CallbackButton);
 	//Label* l = App->gui->AddLabel()
 
 

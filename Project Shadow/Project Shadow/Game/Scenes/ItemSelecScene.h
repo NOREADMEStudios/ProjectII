@@ -4,11 +4,16 @@
 #include "..\..\Engine\Scene.h"
 #include "..\..\Engine\ModuleCollision.h"
 
+class Button;
+
 class ItemSelecScene:
 	public Scene
 {
 public:
 
+	Button * item1;
+	Button * item2;
+	Button * item3;
 
 	ItemSelecScene();
 	virtual ~ItemSelecScene();

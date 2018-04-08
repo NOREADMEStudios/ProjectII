@@ -1,5 +1,6 @@
 #include "IntroScene.h"
 #include "MainScene.h"
+#include "ItemSelecScene.h"
 #include "../../Engine/ModuleMap.h"
 #include "../../Engine/App.h"
 #include "../../Engine/ModuleSceneManager.h"
@@ -28,7 +29,7 @@ bool IntroScene::Start()
 bool IntroScene::Update(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
-		App->scenes->ChangeScene(App->scenes->mainSc);
+		App->scenes->ChangeScene(App->scenes->itemSc);
 	}
 
 	return true;

@@ -11,6 +11,8 @@
 #include "../../Engine/ModuleInput.h"
 #include "../../Engine/ModuleRender.h"
 #include "../../Engine/UI/Window.h"
+#include "../../Engine/UI/Button.h"
+#include "../../Engine/UI/Label.h"
 #include "../../Engine/ModuleCollision.h"
 
 
@@ -24,6 +26,10 @@ ItemSelecScene::~ItemSelecScene()
 
 bool ItemSelecScene::Start()
 {
+	/*Button* b = App->gui->AddButton(500, 500, NULL, { 0,0,500,500 }, true, );*/
+	//Label* l = App->gui->AddLabel()
+
+
 	return false;
 }
 

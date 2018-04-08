@@ -80,12 +80,10 @@ bool Hero::Update(float dt)
 	UpdateCurState(dt);
 	UpdateAnimation();
 
-	if (StateisAtk(currentState))
-	{
+	if (StateisAtk(currentState)) {
 		CalculateAtk();
 	}
-	else
-	{
+	else {
 		stats.atk = 0;
 	}
 

@@ -23,6 +23,7 @@ struct Collider {
 
 	iRect				collider;
 	Entity*				entity = nullptr;
+	String				sTag;
 	uint				tag;
 	LIST(Collision*)	collisions;
 };

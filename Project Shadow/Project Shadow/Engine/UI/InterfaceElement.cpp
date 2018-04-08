@@ -214,7 +214,7 @@ void InterfaceElement::SetParent(InterfaceElement * parent)
 {
 	if (this->parent != nullptr)	// Erase the element from its previous parent if it already has one
 	{
-		REMOVE_FROM_LIST(this, this->parent->elements, InterfaceElement*);
+		Utils::RemoveFromList(this, this->parent->elements);
 	}
 
 	this->parent = parent;

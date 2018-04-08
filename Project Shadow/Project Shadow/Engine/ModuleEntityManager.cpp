@@ -115,16 +115,14 @@ void ModuleEntityManager::DestroyEntity(Entity* entity) {
 
 void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
 {
-
 	uint current_players = 0;
-	min_x = entities.front()->GetPosX();
-	max_x = entities.front()->GetPosX();
+	min_x = 99999999999999999;
+	max_x = 0;
 
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
 		if ((*item)->GetType() == CHARACTER)
 		{
 			current_players++;
-
 
 			if ((*item)->GetPosX() < min_x)
 			{
@@ -141,6 +139,4 @@ void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
 			break;
 		}
 	}
-
 }
-

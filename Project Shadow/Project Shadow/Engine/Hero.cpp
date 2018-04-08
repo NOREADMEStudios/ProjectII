@@ -2,15 +2,10 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
-
 #include "ModuleCollision.h"
-
 #include "App.h"
 
-
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
-
-
 
 
 Hero::Hero() : Character(CharacterTypes::HERO)
@@ -127,9 +122,6 @@ void Hero::LoadAnimations()
 
 }
 
-
-
-
 void Hero::RequestState() {
 
 
@@ -214,7 +206,6 @@ void Hero::RequestState() {
 		
 	else if (s_attack)
 	{
-
 		wantedState = ATTACK_HEAVY;
 	}
 		
@@ -222,7 +213,6 @@ void Hero::RequestState() {
 
 
 }
-
 
 void Hero::UpdateState()
 {
@@ -251,10 +241,8 @@ void Hero::UpdateState()
 		{
 			SetCombo();
 
-			time_attack.Start();
-	
+			time_attack.Start();	
 		}
-
 	}
 
 	if (time_attack.Count(COMBO_MARGIN))
@@ -280,8 +268,8 @@ void Hero::UpdateCurState(float dt)
 			break;
 		}
 	}
-
 }
+
 void Hero::UpdateAnimation()
 {
 	if (currentState == WALK)
@@ -293,7 +281,6 @@ void Hero::UpdateAnimation()
 		currentAnimation = &idle;
 	}
 }
-
 
 void Hero::Respawn()
 {

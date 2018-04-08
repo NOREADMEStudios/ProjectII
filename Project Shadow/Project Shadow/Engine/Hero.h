@@ -7,7 +7,7 @@
 #include "Animation.h"
 #include "Timer.h"
 
-#define COMBO_MARGIN 50
+#define COMBO_MARGIN 1
 
 
 
@@ -48,7 +48,7 @@ public:
 
 	void Respawn();
 
-	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
+	void OnCollisionEnter(Collider* _this, Collider* _other);
 
 
 	Timer time_attack;

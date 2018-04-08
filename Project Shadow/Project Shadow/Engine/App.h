@@ -17,14 +17,15 @@ class ModuleInput;
 class ModuleRender;
 class ModuleTextures;
 class ModuleAudio;
-class j1Scene;
-class j1Map;
-class j1Entities;
-class j1Collision;
+class ModuleMap;
+class ModuleCollision;
+/*class j1Scene;
 class j1PathFinding;
-class j1Fonts;
-class j1Gui;
-class j1Transition;
+class j1Transition;*/
+class ModuleFonts;
+class ModuleGUI;
+class ModuleSceneManager;
+class ModuleEntityManager;
 
 class Application
 {
@@ -69,9 +70,16 @@ public:
 	void SetTimeScale(float ts);
 
 private:
+	// Sets the provided node with the default structure of the config file
+	void CreateDefaultConfigFile(xmlNode&) const;
 
 	// Load config file
-	pugi::xml_node LoadConfig(pugi::xml_document&) const;
+	xmlNode LoadConfig(xmlDocument&) const;
+
+	// Checks wether the file structure of the project matches the one specified in the config file or not
+	// Returns true if Assets/ folder is present, false otherwise
+	// Will create missing folders if Assets/ is present
+	void CheckFileStructure(const xmlNode&) const;
 
 	// Call modules before each loop iteration
 	void PrepareUpdate();
@@ -99,16 +107,17 @@ public:
 	ModuleWindow*			win = nullptr;
 	ModuleInput*			input = nullptr;
 	ModuleRender*			render = nullptr;
-	ModuleTextures*			tex = nullptr;
+	ModuleTextures*			textures = nullptr;
 	ModuleAudio*			audio = nullptr;
-	j1Scene*			scene = nullptr;
-	j1Map*				map = nullptr;
-	j1Entities*			entities = nullptr;
-	j1Collision*		collision = nullptr;
-	j1PathFinding*		pathfinding = nullptr;
-	j1Fonts*			font = nullptr;
-	j1Gui*				gui = nullptr;
-	j1Transition*		transition = nullptr;
+	ModuleMap*				map = nullptr;
+	ModuleCollision*		collision = nullptr;
+	/*j1Scene*			scene = nullptr;
+	j1PathFinding*		pathfinding = nullptr;	
+	j1Transition*		transition = nullptr;*/
+	ModuleFonts*			font = nullptr;
+	ModuleGUI*				gui = nullptr;
+	ModuleSceneManager*		scenes = nullptr;
+	ModuleEntityManager*	entities = nullptr;
 
 	bool debug = false;
 

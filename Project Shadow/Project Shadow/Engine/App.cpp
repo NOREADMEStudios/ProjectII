@@ -1,5 +1,6 @@
 #include <iostream> 
 #include <cstdlib>
+#include <filesystem>
 
 #include "Defs.h"
 #include "Log.h"
@@ -10,7 +11,14 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
+#include "ModuleMap.h"
+#include "ModuleGUI.h"
+#include "ModuleFonts.h"
+#include "ModuleSceneManager.h"
+#include "ModuleEntityManager.h"
+#include "ModuleCollision.h"
 
+#include "..\Brofiler\Brofiler.h"
 
 // Constructor
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
@@ -23,31 +31,31 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	input = new ModuleInput();
 	win = new ModuleWindow();
 	render = new ModuleRender();
-	tex = new ModuleTextures();
+	textures = new ModuleTextures();
 	audio = new ModuleAudio();
-	/*scene = new j1Scene();
-	map = new j1Map();
-	entities = new j1Entities();
-	collision = new j1Collision();
-	pathfinding = new j1PathFinding();
-	font = new j1Fonts();
-	gui = new j1Gui();
-	transition = new j1Transition();*/
+	scenes = new ModuleSceneManager();
+	entities = new ModuleEntityManager();
+	map = new ModuleMap();	
+	collision = new ModuleCollision();
+	/*pathfinding = new j1PathFinding();*/
+	font = new ModuleFonts();
+	gui = new ModuleGUI();
+	//transition = new j1Transition();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
 	AddModule(win);
-	AddModule(tex);
+	AddModule(textures);
 	AddModule(audio);
-	/*AddModule(map);
-	AddModule(scene);
+	AddModule(map);
+	AddModule(scenes);
 	AddModule(entities);
 	AddModule(collision);
-	AddModule(pathfinding);
+	/*AddModule(pathfinding);*/
 	AddModule(font);
 	AddModule(gui);
-	AddModule(transition);*/
+	//AddModule(transition);
 
 	// render last to swap buffer
 	AddModule(render);
@@ -72,7 +80,7 @@ Application::~Application()
 	//we must use this structure now with stl:
 	//we need to be careful with the use of "iterator" and "reverse_iterator" and use them for their intended purposes (front-to-back and back-to-front)
 	for (ModuleList::reverse_iterator item = modules.rbegin(); item != modules.rend(); item++) {
-		Release(*item);
+		Utils::Release(*item);
 	}
 	modules.clear();
 }
@@ -87,10 +95,11 @@ void Application::AddModule(Module* module)
 bool Application::Awake()
 {
 	//PERF_START(ptimer);
+	BROFILER_CATEGORY("App_Awake", Profiler::Color::Red);
 
-	pugi::xml_document	config_file;
-	pugi::xml_node		config;
-	pugi::xml_node		app_config;
+	xmlDocument	config_file;
+	xmlNode		config;
+	xmlNode		appConfig;
 
 	bool ret = false;
 		
@@ -99,26 +108,20 @@ bool Application::Awake()
 	if(config.empty() == false)
 	{
 		// self-config
-		ret = true;
-		app_config = config.child("app");
-		title = app_config.child("title").child_value();
-		organization = app_config.child("organization").child_value();
-		framerate_cap = app_config.attribute("framerate_cap").as_uint();
+		ret = true; 
+		appConfig = config.child("app");
+		title = appConfig.child("Title").attribute("value").as_string();
+		organization = appConfig.child("organisation").attribute("value").as_string();
+		framerate_cap = appConfig.attribute("framerateCap").as_uint();
+
+		//Checking file structure
+		CheckFileStructure(appConfig);
 	}
 
 	if(ret == true)
 	{
-		/*p2List_item<j1Module*>* item;
-		item = modules.start;
-
-		while(item != NULL && ret == true)
-		{
-			ret = item->data->Awake(config.child(item->data->name.GetString()));
-			item = item->next;
-		}*/
-
-		for (ModuleList::iterator item = modules.begin(); item != modules.end(); item++) {
-			pugi::xml_node node = config.child((*item)->name.c_str());
+		for (ModuleList::iterator item = modules.begin(); item != modules.end() && ret == true; item++) {
+			xmlNode node = config.child((*item)->name.c_str());
 			ret = (*item)->Awake(node);
 		}
 	}
@@ -132,16 +135,9 @@ bool Application::Awake()
 bool Application::Start()
 {
 	//PERF_START(ptimer);
+	BROFILER_CATEGORY("App_Start", Profiler::Color::Blue);
 
 	bool ret = true;
-	/*p2List_item<j1Module*>* item;
-	item = modules.start;
-
-	while(item != NULL && ret == true)
-	{
-		ret = item->data->Start();
-		item = item->next;
-	}*/
 
 	for (ModuleList::iterator item = modules.begin(); item != modules.end() && ret == true; item++) {
 		ret = (*item)->Start();
@@ -152,9 +148,10 @@ bool Application::Start()
 }
 
 // Called each loop iteration
-bool Application::Update()
-{
+bool Application::Update() {
 	bool ret = true;
+
+	BROFILER_CATEGORY("App_Update", Profiler::Color::Green);
 	PrepareUpdate();
 
 	if(input->GetWindowEvent(WE_QUIT) == true)
@@ -174,24 +171,119 @@ bool Application::Update()
 	return ret;
 }
 
+void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
+	xmlNode app = configNode.append_child("app");
+	app.append_attribute("framerateCap").set_value(60);
+	app.append_child("Title").append_attribute("value") = "Shadow Engine";
+	app.append_child("organisation").append_attribute("value") = "NoReadme Studio";
+
+	// Assets folder structure
+	xmlNode assetsStructure = app.append_child("Assets");
+	assetsStructure.append_attribute("folder") = ASSETS_ROOT;
+	xmlNode anims = assetsStructure.append_child("Animations");
+	anims.append_attribute("folder") = ANIMATIONS_DIR;
+	anims.append_child("Characters").append_attribute("folder") = CHARACTERS_DIR;
+	anims.append_child("Enemies").append_attribute("folder") = ENEMIES_DIR;
+
+	xmlNode audio = assetsStructure.append_child("Audio");
+	audio.append_attribute("folder") = AUDIO_DIR;
+	audio.append_child("BGM").append_attribute("folder") = AUDIO_BGM_DIR;
+	audio.append_child("FX").append_attribute("folder") = AUDIO_FX_DIR;
+
+	assetsStructure.append_child("Maps").append_attribute("folder") = MAPS_DIR;
+	assetsStructure.append_child("Scenes").append_attribute("folder") = SCENES_DIR;
+
+	xmlNode textures = assetsStructure.append_child("Textures");
+	textures.append_attribute("folder") = TEXTURES_DIR;
+	textures.append_child("Characters").append_attribute("folder") = CHARACTERS_DIR;
+	textures.append_child("Enemies").append_attribute("folder") = ENEMIES_DIR;
+	textures.append_child("Maps").append_attribute("folder") = MAPS_DIR;
+
+	assetsStructure.append_child("Input").append_attribute("folder") = INPUT_DIR;
+
+	configNode.append_child("renderer").append_child("vsync").append_attribute("value") = "false";
+	xmlNode window = configNode.append_child("window");
+	xmlNode winRes = window.append_child("resolution");
+	winRes.append_attribute("width") = DEFAULT_RESOLUTION_X;
+	winRes.append_attribute("height") = DEFAULT_RESOLUTION_Y;
+	winRes.append_attribute("scale") = 1.0f;
+	window.append_child("fullscreen").append_attribute("value") = 0;
+	window.append_child("borderless").append_attribute("value") = 0;
+	window.append_child("resizable").append_attribute("value") = 0;
+	window.append_child("fullscreenWindow").append_attribute("value") = 0;
+	configNode.append_child("scenes").append_attribute("folder") = SCENES_DIR;
+	configNode.append_child("map").append_attribute("folder") = MAPS_DIR;
+	configNode.append_child("entities").append_attribute("folder") = ENTITIES_DIR;
+	configNode.append_child("textures").append_attribute("folder") = TEXTURES_DIR;
+	audio = configNode.append_child("audio");
+	audio.append_attribute("folder") = AUDIO_DIR;
+	audio.append_attribute("volumeFX") = 1.0f;
+	audio.append_attribute("volumeBGM") = 1.0f;
+	configNode.append_child("input").append_attribute("folder") = INPUT_DIR;
+	xmlNode tags = configNode.append_child("collision").append_child("colliderTags");
+	xmlNode tag = tags.append_child("tag");
+	tag.append_attribute("value") = "default";
+	tag.append_attribute("interactions") = "default;default";
+}
+
 // ---------------------------------------------
-pugi::xml_node Application::LoadConfig(pugi::xml_document& config_file) const
-{
-	pugi::xml_node ret;
+xmlNode Application::LoadConfig(xmlDocument& config_file) const {
+	xmlNode ret;
 
 	pugi::xml_parse_result result = config_file.load_file("config.xml");
 
-	if(result == NULL)
+	if (result == NULL) {
 		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
+		LOG("Creating default config.xml file...");
+		ret = config_file.append_child("config");
+		CreateDefaultConfigFile(ret);
+		config_file.save_file("config.xml");
+	}
 	else
 		ret = config_file.child("config");
 
 	return ret;
 }
 
-// ---------------------------------------------
-void Application::PrepareUpdate()
+void Application::CheckFileStructure(const xmlNode & config) const
 {
+	namespace filesystem = std::experimental::filesystem;
+	xmlNode assets = config.child("Assets");
+
+	std::string path = assets.attribute("folder").as_string();
+	if (!filesystem::exists(path)) {
+		LOG("Missing folder %s, creating default one", path.c_str());
+		filesystem::create_directory(path);
+	}
+
+	// Iterate through nodes to check and create if needed all the assets directories
+	for (xmlNode iter = assets.first_child(); iter;) {
+		path = path + iter.attribute("folder").as_string();
+		if (!filesystem::exists(path)) {
+			LOG("Missing folder %s, creating default one", path.c_str());
+			filesystem::create_directory(path);
+		}
+
+		if (iter.first_child() != nullptr) {
+			iter = iter.first_child();
+		}
+		else if (iter.next_sibling() != nullptr) {
+			int pos = path.find(iter.attribute("folder").as_string(), 0);
+			path = path.substr(0, pos);
+			iter = iter.next_sibling();
+		}
+		else {
+			int pos = path.find(iter.attribute("folder").as_string(), 0);
+			path = path.substr(0, pos);
+			pos = path.find(iter.parent().attribute("folder").as_string());
+			path = path.substr(0, pos);
+			iter = iter.parent().next_sibling();
+		}
+	}
+}
+
+// ---------------------------------------------
+void Application::PrepareUpdate() {
 	frame_count++;
 	last_sec_frame_count++;
 
@@ -239,7 +331,7 @@ void Application::FinishUpdate()
 		SDL_Delay(delay_ms);
 
 	uint wait_ms = delay_time.Read();
-	LOG("Expected frame delay: %d, Actual frame delay: %d", delay_ms, wait_ms);
+	//LOG("Expected frame delay: %d, Actual frame delay: %d", delay_ms, wait_ms);
 }
 
 uint32 Application::GetFramerateCap() const
@@ -278,11 +370,9 @@ bool Application::PreUpdate()
 bool Application::DoUpdate()
 {
 	bool ret = true;
-	ModuleList::iterator item;
-	item = modules.begin();
 	Module* pModule = NULL;
 
-	for(item = modules.begin(); *item != nullptr && ret == true; item++)
+	for(ModuleList::iterator item = modules.begin(); item != modules.end() && ret == true; item++)
 	{
 		pModule = *item;
 
@@ -303,7 +393,7 @@ bool Application::PostUpdate()
 	ModuleList::iterator item;
 	Module* pModule = NULL;
 
-	for(item = modules.begin(); *item != nullptr && ret == true; item++)
+	for(item = modules.begin(); item != modules.end() && ret == true; item++)
 	{
 		pModule = *item;
 
@@ -321,10 +411,11 @@ bool Application::PostUpdate()
 bool Application::CleanUp()
 {
 	//PERF_START(ptimer);
+	BROFILER_CATEGORY("App_CleanUp", Profiler::Color::Violet);
 
-	pugi::xml_document	config_file;
-	pugi::xml_node		config;
-	pugi::xml_node		app_config;
+	xmlDocument	config_file;
+	xmlNode		config;
+	xmlNode		app_config;
 
 	bool ret = false;
 
@@ -340,7 +431,7 @@ bool Application::CleanUp()
 
 	for(ModuleList::reverse_iterator item = modules.rbegin(); item != modules.rend() && ret == true; item++)
 	{
-		pugi::xml_node node = config.child((*item)->name.c_str());
+		xmlNode node = config.child((*item)->name.c_str());
 		ret = (*item)->CleanUp(node);
 	}
 
@@ -404,8 +495,8 @@ bool Application::LoadGameNow()
 {
 	bool ret = false;
 
-	pugi::xml_document data;
-	pugi::xml_node root;
+	xmlDocument data;
+	xmlNode root;
 
 	pugi::xml_parse_result result = data.load_file((char*)load_game.c_str());
 
@@ -421,7 +512,7 @@ bool Application::LoadGameNow()
 
 		for(item = modules.begin(); item != modules.end() && ret == true; item++)
 		{
-			pugi::xml_node node = root.child((*item)->name.c_str());
+			xmlNode node = root.child((*item)->name.c_str());
 			ret = (*item)->Load(node);
 		}
 
@@ -445,8 +536,8 @@ bool Application::SavegameNow() const
 	LOG("Saving Game State to %s...", save_game.c_str());
 
 	// xml object were we will store all data
-	pugi::xml_document data;
-	pugi::xml_node root;
+	xmlDocument data;
+	xmlNode root;
 	
 	root = data.append_child("game_state");
 	
@@ -454,7 +545,7 @@ bool Application::SavegameNow() const
 
 	for(; item != modules.end() && ret == true; item++)
 	{
-		pugi::xml_node node = root.append_child((*item)->name.c_str());
+		xmlNode node = root.append_child((*item)->name.c_str());
 		ret = (*item)->Save(node);
 		item++;
 	}
@@ -474,9 +565,9 @@ bool Application::SavegameNow() const
 
 bool Application::ReloadNow() {
 
-	pugi::xml_document	config_file;
-	pugi::xml_node		config;
-	pugi::xml_node		app_config;
+	xmlDocument	config_file;
+	xmlNode		config;
+	xmlNode		app_config;
 
 	bool ret = false;
 
@@ -494,7 +585,7 @@ bool Application::ReloadNow() {
 	}
 
 	if (ret)
-		//ret = tex->CleanUp(config.child(tex->name.c_str()));
+		//ret = textures->CleanUp(config.child(textures->name.c_str()));
 		//pathfinding->CleanUp(config.child(pathfinding->name.GetString())) &
 		//map->CleanUp(config.child(map->name.GetString())) &
 		//scene->CleanUp(config.child(scene->name.GetString())) &
@@ -504,7 +595,7 @@ bool Application::ReloadNow() {
 		//gui->CleanUp(config.child(gui->name.GetString()));
 
 	if (ret)
-		//ret = tex->Awake(config.child(tex->name.c_str())) &
+		//ret = textures->Awake(config.child(textures->name.c_str())) &
 		//map->Awake(config.child(map->name.GetString())) &
 		//audio->Awake(config.child(audio->name.c_str()));
 		//scene->Awake(config.child(scene->name.GetString())) &
@@ -513,7 +604,7 @@ bool Application::ReloadNow() {
 		//gui->Awake(config.child(gui->name.GetString()));
 
 	if (ret)
-		ret = tex->Start() &&
+		ret = textures->Start() &&
 		//map->Start() &&
 		audio->Start();
 		//scene->Start() &&

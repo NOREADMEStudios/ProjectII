@@ -2,6 +2,7 @@
 #define __TEXTURES_H__
 
 #include "Module.h"
+#include <filesystem>
 
 
 struct SDL_Texture;
@@ -34,6 +35,7 @@ public:
 public:
 
 	std::list<SDL_Texture*>	textures;
+	std::string assetsPath;
 };
 
 

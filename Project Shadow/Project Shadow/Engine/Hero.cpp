@@ -70,7 +70,7 @@ bool Hero::Update(float dt)
 	UpdateCurState(dt);
 	UpdateAnimation();
 
-	if (StateisAtk())
+	if (StateisAtk(currentState))
 	{
 		CalculateAtk();
 	}
@@ -188,12 +188,19 @@ void Hero::RequestState() {
 			wantedState = WALK;
 	}
 
-	if (l_attack)	
-		wantedState = ATTACK_LIGHT;			
+	if (l_attack)
+	{
+		wantedState = ATTACK_LIGHT;
+	}
+				
 	
 		
 	else if (s_attack)
+	{
+
 		wantedState = ATTACK_HEAVY;
+	}
+		
 
 
 
@@ -202,25 +209,15 @@ void Hero::RequestState() {
 
 void Hero::UpdateState()
 {
+	if (last_attack == LIGHT_ATTACK && wantedState == LIGHT_ATTACK)
+		int a = 0;
+
 	if (currentState == WALK || currentState == RUN || currentState == IDLE)
 	{
 		currentState = wantedState;
 
-		if (time_attack.ReadSec() > COMBO_MARGIN)
+		if (StateisAtk(wantedState) && last_attack != IDLE)
 		{
-			last_attack = IDLE;
-		}
-	}
-	else if (currentAnimation->Finished())
-	{	
-
-		if (!StateisAtk())
-		{
-			currentState = wantedState;
-		}
-		else
-		{
-			
 			Attack* wanted_atk = GetAtk(wantedState);
 			Attack* current_atk = GetAtk(last_attack);
 
@@ -228,15 +225,46 @@ void Hero::UpdateState()
 			{
 				currentState = current_atk->GetChildInput(wanted_atk->input)->state;
 			}
+			else
+			{
+				currentState = wantedState;
+			}
 
 			time_attack.Start();
-			last_attack = currentState;
+		}
+	
+	}
+	else if (currentAnimation->Finished())
+	{	
+		last_attack = currentState;
+
+		if (!StateisAtk(last_attack))
+		{
+			currentState = wantedState;
+		}
+		else 
+		{
+			Attack* wanted_atk = GetAtk(wantedState);
+			Attack* current_atk = GetAtk(last_attack);
+			
+			if (wanted_atk != nullptr && current_atk->CheckChildInput(wanted_atk->input))
+			{
+				currentState = current_atk->GetChildInput(wanted_atk->input)->state;
+			}
+			else
+			{
+				currentState = wantedState;
+			}
+
+			time_attack.Start();
+	
 		}
 
-		if (wantedState == DEATH)
-			currentState = wantedState;
-		else
-			currentState = IDLE;
+	}
+
+	if (time_attack.Count(COMBO_MARGIN))
+	{
+		last_attack = IDLE;
 	}
 }
 
@@ -294,9 +322,9 @@ void Hero::CalculateAtk()
 	stats.atk = GetAtk(currentState)->damage;		
 }
 
-bool Hero::StateisAtk()
+bool Hero::StateisAtk(CharStateEnum State)
 {
-	return (currentState != WALK && currentState != RUN && currentState != IDLE && currentState != JUMP && currentState != DEATH && currentState != DEFEND);
+	return (State != WALK && State != RUN && State != IDLE && State != JUMP && State != DEATH && State != DEFEND);
 }
 
 Attack* Hero::GetAtk(CharStateEnum atk)

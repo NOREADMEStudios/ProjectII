@@ -7,7 +7,7 @@
 #include "Animation.h"
 #include "Timer.h"
 
-#define COMBO_MARGIN 0.5
+#define COMBO_MARGIN 50
 
 
 
@@ -42,7 +42,7 @@ public:
 	void UpdateCurState(float dt);
 	void UpdateAnimation();
 	void CalculateAtk();
-	bool StateisAtk();
+	bool StateisAtk(CharStateEnum State);
 	Attack* GetAtk(CharStateEnum atk);
 
 	void Respawn();

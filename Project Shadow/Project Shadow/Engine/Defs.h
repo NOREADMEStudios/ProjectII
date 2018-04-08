@@ -34,7 +34,7 @@ typedef std::string String;
 
 struct Collider;
 
-typedef void (*Callback)(void*);
+typedef void (*Callback)(...);
 
 
 #define CURSOR_WIDTH 2

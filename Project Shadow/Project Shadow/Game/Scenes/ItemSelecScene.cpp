@@ -15,6 +15,7 @@
 #include "../../Engine/UI/Label.h"
 #include "../../Engine/ModuleCollision.h"
 
+void CallbackButton(...);
 
 ItemSelecScene::ItemSelecScene()
 {
@@ -26,7 +27,8 @@ ItemSelecScene::~ItemSelecScene()
 
 bool ItemSelecScene::Start()
 {
-	/*Button* b = App->gui->AddButton(500, 500, NULL, { 0,0,500,500 }, true, );*/
+	App->debug = true;
+	Button* b = App->gui->AddButton(500, 500, NULL, { 0,0,500,500 }, true, CallbackButton);
 	//Label* l = App->gui->AddLabel()
 
 
@@ -47,3 +49,6 @@ bool ItemSelecScene::CleanUp()
 	return true;
 }
 
+void CallbackButton(...) {
+	LOG("PRESSED");
+}

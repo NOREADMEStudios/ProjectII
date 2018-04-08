@@ -60,7 +60,6 @@ bool Button::PreUpdate() {
 				if (type != SLIDER && clickSound >= 0)
 					App->audio->PlayFx(clickSound);
 			}
-
 		}
 		else if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 			App->input->BlockMouseEvent(SDL_BUTTON_RIGHT);

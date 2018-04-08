@@ -209,8 +209,6 @@ void Hero::RequestState() {
 
 void Hero::UpdateState()
 {
-	if (last_attack == LIGHT_ATTACK && wantedState == LIGHT_ATTACK)
-		int a = 0;
 
 	if (currentState == WALK || currentState == RUN || currentState == IDLE)
 	{
@@ -218,17 +216,7 @@ void Hero::UpdateState()
 
 		if (StateisAtk(wantedState) && last_attack != IDLE)
 		{
-			Attack* wanted_atk = GetAtk(wantedState);
-			Attack* current_atk = GetAtk(last_attack);
-
-			if (wanted_atk != nullptr && current_atk->CheckChildInput(wanted_atk->input))
-			{
-				currentState = current_atk->GetChildInput(wanted_atk->input)->state;
-			}
-			else
-			{
-				currentState = wantedState;
-			}
+			SetCombo();
 
 			time_attack.Start();
 		}
@@ -244,17 +232,7 @@ void Hero::UpdateState()
 		}
 		else 
 		{
-			Attack* wanted_atk = GetAtk(wantedState);
-			Attack* current_atk = GetAtk(last_attack);
-			
-			if (wanted_atk != nullptr && current_atk->CheckChildInput(wanted_atk->input))
-			{
-				currentState = current_atk->GetChildInput(wanted_atk->input)->state;
-			}
-			else
-			{
-				currentState = wantedState;
-			}
+			SetCombo();
 
 			time_attack.Start();
 	
@@ -340,3 +318,17 @@ Attack* Hero::GetAtk(CharStateEnum atk)
 	return ret;
 }
 
+void Hero::SetCombo()
+{
+	Attack* wanted_atk = GetAtk(wantedState);
+	Attack* current_atk = GetAtk(last_attack);
+
+	if (wanted_atk != nullptr && current_atk->CheckChildInput(wanted_atk->input))
+	{
+		currentState = current_atk->GetChildInput(wanted_atk->input)->state;
+	}
+	else
+	{
+		currentState = wantedState;
+	}
+}

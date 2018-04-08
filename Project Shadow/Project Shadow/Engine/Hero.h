@@ -44,6 +44,7 @@ public:
 	void CalculateAtk();
 	bool StateisAtk(CharStateEnum State);
 	Attack* GetAtk(CharStateEnum atk);
+	void SetCombo();
 
 	void Respawn();
 

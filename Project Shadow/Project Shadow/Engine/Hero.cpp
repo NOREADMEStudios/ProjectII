@@ -119,7 +119,6 @@ void Hero::LoadAnimations()
 {
 	idle.LoadAnimationsfromXML("idle",HERO_SPRITE_ROOT);
 	walking.LoadAnimationsfromXML("walking",HERO_SPRITE_ROOT);
-
 }
 
 

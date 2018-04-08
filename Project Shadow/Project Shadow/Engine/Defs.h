@@ -48,12 +48,34 @@ typedef void (*Callback)(...);
 
 
 namespace Utils {
-
 	void Release(void* object);
 	void ReleaseArray(void* array);
 
 	int ParseInt(std::string);
 	int ParseInt(const char*);
+
+	template<typename TYPE>
+	size_t FindInList(TYPE ptr, typename std::list<TYPE>& list) {
+		size_t pos = 0;
+		typename std::list<TYPE>::iterator it;
+		for (it = list.begin(); it != list.end(); pos++, it++) {
+			if (*it == ptr) break;
+		}
+
+		if (it != list.end()) {
+			return pos;
+		}
+		return -1;
+	}
+
+	template<typename TYPE>
+	size_t FindInVector(TYPE ptr, typename std::vector<TYPE>& vector) {
+		size_t pos = 0;
+		for (pos = 0; pos < vector.size(); pos++) {
+			if (vector[pos] == ptr) return pos;
+		}
+		return -1;
+	}
 	
 	template<typename TYPE>
 	bool RemoveFromList(TYPE ptr, typename std::list<TYPE>& list)
@@ -105,5 +127,3 @@ namespace Utils {
 };
 
 #endif
-
-

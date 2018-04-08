@@ -2,7 +2,12 @@
 #include "Log.h"
 
 void Utils::Release(void* object) {
-	delete object;
+	try {
+		delete object;
+	}
+	catch (int exception) {
+		LOG("Can't delete element at position: %d", object);
+	}
 }
 
 void Utils::ReleaseArray(void* array) {

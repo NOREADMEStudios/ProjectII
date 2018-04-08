@@ -132,6 +132,11 @@ Collider * ModuleCollision::CreateCollider(iRect dims, String tag, Collider::Typ
 	c->collider = dims;
 	c->sTag = tag;
 	c->type = type;
+	c->tag = Utils::FindInVector(tag, tagList);
+	if (c->tag == (uint)-1) {
+		c->tag = 0;
+		LOG("Collider tag not defined");
+	}
 	return c;
 }
 

@@ -31,8 +31,8 @@ bool ItemSelecScene::Start()
 {
 	App->debug = true;
 	item1 = App->gui->AddButton(200, 200, NULL, { 0,0,200,200 }, true, item1Callback);
-	item2 = App->gui->AddButton(800, 200, NULL, { 0,0,200,200 }, true, item1Callback);
-	item3 = App->gui->AddButton (1400, 200, NULL, { 0,0,200,200 }, true, item1Callback);
+	item2 = App->gui->AddButton(800, 200, NULL, { 0,0,200,200 }, true, item2Callback);
+	item3 = App->gui->AddButton (1400, 200, NULL, { 0,0,200,200 }, true, item3Callback);
 	//Label* l = App->gui->AddLabel()
 
 

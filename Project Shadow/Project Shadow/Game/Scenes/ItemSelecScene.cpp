@@ -15,7 +15,9 @@
 #include "../../Engine/UI/Label.h"
 #include "../../Engine/ModuleCollision.h"
 
-void CallbackButton(...);
+void item1Callback(...);
+void item2Callback(...);
+void item3Callback(...);
 
 ItemSelecScene::ItemSelecScene()
 {
@@ -28,9 +30,9 @@ ItemSelecScene::~ItemSelecScene()
 bool ItemSelecScene::Start()
 {
 	App->debug = true;
-	item1 = App->gui->AddButton(200, 200, NULL, { 0,0,200,200 }, true, CallbackButton);
-	item2 = App->gui->AddButton(800, 200, NULL, { 0,0,200,200 }, true, CallbackButton);
-	item3 = App->gui->AddButton (1400, 200, NULL, { 0,0,200,200 }, true, CallbackButton);
+	item1 = App->gui->AddButton(200, 200, NULL, { 0,0,200,200 }, true, item1Callback);
+	item2 = App->gui->AddButton(800, 200, NULL, { 0,0,200,200 }, true, item1Callback);
+	item3 = App->gui->AddButton (1400, 200, NULL, { 0,0,200,200 }, true, item1Callback);
 	//Label* l = App->gui->AddLabel()
 
 
@@ -48,9 +50,27 @@ bool ItemSelecScene::Update(float dt)
 
 bool ItemSelecScene::CleanUp()
 {
+	App->gui->RemoveElement(item1);
+	App->gui->RemoveElement(item2);
+	App->gui->RemoveElement(item3);
+	Utils::Release(item1);
+	Utils::Release(item2);
+	Utils::Release(item3);
+
 	return true;
 }
 
-void CallbackButton(...) {
+void item1Callback(...) {
 	LOG("PRESSED");
+	App->scenes->ChangeScene(App->scenes->mainSc);
+}
+
+void item2Callback(...) {
+	LOG("PRESSED");
+	App->scenes->ChangeScene(App->scenes->mainSc);
+}
+
+void item3Callback(...) {
+	LOG("PRESSED");
+	App->scenes->ChangeScene(App->scenes->mainSc);
 }

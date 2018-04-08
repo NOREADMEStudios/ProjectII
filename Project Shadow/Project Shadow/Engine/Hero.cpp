@@ -29,7 +29,7 @@ bool Hero::Awake(pugi::xml_node&)
 
 bool Hero::Start()
 {
-	sprites = App->textures->Load("Characters/Fighter_sprites.png");
+	sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
 	LoadAnimations();
 
 	collAtk = App->collision->CreateCollider({}, "player_attack", Collider::ATK);
@@ -119,6 +119,8 @@ void Hero::LoadAnimations()
 {
 	idle.LoadAnimationsfromXML("idle",HERO_SPRITE_ROOT);
 	walking.LoadAnimationsfromXML("walking",HERO_SPRITE_ROOT);
+	jump.LoadAnimationsfromXML("jump", HERO_SPRITE_ROOT);
+	stop.LoadAnimationsfromXML("stop", HERO_SPRITE_ROOT);
 }
 
 

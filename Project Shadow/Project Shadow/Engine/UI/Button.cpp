@@ -52,8 +52,6 @@ bool Button::PreUpdate() {
 			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 			current_anim = &pressed_anim;
 
-			//state = PRESSED;
-
 			//SetFocus();
 			if (OnClick != nullptr) {
 				OnClick(1, this);

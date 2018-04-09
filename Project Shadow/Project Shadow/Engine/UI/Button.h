@@ -40,6 +40,5 @@ protected:
 	int clickSound = -1;
 };
 
-//typedef Button<Callback_v> Button_regular;
 
 #endif // !__BUTTON_H__

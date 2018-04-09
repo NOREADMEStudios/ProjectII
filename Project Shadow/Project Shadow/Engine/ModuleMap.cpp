@@ -36,28 +36,32 @@ void ModuleMap::Draw() {
 	if(map_loaded == false)
 		return;
 
-	for (std::list<MapLayer*>::iterator iter = data.layers.begin(); iter != data.layers.end(); iter++) {
+	for (std::list<MapLayer*>::iterator iter = data.layers.begin(); iter != data.layers.end(); iter++)
+	{
 		uint tile = 0;
 
 		iPoint tile_pos = MapToWorld(0, 0);
-			for (uint y = 0; y < (*iter)->height; y++) {
+			for (uint y = 0; y < (*iter)->height; y++)
+			{
 				tile_pos.x = 0;
-				for (uint x = 0; x < (*iter)->width; x++) {
-					if ((*iter)->tiles[tile] != 0) {
-						for (std::list<TileSet*>::reverse_iterator tileset = data.tilesets.rbegin(); tileset != data.tilesets.rend(); tileset++) {
+				for (uint x = 0; x < (*iter)->width; x++)
+				{
+					if ((*iter)->tiles[tile] != 0)
+					{
+						for (std::list<TileSet*>::reverse_iterator tileset = data.tilesets.rbegin(); tileset != data.tilesets.rend(); tileset++)
+						{
 							if ((*tileset)->firstgid > (*iter)->tiles[tile])
 								continue;
 
 							SDL_Rect tile_rect = (*tileset)->GetTileRect((*iter)->tiles[tile]);
 							App->render->Blit((*tileset)->texture, tile_pos.x, tile_pos.y, &tile_rect, (*iter)->parallax_speed);
-							tile_pos.x += (data.tile_width / 2) - 1;
+							tile_pos.x += data.tile_width - 1;
+						}
 					}
 					tile++;
 				}
-			}
-
 				tile_pos.y += (data.tile_height) -1;
-		}
+			}
 	}
 }
 

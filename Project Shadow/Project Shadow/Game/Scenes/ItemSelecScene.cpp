@@ -130,6 +130,13 @@ void item2PressCallb(size_t arg_size...) {
 	l->culled = false;
 	b->SetContentRect(0, 0, l->rect.w, l->rect.h);
 	l->Enable(true);
+
+	va_list args;
+	va_start(args, arg_size);
+
+	Button* id = va_arg(args, Button*);
+	id->pressed = true;
+
 	//App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
@@ -139,8 +146,8 @@ void item2HoverEnCallb(size_t arg_size...) {
 	va_start(args, arg_size);
 
 	Button* b = va_arg(args, Button*);
-
-	b->getLabel()->Enable(true);
+	if (!b->pressed)
+		b->getLabel()->Enable(true);
 
 	va_end(args);
 	//App->scenes->ChangeScene(App->scenes->mainSc);
@@ -152,8 +159,8 @@ void item2HoverExCallb(size_t arg_size...) {
 	va_start(args, arg_size);
 
 	Button* b = va_arg(args, Button*);
-
-	b->getLabel()->Enable(false);
+	if (!b->pressed)
+		b->getLabel()->Enable(false);
 
 	va_end(args);
 	//App->scenes->ChangeScene(App->scenes->mainSc);

@@ -11,6 +11,7 @@
 #include "../../Engine/ModuleRender.h"
 #include "../../Engine/UI/Window.h"
 #include "../../Engine/ModuleCollision.h"
+#include "../../Engine/ModuleAudio.h"
 
 
 IntroScene::IntroScene()
@@ -23,6 +24,8 @@ IntroScene::~IntroScene()
 
 bool IntroScene::Start()
 {
+	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
+
 	return false;
 }
 

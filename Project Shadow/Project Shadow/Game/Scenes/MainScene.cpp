@@ -10,6 +10,7 @@
 #include "../../Engine/ModuleRender.h"
 #include "../../Engine/UI/Window.h"
 #include "../../Engine/ModuleCollision.h"
+#include "../../Engine/ModuleAudio.h"
 
 
 
@@ -24,6 +25,7 @@ MainScene::~MainScene()
 
 bool MainScene::Start()
 {
+	App->audio->PlayMusic("Assets/Audio/BGM/Level1.ogg");
 
 	App->map->Load("map.tmx");
 
@@ -35,11 +37,11 @@ bool MainScene::Start()
 	App->debug = true;
 	t = App->textures->Load("Maps/map2_spritesheet.png");
   
-	Window* w = App->gui->AddWindow(500, 500, t, {0,0,500,500}, true);
+	/*Window* w = App->gui->AddWindow(500, 500, t, {0,0,500,500}, true);
 	Window* s = App->gui->AddWindow(0, 0, t, { 350, 520, 300, 300 }, true);
 	s->SetParent(w);
 	s->culled = true;
-	w->SetContentRect(50, 50, 50, 50);
+	w->SetContentRect(50, 50, 50, 50);*/
   
 	return false;
 }

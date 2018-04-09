@@ -5,8 +5,9 @@
 
 
 
-InterfaceElement::InterfaceElement() : enabled(true), next_frame_enabled(true), scale(App->win->GetScale())
+InterfaceElement::InterfaceElement() : next_frame_enabled(true), scale(App->win->GetScale())
 {
+	enabled = (true),
 	rect = { 0,0,0,0 };
 	rel_pos = { 0,0 };
 	abs_pos = { 0,0 };

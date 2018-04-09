@@ -70,6 +70,14 @@ bool ItemSelecScene::Start()
 	item3Stats->SetAnchor(0, 0);
 	item3Stats->culled = false;
 
+	confirmButton = App->gui->AddButton(750, 500, NULL, { 0,0,225,50 }, false, confirmCallback);
+	confirmLabel = App->gui->AddLabel(5, 0, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string confirmStr = "CONFIRM";
+	confirmLabel->setString(confirmStr);
+	confirmLabel->SetParent(confirmButton);
+	confirmLabel->SetAnchor(0, 0);
+	confirmLabel->culled = false;
+
 	return false;
 }
 
@@ -78,6 +86,7 @@ bool ItemSelecScene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
 		App->scenes->ChangeScene(App->scenes->introSc);
 	}
+
 	return true;
 }
 
@@ -85,12 +94,27 @@ bool ItemSelecScene::CleanUp()
 {
 	xmlNode n;
 	App->gui->CleanUp(n);
+
 	return true;
 }
 
 void item1PressCallb(size_t arg_size...) {
 	LOG("PRESSED");
-	//App->scenes->ChangeScene(App->scenes->mainSc);
+	
+	App->scenes->itemSc->confirmButton->Enable(true);
+	App->scenes->itemSc->confirmLabel->Enable(true);
+
+	if (App->scenes->itemSc->item2->pressed || App->scenes->itemSc->item3->pressed) {
+		App->scenes->itemSc->item2->pressed = false;
+		App->scenes->itemSc->item2Stats->Enable(false);
+		App->scenes->itemSc->item3->pressed = false;
+		App->scenes->itemSc->item3Stats->Enable(false);
+	}
+	va_list args;
+	va_start(args, arg_size);
+
+	Button* id = va_arg(args, Button*);
+	id->pressed = true;
 }
 
 void item1HoverEnCallb(size_t arg_size...) {
@@ -99,8 +123,8 @@ void item1HoverEnCallb(size_t arg_size...) {
 	va_start(args, arg_size);
 
 	Button* b = va_arg(args, Button*);
-
-	b->getLabel()->Enable(true);
+	if (!b->pressed)
+		b->getLabel()->Enable(true);
 
 	va_end(args);
 	//App->scenes->ChangeScene(App->scenes->mainSc);
@@ -113,7 +137,8 @@ void item1HoverExCallb(size_t arg_size...) {
 
 	Button* b = va_arg(args, Button*);
 
-	b->getLabel()->Enable(false);
+	if (!b->pressed)
+		b->getLabel()->Enable(false);
 
 	va_end(args);
 	//App->scenes->ChangeScene(App->scenes->mainSc);
@@ -121,15 +146,8 @@ void item1HoverExCallb(size_t arg_size...) {
 
 void item2PressCallb(size_t arg_size...) {
 	LOG("PRESSED");
-	Button* b = App->gui->AddButton(750, 500, NULL, { 0,0,225,50 }, true, confirmCallback);
-	Label* l = App->gui->AddLabel(5, 0, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
-	std::string confirmStr = "CONFIRM";
-	l->setString(confirmStr);
-	l->SetParent(b);
-	l->SetAnchor(0, 0);
-	l->culled = false;
-	b->SetContentRect(0, 0, l->rect.w, l->rect.h);
-	l->Enable(true);
+	App->scenes->itemSc->confirmButton->Enable(true);
+	App->scenes->itemSc->confirmLabel->Enable(true);
 
 	va_list args;
 	va_start(args, arg_size);
@@ -137,7 +155,13 @@ void item2PressCallb(size_t arg_size...) {
 	Button* id = va_arg(args, Button*);
 	id->pressed = true;
 
-	//App->scenes->ChangeScene(App->scenes->mainSc);
+	if (App->scenes->itemSc->item1->pressed || App->scenes->itemSc->item3->pressed) {
+		App->scenes->itemSc->item1->pressed = false;
+		App->scenes->itemSc->item1Stats->Enable(false);
+		App->scenes->itemSc->item3->pressed = false;
+		App->scenes->itemSc->item3Stats->Enable(false);
+	}
+
 }
 
 void item2HoverEnCallb(size_t arg_size...) {
@@ -150,7 +174,6 @@ void item2HoverEnCallb(size_t arg_size...) {
 		b->getLabel()->Enable(true);
 
 	va_end(args);
-	//App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
 void item2HoverExCallb(size_t arg_size...) {
@@ -168,7 +191,22 @@ void item2HoverExCallb(size_t arg_size...) {
 
 void item3PressCallb(size_t arg_size...) {
 	LOG("PRESSED");
-	//App->scenes->ChangeScene(App->scenes->mainSc);
+	App->scenes->itemSc->confirmButton->Enable(true);
+	App->scenes->itemSc->confirmLabel->Enable(true);
+
+	va_list args;
+	va_start(args, arg_size);
+
+	Button* id = va_arg(args, Button*);
+	id->pressed = true;
+
+	if (App->scenes->itemSc->item1->pressed || App->scenes->itemSc->item2->pressed) {
+		App->scenes->itemSc->item1->pressed = false;
+		App->scenes->itemSc->item1Stats->Enable(false);
+		App->scenes->itemSc->item2->pressed = false;
+		App->scenes->itemSc->item2Stats->Enable(false);
+	}
+
 }
 
 void item3HoverEnCallb(size_t arg_size...) {
@@ -178,7 +216,8 @@ void item3HoverEnCallb(size_t arg_size...) {
 
 	Button* b = va_arg(args, Button*);
 
-	b->getLabel()->Enable(true);
+	if (!b->pressed)
+		b->getLabel()->Enable(true);
 
 	va_end(args);
 	//App->scenes->ChangeScene(App->scenes->mainSc);
@@ -191,7 +230,8 @@ void item3HoverExCallb(size_t arg_size...) {
 
 	Button* b = va_arg(args, Button*);
 
-	b->getLabel()->Enable(false);
+	if (!b->pressed)
+		b->getLabel()->Enable(false);
 
 	va_end(args);
 	//App->scenes->ChangeScene(App->scenes->mainSc);

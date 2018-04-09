@@ -32,7 +32,7 @@ public:
 	float speed = 1.0f;
 	std::vector<AnimationFrame> frames;
 	std::vector<AnimColls> coll_frames;
-	
+
 
 private:
 	float current_frame = 0.0f;
@@ -54,7 +54,8 @@ public:
 		pugi::xml_parse_result result = animationFile.load_file(fileName.data());
 		if (result != NULL) {
 			std::string lop = "loop";
-			std::string spd = "speed";			
+			std::string spd = "speed";
+			int iterator=1;
 			for (pugi::xml_node anim = animationFile.child("map").child("objectgroup"); anim; anim = anim.next_sibling("objectgroup")) {
 				if (anim.attribute("name").as_string() == animationName) {
 					for (pugi::xml_node propert = anim.child("properties").child("property"); propert; propert = propert.next_sibling("property")) {
@@ -65,13 +66,14 @@ public:
 							speed = propert.attribute("value").as_float();
 						}
 					}
-					for (pugi::xml_node object = anim.child("object"); object; object=object.next_sibling("object")) {
+					for (pugi::xml_node object = anim.child("object"); object; object = object.next_sibling("object")) {
 						iRect frame = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
-						this->PushBack(frame.toSDL_Rect());
+						iPoint pivot = LoadFramePivotFromXML(anim, animationName, iterator);
+							this->PushBack(frame.toSDL_Rect(), pivot);
 					}
 					bool ret = LoadFrameCollidersFromXML(anim, animationName);
 					return ret;
-				}				
+				}
 			}
 		}
 		return false;
@@ -99,11 +101,11 @@ public:
 
 	void PushBack(const SDL_Rect& rect, const iPoint& pivot = { 0, 0 })
 	{
-		iRect new_rect = { rect.x, rect.y, rect.w, rect.h};
+		iRect new_rect = { rect.x, rect.y, rect.w, rect.h };
 		frames.push_back({ new_rect, pivot, new_rect - pivot });
 		last_frame++;
 	}
-	
+
 
 	AnimationFrame& CurrentFrame()
 	{
@@ -113,7 +115,7 @@ public:
 	AnimationFrame& GetCurrentFrame(float delta_time)
 	{
 		current_frame = current_frame + speed * delta_time;
-		if(current_frame >= last_frame)
+		if (current_frame >= last_frame)
 		{
 			current_frame = (loop) ? 0.0f : last_frame - 1;
 			loops++;
@@ -140,9 +142,9 @@ public:
 		return (int)current_frame;
 	}
 
-	
 
-	/*Animation &operator =(const Animation &anim) 
+
+	/*Animation &operator =(const Animation &anim)
 	{
 		loop = anim.loop;
 		speed = anim.speed;
@@ -156,54 +158,79 @@ public:
 
 		return *this;
 	}*/
-	private:
-		bool LoadFrameCollidersFromXML(pugi::xml_node objectgroup, std::string name) {
-			std::string coll = "_colliders";
-			std::string frame = "Frame";
-			std::string colltype = "collider_type";
-			coll = name + coll;
-			bool ret = false;
-			for (; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup")) {
-				if (objectgroup.attribute("name").as_string() == coll) {//dentro de idle_colliders
-					int i = 1;
-					ret = true;
-					iRect feetColl(0, 0, 0, 0);
-					iRect HitBoxColl(0, 0, 0, 0);
-					iRect AtkColl(0, 0, 0, 0);
-					for (pugi::xml_node object = objectgroup.child("object"); object; object = object.next_sibling("object")) {
-						pugi::xml_node prop = object.child("properties").child("property");
-						if (prop.attribute("name").as_string() == frame) {
-							if (prop.attribute("value").as_int() == i) {
+private:
+	bool LoadFrameCollidersFromXML(pugi::xml_node objectgroup, std::string name) {
+		std::string coll = "_colliders";
+		std::string frame = "Frame";
+		std::string colltype = "collider_type";
+		coll = name + coll;
+		bool ret = false;
+		for (; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup")) {
+			if (objectgroup.attribute("name").as_string() == coll) {//dentro de idle_colliders
+				int i = 1;
+				ret = true;
+				iRect feetColl(0, 0, 0, 0);
+				iRect HitBoxColl(0, 0, 0, 0);
+				iRect AtkColl(0, 0, 0, 0);
+				for (pugi::xml_node object = objectgroup.child("object"); object; object = object.next_sibling("object")) {
+					pugi::xml_node prop = object.child("properties").child("property");
+					if (prop.attribute("name").as_string() == frame) {
+						if (prop.attribute("value").as_int() == i) {
 
-								prop = prop.next_sibling("property");
-								if (prop.attribute("name").as_string() == colltype) {
+							prop = prop.next_sibling("property");
+							if (prop.attribute("name").as_string() == colltype) {
 
-									if (prop.attribute("value").as_int() == 1) {//collider atk
-										AtkColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
-									}
-									else if (prop.attribute("value").as_int() == 2) {//collider hitbox
-										HitBoxColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
-									}
-									else if (prop.attribute("value").as_int() == 3) {//collider feet
-										feetColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
-										this->coll_frames.push_back({ AtkColl, HitBoxColl, feetColl });
-										feetColl.ToZero();
-										HitBoxColl.ToZero();
-										AtkColl.ToZero();
-										i++;
-									}
+								if (prop.attribute("value").as_int() == 1) {//collider atk
+									AtkColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
+								}
+								else if (prop.attribute("value").as_int() == 2) {//collider hitbox
+									HitBoxColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
+								}
+								else if (prop.attribute("value").as_int() == 3) {//collider feet
+									feetColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
+									this->coll_frames.push_back({ AtkColl, HitBoxColl, feetColl });
+									feetColl.ToZero();
+									HitBoxColl.ToZero();
+									AtkColl.ToZero();
+									i++;
 								}
 							}
 						}
 					}
-					return ret;
+				}
+				return ret;
+			}
+		}
+		if (ret == false) {
+			LOG("Cannot find colliders for the animation");
+		}
+		return ret;
+	}
+
+	iPoint LoadFramePivotFromXML(pugi::xml_node objectgroup, std::string name, int &iterator) {
+		std::string pivot = "_pivot";
+		std::string frame = "frame";		
+		pivot = name + pivot;
+		bool ret = false;
+		for (; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup")) {
+			if (objectgroup.attribute("name").as_string() == pivot) {//dentro de idle_pivot
+				
+				int x, y;
+				for (pugi::xml_node object = objectgroup.child("object"); object; object = object.next_sibling("object")) {
+					pugi::xml_node prop = object.child("properties").child("property");
+					
+					if (prop.attribute("name").as_string() == frame && prop.attribute("value").as_int() == iterator) {
+						iterator+=1;
+						x = object.attribute("x").as_int();
+						y = object.attribute("y").as_int();
+
+						return iPoint(x, y);
+					}
 				}
 			}
-			if (ret == false) {
-				LOG("Cannot find colliders for the animation");
-			}
-			return ret;
 		}
+		return iPoint(0, 0);
+	}
 };
 
 #endif

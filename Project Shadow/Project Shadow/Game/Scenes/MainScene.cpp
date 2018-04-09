@@ -29,7 +29,7 @@ bool MainScene::Start()
 
 
 	e = App->entities->CreateCharacter({HERO,{100,100}});
-	e2 = App->entities->CreateCharacter({ ENEMY,{ 100,50 } });
+	e2 = App->entities->CreateCharacter({ HERO,{ 100,50 } });
 	//App->entities->CreateEntity({ CHARACTER,HERO,{ 100,0 } });
 
 	App->debug = true;

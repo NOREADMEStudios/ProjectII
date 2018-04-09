@@ -20,6 +20,10 @@
 void PvPPressCallb(size_t arg_size...);
 void PvPHoverEnCallb(size_t arg_size...);
 void PvPHoverExCallb(size_t arg_size...);
+void ExitPressCallb(size_t arg_size...);
+void ExitHoverEnCallb(size_t arg_size...);
+void ExitHoverExCallb(size_t arg_size...);
+
 
 IntroScene::IntroScene()
 {
@@ -31,7 +35,7 @@ IntroScene::~IntroScene()
 
 bool IntroScene::Start()
 {
-	PvPButton = App->gui->AddButton(SCREEN_WIDTH / 2, 200, NULL, { 0,0,200,200 }, true, PvPPressCallb);
+	PvPButton = App->gui->AddButton(SCREEN_WIDTH / 2, 200, atlas, { 0,0,200,200 }, true, PvPPressCallb);
 	PvPButton->OnHoverEnter = PvPHoverEnCallb;
 	PvPButton->OnHoverExit = PvPHoverExCallb;
 	return false;
@@ -52,7 +56,7 @@ bool IntroScene::CleanUp()
 }
 
 void PvPPressCallb(size_t arg_size...) {
-	App->scenes->ChangeScene(App->scenes->mainSc);
+	App->scenes->ChangeScene(App->scenes->itemSc);
 }
 
 void PvPHoverEnCallb(size_t arg_size...) {
@@ -60,6 +64,18 @@ void PvPHoverEnCallb(size_t arg_size...) {
 }
 
 void PvPHoverExCallb(size_t arg_size...) {
+
+}
+
+void ExitPressCallb(size_t arg_size...) {
+	
+}
+
+void ExitHoverEnCallb(size_t arg_size...) {
+
+}
+
+void ExitHoverExCallb(size_t arg_size...) {
 
 }
 

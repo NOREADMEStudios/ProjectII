@@ -89,4 +89,11 @@ void Character::GetCollidersFromAnimation() {
 	collFeet->collider = currentAnimation->GetFeetColliderFromFrame();
 	collHitBox->collider = currentAnimation->GetHitBoxColliderFromFrame();
 	collAtk->collider = currentAnimation->GetAtkColliderFromFrame();
+
+	if (flip)
+	{
+		collFeet->collider.x = currentAnimation->CurrentFrame().rect.w - (collFeet->collider.x + collFeet->collider.w);
+		collHitBox->collider.x = currentAnimation->CurrentFrame().rect.w - (collHitBox->collider.x + collHitBox->collider.w);
+		collAtk->collider.x = currentAnimation->CurrentFrame().rect.w - (collAtk->collider.x + collAtk->collider.w);
+	}
 }

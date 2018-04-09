@@ -417,7 +417,7 @@ void Hero::Respawn()
 }
 void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 {
-	if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack")
+	if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
 	{
 		int z1 = _this->entity->GetGamePos().z;
 		int d1 = _this->entity->GetCharDepth();

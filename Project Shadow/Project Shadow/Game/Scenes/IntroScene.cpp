@@ -86,7 +86,7 @@ void PvPHoverExCallb(size_t arg_size...) {
 }
 
 void ExitPressCallb(size_t arg_size...) {
-
+	App->Quit();
 }
 
 void ExitHoverEnCallb(size_t arg_size...) {

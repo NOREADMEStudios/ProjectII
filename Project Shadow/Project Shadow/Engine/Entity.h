@@ -50,7 +50,9 @@ public:
 	void SetActive(bool sactive);
 
 	void Draw(float dt);
-
+	virtual void LoadShadow();
+	virtual void DrawShadow(AnimationFrame frame);
+	virtual void UnloadShadow();
 	virtual void Move(float delta_time);
 	virtual void Break(float delta_time);
 	void Accelerate(float x, float y, float delta_time);
@@ -65,6 +67,8 @@ public:
 	EntityTypes type;
 	EntityStats stats;
 
+	
+
 	uint hero_num = 0;
 protected:
 
@@ -78,7 +82,9 @@ protected:
 	Animation* currentAnimation = nullptr;
 
 	SDL_Texture* sprites;
+	SDL_Texture* shadowSprites;
 
+	bool shadowed = false;
 
 	// Should be same numeration as the states
 	std::list<Animation> animations;

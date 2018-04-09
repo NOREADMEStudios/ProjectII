@@ -56,6 +56,8 @@ bool Hero::Start()
 
 	light_1->AddChild(light_2);
 
+	LoadShadow();
+
 	currentAnimation = &idle;
 	return true;
 }
@@ -110,6 +112,7 @@ bool Hero::PostUpdate()
 bool Hero::CleanUp(pugi::xml_node&)
 {
 	App->textures->UnLoad(sprites);
+	UnloadShadow();
 	return true;
 }
 

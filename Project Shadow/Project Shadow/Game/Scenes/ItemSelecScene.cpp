@@ -50,26 +50,26 @@ bool ItemSelecScene::Start()
 	item3->OnHoverEnter = item3HoverEnCallb;
 	item3->OnHoverExit = item3HoverExCallb;
 	
-	item1Stats = App->gui->AddLabel(0, 200, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	item1Stats = App->gui->AddLabel(item1->rect.w/2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item1Stats->Enable(false);
 	item1Stats->setString(statsStr);
 	item1Stats->SetParent(item1);
-	item1Stats->SetAnchor(0, 0);
+	item1Stats->SetAnchor(0.5f, 0);
 	item1Stats->culled = false;
-	item2Stats = App->gui->AddLabel(0, 200, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	item2Stats = App->gui->AddLabel(item1->rect.w / 2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item2Stats->Enable(false);
 	item2Stats->setString(statsStr);
 	item2Stats->SetParent(item2);
-	item2Stats->SetAnchor(0, 0);
+	item2Stats->SetAnchor(0.5f, 0);
 	item2Stats->culled = false;
-	item3Stats = App->gui->AddLabel(0, 200, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	item3Stats = App->gui->AddLabel(item1->rect.w / 2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item3Stats->Enable(false);
 	item3Stats->setString(statsStr);
 	item3Stats->SetParent(item3);
-	item3Stats->SetAnchor(0, 0);
+	item3Stats->SetAnchor(0.5f, 0);
 	item3Stats->culled = false;
 
-	confirmButton = App->gui->AddButton(750, 500, NULL, { 0,0,230,52 }, false, confirmCallback);
+	confirmButton = App->gui->AddButton(App->gui->GetGuiSize().x / 2, App->gui->GetGuiSize().y / 2, NULL, { 0, 0, 230, 52 }, false, confirmCallback);
 	confirmLabel = App->gui->AddLabel(confirmButton->rect.w / 2, confirmButton->rect.h / 2, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string confirmStr = "CONFIRM";
 	confirmLabel->setString(confirmStr);

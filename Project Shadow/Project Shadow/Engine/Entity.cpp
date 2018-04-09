@@ -37,6 +37,10 @@ void Entity::Accelerate(float x, float y, float delta_time) {
 	speedVector.y = CLAMP(speedVector.y, -stats.spd, stats.spd);
 }
 
+bool Entity::PausedUpdate() {
+	Draw(0);
+	return true;
+}
 
 //EntityState Entity::GetState()
 //{

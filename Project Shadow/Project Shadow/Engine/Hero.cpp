@@ -69,6 +69,9 @@ bool Hero::PreUpdate()
 
 bool Hero::Update(float dt)
 {
+	if (paused) {		
+		return PausedUpdate();
+	}
 	currentAnimation = &idle;
 	
 	if (stats.life > 0)

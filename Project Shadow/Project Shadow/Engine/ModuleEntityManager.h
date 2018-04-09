@@ -58,6 +58,8 @@ public:
 
 	uint numofplayers = 0;
 
+	void PauseEntities(bool pause);
+
 private:
 
 	std::list<Entity*> entities;

@@ -145,3 +145,9 @@ void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
 	}
 }
 
+void ModuleEntityManager::PauseEntities(bool pause) {
+	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
+		(*item)->paused = pause;
+	}
+
+}

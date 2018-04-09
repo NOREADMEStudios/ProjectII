@@ -25,7 +25,7 @@ void item2HoverExCallb(size_t arg_size...);
 void item3PressCallb(size_t arg_size...);
 void item3HoverEnCallb(size_t arg_size...);
 void item3HoverExCallb(size_t arg_size...);
-
+void confirmCallback(size_t arg_size...);
 
 ItemSelecScene::ItemSelecScene()
 {
@@ -125,6 +125,8 @@ void item1HoverExCallb(size_t arg_size...) {
 
 void item2PressCallb(size_t arg_size...) {
 	LOG("PRESSED");
+	Button* b = App->gui->AddButton(400, 500, NULL, { 0,0,200,200 }, true, confirmCallback);
+	App->scenes->itemSc->UIElements.push_back(b);
 	//App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
@@ -183,4 +185,9 @@ void item3HoverExCallb(size_t arg_size...) {
 
 	va_end(args);
 	//App->scenes->ChangeScene(App->scenes->mainSc);
+}
+
+void confirmCallback(size_t arg_size...) {
+	LOG("Pene");
+	App->scenes->ChangeScene(App->scenes->mainSc);
 }

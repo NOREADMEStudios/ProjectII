@@ -19,6 +19,8 @@ public:
 	Label * item2Stats;
 	Label * item3Stats;
 
+	std::vector <InterfaceElement> UIElements;
+
 	ItemSelecScene();
 	virtual ~ItemSelecScene();
 

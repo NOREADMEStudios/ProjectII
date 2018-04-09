@@ -33,8 +33,8 @@ void Entity::Accelerate(float x, float y, float delta_time) {
 	speedVector.x += x * 10 * stats.spd * delta_time;
 	speedVector.y += y * 10 * stats.spd * delta_time;
 
-	speedVector.x = CLAMP(speedVector.x, -stats.spd, stats.spd);
-	speedVector.y = CLAMP(speedVector.y, -stats.spd, stats.spd);
+	speedVector.x = CLAMP(speedVector.x, -max_speed, max_speed);
+	speedVector.y = CLAMP(speedVector.y, -max_speed, max_speed);
 }
 
 

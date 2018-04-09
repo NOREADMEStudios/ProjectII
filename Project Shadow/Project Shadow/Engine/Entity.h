@@ -76,6 +76,7 @@ protected:
 	uint priority = 0;
 	iPoint position{ 0,0 };
 	fPoint speedVector{ 0,0 };
+	float max_speed = 0;
 
 	// Collider has to be a struct Collider instead of an iRect
 	iRect collider{ 0,0,0,0 };

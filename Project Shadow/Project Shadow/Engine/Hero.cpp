@@ -56,6 +56,9 @@ bool Hero::Start()
 
 	light_1->AddChild(light_2);
 
+	max_speed = stats.spd;
+
+	currentState = IDLE;
 	currentAnimation = &idle;
 	return true;
 }
@@ -75,6 +78,7 @@ bool Hero::Update(float dt)
 		RequestState();
 	else
 		currentState = DEATH;
+
 
 	UpdateAnimation();
 	UpdateState();
@@ -200,7 +204,7 @@ void Hero::RequestState() {
 		{
 			block = true;
 		}
-		else if ((*item) == RUN)
+		else if ((*item) == RUNINPUT)
 		{
 			run = true;
 		}
@@ -227,7 +231,6 @@ void Hero::RequestState() {
 	}					
 	else if (s_attack)
 	{
-
 		wantedState = ATTACK_HEAVY;
 	}
 		
@@ -247,10 +250,8 @@ void Hero::UpdateState()
 		if (StateisAtk(wantedState) && last_attack != IDLE)
 		{
 			SetCombo();
-
 			time_attack.Start();
-		}
-	
+		}	
 	}
 	else if (currentAnimation->Finished())
 	{	
@@ -264,7 +265,6 @@ void Hero::UpdateState()
 		else 
 		{
 			SetCombo();
-
 			time_attack.Start();
 	
 		}
@@ -285,7 +285,14 @@ void Hero::UpdateCurState(float dt)
 	{
 		case WALK:
 		{
+			max_speed = stats.spd;
 			Accelerate(x_dir * stats.spd, y_dir * stats.spd, dt);
+			break;
+		}
+		case RUN:
+		{
+			max_speed = stats.spd * 1.5f;
+			Accelerate((x_dir * stats.spd), (y_dir * stats.spd), dt);
 			break;
 		}
 		case DEATH:
@@ -336,6 +343,12 @@ void Hero::UpdateAnimation()
 	{
 		currentAnimation = &jump;
 	}
+	else if (currentState == RUN)
+	{
+		currentAnimation = &run;
+	}
+
+
 }
 
 
@@ -370,7 +383,7 @@ void Hero::CalculateAtk()
 
 bool Hero::StateisAtk(CharStateEnum State)
 {
-	return (State != WALK && State != RUN && State != IDLE && State != JUMP && State != DEATH && State != DEFEND);
+	return (State != WALK && State != RUN && State != IDLE && State != JUMP && State != DEATH && State != DEFEND && State != HIT);
 }
 
 Attack* Hero::GetAtk(CharStateEnum atk)

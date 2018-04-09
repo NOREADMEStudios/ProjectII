@@ -99,9 +99,10 @@ EntityTypes Entity::GetType()
 	return type;
 }
 
-void Entity::SetPos(int x, int y)
+void Entity::SetPos(int x, int z)
 {
-	position = { x,y };
+	gamepos.x = x;
+	gamepos.z = z;
 }
 
 void Entity::SetActive(bool sactive)

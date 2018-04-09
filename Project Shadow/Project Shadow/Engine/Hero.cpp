@@ -46,7 +46,8 @@ bool Hero::Start()
 	stats.life = 100;
 	char_depth = 20;
 
-	initialpos = position;
+	initialpos.x = gamepos.x;
+	initialpos.y = gamepos.y;
 	initiallife = stats.life;
 	lives = 2;
 
@@ -265,6 +266,14 @@ void Hero::UpdateState()
 		{
 			speedVector.y = 0;
 		}
+		else if (currentState == DEATH)
+		{
+			if (lives > 0)
+				Respawn();
+
+			else
+				to_delete = true;
+		}
 
 		last_attack = currentState;
 
@@ -306,11 +315,7 @@ void Hero::UpdateCurState(float dt)
 			Accelerate((x_dir * stats.spd), 0,(z_dir * stats.spd), dt);
 			break;
 		}
-		case DEATH:
-		{
-			Respawn();
-			break;
-		}
+
 		case HIT:
 		{
 			if (hit_bool)
@@ -375,7 +380,9 @@ void Hero::UpdateAnimation()
 
 void Hero::Respawn()
 {
-	position = initialpos;
+	gamepos.x = initialpos.x;
+	gamepos.z = initialpos.y;
+
 	stats.life = initiallife;
 	lives--;
 }

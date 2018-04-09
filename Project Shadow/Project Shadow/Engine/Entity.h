@@ -57,7 +57,7 @@ public:
 	Point3D GetGamePos();
 	int GetCharDepth();
 
-	void SetPos(int x, int y);
+	void SetPos(int x, int z);
 	void SetActive(bool sactive);
 
 	void Draw(float dt);
@@ -81,6 +81,7 @@ public:
 	EntityStats stats;
 	bool paused = false;
 	uint hero_num = 0;
+	bool to_delete = false;
 protected:
 
 	bool active = true;

@@ -134,8 +134,7 @@ protected:
 	void LoadAnimations();
 	
 
-	Animation idle;
-	Animation walking;
+	Animation idle, walking, attack , death;
 
 	Collider	*collFeet		=	nullptr,
 				*collHitBox		=	nullptr,

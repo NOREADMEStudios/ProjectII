@@ -108,38 +108,40 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
 
 void ModuleEntityManager::DestroyEntity(Entity* entity) {
-
 	
+	entities.remove(entity);
+	entity = nullptr;
 }
 
 void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
 {
 
 	uint current_players = 0;
-	min_x = entities.front()->GetPosX();
-	max_x = entities.front()->GetPosX();
+	if (entities.size() > 0) {
+		min_x = entities.front()->GetPosX();
+		max_x = entities.front()->GetPosX();
 
-	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
-		if ((*item)->GetType() == CHARACTER)
-		{
-			current_players++;
-
-
-			if ((*item)->GetPosX() < min_x)
+		for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
+			if ((*item)->GetType() == CHARACTER)
 			{
-				min_x = (*item)->GetPosX();
-			}
-			else if ((*item)->GetPosX() > max_x)
-			{
-				max_x = (*item)->GetPosX();
-			}
-		}
+				current_players++;
 
-		if (current_players == numofplayers)
-		{
-			break;
+
+				if ((*item)->GetPosX() < min_x)
+				{
+					min_x = (*item)->GetPosX();
+				}
+				else if ((*item)->GetPosX() > max_x)
+				{
+					max_x = (*item)->GetPosX();
+				}
+			}
+
+			if (current_players == numofplayers)
+			{
+				break;
+			}
 		}
 	}
-
 }
 

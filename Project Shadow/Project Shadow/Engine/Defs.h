@@ -19,6 +19,7 @@
 #define ANIMATIONS_DIR "Animations/"
 #define TEXTURES_DIR "Textures/"
 #define CHARACTERS_DIR "Characters/"
+#define UI_DIR "UI/"
 #define ENEMIES_DIR "Enemies/"
 #define ENTITIES_DIR "Entities/"
 #define INPUT_DIR "Input/"
@@ -30,6 +31,8 @@ typedef unsigned int uint32;
 typedef unsigned int uint;
 typedef unsigned long int uint64;
 typedef std::string String;
+
+struct Collider;
 
 typedef void (*Callback)(...);
 

@@ -140,7 +140,10 @@ void Hero::LoadAnimations()
 	kick.LoadAnimationsfromXML("kick", HERO_SPRITE_ROOT);
 	attack.LoadAnimationsfromXML("attack", HERO_SPRITE_ROOT);
 	death.LoadAnimationsfromXML("death", HERO_SPRITE_ROOT);
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
 }
 
 

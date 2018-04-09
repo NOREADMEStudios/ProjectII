@@ -196,7 +196,7 @@ void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
 	xmlNode textures = assetsStructure.append_child("Textures");
 	textures.append_attribute("folder") = TEXTURES_DIR;
 	textures.append_child("Characters").append_attribute("folder") = CHARACTERS_DIR;
-	textures.append_child("Enemies").append_attribute("folder") = ENEMIES_DIR;
+	textures.append_child("UI").append_attribute("folder") = UI_DIR;
 	textures.append_child("Maps").append_attribute("folder") = MAPS_DIR;
 
 	assetsStructure.append_child("Input").append_attribute("folder") = INPUT_DIR;

@@ -62,19 +62,18 @@ bool ItemSelecScene::Start()
 	item2Stats->SetParent(item2);
 	item2Stats->SetAnchor(0, 0);
 	item2Stats->culled = false;
-	item3Stats = App->gui->AddLabel(0, 200, 50, path, { 255, 255, 255, 255 });
+	item3Stats = App->gui->AddLabel(0, 200, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item3Stats->Enable(false);
 	item3Stats->setString(statsStr);
 	item3Stats->SetParent(item3);
 	item3Stats->SetAnchor(0, 0);
 	item3Stats->culled = false;
 
-	confirmButton = App->gui->AddButton(750, 500, NULL, { 0,0,225,50 }, false, confirmCallback);
-	confirmLabel = App->gui->AddLabel(5, 0, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	confirmButton = App->gui->AddButton(750, 500, NULL, { 0,0,230,52 }, false, confirmCallback);
+	confirmLabel = App->gui->AddLabel(confirmButton->rect.w / 2, confirmButton->rect.h / 2, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string confirmStr = "CONFIRM";
 	confirmLabel->setString(confirmStr);
 	confirmLabel->SetParent(confirmButton);
-	confirmLabel->SetAnchor(0, 0);
 	confirmLabel->culled = false;
 
 	return false;

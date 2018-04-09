@@ -44,6 +44,7 @@ bool Hero::Start()
 	collider = { 50 , 50 , 50, 50 };
 	stats.spd = 300;
 	stats.life = 100;
+	char_depth = 20;
 
 	initialpos = position;
 	initiallife = stats.life;
@@ -104,13 +105,13 @@ bool Hero::Update(float dt)
 		flip = true;
 	}
 
-	priority = position.y;
+	priority = gamepos.z;
 	collider.x = position.x;
 	collider.y = position.y;
 
 
 
-
+	CalcRealPos();
 	UpdateCollidersPosition();//Needed to change by the pivot position
 	App->render->FillQueue(this);
 
@@ -255,6 +256,11 @@ void Hero::UpdateState()
 	}
 	else if (currentAnimation->Finished())
 	{	
+		if (currentState == JUMP)
+		{
+			speedVector.y = 0;
+		}
+
 		last_attack = currentState;
 
 		currentAnimation->Reset();
@@ -279,20 +285,20 @@ void Hero::UpdateState()
 
 void Hero::UpdateCurState(float dt)
 {
-	int y_dir =  directions.down - directions.up;
+	int z_dir =  directions.down - directions.up;
 	int x_dir =	 directions.right - directions.left;
 	switch (currentState)
 	{
 		case WALK:
 		{
 			max_speed = stats.spd;
-			Accelerate(x_dir * stats.spd, y_dir * stats.spd, dt);
+			Accelerate(x_dir * stats.spd,0, z_dir * stats.spd, dt);
 			break;
 		}
 		case RUN:
 		{
 			max_speed = stats.spd * 1.5f;
-			Accelerate((x_dir * stats.spd), (y_dir * stats.spd), dt);
+			Accelerate((x_dir * stats.spd), 0,(z_dir * stats.spd), dt);
 			break;
 		}
 		case DEATH:
@@ -304,10 +310,20 @@ void Hero::UpdateCurState(float dt)
 		{
 			if (hit_bool)
 			{
-				Accelerate(hit_dir, 0, dt);
+				Accelerate(hit_dir, 0, 0, dt);
 				hit_bool = false;
 			}
+			break;
+		}
+		case JUMP:
+		{
+			if (currentAnimation->getFrameIndex() >= (currentAnimation->frames.size()) / 2)
+				Accelerate(0, -10 , 0, dt);
+
+			else
+				Accelerate(0, 10, 0, dt);
 			
+			break;
 		}
 
 	}
@@ -362,17 +378,34 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 {
 	if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack")
 	{
-		currentState = HIT;
-		stats.life -= _other->entity->stats.atk;
-		hit_bool = true;
-		if (_this->collider.x - _other->collider.x > 0)
+		int z1 = _this->entity->GetGamePos().z;
+		int d1 = _this->entity->GetCharDepth();
+
+		int z2 = _other->entity->GetGamePos().z;
+		int d2 = _other->entity->GetCharDepth();
+
+		int p11 = z1 - (d1 / 2);
+		int p12 = z1 + (d1 / 2);
+		int p21 = z2 - (d2 / 2);
+		int p22 = z2 + (d2 / 2);
+
+		if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 &&  p11 <= p22) || (p21 <= p12 && p12 <= p22))
 		{
-			hit_dir = 1 * _other->entity->stats.atk;
+			currentState = HIT;
+			stats.life -= _other->entity->stats.atk;
+			hit_bool = true;
+
+
+			if (_this->collider.x - _other->collider.x > 0)
+			{
+				hit_dir = 1 * _other->entity->stats.atk;
+			}
+			else
+			{
+				hit_dir = -1 * _other->entity->stats.atk;
+			}
 		}
-		else
-		{
-			hit_dir = -1 * _other->entity->stats.atk;
-		}
+			
 	}
 }
 

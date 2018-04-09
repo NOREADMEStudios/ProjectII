@@ -18,8 +18,9 @@ void Entity::Draw(float dt) {
 }
 
 void Entity::Move(float delta_time) {
-	position.x += speedVector.x * delta_time;
-	position.y += speedVector.y * delta_time;
+	gamepos.x += speedVector.x * delta_time;
+	gamepos.y += speedVector.y * delta_time;
+	gamepos.z += zVect * delta_time;
 }
 
 // HardCoded Valors Cough Cough -___-
@@ -27,14 +28,17 @@ void Entity::Move(float delta_time) {
 void Entity::Break(float delta_time) {
 	speedVector.x = Utils::Interpolate(speedVector.x, 0.0f, 10 * stats.spd * delta_time);
 	speedVector.y = Utils::Interpolate(speedVector.y, 0.0f, 10 * stats.spd * delta_time);
+	zVect = Utils::Interpolate(zVect, 0.0f, 10 * stats.spd * delta_time);
 }
 
-void Entity::Accelerate(float x, float y, float delta_time) {
+void Entity::Accelerate(float x, float y, float z, float delta_time) {
 	speedVector.x += x * 10 * stats.spd * delta_time;
 	speedVector.y += y * 10 * stats.spd * delta_time;
+	zVect += z * stats.spd * delta_time;
 
 	speedVector.x = CLAMP(speedVector.x, -max_speed, max_speed);
 	speedVector.y = CLAMP(speedVector.y, -max_speed, max_speed);
+	zVect = CLAMP(zVect, -max_speed, max_speed);
 }
 
 
@@ -109,4 +113,22 @@ uint Entity::GetPriority() const
 iRect Entity::GetCollider() const
 {
 	return collider;
+}
+
+void Entity::CalcRealPos()
+{
+	iPoint maplimits = { 10 , 500 };
+
+	position.x = gamepos.x;
+	position.y =  ((int)gamepos.z - (int)gamepos.y);
+}
+
+Point3D Entity::GetGamePos()
+{
+	return gamepos;
+}
+
+int Entity::GetCharDepth()
+{
+	return char_depth;
 }

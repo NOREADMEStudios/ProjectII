@@ -198,7 +198,7 @@ std::list<Input> ModuleInput::FirstPlayerConfig()
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		ret.push_back(Input(DOWN));
 
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
 		ret.push_back(Input(RUNINPUT));
 		
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)

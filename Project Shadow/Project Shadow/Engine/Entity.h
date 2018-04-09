@@ -26,6 +26,12 @@ struct Directions
 {
 	bool left, down, right, up = false;
 };
+struct Point3D
+{
+	float x = 0;
+	float y = 0;
+	float z = 0;
+};
 
 struct Items
 {
@@ -48,7 +54,8 @@ public:
 	EntityTypes GetType();
 	uint GetPriority() const;
 	iRect GetCollider() const;
-
+	Point3D GetGamePos();
+	int GetCharDepth();
 
 	void SetPos(int x, int y);
 	void SetActive(bool sactive);
@@ -57,7 +64,9 @@ public:
 
 	virtual void Move(float delta_time);
 	virtual void Break(float delta_time);
-	void Accelerate(float x, float y, float delta_time);
+	void Accelerate(float x, float y,float z, float delta_time);
+
+	void CalcRealPos();
 
 
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
@@ -76,11 +85,14 @@ protected:
 	uint priority = 0;
 	iPoint position{ 0,0 };
 	fPoint speedVector{ 0,0 };
+	float zVect = 0;
 	float max_speed = 0;
+	int char_depth = 0;
 
 	// Collider has to be a struct Collider instead of an iRect
 	iRect collider{ 0,0,0,0 };
 	Animation* currentAnimation = nullptr;
+	Point3D gamepos;
 
 	SDL_Texture* sprites;
 	Directions directions;

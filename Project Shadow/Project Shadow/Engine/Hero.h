@@ -63,5 +63,6 @@ protected:
 	uint hit_dir = 0;
 	bool hit_bool = 0;
 
+
 };
 #endif

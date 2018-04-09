@@ -98,10 +98,7 @@ struct Attack
 
 };
 
-struct Directions
-{
-	bool left, down, right, up = false;
-};
+
 
 class Character : public Entity
 {
@@ -148,7 +145,7 @@ protected:
 	CharStateEnum currentState;
 	CharStateEnum wantedState;
 	CharStateEnum last_attack;
-	Directions directions;
+
 
 	LIST(Attack*) attacks;
 

@@ -22,6 +22,10 @@ struct EntityStats
 	int spd = 0;
 	int mgk = 0;
 };
+struct Directions
+{
+	bool left, down, right, up = false;
+};
 
 struct Items
 {
@@ -78,7 +82,8 @@ protected:
 	Animation* currentAnimation = nullptr;
 
 	SDL_Texture* sprites;
-
+	Directions directions;
+	bool flip = 0;
 
 	// Should be same numeration as the states
 	std::list<Animation> animations;

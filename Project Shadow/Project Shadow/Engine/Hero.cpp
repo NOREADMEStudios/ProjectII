@@ -91,11 +91,21 @@ bool Hero::Update(float dt)
 	Move(dt);
 	Break(dt);
 
-
+	if (directions.right - directions.left == 1)
+	{
+		flip = false;
+	}
+	else if (directions.right - directions.left == -1)
+	{
+		flip = true;
+	}
 
 	priority = position.y;
 	collider.x = position.x;
 	collider.y = position.y;
+
+
+
 
 	UpdateCollidersPosition();//Needed to change by the pivot position
 	App->render->FillQueue(this);
@@ -207,20 +217,21 @@ void Hero::RequestState() {
 			wantedState = WALK;
 	}
 
+	if (jump)
+	{
+		wantedState = JUMP;
+	}
 	if (l_attack)
 	{
 		wantedState = ATTACK_LIGHT;
-	}
-				
-	
-		
+	}					
 	else if (s_attack)
 	{
 
 		wantedState = ATTACK_HEAVY;
 	}
 		
-
+	
 
 
 }
@@ -282,6 +293,15 @@ void Hero::UpdateCurState(float dt)
 			Respawn();
 			break;
 		}
+		case HIT:
+		{
+			if (hit_bool)
+			{
+				Accelerate(hit_dir, 0, dt);
+				hit_bool = false;
+			}
+			
+		}
 
 	}
 
@@ -312,6 +332,10 @@ void Hero::UpdateAnimation()
 	{
 		currentAnimation = &death;
 	}
+	else if (currentState == JUMP)
+	{
+		currentAnimation = &jump;
+	}
 }
 
 
@@ -327,6 +351,15 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 	{
 		currentState = HIT;
 		stats.life -= _other->entity->stats.atk;
+		hit_bool = true;
+		if (_this->collider.x - _other->collider.x > 0)
+		{
+			hit_dir = 1 * _other->entity->stats.atk;
+		}
+		else
+		{
+			hit_dir = -1 * _other->entity->stats.atk;
+		}
 	}
 }
 

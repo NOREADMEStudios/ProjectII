@@ -14,7 +14,7 @@ Entity::~Entity() {}
 
 void Entity::Draw(float dt) {
 	AnimationFrame frame = currentAnimation->GetCurrentFrame(dt);
-	App->render->Blit(sprites, position.x, position.y, &frame.GetRectSDL(), 1.0f, 0.0, frame.pivot.x, frame.pivot.y);
+	App->render->Blit(sprites, position.x, position.y, &frame.GetRectSDL(),1.0f, 0.0, flip, frame.pivot.x, frame.pivot.y);
 }
 
 void Entity::Move(float delta_time) {

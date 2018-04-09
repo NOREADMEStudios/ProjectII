@@ -4,14 +4,12 @@
 #include "..\..\Engine\Scene.h"
 #include "..\..\Engine\ModuleCollision.h"
 
+class Button;
 class IntroScene:
 	public Scene
 {
 public:
-
-	Collider *c, *c2;
-	Entity *e, *e2;
-	float angle = 0;
+	Button * PvPButton;
 
 	IntroScene();
 	virtual ~IntroScene();

@@ -234,10 +234,10 @@ void item3HoverExCallb(size_t arg_size...) {
 		b->getLabel()->Enable(false);
 
 	va_end(args);
-	//App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
 void confirmCallback(size_t arg_size...) {
 	LOG("BUTTON CONFIRM PRESSED");
+	//HERE THE ITEMS WILL BE ADDED IF ITEM ? IS PRESSED
 	App->scenes->ChangeScene(App->scenes->mainSc);
 }

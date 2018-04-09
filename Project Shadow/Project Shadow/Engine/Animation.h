@@ -16,7 +16,7 @@ struct AnimationFrame {
 
 public:
 	SDL_Rect GetRectSDL() {
-		return result_rect.toSDL_Rect();
+		return rect.toSDL_Rect();
 	}
 };
 struct AnimColls {

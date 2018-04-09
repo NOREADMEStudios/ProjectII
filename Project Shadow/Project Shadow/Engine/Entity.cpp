@@ -36,11 +36,11 @@ void Entity::UnloadShadow() {
 }
 void Entity::DrawShadow(AnimationFrame frame) {
 
-	int x = position.x;
-	int y = position.y;
+	int x = position.x + 10;// need to fix this values
+	int y = position.y+frame.rect.h-3;// need to fix this values
 	iPoint fram = frame.pivot;
 	iRect rect = { 0, 0, 35, 9 };
-	App->render->Blit(shadowSprites, x, y, &rect.toSDL_Rect(), 1.0f, 0, fram.x, fram.y);
+	App->render->Blit(shadowSprites, x, y, &rect.toSDL_Rect());
 }
 // HardCoded Valors Cough Cough -___-
 

@@ -35,7 +35,8 @@ IntroScene::~IntroScene()
 
 bool IntroScene::Start()
 {
-	PvPButton = App->gui->AddButton(SCREEN_WIDTH / 2, 200, atlas, { 0,0,200,200 }, true, PvPPressCallb);
+	SDL_Texture * atlas = App->textures->Load("Assets/Textures/UI/Buttons.png");
+	PvPButton = App->gui->AddButton(SCREEN_WIDTH / 2, 200, atlas, { 61,70,391,186 }, true, PvPPressCallb);
 	PvPButton->OnHoverEnter = PvPHoverEnCallb;
 	PvPButton->OnHoverExit = PvPHoverExCallb;
 	return false;

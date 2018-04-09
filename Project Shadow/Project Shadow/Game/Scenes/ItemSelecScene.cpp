@@ -39,7 +39,6 @@ bool ItemSelecScene::Start()
 {
 	
 	App->debug = true;
-	const char * path  = "Assets/Textures/UI/TTF/Vecna.ttf";
 	std::string statsStr = "Attack + ???";
 	item1 = App->gui->AddButton(200, 200, NULL, { 0,0,200,200 }, true, item1PressCallb);
 	item2 = App->gui->AddButton(800, 200, NULL, { 0,0,200,200 }, true, item2PressCallb);
@@ -51,13 +50,13 @@ bool ItemSelecScene::Start()
 	item3->OnHoverEnter = item3HoverEnCallb;
 	item3->OnHoverExit = item3HoverExCallb;
 	
-	item1Stats = App->gui->AddLabel(0, 200, 50, path, { 255, 255, 255, 255 });
+	item1Stats = App->gui->AddLabel(0, 200, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item1Stats->Enable(false);
 	item1Stats->setString(statsStr);
 	item1Stats->SetParent(item1);
 	item1Stats->SetAnchor(0, 0);
 	item1Stats->culled = false;
-	item2Stats = App->gui->AddLabel(0, 200, 50, path, { 255, 255, 255, 255 });
+	item2Stats = App->gui->AddLabel(0, 200, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item2Stats->Enable(false);
 	item2Stats->setString(statsStr);
 	item2Stats->SetParent(item2);

@@ -1,5 +1,6 @@
 #include "MainScene.h"
 #include "IntroScene.h"
+#include "EndScene.h"
 #include "../../Engine/ModuleMap.h"
 #include "../../Engine/App.h"
 #include "../../Engine/ModuleSceneManager.h"
@@ -48,7 +49,7 @@ bool MainScene::Update(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		App->input->BlockKeyboardEvent(SDL_SCANCODE_P);
-		App->scenes->ChangeScene(App->scenes->introSc);
+		App->scenes->ChangeScene(App->scenes->endSc);
 	}
 	App->map->Draw();
 	return true;
@@ -61,11 +62,14 @@ bool MainScene::PostUpdate()
 
 bool MainScene::CleanUp()
 {
-	pugi::xml_node n;
+	xmlNode n;
 	App->entities->DestroyEntity(e);
 	App->entities->DestroyEntity(e2);
 	App->map->CleanUp(n);
 	App->textures->UnLoad(t);
+
+	App->gui->CleanUp(n);
+
 
 	return true;
 }

@@ -5,11 +5,16 @@
 #include "..\..\Engine\ModuleCollision.h"
 
 class Button;
+class Label;
+
 class IntroScene:
 	public Scene
 {
 public:
-	Button * PvPButton;
+	Button * pvpButton;
+	Button * exitButton;
+	Label * pvpLabel;
+	Label * exitLabel;
 
 	IntroScene();
 	virtual ~IntroScene();

@@ -41,6 +41,10 @@ void Entity::Accelerate(float x, float y, float z, float delta_time) {
 	zVect = CLAMP(zVect, -max_speed, max_speed);
 }
 
+bool Entity::PausedUpdate() {
+	Draw(0);
+	return true;
+}
 
 //EntityState Entity::GetState()
 //{

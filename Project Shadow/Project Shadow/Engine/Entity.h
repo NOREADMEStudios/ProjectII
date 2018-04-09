@@ -75,13 +75,16 @@ public:
 
 	virtual void OnCollisionExit(Collider* _this, Collider* _other);
 
+	bool PausedUpdate();
+
 	EntityTypes type;
 	EntityStats stats;
-
+	bool paused = false;
 	uint hero_num = 0;
 protected:
 
 	bool active = true;
+	
 	uint priority = 0;
 	iPoint position{ 0,0 };
 	fPoint speedVector{ 0,0 };

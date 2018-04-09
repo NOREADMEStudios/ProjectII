@@ -50,17 +50,21 @@ bool ItemSelecScene::Start()
 	item2->OnHoverExit = item2HoverExCallb;
 	item3->OnHoverEnter = item3HoverEnCallb;
 	item3->OnHoverExit = item3HoverExCallb;
+	
 	item1Stats = App->gui->AddLabel(0, 200, 50, path, { 255, 255, 255, 255 });
+	item1Stats->Enable(false);
 	item1Stats->setString(statsStr);
 	item1Stats->SetParent(item1);
 	item1Stats->SetAnchor(0, 0);
 	item1Stats->culled = false;
 	item2Stats = App->gui->AddLabel(0, 200, 50, path, { 255, 255, 255, 255 });
+	item2Stats->Enable(false);
 	item2Stats->setString(statsStr);
 	item2Stats->SetParent(item2);
 	item2Stats->SetAnchor(0, 0);
 	item2Stats->culled = false;
 	item3Stats = App->gui->AddLabel(0, 200, 50, path, { 255, 255, 255, 255 });
+	item3Stats->Enable(false);
 	item3Stats->setString(statsStr);
 	item3Stats->SetParent(item3);
 	item3Stats->SetAnchor(0, 0);
@@ -79,16 +83,8 @@ bool ItemSelecScene::Update(float dt)
 
 bool ItemSelecScene::CleanUp()
 {
-	App->gui->RemoveElement(item1);
-	App->gui->RemoveElement(item2);
-	App->gui->RemoveElement(item3);
-	App->gui->RemoveElement(item1Stats);
-
-	//Utils::Release(item1Stats);
-	Utils::Release(item1);
-	Utils::Release(item2);
-	Utils::Release(item3);
-	
+	xmlNode n;
+	App->gui->CleanUp(n);
 	return true;
 }
 
@@ -125,8 +121,15 @@ void item1HoverExCallb(size_t arg_size...) {
 
 void item2PressCallb(size_t arg_size...) {
 	LOG("PRESSED");
-	Button* b = App->gui->AddButton(400, 500, NULL, { 0,0,200,200 }, true, confirmCallback);
-	App->scenes->itemSc->UIElements.push_back(b);
+	Button* b = App->gui->AddButton(750, 500, NULL, { 0,0,225,50 }, true, confirmCallback);
+	Label* l = App->gui->AddLabel(5, 0, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string confirmStr = "CONFIRM";
+	l->setString(confirmStr);
+	l->SetParent(b);
+	l->SetAnchor(0, 0);
+	l->culled = false;
+	b->SetContentRect(0, 0, l->rect.w, l->rect.h);
+	l->Enable(true);
 	//App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
@@ -188,6 +191,6 @@ void item3HoverExCallb(size_t arg_size...) {
 }
 
 void confirmCallback(size_t arg_size...) {
-	LOG("Pene");
+	LOG("BUTTON CONFIRM PRESSED");
 	App->scenes->ChangeScene(App->scenes->mainSc);
 }

@@ -6,6 +6,7 @@
 
 class Button;
 class Label;
+class InterfaceElement;
 
 class ItemSelecScene:
 	public Scene
@@ -18,8 +19,6 @@ public:
 	Label * item1Stats;
 	Label * item2Stats;
 	Label * item3Stats;
-
-	std::vector <InterfaceElement> UIElements;
 
 	ItemSelecScene();
 	virtual ~ItemSelecScene();

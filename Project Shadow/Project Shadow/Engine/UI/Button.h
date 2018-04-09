@@ -24,6 +24,7 @@ public:
 	Callback OnHoverEnter;
 	Callback OnHoverExit;
 	Callback OnClick;
+	bool pressed = false;
 	bool PreUpdate() override;
 	void setLabel(Label* label);
 	Label* getLabel();

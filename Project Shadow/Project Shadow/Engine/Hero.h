@@ -7,7 +7,7 @@
 #include "Animation.h"
 #include "Timer.h"
 
-#define COMBO_MARGIN 1
+#define COMBO_MARGIN 0.2
 
 
 
@@ -53,7 +53,7 @@ public:
 
 	Timer time_attack;
 
-	Animation jump, stop, run, jumpAtk, jumpProt, kick, attack, hit, death;
+	Animation jump, stop, run, jumpAtk, jumpProt, kick, attack, hit, death, attack_l2, attack_l3;
 
 
 protected:

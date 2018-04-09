@@ -207,6 +207,9 @@ std::list<Input> ModuleInput::FirstPlayerConfig()
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		ret.push_back(Input(Input::LIGHT_ATTACK));
 
+	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+		ret.push_back(Input(Input::HEAVY_ATTACK));
+
 	return ret;
 }
 

@@ -53,10 +53,17 @@ bool Hero::Start()
 
 	Attack* light_1 = new Attack(ATTACK_LIGHT, LIGHT_ATTACK, 10);
 	Attack* light_2 = new Attack(ATTACK_L2, LIGHT_ATTACK, 12);
+	Attack* light_3 = new Attack(ATTACK_L3, LIGHT_ATTACK, 15);
+	Attack* heavy_1 = new Attack(ATTACK_HEAVY, HEAVY_ATTACK, 15);
 	attacks.push_back(light_1);
 	attacks.push_back(light_2);
+	attacks.push_back(light_3);
+	attacks.push_back(heavy_1);
 
+	
 	light_1->AddChild(light_2);
+	light_2->AddChild(light_3);
+	heavy_1->AddChild(light_3);
 
 	max_speed = stats.spd;
 
@@ -147,7 +154,8 @@ void Hero::LoadAnimations()
 	kick.LoadAnimationsfromXML("kick", HERO_SPRITE_ROOT);
 	attack.LoadAnimationsfromXML("attack", HERO_SPRITE_ROOT);
 	death.LoadAnimationsfromXML("death", HERO_SPRITE_ROOT);
-
+	attack_l2.LoadAnimationsfromXML("attack_knee", HERO_SPRITE_ROOT);
+	attack_l3.LoadAnimationsfromXML("attack_2", HERO_SPRITE_ROOT);
 }
 
 
@@ -250,7 +258,7 @@ void Hero::RequestState() {
 void Hero::UpdateState()
 {
 
-	if (currentState == WALK || currentState == RUN || currentState == IDLE)
+	if (currentState == WALK  || currentState == IDLE)
 	{
 		currentState = wantedState;
 
@@ -259,6 +267,11 @@ void Hero::UpdateState()
 			SetCombo();
 			time_attack.Start();
 		}	
+	}
+	else if (currentState == RUN)
+	{
+		if (wantedState != RUN)
+			currentState = STOP;
 	}
 	else if (currentAnimation->Finished())
 	{	
@@ -274,6 +287,7 @@ void Hero::UpdateState()
 			else
 				to_delete = true;
 		}
+	
 
 		last_attack = currentState;
 
@@ -288,6 +302,8 @@ void Hero::UpdateState()
 			time_attack.Start();
 	
 		}
+
+		
 
 	}
 
@@ -327,11 +343,12 @@ void Hero::UpdateCurState(float dt)
 		}
 		case JUMP:
 		{
+
 			if (currentAnimation->getFrameIndex() >= (currentAnimation->frames.size()) / 2)
-				Accelerate(0, -10 , 0, dt);
+				Accelerate(x_dir * stats.spd / 2, -10 , 0, dt);
 
 			else
-				Accelerate(0, 10, 0, dt);
+				Accelerate(x_dir * stats.spd / 2, 10, 0, dt);
 			
 			break;
 		}
@@ -355,7 +372,7 @@ void Hero::UpdateAnimation()
 	}
 	else if (currentState == ATTACK_L2)
 	{
-		currentAnimation = &kick;
+		currentAnimation = &attack_l2;
 	}
 	else if (currentState == HIT)
 	{
@@ -372,6 +389,18 @@ void Hero::UpdateAnimation()
 	else if (currentState == RUN)
 	{
 		currentAnimation = &run;
+	}
+	else if (currentState == ATTACK_HEAVY)
+	{
+		currentAnimation = &kick;
+	}
+	else if (currentState == ATTACK_L3)
+	{
+		currentAnimation = &attack_l3;
+	}
+	else if (currentState == STOP)
+	{
+		currentAnimation = &stop;
 	}
 
 

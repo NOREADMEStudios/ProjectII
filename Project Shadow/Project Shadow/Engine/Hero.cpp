@@ -332,7 +332,7 @@ void Hero::UpdateCurState(float dt)
 		case JUMP:
 		{
 
-			if (currentAnimation->getFrameIndex() >= (currentAnimation->frames.size()) / 2)
+			if (currentAnimation->getFrameIndex() >= (currentAnimation->frames.size()) / 4)
 				Accelerate(x_dir * stats.spd / 2, -10 , 0, dt);
 
 			else

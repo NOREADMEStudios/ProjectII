@@ -32,7 +32,7 @@ EndScene::~EndScene()
 bool EndScene::Start()
 {
 	atlas = App->textures->Load("UI/Buttons.png");
-	mainMenuButton = App->gui->AddButton(SCREEN_WIDTH / 2, 700, atlas, { 61,70,391,186 }, true, MainButtonPressCallb);
+	mainMenuButton = App->gui->AddButton(SCREEN_WIDTH / 2, 700, atlas, { 68,70,384,186 }, true, MainButtonPressCallb);
 	mainMenuButton->OnHoverEnter = MainButtonHoverEnCallb;
 	mainMenuButton->OnHoverExit = MainButtonHoverExCallb;
 	mainLabel = App->gui->AddLabel(mainMenuButton->rect.w / 2, mainMenuButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });

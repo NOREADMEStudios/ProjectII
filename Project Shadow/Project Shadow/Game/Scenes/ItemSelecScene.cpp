@@ -69,8 +69,8 @@ bool ItemSelecScene::Start()
 	item3Stats->SetAnchor(0.5f, 0);
 	item3Stats->culled = false;
 
-	SDL_Texture * atlas = App->textures->Load("UI/ButtonsContinueExit.png");
-	confirmButton = App->gui->AddButton(App->gui->GetGuiSize().x / 2, App->gui->GetGuiSize().y / 2, atlas, { 1, 72, 250, 61 }, false, confirmCallback);
+	SDL_Texture * atlas = App->textures->Load("UI/atlas.png");
+	confirmButton = App->gui->AddButton(App->gui->GetGuiSize().x / 2, App->gui->GetGuiSize().y / 2, atlas, { 450, 50, 250, 61 }, false, confirmCallback, { 450, 120, 250, 61 }, { 450, 189, 250, 61 });
 	confirmLabel = App->gui->AddLabel(confirmButton->rect.w / 2, confirmButton->rect.h / 2, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string confirmStr = "CONFIRM";
 	confirmLabel->setString(confirmStr);

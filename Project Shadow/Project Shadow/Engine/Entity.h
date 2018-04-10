@@ -76,6 +76,7 @@ public:
 	virtual void OnCollisionExit(Collider* _this, Collider* _other);
 
 	bool PausedUpdate();
+	iPoint PivotPos();
 
 	EntityTypes type;
 	EntityStats stats;

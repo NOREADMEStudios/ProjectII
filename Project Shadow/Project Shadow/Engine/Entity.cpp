@@ -14,7 +14,9 @@ Entity::~Entity() {}
 
 void Entity::Draw(float dt) {
 	AnimationFrame frame = currentAnimation->GetCurrentFrame(dt);
-	App->render->Blit(sprites, position.x, position.y, &frame.GetRectSDL(),1.0f, 0.0, flip, frame.pivot.x, frame.pivot.y);
+	iPoint pivot_pos = PivotPos();
+
+	App->render->Blit(sprites, pivot_pos.x, pivot_pos.y, &frame.GetRectSDL(),1.0f, 0.0, flip);
 }
 
 void Entity::Move(float delta_time) {
@@ -136,4 +138,14 @@ Point3D Entity::GetGamePos()
 int Entity::GetCharDepth()
 {
 	return char_depth;
+}
+
+iPoint Entity::PivotPos()
+{
+	AnimationFrame frame = currentAnimation->CurrentFrame();
+
+	iPoint downmid = { position.x + frame.rect.w / 2, position.y + frame.rect.h };
+
+	return { downmid.x + frame.result_rect.x , downmid.y + frame.result_rect.y };
+
 }

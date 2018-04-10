@@ -24,7 +24,7 @@ enum EntityTypes {
 struct CharacterInfo {
 
 	CharacterTypes chType = NONE;
-	iPoint pos{ 0, 0 };
+	Point3D pos{ 0, 0 };
 	
 };
 

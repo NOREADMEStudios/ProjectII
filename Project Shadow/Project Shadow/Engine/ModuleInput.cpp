@@ -199,12 +199,18 @@ std::list<Input> ModuleInput::FirstPlayerConfig()
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		ret.push_back(Input(DOWN));
+
+	if (App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
+		ret.push_back(Input(RUNINPUT));
 		
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		ret.push_back(Input(Input::JUMPINPUT));
 
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		ret.push_back(Input(Input::LIGHT_ATTACK));
+
+	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+		ret.push_back(Input(Input::HEAVY_ATTACK));
 
 	return ret;
 }

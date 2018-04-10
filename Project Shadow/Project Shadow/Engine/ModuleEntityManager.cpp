@@ -49,6 +49,7 @@ bool ModuleEntityManager::PostUpdate() {
 
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->PostUpdate();
+
 	}
 	return true;
 }

@@ -10,6 +10,7 @@ ModuleInput::ModuleInput() : Module() {
 	name = "input";
 
 	keyboard = new KeyEvent[MAX_KEYS];
+	mouse_buttons = new KeyEvent[NUM_MOUSE_BUTTONS];
 	memset(keyboard, { KEY_IDLE }, sizeof(KeyEvent) * MAX_KEYS);
 	memset(mouse_buttons, { KEY_IDLE }, sizeof(KeyEvent) * NUM_MOUSE_BUTTONS);
 }
@@ -17,6 +18,7 @@ ModuleInput::ModuleInput() : Module() {
 // Destructor
 ModuleInput::~ModuleInput() {
 	delete[] keyboard;
+	delete[] mouse_buttons;
 }
 
 // Called before render is available
@@ -197,12 +199,18 @@ std::list<Input> ModuleInput::FirstPlayerConfig()
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		ret.push_back(Input(DOWN));
+
+	if (App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
+		ret.push_back(Input(RUNINPUT));
 		
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		ret.push_back(Input(Input::JUMPINPUT));
 
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		ret.push_back(Input(Input::LIGHT_ATTACK));
+
+	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+		ret.push_back(Input(Input::HEAVY_ATTACK));
 
 	return ret;
 }

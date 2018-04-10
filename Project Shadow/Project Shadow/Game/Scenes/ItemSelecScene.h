@@ -6,6 +6,7 @@
 
 class Button;
 class Label;
+class InterfaceElement;
 
 class ItemSelecScene:
 	public Scene
@@ -15,7 +16,11 @@ public:
 	Button * item1;
 	Button * item2;
 	Button * item3;
-	Label * itemStats;
+	Button * confirmButton;
+	Label* confirmLabel;
+	Label * item1Stats;
+	Label * item2Stats;
+	Label * item3Stats;
 
 	ItemSelecScene();
 	virtual ~ItemSelecScene();

@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
+#include "ModuleAudio.h"
 #include "App.h"
 
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
@@ -369,6 +370,7 @@ void Hero::UpdateAnimation()
 	else if (currentState == DEATH)
 	{
 		currentAnimation = &death;
+		App->audio->PlayFx(8);
 	}
 	else if (currentState == JUMP)
 	{
@@ -432,6 +434,8 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 			{
 				hit_dir = -1 * _other->entity->stats.atk;
 			}
+
+			App->audio->PlayFx(3);
 		}
 			
 	}

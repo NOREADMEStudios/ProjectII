@@ -2,6 +2,7 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "Hero.h"
+#include "ModuleAudio.h"
 
 
 ModuleEntityManager::ModuleEntityManager()
@@ -17,6 +18,35 @@ bool ModuleEntityManager::Awake(pugi::xml_node& n) {
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->Awake(n);
 	}
+
+	xmlDocument audio_xml_file;
+	xmlNode audio_xml;
+	xmlNode iter;
+	xmlNode iter2;
+
+	pugi::xml_parse_result result = audio_xml_file.load_file("Assets/Audio/audio_xml.xml");
+	if (result != NULL)
+	{
+		audio_xml = audio_xml_file.child("audio");
+	}
+	
+	std::list<std::string> sounds_list;
+
+	// SFX names finding loop
+	for (iter = audio_xml.first_child(); iter; iter = iter.next_sibling())
+	{
+		for (iter2 = iter.first_child(); iter2; iter2 = iter2.next_sibling())
+		{
+			if (iter2.text().as_string() != "")
+			{
+				sounds_list.push_back(iter2.text().as_string());
+				App->audio->LoadFx(iter2.text().as_string());
+			}
+		}
+	}
+	sounds_list.clear();
+	
+
 	return true;
 }
 

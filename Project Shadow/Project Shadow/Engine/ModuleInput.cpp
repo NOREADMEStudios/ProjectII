@@ -3,6 +3,7 @@
 #include "App.h"
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
+#include "ModuleAudio.h"
 #include "../SDL/include/SDL.h"
 
 
@@ -204,10 +205,16 @@ std::list<Input> ModuleInput::FirstPlayerConfig()
 		ret.push_back(Input(RUNINPUT));
 		
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
 		ret.push_back(Input(Input::JUMPINPUT));
+		App->audio->PlayFx(5);
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
 		ret.push_back(Input(Input::LIGHT_ATTACK));
+		App->audio->PlayFx(1);
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 		ret.push_back(Input(Input::HEAVY_ATTACK));

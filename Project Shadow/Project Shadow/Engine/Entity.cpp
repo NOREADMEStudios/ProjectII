@@ -146,12 +146,7 @@ iPoint Entity::PivotPos()
 
 	iPoint downmid = { position.x + frame.rect.w / 2, position.y + frame.rect.h };
 
-	if (frame.result_rect.x > 300 || frame.result_rect.x < -300 || frame.result_rect.y > 300 || frame.result_rect.y < -300)
-	{
-		frame.result_rect.x = -frame.rect.w / 2;
-		frame.result_rect.y = -frame.rect.h;
-	}
 
-	return { downmid.x + frame.result_rect.x , downmid.y + frame.result_rect.y };
+	return { position.x + (frame.rect.x - frame.pivot.x) , position.y + (frame.rect.y - frame.pivot.y) };
 
 }

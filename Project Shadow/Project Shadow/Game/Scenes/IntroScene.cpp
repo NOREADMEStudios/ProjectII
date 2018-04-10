@@ -15,6 +15,7 @@
 #include "../../Engine/UI/Button.h"
 #include "../../Engine/UI/Label.h"
 #include "../../Engine/ModuleCollision.h"
+#include "../../Engine/ModuleAudio.h"
 #include "../../Engine/ModuleFonts.h"
 
 void PvPPressCallb(size_t arg_size...);
@@ -35,6 +36,7 @@ IntroScene::~IntroScene()
 
 bool IntroScene::Start()
 {
+  App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
 	SDL_Texture * atlas = App->textures->Load("UI/atlas.png");
 	pvpButton = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, atlas, { 50,50,384,186 }, true, PvPPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 	pvpButton->OnHoverEnter = PvPHoverEnCallb;
@@ -53,7 +55,7 @@ bool IntroScene::Start()
 	exitLabel->setString(ExitStr);
 	exitLabel->SetParent(exitButton);
 	exitLabel->culled = false;
-	return false;
+	return true;
 }
 
 bool IntroScene::Update(float dt)

@@ -49,6 +49,7 @@ bool ModuleEntityManager::PostUpdate() {
 
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->PostUpdate();
+
 	}
 	return true;
 }
@@ -102,13 +103,19 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	ret->SetPos(charInfo.pos.x, charInfo.pos.y);
 	
 	entities.push_back(ret);
+	ret->Start();
 
 	return ret;
 }
 
 
 void ModuleEntityManager::DestroyEntity(Entity* entity) {
+	pugi::xml_node n;
+	if (entity->hero_num != 0) {
+		numofplayers--;
 	
+	}
+	entity->CleanUp(n);
 	entities.remove(entity);
 	entity = nullptr;
 }

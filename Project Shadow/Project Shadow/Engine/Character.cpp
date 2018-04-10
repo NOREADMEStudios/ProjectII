@@ -77,16 +77,24 @@ void Character::ModifyStats(int attack, int defense, int speed, int magic)
 
 void Character::UpdateCollidersPosition() {
 	GetCollidersFromAnimation();
-	collFeet->collider.x += this->position.x;//pivot
-	collFeet->collider.y += this->position.y;//pivot
-	collHitBox->collider.x += this->position.x;
-	collHitBox->collider.y += this->position.y;
-	collAtk->collider.x += this->position.x;
-	collAtk->collider.y += this->position.y;
+	iPoint pivot_pos = PivotPos();
+	collFeet->collider.x += pivot_pos.x;//pivot
+	collFeet->collider.y += pivot_pos.y;//pivot
+	collHitBox->collider.x += pivot_pos.x;
+	collHitBox->collider.y += pivot_pos.y;
+	collAtk->collider.x += pivot_pos.x;
+	collAtk->collider.y += pivot_pos.y;
 }
 
 void Character::GetCollidersFromAnimation() {
 	collFeet->collider = currentAnimation->GetFeetColliderFromFrame();
 	collHitBox->collider = currentAnimation->GetHitBoxColliderFromFrame();
 	collAtk->collider = currentAnimation->GetAtkColliderFromFrame();
+
+	if (flip)
+	{
+		collFeet->collider.x = currentAnimation->CurrentFrame().rect.w - (collFeet->collider.x + collFeet->collider.w);
+		collHitBox->collider.x = currentAnimation->CurrentFrame().rect.w - (collHitBox->collider.x + collHitBox->collider.w);
+		collAtk->collider.x = currentAnimation->CurrentFrame().rect.w - (collAtk->collider.x + collAtk->collider.w);
+	}
 }

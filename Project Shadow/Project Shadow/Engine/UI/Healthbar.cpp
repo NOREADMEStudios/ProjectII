@@ -38,8 +38,6 @@ bool Healthbar::Update(float dt)
 		ret = true;
 	}
 
-
-
 	ret = Sprite::Update(dt);
 
 	return ret;

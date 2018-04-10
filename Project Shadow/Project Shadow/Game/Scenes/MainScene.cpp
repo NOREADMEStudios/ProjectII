@@ -35,11 +35,11 @@ bool MainScene::Start()
 	Sprite* _bar = App->gui->AddSprite(0, 0, t, { 0, 26, 258, 20 });
 	Sprite* _bar2 = App->gui->AddSprite(0, 0, t, { 0, 26, 258, 20 });
 
-	e = App->entities->CreateCharacter({HERO,{100,100}});
+	e = App->entities->CreateCharacter({HERO,{500,100}});
 	App->gui->AddHealthbar((Hero*)e, 0, _bar, true, 10, 10, t, true, { 0, 0, 264, 26 });
+
 	e2 = App->entities->CreateCharacter({ HERO,{ 100,100 } });
-	Entity* e3 =App->entities->CreateCharacter({ ENEMY,{ 100,50 } });
-	App->gui->AddHealthbar((Hero*)e2, 1, _bar2, false, 1590, 10, t, true, { 0, 0, 264, 26 });
+	App->gui->AddHealthbar((Hero*)e2, 1, _bar2, false, 500, 500, t, true, { 0, 0, 264, 26 });
 
 	App->debug = true;
 
@@ -64,18 +64,6 @@ bool MainScene::Update(float dt)
 	}
 
 	App->map->Draw();
-
-	if (((Hero*)e)->currHP <= 0)
-		((Hero*)e)->currHP = 100;
-
-	if (((Hero*)e2)->currHP <= 0)
-		((Hero*)e2)->currHP = 100;
-
-	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
-	{
-		((Hero*)e)->currHP -= 10;
-		((Hero*)e2)->currHP -= 10;
-	}
 
 	return true;
 }

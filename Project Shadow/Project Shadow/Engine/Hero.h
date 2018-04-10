@@ -63,8 +63,7 @@ protected:
 
 	
 	iPoint initialpos;
-	int initiallife = 0;
-	int maxHP = 100;
+	int initialLife = 0;
 	uint lives = 0;
 	uint hit_dir = 0;
 	bool hit_bool = 0;

@@ -264,7 +264,7 @@ void Hero::UpdateState()
 		if (wantedState != RUN)
 			currentState = STOP;
 	}
-	else if (currentAnimation->Finished())
+	else if (currentAnimation->getFrameIndex() >= (currentAnimation->frames.size()) / 2)
 	{	
 		if (currentState == JUMP)
 		{
@@ -278,9 +278,10 @@ void Hero::UpdateState()
 			else
 				to_delete = true;
 		}
-	
+;
 
 		last_attack = currentState;
+		currentState = wantedState;
 
 		currentAnimation->Reset();
 		if (!StateisAtk(last_attack))

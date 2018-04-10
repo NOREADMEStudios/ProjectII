@@ -24,13 +24,20 @@ bool Hero::Awake(pugi::xml_node&)
 
 bool Hero::Start()
 {
-	if (hero_num == 1) {
+	switch (hero_num) {
+	case 1: 
 		sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
-	}
-	else if (hero_num == 2) {
+		break;
+	case 2:
 		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
+		break;
+	case 3:
+		sprites = App->textures->Load("Characters/Fighter_sprites_blue.png");
+		break;
+	case 4:
+		sprites = App->textures->Load("Characters/Fighter_sprites_grey.png");
+		break;
 	}
-
 
 	LoadAnimations();
 
@@ -140,7 +147,7 @@ bool Hero::PostUpdate()
 
 bool Hero::CleanUp(pugi::xml_node&)
 {
-
+	
 	App->textures->UnLoad(sprites);
 	if (collAtk) {
 		App->collision->RemoveCollider(collAtk);

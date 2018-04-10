@@ -103,6 +103,7 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	ret->SetPos(charInfo.pos.x, charInfo.pos.y);
 	
 	entities.push_back(ret);
+	ret->Start();
 
 	return ret;
 }
@@ -110,10 +111,9 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
 void ModuleEntityManager::DestroyEntity(Entity* entity) {
 	pugi::xml_node n;
-
-	if (entity->GetType()== CharacterTypes::HERO)
-	{		
-		numofplayers--;		
+	if (entity->hero_num != 0) {
+		numofplayers--;
+	
 	}
 	entity->CleanUp(n);
 	entities.remove(entity);

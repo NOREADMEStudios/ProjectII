@@ -24,7 +24,21 @@ bool Hero::Awake(pugi::xml_node&)
 
 bool Hero::Start()
 {
-	sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
+	switch (hero_num) {
+	case 1: 
+		sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
+		break;
+	case 2:
+		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
+		break;
+	case 3:
+		sprites = App->textures->Load("Characters/Fighter_sprites_blue.png");
+		break;
+	case 4:
+		sprites = App->textures->Load("Characters/Fighter_sprites_grey.png");
+		break;
+	}
+
 	LoadAnimations();
 
 	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
@@ -133,7 +147,13 @@ bool Hero::PostUpdate()
 
 bool Hero::CleanUp(pugi::xml_node&)
 {
+	
 	App->textures->UnLoad(sprites);
+	if (collAtk) {
+		App->collision->RemoveCollider(collAtk);
+	}
+	App->collision->RemoveCollider(collHitBox);
+	App->collision->RemoveCollider(collFeet);
 	return true;
 }
 

@@ -66,7 +66,7 @@ void ModuleSceneManager::LoadScene(Scene* scene) {
 	currentScene = scene;
 	currentScene->active = true;
 	currentScene->Start();
-	App->entities->Start();
+	//App->entities->Start();
 }
 
 void ModuleSceneManager::ChangeScene(Scene* scene_to_change) {

@@ -21,7 +21,7 @@ bool Healthbar::Update(float dt)
 		int curr, max;
 		assignedCharacter->GetHP(curr, max);
 
-		percent = curr / max;
+		percent = (float)curr / max;
 
 		int margin = bar->rect.w - (bar->rect.w * percent);
 
@@ -31,7 +31,10 @@ bool Healthbar::Update(float dt)
 		else
 			SetContentRect(margin, 0, 0, 0);
 
+		ret = true;
 	}
+
+	ret = Sprite::Update(dt);
 
 	return ret;
 }

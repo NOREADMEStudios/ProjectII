@@ -37,7 +37,7 @@ class Item
 		SPEED
 	};
 
-	char* itemname = "default";
+	const char* itemname = "default";
 	Stat statIncreased = NONE;
 	Uint8 increaseValue = 0;
 };

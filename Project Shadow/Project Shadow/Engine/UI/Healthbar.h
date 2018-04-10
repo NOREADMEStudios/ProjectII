@@ -13,7 +13,7 @@ public:
 	Healthbar(Hero* character, bool leftSide = true, uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, bool _enabled = false, SDL_Rect* _anim = nullptr);
 	~Healthbar();
 
-	bool Update(float dt);
+	bool Update(float dt) override;
 
 	Hero* assignedCharacter = nullptr;
 	Sprite* bar;

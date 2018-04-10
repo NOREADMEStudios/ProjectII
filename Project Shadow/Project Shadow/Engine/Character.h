@@ -20,6 +20,7 @@ enum Input
 	LIGHT_ATTACK,
 	HEAVY_ATTACK,
 	JUMPINPUT,
+	RUNINPUT,
 	DEFEND
 };
 
@@ -33,6 +34,8 @@ enum CharStateEnum
 	ATTACK_LIGHT,
 	ATTACK_HEAVY,
 	ATTACK_L2,
+	ATTACK_L3,
+	STOP,
 	HIT,
 	KNOKED,
 	DEATH
@@ -98,10 +101,7 @@ struct Attack
 
 };
 
-struct Directions
-{
-	bool left, down, right, up = false;
-};
+
 
 class Character : public Entity
 {
@@ -147,7 +147,7 @@ protected:
 	CharStateEnum currentState;
 	CharStateEnum wantedState;
 	CharStateEnum last_attack;
-	Directions directions;
+
 
 	LIST(Attack*) attacks;
 

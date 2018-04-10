@@ -71,6 +71,8 @@ public:
 	float GetTimeScale()const;
 	void SetTimeScale(float ts);
 
+	void Quit();
+
 private:
 	// Sets the provided node with the default structure of the config file
 	void CreateDefaultConfigFile(xmlNode&) const;
@@ -140,6 +142,7 @@ private:
 	bool				want_to_reload = false;
 	std::string			load_game = "save_game.xml";
 	mutable std::string	save_game = "save_game.xml";
+	bool				want_to_quit = false;
 
 	PerfTimer			ptimer;
 	uint64				frame_count = 0;

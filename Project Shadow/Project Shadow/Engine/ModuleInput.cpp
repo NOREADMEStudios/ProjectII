@@ -10,6 +10,7 @@ ModuleInput::ModuleInput() : Module() {
 	name = "input";
 
 	keyboard = new KeyEvent[MAX_KEYS];
+	mouse_buttons = new KeyEvent[NUM_MOUSE_BUTTONS];
 	memset(keyboard, { KEY_IDLE }, sizeof(KeyEvent) * MAX_KEYS);
 	memset(mouse_buttons, { KEY_IDLE }, sizeof(KeyEvent) * NUM_MOUSE_BUTTONS);
 }
@@ -17,6 +18,7 @@ ModuleInput::ModuleInput() : Module() {
 // Destructor
 ModuleInput::~ModuleInput() {
 	delete[] keyboard;
+	delete[] mouse_buttons;
 }
 
 // Called before render is available

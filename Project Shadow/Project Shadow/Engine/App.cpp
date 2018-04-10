@@ -92,8 +92,7 @@ void Application::AddModule(Module* module)
 }
 
 // Called before render is available
-bool Application::Awake()
-{
+bool Application::Awake() {
 	//PERF_START(ptimer);
 	BROFILER_CATEGORY("App_Awake", Profiler::Color::Red);
 
@@ -132,8 +131,7 @@ bool Application::Awake()
 }
 
 // Called before the first frame
-bool Application::Start()
-{
+bool Application::Start() {
 	//PERF_START(ptimer);
 	BROFILER_CATEGORY("App_Start", Profiler::Color::Blue);
 
@@ -154,7 +152,7 @@ bool Application::Update() {
 	BROFILER_CATEGORY("App_Update", Profiler::Color::Green);
 	PrepareUpdate();
 
-	if(input->GetWindowEvent(WE_QUIT) == true)
+	if(input->GetWindowEvent(WE_QUIT) == true || want_to_quit == true)
 		ret = false;
 
 	if(ret == true)
@@ -299,16 +297,14 @@ void Application::FinishUpdate()
 		SavegameNow();
 
 
-	if (want_to_reload == true)
-	{
+	if (want_to_reload == true) {
 		ReloadNow();
 	}
 
 	if (want_to_load == true)
 		LoadGameNow();
 
-	if (last_sec_frame_time.Read() > 1000)
-	{
+	if (last_sec_frame_time.Read() > 1000) {
 		last_sec_frame_time.Start();
 		prev_last_sec_frame_count = last_sec_frame_count;
 		last_sec_frame_count = 0;
@@ -623,6 +619,11 @@ float Application::GetTimeScale() const
 void Application::SetTimeScale(float ts)
 {
 	time_scale = ts;
+}
+
+void Application::Quit()
+{
+	want_to_quit = true;
 }
 
 void Application::Reload() {

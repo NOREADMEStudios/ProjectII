@@ -79,7 +79,7 @@ public:
 private:
 	bool		windowEvents[WE_COUNT];
 	KeyEvent*	keyboard;
-	KeyEvent	mouse_buttons[NUM_MOUSE_BUTTONS];
+	KeyEvent*	mouse_buttons;
 	int			mouse_motion_x;
 	int			mouse_motion_y;
 	int			mouse_x, mouse_x_prev;

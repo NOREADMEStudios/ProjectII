@@ -1,5 +1,6 @@
 #include "MainScene.h"
 #include "IntroScene.h"
+#include "EndScene.h"
 #include "../../Engine/ModuleMap.h"
 #include "../../Engine/App.h"
 #include "../../Engine/ModuleSceneManager.h"
@@ -34,13 +35,13 @@ bool MainScene::Start()
 
 	App->debug = true;
 	t = App->textures->Load("Maps/map2_spritesheet.png");
-  
+  /*
 	Window* w = App->gui->AddWindow(500, 500, t, {0,0,500,500}, true);
 	Window* s = App->gui->AddWindow(0, 0, t, { 350, 520, 300, 300 }, true);
 	s->SetParent(w);
 	s->culled = true;
 	w->SetContentRect(50, 50, 50, 50);
-  
+  */
 	return false;
 }
 
@@ -48,7 +49,7 @@ bool MainScene::Update(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		App->input->BlockKeyboardEvent(SDL_SCANCODE_P);
-		App->scenes->ChangeScene(App->scenes->introSc);
+		App->scenes->ChangeScene(App->scenes->endSc);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		paused = !paused;
@@ -66,11 +67,14 @@ bool MainScene::PostUpdate()
 
 bool MainScene::CleanUp()
 {
-	pugi::xml_node n;
+	xmlNode n;
 	App->entities->DestroyEntity(e);
 	App->entities->DestroyEntity(e2);
 	App->map->CleanUp(n);
 	App->textures->UnLoad(t);
+
+	App->gui->CleanUp(n);
+
 
 	return true;
 }

@@ -24,7 +24,7 @@ public:
 		CHECK_BUTTON,
 		WINDOW,
 		SLIDER,
-		HEALTHBAR,
+		HEALTHBAR
 	};
 
 

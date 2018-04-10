@@ -7,6 +7,7 @@
 #include "ModuleInput.h"
 #include "ModuleGUI.h"
 #include "ModuleWindow.h"
+#include "UI\InterfaceElement.h"
 #include "UI\Sprite.h"
 #include "UI\Label.h"
 #include "UI\Window.h"
@@ -188,15 +189,20 @@ Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, 
 	return aux;
 }
 
-Healthbar * ModuleGUI::AddHealthbar(Hero * character, Sprite * bar, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect _anim)
+Healthbar * ModuleGUI::AddHealthbar(Hero * character, int charNum, Sprite * bar, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect _anim)
 {
-	Healthbar* aux = new Healthbar(character, leftSide, _x, _y, _tex, _enabled, &_anim);
+	Healthbar* aux = new Healthbar(character, charNum, leftSide, _x, _y, _tex, _enabled, &_anim);
 
 	aux->bar = bar;
 	bar->SetParent(aux);
 
 	bar->setPosition(aux->rect.w / 2, aux->rect.h / 2);
-	bar->SetAnchor(0.5, 0.5);
+
+	if (charNum == 0)	bar->SetAnchor(0.5, 0.5);
+	if (charNum == 1)	bar->SetAnchor(0.5, 0.5);
+	if (charNum == 2)	bar->SetAnchor(0, 1);
+	if (charNum == 3)	bar->SetAnchor(1, 1);
+
 
 	AddElement(aux);
 	return aux;

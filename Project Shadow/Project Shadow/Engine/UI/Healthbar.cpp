@@ -26,10 +26,10 @@ bool Healthbar::Update(float dt)
 		int margin = bar->rect.w - (bar->rect.w * percent);
 
 		if (leftSide)
-			SetContentRect(0, 0, margin, 0);
+			SetContentRect(INT_MAX, INT_MAX, margin, INT_MAX);
 
 		else
-			SetContentRect(margin, 0, 0, 0);
+			SetContentRect(margin, INT_MAX, INT_MAX, INT_MAX);
 
 		ret = true;
 	}

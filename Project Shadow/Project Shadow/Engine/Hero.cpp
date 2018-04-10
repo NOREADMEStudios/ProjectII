@@ -451,7 +451,7 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 	if (_this->sTag == "player_shield" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
 	{
 		_this->entity->Accelerate(hit_dir * 100, 0, 0 ,1);
-		_other->entity->Accelerate(-hit_dir * 100, 0, 0, 1);
+		//_other->entity->Accelerate((-hit_dir) * 100, 0, 0, 1);
 	}
 	if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
 	{
@@ -461,7 +461,7 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 	{
 		backfired = true;
 		currentState = PARRIED;
-		_this->entity->Accelerate(-hit_dir * 100, 0, 0, 1);
+		//_this->entity->Accelerate((-hit_dir) * 100, 0, 0, 1);
 	}
 }
 

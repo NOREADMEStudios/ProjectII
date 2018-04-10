@@ -129,9 +129,9 @@ void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
 				{
 					min_x = (*item)->GetPosX();
 				}
-				else if ((*item)->GetPosX() > max_x)
+				else if ((*item)->GetPosX() + (*item)->GetCollider().w > max_x)
 				{
-					max_x = (*item)->GetPosX();
+					max_x = (*item)->GetPosX() + (*item)->GetCollider().w;
 				}
 			}
 

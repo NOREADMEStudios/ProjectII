@@ -57,6 +57,7 @@ public:
 	Point3D GetGamePos();
 	int GetCharDepth();
 
+
 	void SetPos(int x, int z);
 	void SetActive(bool sactive);
 

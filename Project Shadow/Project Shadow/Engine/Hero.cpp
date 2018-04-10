@@ -99,19 +99,20 @@ bool Hero::Update(float dt)
 	}
 	else {
 		stats.atk = 0;
+		if (directions.right - directions.left == 1)
+		{
+			flip = false;
+		}
+		else if (directions.right - directions.left == -1)
+		{
+			flip = true;
+		}
 	}
 
 	Move(dt);
 	Break(dt);
 
-	if (directions.right - directions.left == 1)
-	{
-		flip = false;
-	}
-	else if (directions.right - directions.left == -1)
-	{
-		flip = true;
-	}
+
 
 	priority = gamepos.z;
 	collider.x = position.x;
@@ -263,6 +264,19 @@ void Hero::UpdateState()
 	{
 		if (wantedState != RUN)
 			currentState = STOP;
+	}
+	else if (currentState == PARRY)
+	{
+		if (parried)
+		{
+			currentAnimation->Reset();
+			currentState = wantedState;
+			parried = false;
+		}
+		else if (currentAnimation->Finished())
+		{
+			currentState = wantedState;
+		}
 	}
 	else if (currentAnimation->getFrameIndex() >= (currentAnimation->frames.size()) / 2)
 	{	
@@ -432,8 +446,22 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 			{
 				hit_dir = -1 * _other->entity->stats.atk;
 			}
-		}
-			
+		}		
+	}
+	if (_this->sTag == "player_shield" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
+	{
+		_this->entity->Accelerate(hit_dir * 100, 0, 0 ,1);
+		_other->entity->Accelerate(-hit_dir * 100, 0, 0, 1);
+	}
+	if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
+	{
+		parried = true;
+	}
+	if (_this->sTag == "enemy_attack" && _other->sTag == "player_parry" && _this->entity != _other->entity)
+	{
+		backfired = true;
+		currentState = PARRIED;
+		_this->entity->Accelerate(-hit_dir * 100, 0, 0, 1);
 	}
 }
 

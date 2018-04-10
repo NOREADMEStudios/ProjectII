@@ -64,6 +64,9 @@ bool Hero::PreUpdate()
 
 bool Hero::Update(float dt)
 {
+	if (paused) {		
+		return PausedUpdate();
+	}
 	currentAnimation = &idle;
 	
 	if (stats.life > 0)
@@ -119,7 +122,7 @@ void Hero::LoadAnimations()
 	jumpProt.LoadAnimationsfromXML("jump_protect", HERO_SPRITE_ROOT);
 	kick.LoadAnimationsfromXML("kick", HERO_SPRITE_ROOT);
 	attack.LoadAnimationsfromXML("attack", HERO_SPRITE_ROOT);
-
+	death.LoadAnimationsfromXML("death", HERO_SPRITE_ROOT);
 }
 
 void Hero::RequestState() {

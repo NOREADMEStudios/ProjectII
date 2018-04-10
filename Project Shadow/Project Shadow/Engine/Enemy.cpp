@@ -39,6 +39,10 @@ bool Enemy::PreUpdate()
 
 bool Enemy::Update(float dt)
 {
+
+	if (paused) {
+		return PausedUpdate();
+	}
 	currentAnimation = &idle;
 
 	priority = position.y;

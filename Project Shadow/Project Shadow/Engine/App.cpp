@@ -629,3 +629,9 @@ void Application::Quit()
 void Application::Reload() {
 	want_to_reload = true;
 }
+
+void Application::PauseGame(bool pause) {
+
+	entities->PauseEntities(pause);
+
+}

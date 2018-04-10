@@ -63,6 +63,8 @@ public:
 	void Reload();
 	void GetSaveGames(std::list<std::string>& list_to_fill) const;
 
+	void PauseGame(bool pause);
+
 	uint32 GetFramerateCap() const;
 	void SetFramerateCap(uint32 cap);
 

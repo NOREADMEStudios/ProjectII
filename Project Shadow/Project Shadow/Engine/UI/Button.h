@@ -20,11 +20,14 @@ public:
 		HOVERED,
 		DISABLED
 	} state;
-	
-	Callback OnHover;
+
+	Callback OnHoverEnter;
+	Callback OnHoverExit;
 	Callback OnClick;
+	bool pressed = false;
 	bool PreUpdate() override;
 	void setLabel(Label* label);
+	Label* getLabel();
 
 protected:
 	Label* label = nullptr;
@@ -38,6 +41,5 @@ protected:
 	int clickSound = -1;
 };
 
-//typedef Button<Callback_v> Button_regular;
 
 #endif // !__BUTTON_H__

@@ -24,7 +24,7 @@ enum EntityTypes {
 struct CharacterInfo {
 
 	CharacterTypes chType = NONE;
-	iPoint pos{ 0, 0 };
+	Point3D pos{ 0, 0 };
 	
 };
 
@@ -70,6 +70,8 @@ public:
 	void CheckMidPos(float& min_x, float& max_x);
 
 	uint numofplayers = 0;
+
+	void PauseEntities(bool pause);
 
 private:
 

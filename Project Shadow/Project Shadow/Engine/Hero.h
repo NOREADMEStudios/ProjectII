@@ -7,7 +7,7 @@
 #include "Animation.h"
 #include "Timer.h"
 
-#define COMBO_MARGIN 50
+#define COMBO_MARGIN 0.2
 
 
 
@@ -52,17 +52,23 @@ public:
 
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 
-
 	Timer time_attack;
-	Animation jump, stop, run, jumpAtk, jumpProt, kick;
+
+	Animation jump, stop, run, jumpAtk, jumpProt, kick, attack, hit, death, attack_l2, attack_l3;
+
 
 	int currHP = 100;
 
 protected:
+
+	
 	iPoint initialpos;
 	int initiallife = 0;
 	int maxHP = 100;
 	uint lives = 0;
+	uint hit_dir = 0;
+	bool hit_bool = 0;
+
 
 };
 #endif

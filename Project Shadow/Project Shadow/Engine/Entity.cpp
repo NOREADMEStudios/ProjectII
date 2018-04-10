@@ -6,6 +6,7 @@
 #include "Log.h"
 
 #define SHADOW_PATH "Characters/Shadow.png"
+#define SHADOW_RECT {0,0,36,9}
 
 Entity::Entity(EntityTypes type) {}
 
@@ -36,10 +37,11 @@ void Entity::UnloadShadow() {
 }
 void Entity::DrawShadow(AnimationFrame frame) {
 
-	int x = position.x + 10;// need to fix this values
-	int y = position.y+frame.rect.h-3;// need to fix this values
+	iRect rect = SHADOW_RECT;
+	int x = position.x + rect.w/3;// need to fix this values
+	int y = position.y+frame.rect.h-2;// need to fix this values
 	iPoint fram = frame.pivot;
-	iRect rect = { 0, 0, 35, 9 };
+	
 	App->render->Blit(shadowSprites, x, y, &rect.toSDL_Rect());
 }
 // HardCoded Valors Cough Cough -___-

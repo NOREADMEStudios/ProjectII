@@ -31,8 +31,8 @@ EndScene::~EndScene()
 
 bool EndScene::Start()
 {
-	atlas = App->textures->Load("UI/Buttons.png");
-	mainMenuButton = App->gui->AddButton(SCREEN_WIDTH / 2, 700, atlas, { 68,70,384,186 }, true, MainButtonPressCallb);
+	atlas = App->textures->Load("UI/atlas.png");
+	mainMenuButton = App->gui->AddButton(SCREEN_WIDTH / 2, 700, atlas, { 50,50,384,186 }, true, MainButtonPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 	mainMenuButton->OnHoverEnter = MainButtonHoverEnCallb;
 	mainMenuButton->OnHoverExit = MainButtonHoverExCallb;
 	mainLabel = App->gui->AddLabel(mainMenuButton->rect.w / 2, mainMenuButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
@@ -44,9 +44,6 @@ bool EndScene::Start()
 	winnerLabel = App->gui->AddLabel(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string winnerStr = "WINNER: CHARACTER 1";
 	winnerLabel->setString(winnerStr);
-	
-
-
 
 	return false;
 }

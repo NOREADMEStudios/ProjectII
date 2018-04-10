@@ -1,5 +1,6 @@
 #include "MainScene.h"
 #include "IntroScene.h"
+#include "../../Engine/Hero.h"
 #include "../../Engine/ModuleMap.h"
 #include "../../Engine/App.h"
 #include "../../Engine/ModuleSceneManager.h"
@@ -27,19 +28,21 @@ bool MainScene::Start()
 
 	App->map->Load("map.tmx");
 
+	t = App->textures->Load("UI/HealthBars.png");
+	Sprite* _bar = App->gui->AddSprite(0, 0, t, { 0, 26, 258, 20 });
 
 	e = App->entities->CreateCharacter({HERO,{100,100}});
+	App->gui->AddHealthbar((Hero*)e, _bar, true, 50, 50, t, true, { 0, 0, 264, 26 });
 	e2 = App->entities->CreateCharacter({ ENEMY,{ 100,50 } });
 	//App->entities->CreateEntity({ CHARACTER,HERO,{ 100,0 } });
 
 	App->debug = true;
-	t = App->textures->Load("Maps/map2_spritesheet.png");
   
-	Window* w = App->gui->AddWindow(500, 500, t, {0,0,500,500}, true);
-	Window* s = App->gui->AddWindow(0, 0, t, { 350, 520, 300, 300 }, true);
-	s->SetParent(w);
-	s->culled = true;
-	w->SetContentRect(50, 50, 50, 50);
+	//Window* w = App->gui->AddWindow(500, 500, t, {0,0,500,500}, true);
+	//Window* s = App->gui->AddWindow(0, 0, t, { 350, 520, 300, 300 }, true);
+	//s->SetParent(w);
+	//s->culled = true;
+	//w->SetContentRect(50, 50, 50, 50);
   
 	return false;
 }
@@ -52,6 +55,11 @@ bool MainScene::Update(float dt)
 	}
 	App->map->Draw();
 	return true;
+
+	if (((Hero*)e)->currHP < 0)
+		((Hero*)e)->currHP = 100;
+
+	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) ((Hero*)e)->currHP -= 10;
 }
 
 bool MainScene::PostUpdate()

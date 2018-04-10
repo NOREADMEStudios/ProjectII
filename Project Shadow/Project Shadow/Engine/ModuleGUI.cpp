@@ -11,6 +11,7 @@
 #include "UI\Label.h"
 #include "UI\Window.h"
 #include "UI\Slider.h"
+#include "UI\Healthbar.h"
 #include "..\Brofiler\Brofiler.h"
 
 ModuleGUI::ModuleGUI() : Module()
@@ -184,6 +185,19 @@ Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, 
 		aux->SetParent(parent);
 	else
 		AddElement(aux);
+	return aux;
+}
+
+Healthbar * ModuleGUI::AddHealthbar(Hero * character, Sprite * bar, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect _anim)
+{
+	Healthbar* aux = new Healthbar(character, leftSide, _x, _y, _tex, _enabled, &_anim);
+
+	aux->bar = bar;
+	bar->SetParent(aux);
+
+	bar->setPosition(aux->rect.w / 2, aux->rect.h / 2);
+	bar->SetAnchor(0.5, 0.5);
+
 	return aux;
 }
 

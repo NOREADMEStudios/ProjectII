@@ -100,6 +100,7 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
 	ret->type = CHARACTER;
 	ret->SetPos(charInfo.pos.x, charInfo.pos.y);
+
 	
 	entities.push_back(ret);
 

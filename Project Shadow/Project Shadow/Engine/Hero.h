@@ -48,15 +48,20 @@ public:
 
 	void Respawn();
 
+	void GetHP(int& curr, int& max);
+
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 
 
 	Timer time_attack;
 	Animation jump, stop, run, jumpAtk, jumpProt, kick;
 
+	int currHP = 100;
+
 protected:
 	iPoint initialpos;
 	int initiallife = 0;
+	int maxHP = 100;
 	uint lives = 0;
 
 };

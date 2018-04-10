@@ -141,6 +141,7 @@
     <ClCompile Include="Engine\ModuleWindow.cpp" />
     <ClCompile Include="Engine\Main.cpp" />
     <ClCompile Include="Engine\UI\Button.cpp" />
+    <ClCompile Include="Engine\UI\Healthbar.cpp" />
     <ClCompile Include="Engine\UI\InterfaceElement.cpp" />
     <ClCompile Include="Engine\UI\Label.cpp" />
     <ClCompile Include="Engine\UI\Slider.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Engine\ModuleWindow.h" />
     <ClInclude Include="Engine\Module.h" />
     <ClInclude Include="Engine\UI\Button.h" />
+    <ClInclude Include="Engine\UI\Healthbar.h" />
     <ClInclude Include="Engine\UI\InterfaceElement.h" />
     <ClInclude Include="Engine\UI\Label.h" />
     <ClInclude Include="Engine\UI\Slider.h" />

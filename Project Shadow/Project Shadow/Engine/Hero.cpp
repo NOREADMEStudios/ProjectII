@@ -301,6 +301,11 @@ void Hero::Respawn()
 	stats.life = initiallife;
 	lives--;
 }
+void Hero::GetHP(int& curr, int& max)
+{
+	curr = currHP;
+	max = maxHP;
+}
 void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 {
 	//Dont know the hit tag

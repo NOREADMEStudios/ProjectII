@@ -92,7 +92,7 @@ bool MainScene::CleanUp()
 	App->entities->DestroyEntity(e2);	
 	App->map->CleanUp(n);
 	App->textures->UnLoad(t);
-
+	App->collision->CleanUp(n);
 	App->gui->CleanUp(n);
 
 

@@ -204,10 +204,10 @@ Healthbar * ModuleGUI::AddHealthbar(Hero * character, int charNum, Sprite * bar,
 
 	bar->setPosition(aux->rect.w / 2, aux->rect.h / 2);
 
-	if (charNum == 0)	bar->SetAnchor(0.5, 0.5);
-	if (charNum == 1)	bar->SetAnchor(0.5, 0.5);
-	if (charNum == 2)	bar->SetAnchor(0, 1);
-	if (charNum == 3)	bar->SetAnchor(1, 1);
+	if (charNum == 0)	aux->SetAnchor(0, 0);
+	if (charNum == 1)	aux->SetAnchor(1, 0);
+	if (charNum == 2)	aux->SetAnchor(0, 1);
+	if (charNum == 3)	aux->SetAnchor(1, 1);
 
 	bar->SetAnchor(0.5, 0.5);
 	iPoint margins;
@@ -215,6 +215,7 @@ Healthbar * ModuleGUI::AddHealthbar(Hero * character, int charNum, Sprite * bar,
 	margins.y = (aux->rect.h - bar->rect.h) / 2;
 	aux->SetContentRect(margins.x, margins.y, margins.x, margins.y);
 
+	bar->culled = true;
 	bar->ComputeRects();
 
 	AddElement(aux);

@@ -143,15 +143,12 @@ int Entity::GetCharDepth()
 iPoint Entity::PivotPos()
 {
 	AnimationFrame frame = currentAnimation->CurrentFrame();
+	iPoint pivot = frame.pivot;
 
-	iPoint downmid = { position.x + frame.rect.w / 2, position.y + frame.rect.h };
 
-	if (frame.result_rect.x > 300 || frame.result_rect.x < -300 || frame.result_rect.y > 300 || frame.result_rect.y < -300)
-	{
-		frame.result_rect.x = -frame.rect.w / 2;
-		frame.result_rect.y = -frame.rect.h;
-	}
+	iPoint pos = { position.x + (frame.rect.x - pivot.x) , position.y + (frame.rect.y - pivot.y) };
 
-	return { downmid.x + frame.result_rect.x , downmid.y + frame.result_rect.y };
+return pos;
 
 }
+

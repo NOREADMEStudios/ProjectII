@@ -62,7 +62,8 @@ protected:
 	uint lives = 0;
 	uint hit_dir = 0;
 	bool hit_bool = 0;
-
+	bool parried = 0;
+	bool backfired = 0;
 
 };
 #endif

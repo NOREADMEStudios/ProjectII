@@ -38,7 +38,10 @@ enum CharStateEnum
 	STOP,
 	HIT,
 	KNOKED,
-	DEATH
+	DEATH,
+	PROTECT,
+	PARRY,
+	PARRIED,
 };
 
 struct Attack

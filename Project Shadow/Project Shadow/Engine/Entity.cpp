@@ -39,7 +39,7 @@ void Entity::DrawShadow(AnimationFrame frame) {
 
 	iRect rect = SHADOW_RECT;
 	int x = position.x + rect.w/3;// need to fix this values
-	int y = position.y+frame.rect.h-2;// need to fix this values
+	int y = position.y+frame.rect.h-5;// need to fix this values
 	iPoint fram = frame.pivot;
 	
 	App->render->Blit(shadowSprites, x, y, &rect.toSDL_Rect());

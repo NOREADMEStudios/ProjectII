@@ -2,6 +2,7 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "Hero.h"
+#include "ModuleAudio.h"
 
 
 ModuleEntityManager::ModuleEntityManager()
@@ -17,6 +18,39 @@ bool ModuleEntityManager::Awake(pugi::xml_node& n) {
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->Awake(n);
 	}
+
+	// Load SFX from XML
+	xmlDocument audio_xml_file;
+	xmlNode audio_xml;
+	xmlNode iter;
+	xmlNode iter2;
+
+	pugi::xml_parse_result result = audio_xml_file.load_file("Assets/Audio/audio_xml.xml");
+	if (result != NULL)
+	{
+		audio_xml = audio_xml_file.child("audio");
+	}
+	
+	std::list<std::string> sounds_list;
+
+	// SFX names finding loop
+	for (iter = audio_xml.first_child(); iter; iter = iter.next_sibling())
+	{
+		for (iter2 = iter.first_child(); iter2; iter2 = iter2.next_sibling())
+		{
+			if (iter2.text().as_string() != "")
+			{
+				if (!IsSFXRepeated(sounds_list, iter2.text().as_string()))
+				{
+					sounds_list.push_back(iter2.text().as_string());
+					App->audio->LoadFx(iter2.text().as_string());
+				}
+			}
+		}
+	}
+	sounds_list.clear();
+	
+
 	return true;
 }
 
@@ -39,6 +73,7 @@ bool ModuleEntityManager::PreUpdate() {
 bool ModuleEntityManager::Update(float dt) {
 
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
+		if((*item)->active)
 		(*item)->Update(dt);
 	}
 
@@ -135,9 +170,9 @@ void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
 				{
 					min_x = (*item)->GetPosX();
 				}
-				else if ((*item)->GetPosX() > max_x)
+				else if ((*item)->GetPosX() + (*item)->GetCollider().w > max_x)
 				{
-					max_x = (*item)->GetPosX();
+					max_x = (*item)->GetPosX() + (*item)->GetCollider().w;
 				}
 			}
 
@@ -149,8 +184,48 @@ void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
 	}
 }
 
+void ModuleEntityManager::CheckMidPosY(float &min_y, float &max_y)
+{
+	uint current_players = 0;
+	if (entities.size() > 0) {
+		min_y = entities.front()->GetPosY();
+		max_y = entities.front()->GetPosY();
+
+		for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
+			if ((*item)->GetType() == CHARACTER)
+			{
+				current_players++;
+				if ((*item)->GetPosX() < min_y)
+				{
+					min_y = (*item)->GetPosY();
+				}
+				else if ((*item)->GetPosY() + (*item)->GetCollider().h > max_y)
+				{
+					max_y = (*item)->GetPosY() + (*item)->GetCollider().h;
+				}
+			}
+
+			/*if (current_players == numofplayers)
+			{
+				break;
+			}*/
+		}
+	}
+}
+
 void ModuleEntityManager::PauseEntities(bool pause) {
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->paused = pause;
 	}
+}
+
+bool ModuleEntityManager::IsSFXRepeated(std::list<std::string> list, std::string string) const
+{
+	for (std::list<std::string> newList = list; !newList.empty();)
+	{
+		if (newList.front() == string)
+			return true;
+		newList.pop_front();
+	}
+	return false;
 }

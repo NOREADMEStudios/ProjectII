@@ -28,7 +28,7 @@ bool MainScene::Start()
 {
 	App->audio->PlayMusic("Assets/Audio/BGM/Level1.ogg");
 
-	App->map->Load("map.tmx");
+	App->map->Load("map2small.tmx");
 
 
 	e = App->entities->CreateCharacter({HERO,{100,100}});

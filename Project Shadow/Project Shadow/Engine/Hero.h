@@ -53,7 +53,7 @@ public:
 
 	Timer time_attack;
 
-	Animation jump, stop, run, jumpAtk, jumpProt, kick, attack, hit, death, attack_l2, attack_l3;
+	Animation jump, stop, run, jumpAtk, jumpProt, kick, attack, hit, death, attack_l2, attack_l3, protect, taunt, attack_s2, parry;
 
 
 protected:
@@ -62,9 +62,9 @@ protected:
 	iPoint initialpos;
 	int initiallife = 0;
 	uint lives = 0;
-	uint hit_dir = 0;
+	int hit_dir = 0;
 	bool hit_bool = 0;
-
+	bool parried = 0;
 
 };
 #endif

@@ -3,6 +3,7 @@
 #include "App.h"
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
+#include "ModuleAudio.h"
 #include "../SDL/include/SDL.h"
 
 
@@ -279,10 +280,16 @@ std::list<Input> ModuleInput::FirstPlayerConfig()
 		ret.push_back(Input(RUNINPUT));
 		
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
 		ret.push_back(Input(Input::JUMPINPUT));
+		App->audio->PlayFx(5);
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
 		ret.push_back(Input(Input::LIGHT_ATTACK));
+		App->audio->PlayFx(1);
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 		ret.push_back(Input(Input::HEAVY_ATTACK));
@@ -309,6 +316,14 @@ std::list<Input> ModuleInput::SecondPlayerConfig()
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 		ret.push_back(Input(Input::JUMPINPUT));
 
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
+		ret.push_back(Input(Input::DEFEND));
+
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)
+		ret.push_back(Input(Input::PARRYINPUT));
+
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+		ret.push_back(Input(Input::TAUNTINPUT));
 
 	return ret;
 }

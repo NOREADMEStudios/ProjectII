@@ -153,6 +153,11 @@ public:
 			speed = 0.15f;
 	}
 
+	void Finish()
+	{
+		current_frame = last_frame;
+	}
+
 	int getFrameIndex() const
 	{
 		return (int)current_frame;

@@ -51,10 +51,13 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
+	bool IsSFXRepeated(std::list<std::string> list, std::string string) const;
+
 	Entity* CreateCharacter(CharacterInfo charInfo);
 	void DestroyEntity(Entity* entity);
 
 	void CheckMidPos(float& min_x, float& max_x);
+	void CheckMidPosY(float& min_y, float& max_y);
 
 	uint numofplayers = 0;
 

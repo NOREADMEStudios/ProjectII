@@ -21,7 +21,9 @@ enum Input
 	HEAVY_ATTACK,
 	JUMPINPUT,
 	RUNINPUT,
-	DEFEND
+	DEFEND,
+	TAUNTINPUT,
+	PARRYINPUT,
 };
 
 enum CharStateEnum
@@ -35,10 +37,15 @@ enum CharStateEnum
 	ATTACK_HEAVY,
 	ATTACK_L2,
 	ATTACK_L3,
+	ATTACK_H2,
 	STOP,
 	HIT,
 	KNOKED,
-	DEATH
+	DEATH,
+	PROTECT,
+	PARRY,
+	PARRIED,
+	TAUNT,
 };
 
 struct Attack

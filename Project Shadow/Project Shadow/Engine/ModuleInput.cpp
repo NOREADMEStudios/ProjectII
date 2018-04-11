@@ -10,6 +10,7 @@ ModuleInput::ModuleInput() : Module() {
 	name = "input";
 
 	keyboard = new KeyEvent[MAX_KEYS];
+	mouse_buttons = new KeyEvent[NUM_MOUSE_BUTTONS];
 	memset(keyboard, { KEY_IDLE }, sizeof(KeyEvent) * MAX_KEYS);
 	memset(mouse_buttons, { KEY_IDLE }, sizeof(KeyEvent) * NUM_MOUSE_BUTTONS);
 }
@@ -17,6 +18,7 @@ ModuleInput::ModuleInput() : Module() {
 // Destructor
 ModuleInput::~ModuleInput() {
 	delete[] keyboard;
+	delete[] mouse_buttons;
 }
 
 // Called before render is available
@@ -164,7 +166,7 @@ bool ModuleInput::PreUpdate() {
 			break;
 
 		case SDL_MOUSEMOTION:
-			float scale = (int)App->win->GetScale();
+			float scale = 1.f;// (int)App->win->GetScale();
 			mouse_motion_x = event.motion.xrel / scale;
 			mouse_motion_y = event.motion.yrel / scale;
 			mouse_x = mouse_x_prev = event.motion.x / scale;
@@ -249,4 +251,59 @@ void ModuleInput::BlockKeyboard() {
 	for (uint i = 0; i < MAX_KEYS; i++) {
 		keyboard[i].blocked = true;
 	}
+}
+
+
+std::list<Input> ModuleInput::FirstPlayerConfig()
+{
+	std::list<Input> ret;
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		ret.push_back(Input(LEFT));
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		ret.push_back(Input(RIGHT));
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		ret.push_back(Input(UP));
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		ret.push_back(Input(DOWN));
+
+	if (App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
+		ret.push_back(Input(RUNINPUT));
+		
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		ret.push_back(Input(Input::JUMPINPUT));
+
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+		ret.push_back(Input(Input::LIGHT_ATTACK));
+
+	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+		ret.push_back(Input(Input::HEAVY_ATTACK));
+
+	return ret;
+}
+
+std::list<Input> ModuleInput::SecondPlayerConfig()
+{
+	std::list<Input> ret;
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		ret.push_back(Input(LEFT));
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		ret.push_back(Input(RIGHT));
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		ret.push_back(Input(UP));
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		ret.push_back(Input(DOWN));
+
+	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		ret.push_back(Input(Input::JUMPINPUT));
+
+
+	return ret;
 }

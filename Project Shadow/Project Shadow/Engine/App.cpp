@@ -16,6 +16,9 @@
 #include "ModuleFonts.h"
 #include "ModuleSceneManager.h"
 #include "ModuleEntityManager.h"
+#include "ModuleCollision.h"
+
+#include "..\Brofiler\Brofiler.h"
 
 // Constructor
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
@@ -33,8 +36,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	scenes = new ModuleSceneManager();
 	entities = new ModuleEntityManager();
 	map = new ModuleMap();	
-	/*collision = new j1Collision();
-	pathfinding = new j1PathFinding();*/
+	collision = new ModuleCollision();
+	/*pathfinding = new j1PathFinding();*/
 	font = new ModuleFonts();
 	gui = new ModuleGUI();
 	//transition = new j1Transition();
@@ -46,10 +49,11 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(textures);
 	AddModule(audio);
 	AddModule(map);
-	AddModule(scenes);
 	AddModule(entities);
-	/*AddModule(collision);
-	AddModule(pathfinding);*/
+	AddModule(scenes);
+	
+	AddModule(collision);
+	/*AddModule(pathfinding);*/
 	AddModule(font);
 	AddModule(gui);
 	//AddModule(transition);
@@ -77,7 +81,7 @@ Application::~Application()
 	//we must use this structure now with stl:
 	//we need to be careful with the use of "iterator" and "reverse_iterator" and use them for their intended purposes (front-to-back and back-to-front)
 	for (ModuleList::reverse_iterator item = modules.rbegin(); item != modules.rend(); item++) {
-		Release(*item);
+		Utils::Release(*item);
 	}
 	modules.clear();
 }
@@ -89,9 +93,9 @@ void Application::AddModule(Module* module)
 }
 
 // Called before render is available
-bool Application::Awake()
-{
+bool Application::Awake() {
 	//PERF_START(ptimer);
+	BROFILER_CATEGORY("App_Awake", Profiler::Color::Red);
 
 	xmlDocument	config_file;
 	xmlNode		config;
@@ -128,9 +132,9 @@ bool Application::Awake()
 }
 
 // Called before the first frame
-bool Application::Start()
-{
+bool Application::Start() {
 	//PERF_START(ptimer);
+	BROFILER_CATEGORY("App_Start", Profiler::Color::Blue);
 
 	bool ret = true;
 
@@ -145,9 +149,11 @@ bool Application::Start()
 // Called each loop iteration
 bool Application::Update() {
 	bool ret = true;
+
+	BROFILER_CATEGORY("App_Update", Profiler::Color::Green);
 	PrepareUpdate();
 
-	if(input->GetWindowEvent(WE_QUIT) == true)
+	if(input->GetWindowEvent(WE_QUIT) == true || want_to_quit == true)
 		ret = false;
 
 	if(ret == true)
@@ -189,7 +195,7 @@ void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
 	xmlNode textures = assetsStructure.append_child("Textures");
 	textures.append_attribute("folder") = TEXTURES_DIR;
 	textures.append_child("Characters").append_attribute("folder") = CHARACTERS_DIR;
-	textures.append_child("Enemies").append_attribute("folder") = ENEMIES_DIR;
+	textures.append_child("UI").append_attribute("folder") = UI_DIR;
 	textures.append_child("Maps").append_attribute("folder") = MAPS_DIR;
 
 	assetsStructure.append_child("Input").append_attribute("folder") = INPUT_DIR;
@@ -197,8 +203,8 @@ void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
 	configNode.append_child("renderer").append_child("vsync").append_attribute("value") = "false";
 	xmlNode window = configNode.append_child("window");
 	xmlNode winRes = window.append_child("resolution");
-	winRes.append_attribute("width") = 1600;
-	winRes.append_attribute("height") = 900;
+	winRes.append_attribute("width") = DEFAULT_RESOLUTION_X;
+	winRes.append_attribute("height") = DEFAULT_RESOLUTION_Y;
 	winRes.append_attribute("scale") = 1.0f;
 	window.append_child("fullscreen").append_attribute("value") = 0;
 	window.append_child("borderless").append_attribute("value") = 0;
@@ -213,6 +219,10 @@ void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
 	audio.append_attribute("volumeFX") = 1.0f;
 	audio.append_attribute("volumeBGM") = 1.0f;
 	configNode.append_child("input").append_attribute("folder") = INPUT_DIR;
+	xmlNode tags = configNode.append_child("collision").append_child("colliderTags");
+	xmlNode tag = tags.append_child("tag");
+	tag.append_attribute("value") = "default";
+	tag.append_attribute("interactions") = "default;default";
 }
 
 // ---------------------------------------------
@@ -245,6 +255,7 @@ void Application::CheckFileStructure(const xmlNode & config) const
 		filesystem::create_directory(path);
 	}
 
+	// Iterate through nodes to check and create if needed all the assets directories
 	for (xmlNode iter = assets.first_child(); iter;) {
 		path = path + iter.attribute("folder").as_string();
 		if (!filesystem::exists(path)) {
@@ -287,16 +298,14 @@ void Application::FinishUpdate()
 		SavegameNow();
 
 
-	if (want_to_reload == true)
-	{
+	if (want_to_reload == true) {
 		ReloadNow();
 	}
 
 	if (want_to_load == true)
 		LoadGameNow();
 
-	if (last_sec_frame_time.Read() > 1000)
-	{
+	if (last_sec_frame_time.Read() > 1000) {
 		last_sec_frame_time.Start();
 		prev_last_sec_frame_count = last_sec_frame_count;
 		last_sec_frame_count = 0;
@@ -319,7 +328,7 @@ void Application::FinishUpdate()
 		SDL_Delay(delay_ms);
 
 	uint wait_ms = delay_time.Read();
-	LOG("Expected frame delay: %d, Actual frame delay: %d", delay_ms, wait_ms);
+	//LOG("Expected frame delay: %d, Actual frame delay: %d", delay_ms, wait_ms);
 }
 
 uint32 Application::GetFramerateCap() const
@@ -399,6 +408,7 @@ bool Application::PostUpdate()
 bool Application::CleanUp()
 {
 	//PERF_START(ptimer);
+	BROFILER_CATEGORY("App_CleanUp", Profiler::Color::Violet);
 
 	xmlDocument	config_file;
 	xmlNode		config;
@@ -612,6 +622,17 @@ void Application::SetTimeScale(float ts)
 	time_scale = ts;
 }
 
+void Application::Quit()
+{
+	want_to_quit = true;
+}
+
 void Application::Reload() {
 	want_to_reload = true;
+}
+
+void Application::PauseGame(bool pause) {
+
+	entities->PauseEntities(pause);
+
 }

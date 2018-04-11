@@ -1,13 +1,21 @@
-#ifndef __SCENE_TEST_H__
-#define __SCENE_TEST_H__
+#ifndef __MAINSCENE_H__
+#define __MAINSCENE_H__
 
-#include "..\Engine\Scene.h"
-class TestScene :
+#include "..\..\Engine\Scene.h"
+#include "..\..\Engine\ModuleCollision.h"
+#include "..\..\PugiXml\src\pugixml.hpp"
+
+class MainScene :
 	public Scene
 {
 public:
-	TestScene();
-	virtual ~TestScene();
+
+	
+	Entity* e,* e2;
+	SDL_Texture* t;
+
+	MainScene();
+	virtual ~MainScene();
 
 	bool Awake(pugi::xml_node&) override { return true; };
 
@@ -17,13 +25,15 @@ public:
 
 	bool Update(float dt) override;
 
-	bool PostUpdate() override { return true; }
+	bool PostUpdate() override;
 
-	bool CleanUp(pugi::xml_node&) override { return true; };
+	bool CleanUp() override;
 
 	bool Load(pugi::xml_node&) override { return true; };
 
 	bool Save(pugi::xml_node&) const override { return true; };
+
+
 };
 
 #endif

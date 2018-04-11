@@ -36,23 +36,32 @@ void ModuleMap::Draw() {
 	if(map_loaded == false)
 		return;
 
-	for (std::list<MapLayer*>::iterator iter = data.layers.begin(); iter != data.layers.end(); iter++) {
+	for (std::list<MapLayer*>::iterator iter = data.layers.begin(); iter != data.layers.end(); iter++)
+	{
 		uint tile = 0;
-			for (uint y = 0; y < (*iter)->height; y++) {
-				for (uint x = 0; x < (*iter)->width; x++) {
-					if ((*iter)->tiles[tile] != 0) {
-						for (std::list<TileSet*>::reverse_iterator tileset = data.tilesets.rbegin(); tileset != data.tilesets.rend(); tileset++) {
+
+		iPoint tile_pos = MapToWorld(0, 0);
+			for (uint y = 0; y < (*iter)->height; y++)
+			{
+				tile_pos.x = 0;
+				for (uint x = 0; x < (*iter)->width; x++)
+				{
+					if ((*iter)->tiles[tile] != 0)
+					{
+						for (std::list<TileSet*>::reverse_iterator tileset = data.tilesets.rbegin(); tileset != data.tilesets.rend(); tileset++)
+						{
 							if ((*tileset)->firstgid > (*iter)->tiles[tile])
 								continue;
 
-							iPoint tile_pos = MapToWorld(x, y);
 							SDL_Rect tile_rect = (*tileset)->GetTileRect((*iter)->tiles[tile]);
 							App->render->Blit((*tileset)->texture, tile_pos.x, tile_pos.y, &tile_rect, (*iter)->parallax_speed);
+							tile_pos.x += data.tile_width - 1;
+						}
 					}
 					tile++;
 				}
+				tile_pos.y += (data.tile_height) -1;
 			}
-		}
 	}
 }
 
@@ -114,14 +123,14 @@ bool ModuleMap::CleanUp(pugi::xml_node&)
 
 	// Remove all tilesets
 	for (std::list<TileSet*>::reverse_iterator tileset = data.tilesets.rbegin(); tileset != data.tilesets.rend(); tileset++) {
-		Release(*tileset);
+		Utils::Release(*tileset);
 	}
 	data.tilesets.clear();
 
 	
 	// Remove all layers
 	for (std::list<MapLayer*>::reverse_iterator layer = data.layers.rbegin(); layer != data.layers.rend(); layer++) {
-		Release(*layer);
+		Utils::Release(*layer);
 	}
 	data.layers.clear();
 
@@ -431,7 +440,7 @@ bool ModuleMap::LoadLayer(pugi::xml_node& node, MapLayer& layer)
 				strncpy_s(buf, figures + 1 , &aux_buf[buffer_index - figures], _TRUNCATE);
 
 				std::string buffer(buf);
-				uint tile_id = (uint)ParseInt(buffer);
+				uint tile_id = (uint)Utils::ParseInt(buffer);
 				layer.tiles[tile_index] = tile_id;
 				figures = 0;
 				free(buf);
@@ -477,4 +486,14 @@ bool ModuleMap::LoadLayer(pugi::xml_node& node, MapLayer& layer)
 TileSet::~TileSet() {
 	App->textures->UnLoad(texture);
 	texture = nullptr;
+}
+
+int ModuleMap::GetMapWidth()
+{
+	return data.width * data.tile_width;
+}
+
+int ModuleMap::GetXTiles()
+{
+	return data.width;
 }

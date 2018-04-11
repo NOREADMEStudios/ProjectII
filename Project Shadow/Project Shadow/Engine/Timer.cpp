@@ -40,3 +40,15 @@ void Timer::AddTime(Timer nwtime) {
 	started_at -= nwtime.Read();
 
 }
+
+
+bool Timer::Count(float num)
+{
+	bool ret = false;
+	if (num <= ReadSec())
+	{
+		ret = true;
+	}
+
+	return ret;
+}

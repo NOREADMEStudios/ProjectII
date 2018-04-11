@@ -18,8 +18,8 @@ class ModuleRender;
 class ModuleTextures;
 class ModuleAudio;
 class ModuleMap;
+class ModuleCollision;
 /*class j1Scene;
-class j1Collision;
 class j1PathFinding;
 class j1Transition;*/
 class ModuleFonts;
@@ -63,11 +63,15 @@ public:
 	void Reload();
 	void GetSaveGames(std::list<std::string>& list_to_fill) const;
 
+	void PauseGame(bool pause);
+
 	uint32 GetFramerateCap() const;
 	void SetFramerateCap(uint32 cap);
 
 	float GetTimeScale()const;
 	void SetTimeScale(float ts);
+
+	void Quit();
 
 private:
 	// Sets the provided node with the default structure of the config file
@@ -110,8 +114,8 @@ public:
 	ModuleTextures*			textures = nullptr;
 	ModuleAudio*			audio = nullptr;
 	ModuleMap*				map = nullptr;
+	ModuleCollision*		collision = nullptr;
 	/*j1Scene*			scene = nullptr;
-	j1Collision*		collision = nullptr;
 	j1PathFinding*		pathfinding = nullptr;	
 	j1Transition*		transition = nullptr;*/
 	ModuleFonts*			font = nullptr;
@@ -138,6 +142,7 @@ private:
 	bool				want_to_reload = false;
 	std::string			load_game = "save_game.xml";
 	mutable std::string	save_game = "save_game.xml";
+	bool				want_to_quit = false;
 
 	PerfTimer			ptimer;
 	uint64				frame_count = 0;

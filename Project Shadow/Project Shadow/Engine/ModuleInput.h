@@ -2,6 +2,7 @@
 #define __INPUT_H__
 
 #include "Module.h"
+#include "Character.h"
 
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
@@ -112,10 +113,14 @@ public:
 	void BlockMouseEvent(int event_id);
 	void BlockKeyboardEvent(int event_id);
 
+	std::list<Input> FirstPlayerConfig();
+	std::list<Input> SecondPlayerConfig();
+
+
 private:
 	bool		windowEvents[WE_COUNT];
 	KeyEvent*	keyboard;
-	KeyEvent	mouse_buttons[NUM_MOUSE_BUTTONS];
+	KeyEvent*	mouse_buttons;
 	int			mouse_motion_x;
 	int			mouse_motion_y;
 	int			mouse_x, mouse_x_prev;

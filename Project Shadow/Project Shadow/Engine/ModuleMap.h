@@ -78,12 +78,12 @@ struct MapData
 	~MapData() {
 
 		for (std::list<TileSet*>::iterator it = tilesets.begin(); it != tilesets.end(); it++) {
-			Release(*it);
+			Utils::Release(*it);
 		}
 		tilesets.clear();
 
 		for (std::list<MapLayer*>::iterator it = layers.begin(); it != layers.end(); it++) {
-			Release(*it);
+			Utils::Release(*it);
 		}
 		layers.clear();
 	}
@@ -118,6 +118,8 @@ public:
 
 	iPoint WorldToMap(int x, int y) const;
 	iPoint WorldToMap(const iPoint p) const;
+	int GetMapWidth();
+	int GetXTiles();
 
 private:
 

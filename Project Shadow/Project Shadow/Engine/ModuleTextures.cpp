@@ -25,6 +25,12 @@ bool ModuleTextures::Awake(pugi::xml_node& config)
 
 	assetsPath = ASSETS_ROOT;
 	assetsPath.append(config.attribute("folder").as_string());
+
+	if (!filesystem::exists(assetsPath)) { // to check
+		LOG("Missing texture folder, creating default one");
+		filesystem::create_directory(assetsPath);
+	}
+
 	
 	// load support for the PNG image format
 	int flags = IMG_INIT_PNG;

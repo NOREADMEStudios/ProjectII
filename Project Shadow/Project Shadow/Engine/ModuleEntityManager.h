@@ -4,8 +4,16 @@
 #include "Entity.h"
 #include "Module.h"
 
+#include "App.h"
+#include "ModuleRender.h"
+
 #include <list>
 
+enum CharacterTypes {
+	NONE,
+	ENEMY,
+	HERO
+};
 enum EntityTypes {
 	NOTYPE,
 	SPELLS,
@@ -13,11 +21,13 @@ enum EntityTypes {
 	CHARACTER
 };
 
-struct EntityInfo {
+struct CharacterInfo {
 
-	EntityTypes type;
+	CharacterTypes chType = NONE;
+	Point3D pos{ 0, 0 };
 	
 };
+
 
 
 class ModuleEntityManager : public Module
@@ -41,9 +51,14 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	Entity* CreateEntity(EntityInfo entityInfo);
+	Entity* CreateCharacter(CharacterInfo charInfo);
 	void DestroyEntity(Entity* entity);
 
+	void CheckMidPos(float& min_x, float& max_x);
+
+	uint numofplayers = 0;
+
+	void PauseEntities(bool pause);
 
 private:
 

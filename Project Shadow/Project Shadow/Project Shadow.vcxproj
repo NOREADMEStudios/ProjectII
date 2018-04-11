@@ -121,6 +121,8 @@
     <ClCompile Include="Engine\App.cpp" />
     <ClCompile Include="Engine\Character.cpp" />
     <ClCompile Include="Engine\Defs.cpp" />
+    <ClCompile Include="Engine\ModuleCollision.cpp" />
+    <ClCompile Include="Engine\Enemy.cpp" />
     <ClCompile Include="Engine\ModuleFonts.cpp" />
     <ClCompile Include="Engine\ModuleGUI.cpp" />
     <ClCompile Include="Engine\ModuleMap.cpp" />
@@ -128,6 +130,7 @@
     <ClCompile Include="Engine\ModuleEntityManager.cpp" />
     <ClCompile Include="Engine\ModuleSceneManager.cpp" />
     <ClCompile Include="Engine\PerfTimer.cpp" />
+    <ClCompile Include="Engine\Hero.cpp" />
     <ClCompile Include="Engine\Scene.cpp" />
     <ClCompile Include="Engine\Timer.cpp" />
     <ClCompile Include="Engine\Log.cpp" />
@@ -143,17 +146,24 @@
     <ClCompile Include="Engine\UI\Slider.cpp" />
     <ClCompile Include="Engine\UI\Sprite.cpp" />
     <ClCompile Include="Engine\UI\Window.cpp" />
-    <ClCompile Include="Game\TestScene.cpp" />
+    <ClCompile Include="Game\Scenes\EndScene.cpp" />
+    <ClCompile Include="Game\Scenes\IntroScene.cpp" />
+    <ClCompile Include="Game\Scenes\ItemSelecScene.cpp" />
+    <ClCompile Include="Game\Scenes\MainScene.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Animation.h" />
     <ClInclude Include="Engine\App.h" />
     <ClInclude Include="Engine\Character.h" />
     <ClInclude Include="Engine\Defs.h" />
+    <ClInclude Include="Engine\ModuleCollision.h" />
+    <ClInclude Include="Engine\Enemy.h" />
     <ClInclude Include="Engine\ModuleFonts.h" />
     <ClInclude Include="Engine\ModuleGUI.h" />
     <ClInclude Include="Engine\ModuleMap.h" />
     <ClInclude Include="Engine\PerfTimer.h" />
+    <ClInclude Include="Engine\Hero.h" />
     <ClInclude Include="Engine\Point.h" />
     <ClInclude Include="Engine\Rect.h" />
     <ClInclude Include="Engine\Entity.h" />
@@ -174,7 +184,10 @@
     <ClInclude Include="Engine\UI\Slider.h" />
     <ClInclude Include="Engine\UI\Sprite.h" />
     <ClInclude Include="Engine\UI\Window.h" />
-    <ClInclude Include="Game\TestScene.h" />
+    <ClInclude Include="Game\Scenes\EndScene.h" />
+    <ClInclude Include="Game\Scenes\IntroScene.h" />
+    <ClInclude Include="Game\Scenes\ItemSelecScene.h" />
+    <ClInclude Include="Game\Scenes\MainScene.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
   </ItemGroup>

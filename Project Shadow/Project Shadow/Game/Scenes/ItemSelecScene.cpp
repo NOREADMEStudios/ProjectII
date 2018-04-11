@@ -11,6 +11,7 @@
 #include "../../Engine/ModuleInput.h"
 #include "../../Engine/ModuleRender.h"
 #include "../../Engine/UI/Window.h"
+#include "../../Engine/ModuleWindow.h"
 #include "../../Engine/UI/Button.h"
 #include "../../Engine/UI/Label.h"
 #include "../../Engine/ModuleCollision.h"
@@ -40,9 +41,9 @@ bool ItemSelecScene::Start()
 	
 	App->debug = true;
 	std::string statsStr = "Attack + ???";
-	item1 = App->gui->AddButton(200, 200, NULL, { 0,0,200,200 }, true, item1PressCallb);
-	item2 = App->gui->AddButton(800, 200, NULL, { 0,0,200,200 }, true, item2PressCallb);
-	item3 = App->gui->AddButton (1400, 200, NULL, { 0,0,200,200 }, true, item3PressCallb);
+	item1 = App->gui->AddButton(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 4, NULL, { 0,0,200,200 }, true, item1PressCallb);
+	item2 = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, NULL, { 0,0,200,200 }, true, item2PressCallb);
+	item3 = App->gui->AddButton (SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, NULL, { 0,0,200,200 }, true, item3PressCallb);
 	item1->OnHoverEnter = item1HoverEnCallb;
 	item1->OnHoverExit = item1HoverExCallb;
 	item2->OnHoverEnter = item2HoverEnCallb;

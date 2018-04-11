@@ -121,6 +121,7 @@ public:
 	bool paused = false;
 	uint hero_num = 0;
 	bool to_delete = false;
+	bool breaking = false;
 protected:
 
 	bool active = true;

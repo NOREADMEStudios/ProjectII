@@ -8,6 +8,7 @@ Button::Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enable
 	: Sprite(_x, _y, _tex, _enabled, &_anim) {
 	
 	type = BUTTON;
+	state = IDLE;
 
 	if (_hovered_anim.w == 0 && _hovered_anim.h == 0)
 		hovered_anim = _anim;
@@ -50,29 +51,32 @@ bool Button::PreUpdate() {
 		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 			current_anim = &pressed_anim;
+
 			//SetFocus();
 			if (OnClick != nullptr) {
-				OnClick(nullptr);
+				OnClick(1, this);
 				if (type != SLIDER && clickSound >= 0)
 					App->audio->PlayFx(clickSound);
 			}
 		}
-		else if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN) {
-			App->input->BlockMouseEvent(SDL_BUTTON_RIGHT);
-			current_anim = &pressed_anim;
-
-			if (OnClick != nullptr)
-				OnClick(nullptr);
-		}
-		else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_IDLE) {
+		else {
 			current_anim = &hovered_anim;
 			
-			if (OnHover != nullptr)
-				OnHover();
+			if (state != HOVERED)
+				if (OnHoverEnter != nullptr)
+					OnHoverEnter(1, this);
+
+			state = HOVERED;
 		}
 	}
 	else {
 		current_anim = &idle_anim;
+
+		if (state == HOVERED)
+			if (OnHoverExit != nullptr)
+				OnHoverExit(1, this);
+
+		state = IDLE;
 		/*SDL_Color curr;
 		label->getColor(&curr);
 		if (label != nullptr && (curr.r != 255 || curr.g != 255 || curr.b != 255 || curr.a != 255))
@@ -84,4 +88,9 @@ bool Button::PreUpdate() {
 
 void Button::setLabel(Label * label) {
 	this->label = label;
+}
+
+Label * Button::getLabel()
+{
+	return label;
 }

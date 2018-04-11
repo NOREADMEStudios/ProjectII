@@ -14,12 +14,15 @@ Entity::~Entity() {}
 
 void Entity::Draw(float dt) {
 	AnimationFrame frame = currentAnimation->GetCurrentFrame(dt);
-	App->render->Blit(sprites, position.x, position.y, &frame.GetRectSDL(), 1.0f, 0.0, frame.pivot.x, frame.pivot.y);
+	iPoint pivot_pos = PivotPos();
+
+	App->render->Blit(sprites, pivot_pos.x, pivot_pos.y, &frame.GetRectSDL(),1.0f, 0.0, flip);
 }
 
 void Entity::Move(float delta_time) {
-	position.x += speedVector.x * delta_time;
-	position.y += speedVector.y * delta_time;
+	gamepos.x += speedVector.x * delta_time;
+	gamepos.y += speedVector.y * delta_time;
+	gamepos.z += zVect * delta_time;
 }
 
 // HardCoded Valors Cough Cough -___-
@@ -27,16 +30,23 @@ void Entity::Move(float delta_time) {
 void Entity::Break(float delta_time) {
 	speedVector.x = Utils::Interpolate(speedVector.x, 0.0f, 10 * stats.spd * delta_time);
 	speedVector.y = Utils::Interpolate(speedVector.y, 0.0f, 10 * stats.spd * delta_time);
+	zVect = Utils::Interpolate(zVect, 0.0f, 10 * stats.spd * delta_time);
 }
 
-void Entity::Accelerate(float x, float y, float delta_time) {
+void Entity::Accelerate(float x, float y, float z, float delta_time) {
 	speedVector.x += x * 10 * stats.spd * delta_time;
 	speedVector.y += y * 10 * stats.spd * delta_time;
+	zVect += z * stats.spd * delta_time;
 
-	speedVector.x = CLAMP(speedVector.x, -stats.spd, stats.spd);
-	speedVector.y = CLAMP(speedVector.y, -stats.spd, stats.spd);
+	speedVector.x = CLAMP(speedVector.x, -max_speed, max_speed);
+	speedVector.y = CLAMP(speedVector.y, -max_speed, max_speed);
+	zVect = CLAMP(zVect, -max_speed, max_speed);
 }
 
+bool Entity::PausedUpdate() {
+	Draw(0);
+	return true;
+}
 
 //EntityState Entity::GetState()
 //{
@@ -91,9 +101,10 @@ EntityTypes Entity::GetType()
 	return type;
 }
 
-void Entity::SetPos(int x, int y)
+void Entity::SetPos(int x, int z)
 {
-	position = { x,y };
+	gamepos.x = x;
+	gamepos.z = z;
 }
 
 void Entity::SetActive(bool sactive)
@@ -109,4 +120,32 @@ uint Entity::GetPriority() const
 iRect Entity::GetCollider() const
 {
 	return collider;
+}
+
+void Entity::CalcRealPos()
+{
+	iPoint maplimits = { 10 , 500 };
+
+	position.x = gamepos.x;
+	position.y =  ((int)gamepos.z - (int)gamepos.y);
+}
+
+Point3D Entity::GetGamePos()
+{
+	return gamepos;
+}
+
+int Entity::GetCharDepth()
+{
+	return char_depth;
+}
+
+iPoint Entity::PivotPos()
+{
+	AnimationFrame frame = currentAnimation->CurrentFrame();
+
+	iPoint downmid = { position.x + frame.rect.w / 2, position.y + frame.rect.h };
+
+	return { downmid.x + frame.result_rect.x , downmid.y + frame.result_rect.y };
+
 }

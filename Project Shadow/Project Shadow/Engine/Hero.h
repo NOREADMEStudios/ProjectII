@@ -57,6 +57,8 @@ public:
 
 
 protected:
+
+	
 	iPoint initialpos;
 	int initiallife = 0;
 	uint lives = 0;

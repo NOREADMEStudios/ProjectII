@@ -34,6 +34,18 @@ bool ModuleInput::Awake(pugi::xml_node& config) {
 		ret = false;
 	}
 
+	if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0)
+	{
+		LOG("SDL_GAMEPAD could not initialize! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
+	else
+	{
+		if (!CheckControllers()) {
+			LOG("No controllers detected");
+		}
+	};
+
 	return ret;
 }
 
@@ -80,6 +92,41 @@ bool ModuleInput::PreUpdate() {
 		if (mouse_buttons[i].keyState == KEY_UP)
 			mouse_buttons[i].keyState = KEY_IDLE;
 	}
+
+
+	for (uint c = 0; c < MAX_CONTROLLERS; c++) {
+		Uint8 controllerState[MAX_BUTTONS];
+		for (uint i = 0; i < MAX_BUTTONS; i++) {
+			controllerState[i] = SDL_GameControllerGetButton(controllers[c].controller, (SDL_GameControllerButton)i);
+		}
+
+		for (uint i = 0; i < MAX_AXIS; i++) {
+			controllers[c].axis[i] = (float)SDL_GameControllerGetAxis(controllers[c].controller, (SDL_GameControllerAxis)i) / 32767;
+		}
+
+
+		for (int i = 0; i < MAX_BUTTONS; ++i)
+		{
+			if (controllerState[i] == B_DOWN)
+			{
+				if (controllers[c].buttons[i] == B_IDLE)
+					controllers[c].buttons[i] = B_DOWN;
+				else
+					controllers[c].buttons[i] = B_REPEAT;
+
+				ControllerLogInputs(c);
+			}
+			else
+			{
+				if (controllers[c].buttons[i] == B_REPEAT || controllers[c].buttons[i] == B_DOWN)
+					controllers[c].buttons[i] = B_UP;
+				else
+					controllers[c].buttons[i] = B_IDLE;
+			}
+		}
+	}
+
+	CheckControllers();
 
 	while (SDL_PollEvent(&event) != 0)
 	{
@@ -144,6 +191,29 @@ bool ModuleInput::GetWindowEvent(WindowEvent ev) {
 	return windowEvents[ev];
 }
 
+bool ModuleInput::CheckControllers()
+{
+	bool ret = false;
+	numSticks = SDL_NumJoysticks();
+	if (numSticks > 0)
+	{
+		for (uint i = 0; i < numSticks; i++) {
+			if (controllers[i].connected) continue;
+			controllers[i].controller = SDL_GameControllerOpen(i);
+			if (controllers[i].controller == nullptr)
+			{
+				LOG("Controller couldn't be initialized SDL_Error: %s\n", SDL_GetError());
+			}
+			else
+			{
+				ret = true;
+				controllers[i].connected = true;
+			}
+		}
+	}
+	return ret;
+}
+
 KeyState ModuleInput::GetKey(int id) const {
 	if (keyboard[id].blocked)
 		return KEY_IDLE;
@@ -156,12 +226,16 @@ KeyState ModuleInput::GetMouseButton(int id) const {
 	return mouse_buttons[id - 1].keyState;
 }
 
-void ModuleInput::GetMousePosition(int& x, int& y) {
+int ModuleInput::GetNumControllers() const {
+	return numSticks;
+}
+
+void ModuleInput::GetMousePosition(int& x, int& y) const{
 	x = mouse_x;
 	y = mouse_y;
 }
 
-void ModuleInput::GetMouseMotion(int& x, int& y) {
+void ModuleInput::GetMouseMotion(int& x, int& y)const {
 	x = mouse_motion_x;
 	y = mouse_motion_y;
 }
@@ -187,6 +261,7 @@ void ModuleInput::BlockKeyboard() {
 
 std::list<Input> ModuleInput::FirstPlayerConfig()
 {
+	
 	std::list<Input> ret;
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
@@ -243,4 +318,65 @@ std::list<Input> ModuleInput::SecondPlayerConfig()
 
 
 	return ret;
+}
+
+std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum)
+{
+	std::list<Input> ret;
+		 for (int i = 0; i < MAX_BUTTONS; ++i)
+		 {
+			 if (controllers[playerNum-1].buttons[i] == B_DOWN)
+			 {
+				 switch (i) {
+				 case 0://A button
+
+					 ret.push_back(Input(Input::JUMPINPUT));
+					 break;
+				 case 1: //B button
+					 break;
+				 case 2://X
+					 ret.push_back(Input(Input::LIGHT_ATTACK));
+					 break;
+				 case 3://Y
+					 ret.push_back(Input(Input::HEAVY_ATTACK));
+					 break;
+				 case 4://SELECT
+					 break;
+				 case 5:
+					 break;
+				 case 6://START
+					 //SETTINGS MENU
+					 break;
+				 case 7://L STICK PRESSED
+					 break;
+				 case 8://R STICK PRESSED
+					 break;
+				 case 9://L1
+					 ret.push_back(Input(Input::DEFEND));
+					 break;
+				 case 10://R1
+					 ret.push_back(Input(Input::RUNINPUT));
+					 break;
+				 case 11://UP
+					 ret.push_back(Input(Input::UP));
+					 break;
+				 case 12://DOWN
+					 ret.push_back(Input(Input::DOWN));
+					 break;
+				 case 13://LEFT
+					 ret.push_back(Input(Input::LEFT));
+					 break;
+				 case 14://RIGHT
+					 ret.push_back(Input(Input::RIGHT));
+					 break;
+				 case 15:
+					 break;
+
+
+
+				 }
+			 }
+		 }
+		 return ret;
+	
 }

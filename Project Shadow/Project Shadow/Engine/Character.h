@@ -138,9 +138,12 @@ protected:
 
 	Animation idle, walking, attack , death;
 
-	Collider	*collFeet		=	nullptr,
-				*collHitBox		=	nullptr,
-				*collAtk		=	nullptr;
+	Collider	*collFeet = nullptr,
+				*collHitBox = nullptr,
+				*collAtk = nullptr,
+				*collDef = nullptr,
+				*collParry = nullptr;
+
 
 	CharacterTypes charType;
 

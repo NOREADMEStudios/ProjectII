@@ -120,11 +120,9 @@ public:
 	EntityStats stats;
 	bool paused = false;
 	uint hero_num = 0;
-	bool to_delete = false;
 	bool breaking = false;
-protected:
-
 	bool active = true;
+protected:
 	
 	uint priority = 0;
 	iPoint position{ 0,0 };

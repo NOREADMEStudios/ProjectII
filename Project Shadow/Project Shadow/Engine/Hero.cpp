@@ -174,15 +174,26 @@ void Hero::LoadAnimations()
 }
 
 void Hero::RequestState() {
+	std::list<Input> inputs;
+	int NumControllers = App->input->GetNumControllers();
+	if (hero_num <= NumControllers) {
+
+		inputs = App->input->ControllerPlayerConfig(hero_num);
+
+	}
+	else {
+		if (hero_num-NumControllers == 1) {
+			inputs = App->input->FirstPlayerConfig();
+		}
 
 
-	std::list<Input> inputs; 
+		else if (hero_num - NumControllers == 2)
+			inputs = App->input->SecondPlayerConfig();
 
-	if (hero_num == 1)
-	inputs = App->input->FirstPlayerConfig();
+	}
+	
 
-	else if (hero_num == 2)
-	inputs = App->input->SecondPlayerConfig();
+	
 
 	
 

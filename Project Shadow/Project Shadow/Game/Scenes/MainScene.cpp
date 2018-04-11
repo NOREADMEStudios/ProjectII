@@ -71,7 +71,7 @@ bool MainScene::CleanUp()
 {
 	xmlNode n;
 	App->entities->DestroyEntity(e);
-	App->entities->DestroyEntity(e2);
+	App->entities->DestroyEntity(e2);	
 	App->map->CleanUp(n);
 	App->textures->UnLoad(t);
 

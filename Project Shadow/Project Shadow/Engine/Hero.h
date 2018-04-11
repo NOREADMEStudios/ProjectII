@@ -53,10 +53,12 @@ public:
 
 	Timer time_attack;
 
-	Animation jump, stop, run, jumpAtk, jumpProt, kick, attack, hit, death, attack_l2, attack_l3;
+	Animation jump, stop, run, jumpAtk, jumpProt, kick, attack, hit, death, attack_l2, attack_l3, protect, taunt, attack_s2;
 
 
 protected:
+
+	
 	iPoint initialpos;
 	int initiallife = 0;
 	uint lives = 0;

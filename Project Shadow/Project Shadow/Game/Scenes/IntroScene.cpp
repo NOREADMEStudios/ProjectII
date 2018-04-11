@@ -37,8 +37,9 @@ IntroScene::~IntroScene()
 bool IntroScene::Start()
 {
 	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
-	SDL_Texture * atlas = App->textures->Load("UI/Buttons.png");
-	pvpButton = App->gui->AddButton(SCREEN_WIDTH / 2, 300, atlas, { 61,70,391,186 }, true, PvPPressCallb);
+	SDL_Texture * atlas = App->textures->Load("UI/atlas.png");
+	pvpButton = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, atlas, { 50,50,384,186 }, true, PvPPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+
 	pvpButton->OnHoverEnter = PvPHoverEnCallb;
 	pvpButton->OnHoverExit = PvPHoverExCallb;
 	pvpLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
@@ -47,10 +48,10 @@ bool IntroScene::Start()
 	pvpLabel->SetParent(pvpButton);
 	pvpLabel->culled = false;
 
-	exitButton = App->gui->AddButton(SCREEN_WIDTH / 2, 700, atlas, { 61,70,391,186 }, true, ExitPressCallb);
+	exitButton = App->gui->AddButton(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 4) * 3, atlas, { 50,50,384,186 }, true, ExitPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 	exitButton->OnHoverEnter = ExitHoverEnCallb;
 	exitButton->OnHoverExit = ExitHoverExCallb;
-	exitLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
+	exitLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 }); 
 	std::string ExitStr = "EXIT";
 	exitLabel->setString(ExitStr);
 	exitLabel->SetParent(exitButton);

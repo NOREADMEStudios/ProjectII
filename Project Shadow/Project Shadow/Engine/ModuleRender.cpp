@@ -378,6 +378,10 @@ void ModuleRender::CheckCameraPos()
 		camera.y = 0;
 	}
 
+	if (max_y - (camera.h / (2 * scale)) >= mapheight - (camera.h / 2))
+	{
+		camera.y = mapheight - (camera.h / 2);
+	}
 
 	float min_scale = (float)camera.w / (mapwidth - (App->map->GetXTiles()) + 1);
 

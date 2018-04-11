@@ -2,6 +2,7 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "App.h"
+#include "ModuleGUI.h"
 
 
 Scene::Scene(){}
@@ -21,12 +22,11 @@ bool Scene::CleanUp() {
 
 bool Scene::Update(float dt) {
 
-	/*if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-		if (App->scenes->ChangeScene()
-		{
-
-		}
-		
-	}*/
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN) {
+		App->gui->FocusNext();
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) {
+		App->gui->FocusPrev();
+	}
 	return true;
 }

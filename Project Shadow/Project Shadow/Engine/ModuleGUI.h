@@ -60,6 +60,8 @@ public:
 
 	InterfaceElement* AddElement(InterfaceElement* elem);
 	void RemoveElement(InterfaceElement* elem);
+	void FocusNext();
+	void FocusPrev();
 
 	std::list<InterfaceElement*> elements;
 

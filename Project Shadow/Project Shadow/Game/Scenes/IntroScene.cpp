@@ -55,6 +55,8 @@ bool IntroScene::Start()
 	exitLabel->setString(ExitStr);
 	exitLabel->SetParent(exitButton);
 	exitLabel->culled = false;
+
+	App->gui->setFocus(pvpButton);
 	return true;
 }
 
@@ -63,6 +65,8 @@ bool IntroScene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		App->scenes->ChangeScene(App->scenes->itemSc);
 	}
+
+	Scene::Update(dt);
 
 	return true;
 }

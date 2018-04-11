@@ -138,6 +138,50 @@ void ModuleGUI::RemoveElement(InterfaceElement * elem)
 	elements.remove(elem);
 }
 
+void ModuleGUI::FocusNext()
+{
+	if (focused_item != nullptr) {
+		size_t times = 0;
+		InterfaceElement* item = focused_item;
+		do {
+			item = item->getNextSibling();
+			if (item == nullptr) {
+				size_t pos = Utils::FindInList(focused_item, elements) + 1 + times;
+				if (pos >= elements.size())
+					pos = 0;
+				LIST_ITERATOR(InterfaceElement*) it = elements.begin();
+				for (size_t i = 0; i < pos; it++, i++) {
+				}
+				item = *it;
+				times++;
+			}
+		} while (!item->isInteractuable());
+		setFocus(item);
+	}
+}
+
+void ModuleGUI::FocusPrev()
+{
+	if (focused_item != nullptr) {
+		size_t times = 0;
+		InterfaceElement* item = focused_item;
+		do {
+			item = item->getPrevSibling();
+			if (item == nullptr) {
+				int pos = Utils::FindInList(focused_item, elements) - 1 - times;
+				if (pos < 0)
+					pos = elements.size() - 1;
+				LIST_ITERATOR(InterfaceElement*) it = elements.begin();
+				for (size_t i = 0; i < pos; it++, i++) {
+				}
+				item = *it;
+				times++;
+			}
+		} while (!item->isInteractuable());
+		setFocus(item);
+	}
+}
+
 Sprite* ModuleGUI::AddSprite(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled)
 {
 	Sprite* aux = new Sprite(x, y, tex, enabled, &anim);

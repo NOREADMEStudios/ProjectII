@@ -19,6 +19,7 @@ bool ModuleEntityManager::Awake(pugi::xml_node& n) {
 		(*item)->Awake(n);
 	}
 
+	// Load SFX from XML
 	xmlDocument audio_xml_file;
 	xmlNode audio_xml;
 	xmlNode iter;
@@ -39,8 +40,11 @@ bool ModuleEntityManager::Awake(pugi::xml_node& n) {
 		{
 			if (iter2.text().as_string() != "")
 			{
-				sounds_list.push_back(iter2.text().as_string());
-				App->audio->LoadFx(iter2.text().as_string());
+				if (!IsSFXRepeated(sounds_list, iter2.text().as_string()))
+				{
+					sounds_list.push_back(iter2.text().as_string());
+					App->audio->LoadFx(iter2.text().as_string());
+				}
 			}
 		}
 	}
@@ -184,4 +188,15 @@ void ModuleEntityManager::PauseEntities(bool pause) {
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->paused = pause;
 	}
+}
+
+bool ModuleEntityManager::IsSFXRepeated(std::list<std::string> list, std::string string) const
+{
+	for (std::list<std::string> newList = list; !newList.empty();)
+	{
+		if (newList.front() == string)
+			return true;
+		newList.pop_front();
+	}
+	return false;
 }

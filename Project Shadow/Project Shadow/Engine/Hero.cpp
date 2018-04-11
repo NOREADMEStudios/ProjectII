@@ -491,7 +491,7 @@ void Hero::UpdateAnimation()
 	}
 	else if (currentState == HIT)
 	{
-		currentAnimation = &hit;
+		currentAnimation = &jumpProt;
 	}
 	else if (currentState == DEATH)
 	{

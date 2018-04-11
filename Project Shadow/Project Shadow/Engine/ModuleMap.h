@@ -120,6 +120,7 @@ public:
 	iPoint WorldToMap(const iPoint p) const;
 	int GetMapWidth();
 	int GetXTiles();
+	int GetMapHeight();
 
 private:
 

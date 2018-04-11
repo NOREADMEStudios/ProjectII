@@ -333,13 +333,21 @@ void ModuleRender::CheckCameraPos()
 {
 	float min_x = 0;
 	float max_x = 0;
+	float min_y = 0;
+	float max_y = 0;
 
 	App->entities->CheckMidPos(min_x, max_x);
+	App->entities->CheckMidPosY(min_y, max_y);
 	int mapwidth = App->map->GetMapWidth();
+	int mapheight = App->map->GetMapHeight();
 	float scale = App->win->GetScale();
 	float mid_pos = (((max_x - min_x)/2) + min_x);
+	float mid_pos_y = (((max_y - min_y) / 2) + min_y);
 
 	float diference = (max_x - min_x);
+
+	if (max_y - min_y > diference)
+		diference = max_y - min_y;
 
 
 	if (mid_pos - (camera.w  / (2* scale)  ) >= 0)
@@ -351,11 +359,25 @@ void ModuleRender::CheckCameraPos()
 		camera.x = 0;
 	}
 
-	if (mid_pos - (camera.w / (2 * scale)) >= mapwidth - (camera.w/2) - App->map->GetXTiles() + 1)
+	if (mid_pos - (camera.w / (2 * scale)) >= mapwidth - (camera.w/2))
 	{
-		camera.x = mapwidth - (camera.w / 2) - App->map->GetXTiles() + 1;
+		camera.x = mapwidth - (camera.w / 2);
+	}
+
+	if (camera.w + camera.x > mapwidth)
+	{
+		camera.x = 0;
 	}
 	
+	if (min_y - (camera.h / (2 * scale)) >= 0)
+	{
+		camera.y = min_y - camera.h / (2 * scale);
+	}
+	else
+	{
+		camera.y = 0;
+	}
+
 
 	float min_scale = (float)camera.w / (mapwidth - (App->map->GetXTiles()) + 1);
 

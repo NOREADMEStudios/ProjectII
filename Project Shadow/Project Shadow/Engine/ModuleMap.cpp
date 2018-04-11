@@ -497,3 +497,8 @@ int ModuleMap::GetXTiles()
 {
 	return data.width;
 }
+
+int ModuleMap::GetMapHeight()
+{
+	return data.height * data.tile_height;
+}

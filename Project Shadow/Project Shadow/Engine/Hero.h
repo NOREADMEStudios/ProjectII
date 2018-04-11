@@ -62,7 +62,7 @@ protected:
 	iPoint initialpos;
 	int initiallife = 0;
 	uint lives = 0;
-	uint hit_dir = 0;
+	int hit_dir = 0;
 	bool hit_bool = 0;
 	bool parried = 0;
 

@@ -500,6 +500,11 @@ int ModuleMap::GetMapWidth()
 	return data.width * data.tile_width;
 }
 
+int ModuleMap::GetMapHeight()
+{
+	return data.height * data.tile_height;
+}
+
 int ModuleMap::GetXTiles()
 {
 	return data.width;

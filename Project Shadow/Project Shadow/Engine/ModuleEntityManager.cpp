@@ -184,6 +184,35 @@ void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
 	}
 }
 
+void ModuleEntityManager::CheckMidPosY(float &min_y, float &max_y)
+{
+	uint current_players = 0;
+	if (entities.size() > 0) {
+		min_y = entities.front()->GetPosY();
+		max_y = entities.front()->GetPosY();
+
+		for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
+			if ((*item)->GetType() == CHARACTER)
+			{
+				current_players++;
+				if ((*item)->GetPosX() < min_y)
+				{
+					min_y = (*item)->GetPosY();
+				}
+				else if ((*item)->GetPosY() + (*item)->GetCollider().h > max_y)
+				{
+					max_y = (*item)->GetPosY() + (*item)->GetCollider().h;
+				}
+			}
+
+			if (current_players == numofplayers)
+			{
+				break;
+			}
+		}
+	}
+}
+
 void ModuleEntityManager::PauseEntities(bool pause) {
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->paused = pause;

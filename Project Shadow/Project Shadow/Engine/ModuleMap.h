@@ -123,11 +123,14 @@ public:
 	iPoint WorldToMap(int x, int y) const;
 	iPoint WorldToMap(const iPoint p) const;
 	int GetMapWidth();
+	int GetMapHeight();
 	int GetXTiles();
+
 	float GetMapBorders_X();
 	float GetMapBorders_Z();
 	float GetMapBorders_W();
 	float GetMapBorders_H();
+
 
 private:
 

@@ -46,7 +46,7 @@ bool Hero::Start()
 	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
 	collHitBox = App->collision->CreateCollider({}, "player_hitbox", Collider::HITBOX);
 	collFeet = App->collision->CreateCollider({}, "player_feet", Collider::FEET);
-	collDef = App->collision->CreateCollider({}, "player_defense", Collider::DEF);
+	collDef = App->collision->CreateCollider({}, "player_shield", Collider::DEF);
 	collParry = App->collision->CreateCollider({}, "player_parry", Collider::PARRY);
 	//Testing things
 	App->collision->AddCollider(collAtk, this);
@@ -215,7 +215,7 @@ void Hero::LoadAnimations()
 	protect.LoadAnimationsfromXML("protect", HERO_SPRITE_ROOT);
 	taunt.LoadAnimationsfromXML("win", HERO_SPRITE_ROOT);
 	attack_s2.LoadAnimationsfromXML("strong_attack", HERO_SPRITE_ROOT);
-	parry.LoadAnimationsfromXML("stand_up", HERO_SPRITE_ROOT);
+	parry.LoadAnimationsfromXML("standup", HERO_SPRITE_ROOT);
 
 }
 
@@ -363,6 +363,7 @@ void Hero::UpdateState()
 		}
 		else if (currentAnimation->Finished())
 		{
+			currentAnimation->Reset();
 			currentState = wantedState;
 		}
 	}
@@ -474,7 +475,7 @@ void Hero::UpdateCurState(float dt)
 
 			speedVector.x = 0;
 
-				Accelerate(x_dir, 0, 0, dt);
+			Accelerate(x_dir, 0, 0, dt);
 			
 		}
 
@@ -501,7 +502,7 @@ void Hero::UpdateAnimation()
 	}
 	else if (currentState == HIT)
 	{
-		currentAnimation = &hit;
+		currentAnimation = &jumpProt;
 	}
 	else if (currentState == DEATH)
 	{
@@ -556,8 +557,11 @@ void Hero::Respawn()
 	lives--;
 	invencible.StartInv();
 }
+
 void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 {
+	if (_this->entity == _other->entity) return;
+
 	int z1 = _this->entity->GetGamePos().z;
 	int d1 = _this->entity->GetCharDepth();
 
@@ -571,9 +575,16 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 
 	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))
 	{
+		if (_this->collider.x - _other->collider.x > 0)
+		{
+			hit_dir = 1;
+		}
+		else
+		{
+			hit_dir = -1;
+		}
 
-	
-		if (_this->sTag == "player_shield" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
+		if (_this->sTag == "player_shield" && _other->sTag == "enemy_attack")
 		{
 			if (_other->entity->breaking)
 			{
@@ -581,37 +592,27 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 
-
-				if (_this->collider.x - _other->collider.x > 0)
-				{
-					hit_dir = 1 * _other->entity->stats.atk;
-				}
-				else
-				{
-					hit_dir = -1 * _other->entity->stats.atk;
-				}
-
 				App->audio->PlayFx(3);
 			}
 			else
-			_this->entity->Accelerate(hit_dir * 100, 0, 0, 1);
+			_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
 
 		}
-		else if (_this->sTag == "enemy_atack" && _other->sTag == "player_shield" && _this->entity != _other->entity)
+		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_shield")
 		{
-			_this->entity->Accelerate(hit_dir * 100, 0, 0, 1);
+			_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
 
 		}
-		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
+		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")
 		{
 			parried = true;
 		}
-		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_parry" && _this->entity != _other->entity)
+		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_parry")
 		{
 			currentState = HIT;
 
 		}
-		else if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
+		else if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack")
 		{
 
 			currentState = HIT;

@@ -57,6 +57,7 @@ public:
 	void DestroyEntity(Entity* entity);
 
 	void CheckMidPos(float& min_x, float& max_x);
+	void CheckMidPosY(float& min_y, float& max_y);
 
 	uint numofplayers = 0;
 

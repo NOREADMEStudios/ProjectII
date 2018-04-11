@@ -37,6 +37,8 @@ bool Hero::Start()
 	App->collision->AddCollider(collFeet, this);
 	
 
+	invencible.dur = 3;
+	invencible.fr = 0.2f;
 	collider = { 50 , 50 , 50, 50 };
 	stats.spd = 300;
 	stats.life = 100;
@@ -123,7 +125,18 @@ bool Hero::Update(float dt)
 
 	CalcRealPos();
 	UpdateCollidersPosition();//Needed to change by the pivot position
+
+	if (!invencible.active)
 	App->render->FillQueue(this);
+
+	else if (invencible.active)
+	{
+		invencible.UpdateInv();
+
+		if (invencible.on)
+		App->render->FillQueue(this);
+	}
+	
 
 	return true;
 }
@@ -417,6 +430,7 @@ void Hero::Respawn()
 
 	stats.life = initiallife;
 	lives--;
+	invencible.StartInv();
 }
 void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 {

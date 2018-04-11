@@ -5,6 +5,7 @@
 #include "ModuleSceneManager.h"
 #include "Point.h"
 #include "Animation.h"
+#include "Timer.h"
 
 #include "Defs.h"
 
@@ -12,7 +13,43 @@ struct SDL_Texture;
 enum EntityTypes;
 struct Collider;
 
+struct InvBlit
+{
+	Timer duration;
+	float dur;
+	float fr;
+	float cur_fr;
+	bool active;
+	bool on;
 
+	InvBlit(float _dur = 0, float _fr = 0) {
+		dur = _dur;
+		fr = _fr;
+		on = true;
+		active = false;
+	}
+
+	void StartInv()
+	{
+		active = true;
+		cur_fr = 0;
+		duration.Start();
+	}
+
+	void UpdateInv()
+	{
+		if (duration.ReadSec() >= cur_fr)
+		{
+			cur_fr += fr;
+			on = !on;
+		}
+		if (duration.Count(dur))
+		{
+			active = false;
+		}
+
+	}
+};
 
 struct EntityStats
 {
@@ -94,6 +131,7 @@ protected:
 	float zVect = 0;
 	float max_speed = 0;
 	int char_depth = 0;
+	
 
 	// Collider has to be a struct Collider instead of an iRect
 	iRect collider{ 0,0,0,0 };
@@ -103,6 +141,7 @@ protected:
 	SDL_Texture* sprites;
 	Directions directions;
 	bool flip = 0;
+	InvBlit invencible;
 
 	// Should be same numeration as the states
 	std::list<Animation> animations;

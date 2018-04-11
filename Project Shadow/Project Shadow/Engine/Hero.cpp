@@ -205,7 +205,7 @@ void Hero::LoadAnimations()
 	protect.LoadAnimationsfromXML("protect", HERO_SPRITE_ROOT);
 	taunt.LoadAnimationsfromXML("win", HERO_SPRITE_ROOT);
 	attack_s2.LoadAnimationsfromXML("strong_attack", HERO_SPRITE_ROOT);
-	parry.LoadAnimationsfromXML("stand_up", HERO_SPRITE_ROOT);
+	parry.LoadAnimationsfromXML("standup", HERO_SPRITE_ROOT);
 
 }
 
@@ -353,6 +353,7 @@ void Hero::UpdateState()
 		}
 		else if (currentAnimation->Finished())
 		{
+			currentAnimation->Reset();
 			currentState = wantedState;
 		}
 	}

@@ -346,9 +346,6 @@ void ModuleRender::CheckCameraPos()
 
 	float diference = (max_x - min_x);
 
-	if (max_y - min_y > diference)
-		diference = max_y - min_y;
-
 
 	if (mid_pos - (camera.w  / (2* scale)  ) >= 0)
 	{

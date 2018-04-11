@@ -21,6 +21,7 @@ public:
 };
 struct AnimColls {
 	iRect attack = { 0,0,0,0 };
+	iRect defense = { 0,0,0,0 };
 	iRect hitbox;
 	iRect feet;
 };
@@ -172,6 +173,7 @@ private:
 				iRect feetColl(0, 0, 0, 0);
 				iRect HitBoxColl(0, 0, 0, 0);
 				iRect AtkColl(0, 0, 0, 0);
+				iRect DefColl(0, 0, 0, 0);
 				for (pugi::xml_node object = objectgroup.child("object"); object; object = object.next_sibling("object")) {
 					pugi::xml_node prop = object.child("properties").child("property");
 					if (prop.attribute("name").as_string() == frame) {
@@ -180,7 +182,10 @@ private:
 							prop = prop.next_sibling("property");
 							if (prop.attribute("name").as_string() == colltype) {
 
-								if (prop.attribute("value").as_int() == 1) {//collider atk
+								if (prop.attribute("value").as_int() == 0) {//collider def
+									DefColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
+								}
+								else if (prop.attribute("value").as_int() == 1) {//collider atk
 									AtkColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
 								}
 								else if (prop.attribute("value").as_int() == 2) {//collider hitbox
@@ -188,10 +193,11 @@ private:
 								}
 								else if (prop.attribute("value").as_int() == 3) {//collider feet
 									feetColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
-									this->coll_frames.push_back({ AtkColl, HitBoxColl, feetColl });
+									this->coll_frames.push_back({ AtkColl, DefColl,  HitBoxColl, feetColl });
 									feetColl.ToZero();
 									HitBoxColl.ToZero();
 									AtkColl.ToZero();
+									DefColl.ToZero();
 									i++;
 								}
 							}

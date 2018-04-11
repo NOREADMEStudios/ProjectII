@@ -104,8 +104,10 @@ public:
 	bool GetWindowEvent(int code);
 
 	// Get mouse / axis position
-	void GetMousePosition(int &x, int &y);
-	void GetMouseMotion(int& x, int& y);
+	void GetMousePosition(int &x, int &y) const ;
+	void GetMouseMotion(int& x, int& y)const;
+
+	int GetNumControllers() const;
 
 	void BlockMouse();
 	void BlockKeyboard();
@@ -116,8 +118,11 @@ public:
 	std::list<Input> FirstPlayerConfig();
 	std::list<Input> SecondPlayerConfig();
 
+	std::list<Input> ControllerPlayerConfig(int playerNum);
 
 private:
+
+	int			numSticks;
 	bool		windowEvents[WE_COUNT];
 	KeyEvent*	keyboard;
 	KeyEvent*	mouse_buttons;

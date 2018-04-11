@@ -193,7 +193,7 @@ bool ModuleInput::GetWindowEvent(WindowEvent ev) {
 bool ModuleInput::CheckControllers()
 {
 	bool ret = false;
-	int numSticks = SDL_NumJoysticks();
+	numSticks = SDL_NumJoysticks();
 	if (numSticks > 0)
 	{
 		for (uint i = 0; i < numSticks; i++) {
@@ -225,12 +225,16 @@ KeyState ModuleInput::GetMouseButton(int id) const {
 	return mouse_buttons[id - 1].keyState;
 }
 
-void ModuleInput::GetMousePosition(int& x, int& y) {
+int ModuleInput::GetNumControllers() const {
+	return numSticks;
+}
+
+void ModuleInput::GetMousePosition(int& x, int& y) const{
 	x = mouse_x;
 	y = mouse_y;
 }
 
-void ModuleInput::GetMouseMotion(int& x, int& y) {
+void ModuleInput::GetMouseMotion(int& x, int& y)const {
 	x = mouse_motion_x;
 	y = mouse_motion_y;
 }
@@ -256,6 +260,7 @@ void ModuleInput::BlockKeyboard() {
 
 std::list<Input> ModuleInput::FirstPlayerConfig()
 {
+	
 	std::list<Input> ret;
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
@@ -306,4 +311,65 @@ std::list<Input> ModuleInput::SecondPlayerConfig()
 
 
 	return ret;
+}
+
+std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum)
+{
+	std::list<Input> ret;
+		 for (int i = 0; i < MAX_BUTTONS; ++i)
+		 {
+			 if (controllers[playerNum-1].buttons[i] == B_DOWN)
+			 {
+				 switch (i) {
+				 case 0://A button
+
+					 ret.push_back(Input(Input::JUMPINPUT));
+					 break;
+				 case 1: //B button
+					 break;
+				 case 2://X
+					 ret.push_back(Input(Input::LIGHT_ATTACK));
+					 break;
+				 case 3://Y
+					 ret.push_back(Input(Input::HEAVY_ATTACK));
+					 break;
+				 case 4://SELECT
+					 break;
+				 case 5:
+					 break;
+				 case 6://START
+					 //SETTINGS MENU
+					 break;
+				 case 7://L STICK PRESSED
+					 break;
+				 case 8://R STICK PRESSED
+					 break;
+				 case 9://L1
+					 ret.push_back(Input(Input::DEFEND));
+					 break;
+				 case 10://R1
+					 ret.push_back(Input(Input::RUNINPUT));
+					 break;
+				 case 11://UP
+					 ret.push_back(Input(Input::UP));
+					 break;
+				 case 12://DOWN
+					 ret.push_back(Input(Input::DOWN));
+					 break;
+				 case 13://LEFT
+					 ret.push_back(Input(Input::LEFT));
+					 break;
+				 case 14://RIGHT
+					 ret.push_back(Input(Input::RIGHT));
+					 break;
+				 case 15:
+					 break;
+
+
+
+				 }
+			 }
+		 }
+		 return ret;
+	
 }

@@ -45,11 +45,14 @@ bool Hero::Start()
 	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
 	collHitBox = App->collision->CreateCollider({}, "player_hitbox", Collider::HITBOX);
 	collFeet = App->collision->CreateCollider({}, "player_feet", Collider::FEET);
+	collDef = App->collision->CreateCollider({}, "player_defense", Collider::DEF);
+	collParry = App->collision->CreateCollider({}, "player_parry", Collider::PARRY);
 	//Testing things
 	App->collision->AddCollider(collAtk, this);
 	App->collision->AddCollider(collHitBox, this);
 	App->collision->AddCollider(collFeet, this);
-	
+	App->collision->AddCollider(collDef, this);
+	App->collision->AddCollider(collParry, this);
 
 	invencible.dur = 3;
 	invencible.fr = 0.2f;
@@ -170,6 +173,12 @@ bool Hero::CleanUp(pugi::xml_node&)
 	App->textures->UnLoad(sprites);
 	if (collAtk) {
 		App->collision->RemoveCollider(collAtk);
+	}
+	if (collDef) {
+		App->collision->RemoveCollider(collDef);
+	}
+	if (collParry) {
+		App->collision->RemoveCollider(collParry);
 	}
 	App->collision->RemoveCollider(collHitBox);
 	App->collision->RemoveCollider(collFeet);

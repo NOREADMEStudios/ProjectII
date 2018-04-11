@@ -205,10 +205,10 @@ void ModuleEntityManager::CheckMidPosY(float &min_y, float &max_y)
 				}
 			}
 
-			if (current_players == numofplayers)
+			/*if (current_players == numofplayers)
 			{
 				break;
-			}
+			}*/
 		}
 	}
 }

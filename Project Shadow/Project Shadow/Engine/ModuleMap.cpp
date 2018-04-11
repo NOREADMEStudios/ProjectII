@@ -201,8 +201,15 @@ bool ModuleMap::Load(const char* fileName)
 	pugi::xml_node node_layer_objects;
 	for (node_layer_objects = map_file.child("map").child("objectgroup"); node_layer_objects && ret; node_layer_objects = node_layer_objects.next_sibling("objectgroup"))
 	{
-		/*for (pugi::xml_node object : node_layer_objects.children()) {
-			if (!strcmp(object.attribute("name").as_string(), "Player")) {
+		for (pugi::xml_node object : node_layer_objects.children()) {
+			if (!strcmp(object.attribute("name").as_string(), "walkable"))
+			{
+				data.x_limit = object.attribute("x").as_float(0.0);
+				data.y_limit = object.attribute("y").as_float(0.0);
+				data.width_limit = object.attribute("width").as_float(0.0);
+				data.height_limit = object.attribute("height").as_float(0.0);
+			}
+			/*else if (!strcmp(object.attribute("name").as_string(), "Player")) {
 				initial_player_pos.x = object.attribute("x").as_float();
 				initial_player_pos.y = object.attribute("y").as_float();
 			}
@@ -226,8 +233,8 @@ bool ModuleMap::Load(const char* fileName)
 				}
 		
 				App->entities->Add_Enemy(static_cast<BaseEnemy::Type>(type), { x, y }, static_cast<LayerID>(layer));
-			}
-		}*/
+			}*/
+		}
 	}
 
 	//background = App->textures->Load("textures/grid.png");

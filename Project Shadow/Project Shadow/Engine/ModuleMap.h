@@ -74,6 +74,10 @@ struct MapData
 	MapTypes			type = MAPTYPE_UNKNOWN;
 	std::list<TileSet*>	tilesets;
 	std::list<MapLayer*>	layers;
+	float				x_limit = 0.0;
+	float				y_limit = 0.0;
+	float				width_limit = 0.0;
+	float				height_limit = 0.0;
 
 	~MapData() {
 

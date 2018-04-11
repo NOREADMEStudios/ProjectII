@@ -20,10 +20,13 @@ public:
 	}
 };
 struct AnimColls {
+	iRect feet;
+	iRect hitbox;
 	iRect attack = { 0,0,0,0 };
 	iRect defense = { 0,0,0,0 };
-	iRect hitbox;
-	iRect feet;
+	iRect parry = { 0,0,0,0 };
+	
+	
 };
 
 class Animation
@@ -96,6 +99,18 @@ public:
 	iRect GetAtkColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_frames.at(currFrame).attack;
+		iRect frame = frames.at(currFrame).rect;
+		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
+	}
+	iRect GetDefColliderFromFrame() {
+		int currFrame = this->current_frame;
+		iRect collider = coll_frames.at(currFrame).defense;
+		iRect frame = frames.at(currFrame).rect;
+		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
+	}
+	iRect GetParryColliderFromFrame() {
+		int currFrame = this->current_frame;
+		iRect collider = coll_frames.at(currFrame).parry;
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
@@ -174,6 +189,7 @@ private:
 				iRect HitBoxColl(0, 0, 0, 0);
 				iRect AtkColl(0, 0, 0, 0);
 				iRect DefColl(0, 0, 0, 0);
+				iRect ParryColl(0, 0, 0, 0);
 				for (pugi::xml_node object = objectgroup.child("object"); object; object = object.next_sibling("object")) {
 					pugi::xml_node prop = object.child("properties").child("property");
 					if (prop.attribute("name").as_string() == frame) {
@@ -185,6 +201,9 @@ private:
 								if (prop.attribute("value").as_int() == 0) {//collider def
 									DefColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
 								}
+								else if (prop.attribute("value").as_int() == 4) {//collider parry
+									ParryColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
+								}
 								else if (prop.attribute("value").as_int() == 1) {//collider atk
 									AtkColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
 								}
@@ -193,11 +212,12 @@ private:
 								}
 								else if (prop.attribute("value").as_int() == 3) {//collider feet
 									feetColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
-									this->coll_frames.push_back({ AtkColl, DefColl,  HitBoxColl, feetColl });
+									this->coll_frames.push_back({ feetColl,HitBoxColl, AtkColl, DefColl, ParryColl  });
 									feetColl.ToZero();
 									HitBoxColl.ToZero();
 									AtkColl.ToZero();
 									DefColl.ToZero();
+									ParryColl.ToZero();
 									i++;
 								}
 							}

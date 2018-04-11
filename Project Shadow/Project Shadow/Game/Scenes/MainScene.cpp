@@ -33,6 +33,8 @@ bool MainScene::Start()
 
 	e = App->entities->CreateCharacter({HERO,{100,100}});
 	e2 = App->entities->CreateCharacter({ HERO,{ 100,50 } });
+	e3 = App->entities->CreateCharacter({ HERO,{ 50,50 } });
+	e4= App->entities->CreateCharacter({ HERO,{ 50,100 } });
 	//App->entities->CreateEntity({ CHARACTER,HERO,{ 100,0 } });
 
 	App->debug = true;

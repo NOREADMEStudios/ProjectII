@@ -88,6 +88,7 @@ bool Hero::Start()
 
 	currentState = IDLE;
 	currentAnimation = &idle;
+	active = true;
 	return true;
 }
 
@@ -145,7 +146,7 @@ bool Hero::Update(float dt)
 
 
 	CalcRealPos();
-	UpdateCollidersPosition();//Needed to change by the pivot position
+	UpdateCollidersPosition();
 
 	if (!invencible.active)
 	App->render->FillQueue(this);
@@ -204,6 +205,8 @@ void Hero::LoadAnimations()
 	protect.LoadAnimationsfromXML("protect", HERO_SPRITE_ROOT);
 	taunt.LoadAnimationsfromXML("win", HERO_SPRITE_ROOT);
 	attack_s2.LoadAnimationsfromXML("strong_attack", HERO_SPRITE_ROOT);
+	parry.LoadAnimationsfromXML("stand_up", HERO_SPRITE_ROOT);
+
 }
 
 void Hero::RequestState() {
@@ -231,7 +234,8 @@ void Hero::RequestState() {
 		jump = false, 
 		block = false, 
 		run = false,
-		taunt_b = false;
+		taunt_b = false,
+		parry_b = false;
 
 	directions.down = false;
 	directions.up = false;
@@ -280,6 +284,10 @@ void Hero::RequestState() {
 		{
 			taunt_b = true;
 		}
+		else if ((*item) == PARRYINPUT)
+		{
+			parry_b = true;
+		}
 
 	}
 
@@ -310,6 +318,8 @@ void Hero::RequestState() {
 	}
 	else if (block)
 		wantedState = PROTECT;
+	else if (parry_b)
+		wantedState = PARRY;
 	
 
 
@@ -364,7 +374,7 @@ void Hero::UpdateState()
 				Respawn();
 
 			else
-				to_delete = true;
+				active = false;
 		}
 ;
 
@@ -444,6 +454,19 @@ void Hero::UpdateCurState(float dt)
 			
 			break;
 		}
+		case ATTACK_L3:
+		case ATTACK_LIGHT:
+		{
+			if (flip)
+				x_dir = -1;
+			else
+				x_dir = 1;
+
+			speedVector.x = 0;
+
+				Accelerate(x_dir, 0, 0, dt);
+			
+		}
 
 	}
 }
@@ -507,6 +530,10 @@ void Hero::UpdateAnimation()
 	{
 		currentAnimation = &attack_s2;
 	}
+	else if (currentState == PARRY)
+	{
+		currentAnimation = &parry;
+	}
 
 }
 
@@ -538,6 +565,25 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 	
 		if (_this->sTag == "player_shield" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
 		{
+			if (_other->entity->breaking)
+			{
+				currentState = HIT;
+				stats.life -= _other->entity->stats.atk;
+				hit_bool = true;
+
+
+				if (_this->collider.x - _other->collider.x > 0)
+				{
+					hit_dir = 1 * _other->entity->stats.atk;
+				}
+				else
+				{
+					hit_dir = -1 * _other->entity->stats.atk;
+				}
+
+				App->audio->PlayFx(3);
+			}
+			else
 			_this->entity->Accelerate(hit_dir * 100, 0, 0, 1);
 
 		}
@@ -555,7 +601,7 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 			currentState = HIT;
 
 		}
-		/*else if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
+		else if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
 		{
 
 			currentState = HIT;
@@ -573,7 +619,7 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 
 			App->audio->PlayFx(3);
-		}*/
+		}
 	}
 }
 
@@ -584,7 +630,7 @@ void Hero::CalculateAtk()
 
 bool Hero::StateisAtk(CharStateEnum State)
 {
-	return (State != WALK && State != RUN && State != IDLE && State != JUMP && State != DEATH && State != DEFEND && State != HIT && State != PROTECT && State != TAUNT);
+	return (State != WALK && State != RUN && State != IDLE && State != JUMP && State != DEATH && State != DEFEND && State != HIT && State != PROTECT && State != TAUNT && State != STOP && State != PARRY);
 }
 
 Attack* Hero::GetAtk(CharStateEnum atk)

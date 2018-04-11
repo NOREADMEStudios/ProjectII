@@ -73,6 +73,7 @@ bool ModuleEntityManager::PreUpdate() {
 bool ModuleEntityManager::Update(float dt) {
 
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
+		if((*item)->active)
 		(*item)->Update(dt);
 	}
 

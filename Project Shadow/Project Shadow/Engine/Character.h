@@ -23,6 +23,7 @@ enum Input
 	RUNINPUT,
 	DEFEND,
 	TAUNTINPUT,
+	PARRYINPUT,
 };
 
 enum CharStateEnum

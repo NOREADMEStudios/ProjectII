@@ -180,6 +180,7 @@ bool Hero::CleanUp(pugi::xml_node&)
 	if (collParry) {
 		App->collision->RemoveCollider(collParry);
 	}
+
 	App->collision->RemoveCollider(collHitBox);
 	App->collision->RemoveCollider(collFeet);
 	return true;
@@ -533,27 +534,9 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 
 	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))
 	{
-		if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
-		{
 
-			currentState = HIT;
-			stats.life -= _other->entity->stats.atk;
-			hit_bool = true;
-
-
-			if (_this->collider.x - _other->collider.x > 0)
-			{
-				hit_dir = 1 * _other->entity->stats.atk;
-			}
-			else
-			{
-				hit_dir = -1 * _other->entity->stats.atk;
-			}
-
-			App->audio->PlayFx(3);
-		}
 	
-		else if (_this->sTag == "player_shield" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
+		if (_this->sTag == "player_shield" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
 		{
 			_this->entity->Accelerate(hit_dir * 100, 0, 0, 1);
 
@@ -572,6 +555,25 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 			currentState = HIT;
 
 		}
+		/*else if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
+		{
+
+			currentState = HIT;
+			stats.life -= _other->entity->stats.atk;
+			hit_bool = true;
+
+
+			if (_this->collider.x - _other->collider.x > 0)
+			{
+				hit_dir = 1 * _other->entity->stats.atk;
+			}
+			else
+			{
+				hit_dir = -1 * _other->entity->stats.atk;
+			}
+
+			App->audio->PlayFx(3);
+		}*/
 	}
 }
 

@@ -75,7 +75,7 @@ struct MapData
 	std::list<TileSet*>	tilesets;
 	std::list<MapLayer*>	layers;
 	float				x_limit = 0.0;
-	float				y_limit = 0.0;
+	float				z_limit = 0.0;
 	float				width_limit = 0.0;
 	float				height_limit = 0.0;
 
@@ -123,8 +123,14 @@ public:
 	iPoint WorldToMap(int x, int y) const;
 	iPoint WorldToMap(const iPoint p) const;
 	int GetMapWidth();
-	int GetXTiles();
 	int GetMapHeight();
+	int GetXTiles();
+
+	float GetMapBorders_X();
+	float GetMapBorders_Z();
+	float GetMapBorders_W();
+	float GetMapBorders_H();
+
 
 private:
 

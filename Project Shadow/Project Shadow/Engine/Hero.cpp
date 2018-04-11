@@ -4,6 +4,7 @@
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
 #include "ModuleAudio.h"
+#include "ModuleMap.h"
 #include "App.h"
 
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
@@ -159,6 +160,15 @@ bool Hero::Update(float dt)
 		App->render->FillQueue(this);
 	}
 	
+	// Map boundaries for the Heroes
+	if (gamepos.x < App->map->GetMapBorders_X())
+		gamepos.x = App->map->GetMapBorders_X();
+	if (gamepos.z < App->map->GetMapBorders_Z())
+		gamepos.z = App->map->GetMapBorders_Z();
+	if (gamepos.x > App->map->GetMapBorders_X() + App->map->GetMapBorders_W())
+		gamepos.x = App->map->GetMapBorders_X() + App->map->GetMapBorders_W();
+	if (gamepos.z > App->map->GetMapBorders_Z() + App->map->GetMapBorders_H())
+		gamepos.z = App->map->GetMapBorders_Z() + App->map->GetMapBorders_H();
 
 	return true;
 }

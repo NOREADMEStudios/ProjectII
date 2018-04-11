@@ -205,7 +205,7 @@ bool ModuleMap::Load(const char* fileName)
 			if (!strcmp(object.attribute("name").as_string(), "walkable"))
 			{
 				data.x_limit = object.attribute("x").as_float(0.0);
-				data.y_limit = object.attribute("y").as_float(0.0);
+				data.z_limit = object.attribute("y").as_float(0.0);
 				data.width_limit = object.attribute("width").as_float(0.0);
 				data.height_limit = object.attribute("height").as_float(0.0);
 			}
@@ -500,12 +500,32 @@ int ModuleMap::GetMapWidth()
 	return data.width * data.tile_width;
 }
 
+int ModuleMap::GetMapHeight()
+{
+	return data.height * data.tile_height;
+}
+
 int ModuleMap::GetXTiles()
 {
 	return data.width;
 }
 
-int ModuleMap::GetMapHeight()
+float ModuleMap::GetMapBorders_X()
 {
-	return data.height * data.tile_height;
+	return data.x_limit;
+}
+
+float ModuleMap::GetMapBorders_Z()
+{
+	return data.z_limit;
+}
+
+float ModuleMap::GetMapBorders_W()
+{
+	return data.width_limit;
+}
+
+float ModuleMap::GetMapBorders_H()
+{
+	return data.height_limit;
 }

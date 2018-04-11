@@ -206,7 +206,7 @@ void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
 	winRes.append_attribute("width") = DEFAULT_RESOLUTION_X;
 	winRes.append_attribute("height") = DEFAULT_RESOLUTION_Y;
 	winRes.append_attribute("scale") = 1.0f;
-	window.append_child("fullscreen").append_attribute("value") = 0;
+	window.append_child("fullscreen").append_attribute("value") = 1;
 	window.append_child("borderless").append_attribute("value") = 0;
 	window.append_child("resizable").append_attribute("value") = 0;
 	window.append_child("fullscreenWindow").append_attribute("value") = 0;

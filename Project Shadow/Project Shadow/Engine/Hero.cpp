@@ -465,7 +465,7 @@ void Hero::UpdateCurState(float dt)
 
 			speedVector.x = 0;
 
-				Accelerate(x_dir, 0, 0, dt);
+			Accelerate(x_dir, 0, 0, dt);
 			
 		}
 
@@ -585,12 +585,12 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 				App->audio->PlayFx(3);
 			}
 			else
-			_this->entity->Accelerate(hit_dir * 100, 0, 0, 1);
+			_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
 
 		}
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_shield")
 		{
-			_this->entity->Accelerate(hit_dir * 100, 0, 0, 1);
+			_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
 
 		}
 		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")

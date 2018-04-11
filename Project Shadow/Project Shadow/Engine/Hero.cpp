@@ -420,21 +420,22 @@ void Hero::Respawn()
 }
 void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 {
-	if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
+	int z1 = _this->entity->GetGamePos().z;
+	int d1 = _this->entity->GetCharDepth();
+
+	int z2 = _other->entity->GetGamePos().z;
+	int d2 = _other->entity->GetCharDepth();
+
+	int p11 = z1 - (d1 / 2);
+	int p12 = z1 + (d1 / 2);
+	int p21 = z2 - (d2 / 2);
+	int p22 = z2 + (d2 / 2);
+
+	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))
 	{
-		int z1 = _this->entity->GetGamePos().z;
-		int d1 = _this->entity->GetCharDepth();
-
-		int z2 = _other->entity->GetGamePos().z;
-		int d2 = _other->entity->GetCharDepth();
-
-		int p11 = z1 - (d1 / 2);
-		int p12 = z1 + (d1 / 2);
-		int p21 = z2 - (d2 / 2);
-		int p22 = z2 + (d2 / 2);
-
-		if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 &&  p11 <= p22) || (p21 <= p12 && p12 <= p22))
+		if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
 		{
+
 			currentState = HIT;
 			stats.life -= _other->entity->stats.atk;
 			hit_bool = true;
@@ -450,22 +451,22 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 
 			App->audio->PlayFx(3);
-		}	
-	}
-	if (_this->sTag == "player_shield" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
-	{
-		_this->entity->Accelerate(hit_dir * 100, 0, 0 ,1);
-		//_other->entity->Accelerate((-hit_dir) * 100, 0, 0, 1);
-	}
-	if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
-	{
-		parried = true;
-	}
-	if (_this->sTag == "enemy_attack" && _other->sTag == "player_parry" && _this->entity != _other->entity)
-	{
-		backfired = true;
-		currentState = PARRIED;
-		//_this->entity->Accelerate((-hit_dir) * 100, 0, 0, 1);
+		}
+	
+		else if (_this->sTag == "player_shield" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
+		{
+			_this->entity->Accelerate(hit_dir * 100, 0, 0, 1);
+
+		}
+		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack" && _this->entity != _other->entity)
+		{
+			parried = true;
+		}
+		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_parry" && _this->entity != _other->entity)
+		{
+			currentState = HIT;
+
+		}
 	}
 }
 

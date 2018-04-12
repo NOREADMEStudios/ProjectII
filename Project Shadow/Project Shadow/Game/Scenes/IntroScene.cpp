@@ -36,7 +36,7 @@ IntroScene::~IntroScene()
 
 bool IntroScene::Start()
 {
-	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
+	//App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
 	SDL_Texture * atlas = App->textures->Load("UI/atlas.png");
 	pvpButton = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, atlas, { 50,50,384,186 }, true, PvPPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 

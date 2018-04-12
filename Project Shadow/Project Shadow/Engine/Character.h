@@ -39,6 +39,7 @@ enum CharStateEnum
 	ATTACK_L3,
 	ATTACK_H2,
 	ATTACK_J1,
+	ATTACK_J2,
 	STOP,
 	HIT,
 	KNOKED,

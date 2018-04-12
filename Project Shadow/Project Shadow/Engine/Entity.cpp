@@ -46,7 +46,7 @@ void Entity::UnloadShadow() {
 void Entity::DrawShadow(AnimationFrame frame) {
 
 	iRect rect = SHADOW_RECT;
-	int x = position.x + (rect.w/2)  ;// need to fix this values
+	int x = position.x -(rect.w/2)  ;// need to fix this values
 	int y = gamepos.z;
 	
 	App->render->Blit(shadowSprites, x, y, &rect.toSDL_Rect());

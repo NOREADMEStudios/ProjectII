@@ -75,6 +75,7 @@ bool Hero::Start()
 	Attack* heavy_2 = new Attack(ATTACK_H2, HEAVY_ATTACK, 15);
 	Attack* jump_a = new Attack(JUMP, JUMPINPUT, 0);
 	Attack* jump_a2 = new Attack(ATTACK_J1, LIGHT_ATTACK, 10);
+	Attack* jump_a3 = new Attack(ATTACK_J2, HEAVY_ATTACK, 15);
 	attacks.push_back(light_1);
 	attacks.push_back(light_2);
 	attacks.push_back(light_3);
@@ -82,7 +83,7 @@ bool Hero::Start()
 	attacks.push_back(heavy_2);
 	attacks.push_back(jump_a);
 	attacks.push_back(jump_a2);
-
+	attacks.push_back(jump_a3);
 	
 	light_1->AddChild(light_2);
 	light_2->AddChild(light_3);
@@ -90,7 +91,7 @@ bool Hero::Start()
 	light_2->AddChild(heavy_2);
 	heavy_1->AddChild(heavy_2);
 	jump_a->AddChild(jump_a2);
-
+	jump_a->AddChild(jump_a3);
 
 	LoadShadow();
 
@@ -230,6 +231,7 @@ void Hero::LoadAnimations()
 	taunt.LoadAnimationsfromXML("win", HERO_SPRITE_ROOT);
 	attack_s2.LoadAnimationsfromXML("strong_attack", HERO_SPRITE_ROOT);
 	parry.LoadAnimationsfromXML("standup", HERO_SPRITE_ROOT);
+	attack_j2.LoadAnimationsfromXML("windwhirl", HERO_SPRITE_ROOT);
 
 }
 
@@ -387,15 +389,19 @@ void Hero::UpdateState()
 			currentAnimation->Reset();
 		
 	}
-	if (currentState == JUMP)
+	if (currentState == JUMP ||currentState == ATTACK_J1 ||currentState == ATTACK_J2)
 	{
-
-		if (StateisAtk(wantedState) && last_attack != IDLE)
+		last_attack = JUMP;
+		if (StateisAtk(wantedState))
 		{
 			SetCombo();
 			time_attack.Start();
 		}
-
+		if ((currentState == ATTACK_J1 || currentState == ATTACK_J2) && currentAnimation->Finished())
+		{
+			currentAnimation->Reset();
+			currentState = JUMP;
+		}
 		if (gamepos.y <= 0)
 		{
 			jumping = false;
@@ -485,7 +491,6 @@ void Hero::UpdateCurState(float dt)
 			break;
 		}
 		case JUMP:
-		case ATTACK_J1:
 		{
 			if (jumping)
 			{
@@ -496,10 +501,15 @@ void Hero::UpdateCurState(float dt)
 				jumping = true;
 				max_speed = 1000;
 				Accelerate(x_dir, 500, 0, dt);
-			}
-			
+			}	
+			break;
 		}
-
+		case ATTACK_J1:
+		case ATTACK_J2:
+		{	
+				Accelerate(x_dir, -1, 0, dt);
+				break;
+		}
 
 	}
 }
@@ -571,6 +581,10 @@ void Hero::UpdateAnimation()
 	{
 		currentAnimation = &jumpAtk;
 	}
+	else if (currentState == ATTACK_J2)
+	{
+		currentAnimation = &attack_j2;
+	}
 }
 
 void Hero::Respawn()
@@ -625,7 +639,6 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 				_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
 			}
 			
-
 		}
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_shield")
 		{
@@ -635,6 +648,7 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")
 		{
+			currentState = IDLE;
 			parried = true;
 		}
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_parry")

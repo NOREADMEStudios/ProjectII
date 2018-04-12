@@ -73,8 +73,8 @@ public:
 					for (pugi::xml_node object = anim.child("object"); object; object = object.next_sibling("object")) {
 						iRect frame = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
 						iPoint pivot = LoadFramePivotFromXML(anim, animationName, iterator);
-						pivot = { pivot.x - frame.x, pivot.y - frame.y };
-							this->PushBack(frame.toSDL_Rect(), pivot);
+						//pivot = { pivot.x - frame.x, pivot.y - frame.y };
+						this->PushBack(frame.toSDL_Rect(), pivot);
 					}
 					bool ret = LoadFrameCollidersFromXML(anim, animationName);
 					return ret;

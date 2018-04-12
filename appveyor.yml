@@ -1,0 +1,24 @@
+version: 0.0.{build}
+branches:
+  only:
+  - develop
+image: Visual Studio 2017
+configuration:
+- Debug
+- Release
+platform: x86
+build:
+  verbosity: minimal
+before_package:
+- ps: Copy-Item "C:\projects\ProjectII\Project Shadow\$env:CONFIGURATION\Project Shadow.exe" "C:\projects\ProjectII\Project Shadow\Build\." 
+- ps: Copy-Item "C:\projects\ProjectII\README.md" "C:\projects\ProjectII\Project Shadow\Build\."
+artifacts:
+- path: Project Shadow\Build
+  name: GameFiles
+  type: WebDeployPackage
+deploy:
+- provider: GitHub
+  description: Auto-generated Release
+  auth_token:
+    secure: yFY18sYdSeukPo6/3iIEC8Xu4wteTFCbaF+QOaPab7da25L1t6gxK4ZNg8+uj+es
+  draft: true

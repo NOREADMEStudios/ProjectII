@@ -4,6 +4,8 @@
 #include "Module.h"
 
 
+
+struct SDL_Texture;
 class Scene : public Module
 {
 public:
@@ -26,11 +28,15 @@ public:
 	bool Load(pugi::xml_node&) override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
 
-	bool loaded = false;
+	bool LoadBackground(std::string path);
+	bool DrawBackground();
+	bool UnLoadBackground();
 
+
+	bool loaded = false;
 	bool paused = false;
 
-
+	SDL_Texture* background;
 
 };
 #endif

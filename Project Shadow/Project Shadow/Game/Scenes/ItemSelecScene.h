@@ -45,6 +45,16 @@ public:
 	CharacterFrame* player2 = nullptr;
 	CharacterFrame* player3 = nullptr;
 	CharacterFrame* player4 = nullptr;
+	int item1_id = 0;
+	int item2_id = 0;
+	int item3_id = 0;
+
+	String swiftBootsStr; 
+	String cursedSwordStr; 
+	String paladinsStr; 
+	String ringStr; 
+	String dragonSlayerStr; 
+	String magicRobeStr;
 
 	ItemSelecScene();
 	virtual ~ItemSelecScene();

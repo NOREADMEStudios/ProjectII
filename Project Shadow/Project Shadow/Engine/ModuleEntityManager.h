@@ -28,6 +28,19 @@ struct CharacterInfo {
 	
 };
 
+class Item
+{
+	enum Stat {
+		NONE,
+		ATTACK,
+		DEFFENSE,
+		SPEED
+	};
+
+	const char* itemname = "default";
+	Stat statIncreased = NONE;
+	Uint8 increaseValue = 0;
+};
 
 
 class ModuleEntityManager : public Module

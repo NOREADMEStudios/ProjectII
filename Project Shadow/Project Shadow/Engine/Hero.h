@@ -48,19 +48,22 @@ public:
 
 	void Respawn();
 
-	void OnCollisionEnter(Collider* _this, Collider* _other);
+	void GetHP(int& curr, int& max);
 
+	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 
 	Timer time_attack;
 
 	Animation jump, stop, run, jumpAtk, jumpProt, kick, attack, hit, death, attack_l2, attack_l3, protect, taunt, attack_s2, parry;
 
 
+	int currHP = 100;
+
 protected:
 
 	
 	iPoint initialpos;
-	int initiallife = 0;
+	int initialLife = 0;
 	uint lives = 0;
 	int hit_dir = 0;
 	bool hit_bool = 0;

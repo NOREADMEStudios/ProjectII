@@ -333,8 +333,12 @@ std::list<Input> ModuleInput::SecondPlayerConfig()
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
 		ret.push_back(Input(Input::PARRYINPUT));
 
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		ret.push_back(Input(Input::LIGHT_ATTACK));
+
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
 		ret.push_back(Input(Input::TAUNTINPUT));
+
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		ret.push_back(Input(Input::LIGHT_ATTACK));

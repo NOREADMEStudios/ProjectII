@@ -85,9 +85,14 @@ bool Hero::Start()
 	light_2->AddChild(heavy_2);
 	heavy_1->AddChild(heavy_2);
 
+
+	LoadShadow();
+
+
 	max_speed = stats.spd;
 
 	currentState = IDLE;
+
 	currentAnimation = &idle;
 	active = true;
 	return true;
@@ -182,6 +187,9 @@ bool Hero::CleanUp(pugi::xml_node&)
 {
 	
 	App->textures->UnLoad(sprites);
+
+	UnloadShadow();
+
 	if (collAtk) {
 		App->collision->RemoveCollider(collAtk);
 	}
@@ -194,6 +202,7 @@ bool Hero::CleanUp(pugi::xml_node&)
 
 	App->collision->RemoveCollider(collHitBox);
 	App->collision->RemoveCollider(collFeet);
+>
 	return true;
 }
 

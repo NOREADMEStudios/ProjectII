@@ -99,7 +99,9 @@ public:
 	void SetActive(bool sactive);
 
 	void Draw(float dt);
-
+	virtual void LoadShadow();
+	virtual void DrawShadow(AnimationFrame frame);
+	virtual void UnloadShadow();
 	virtual void Move(float delta_time);
 	virtual void Break(float delta_time);
 	void Accelerate(float x, float y,float z, float delta_time);
@@ -118,7 +120,9 @@ public:
 
 	EntityTypes type;
 	EntityStats stats;
+
 	bool paused = false;
+
 	uint hero_num = 0;
 	bool breaking = false;
 	bool active = true;
@@ -138,9 +142,15 @@ protected:
 	Point3D gamepos;
 
 	SDL_Texture* sprites;
+
+	SDL_Texture* shadowSprites;
+
+	bool shadowed = false;
+
 	Directions directions;
 	bool flip = 0;
 	InvBlit invencible;
+
 
 	// Should be same numeration as the states
 	std::list<Animation> animations;

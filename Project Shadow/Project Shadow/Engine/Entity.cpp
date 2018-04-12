@@ -5,6 +5,8 @@
 #include "ModuleCollision.h"
 #include "Log.h"
 
+#define SHADOW_PATH "Characters/Shadow.png"
+#define SHADOW_RECT {0,0,36,9}
 
 Entity::Entity(EntityTypes type) {}
 
@@ -14,9 +16,17 @@ Entity::~Entity() {}
 
 void Entity::Draw(float dt) {
 	AnimationFrame frame = currentAnimation->GetCurrentFrame(dt);
+
+	if (shadowed) {
+		DrawShadow(frame);
+	}
+	
+
+
 	iPoint pivot_pos = PivotPos();
 
 	App->render->Blit(sprites, pivot_pos.x, pivot_pos.y, &frame.GetRectSDL(),1.0f, 0.0, flip);
+
 }
 
 void Entity::Move(float delta_time) {
@@ -24,7 +34,23 @@ void Entity::Move(float delta_time) {
 	gamepos.y += speedVector.y * delta_time;
 	gamepos.z += zVect * delta_time;
 }
+void Entity::LoadShadow() {
+	shadowSprites = App->textures->Load(SHADOW_PATH);
+	shadowed = true;
+}
+void Entity::UnloadShadow() {
+	App->textures->UnLoad(shadowSprites);
+	shadowed = false;
+}
+void Entity::DrawShadow(AnimationFrame frame) {
 
+	iRect rect = SHADOW_RECT;
+	int x = position.x + rect.w/3;// need to fix this values
+	int y = position.y+frame.rect.h-5;// need to fix this values
+	iPoint fram = frame.pivot;
+	
+	App->render->Blit(shadowSprites, x, y, &rect.toSDL_Rect());
+}
 // HardCoded Valors Cough Cough -___-
 
 void Entity::Break(float delta_time) {

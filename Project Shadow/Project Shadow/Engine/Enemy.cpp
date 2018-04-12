@@ -27,7 +27,7 @@ bool Enemy::Start()
 
 	collider = { 50 , 50 , 50, 50 };
 	currentAnimation = &idle;
-
+	LoadShadow();
 	return true;
 }
 
@@ -72,6 +72,7 @@ bool Enemy::PostUpdate()
 bool Enemy::CleanUp(pugi::xml_node&)
 {
 	App->textures->UnLoad(sprites);
+	UnloadShadow();
 	return true;
 }
 

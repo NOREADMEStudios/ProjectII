@@ -49,6 +49,10 @@ void Entity::DrawShadow(AnimationFrame frame) {
 void Entity::Break(float delta_time) {
 	speedVector.x = Utils::Interpolate(speedVector.x, 0.0f, 10 * stats.spd * delta_time);
 	speedVector.y = Utils::Interpolate(speedVector.y, 0.0f, 10 * stats.spd * delta_time);
+
+	zVect = Utils::Interpolate(zVect, 0.0f, 10 * stats.spd * delta_time);
+
+
 }
 
 void Entity::Accelerate(float x, float y, float delta_time) {

@@ -32,16 +32,20 @@ bool MainScene::Start()
 	App->map->Load("map.tmx");
 
 	t = App->textures->Load("UI/HealthBars.png");
+	SDL_Texture* f = App->textures->Load("UI/FaceArt.png");
 	Sprite* _bar = App->gui->AddSprite(0, 0, t, { 0, 26, 258, 20 });
 	Sprite* _bar2 = App->gui->AddSprite(0, 0, t, { 0, 26, 258, 20 });
+	Sprite* charFace = App->gui->AddSprite(10, 35, f, { 0, 0, 128, 64 });
+	Sprite* charFace2 = App->gui->AddSprite(10, 35, f, { 0, 0, 128, 64 });
+	Label* charNumber = App->gui->AddLabel(0, 0, 2, "UI/TTF/Vecna Bold.ttf", { 255, 255, 255, 255 }, Label::BLENDED, "hola");
 
 	e = App->entities->CreateCharacter({HERO,{500,100}});
-	App->gui->AddHealthbar((Hero*)e, 0, _bar, true, 10, 10, t, true, { 0, 0, 264, 26 });
+	App->gui->AddHealthbar((Hero*)e, 0, _bar, charFace, charNumber, true, 10, 10, t, true, { 0, 0, 264, 26 });
 
 	e2 = App->entities->CreateCharacter({ HERO,{ 100,100 } });
-	App->gui->AddHealthbar((Hero*)e2, 1, _bar2, false, 500, 500, t, true, { 0, 0, 264, 26 });
+	App->gui->AddHealthbar((Hero*)e2, 1, _bar2, charFace2, charNumber, false, 1590, 10, t, true, { 0, 0, 264, 26 });
 
-	App->debug = true;
+	App->debug = false;
 
 	//Window* w = App->gui->AddWindow(500, 500, t, {0,0,500,500}, true);
 	//Window* s = App->gui->AddWindow(0, 0, t, { 350, 520, 300, 300 }, true);

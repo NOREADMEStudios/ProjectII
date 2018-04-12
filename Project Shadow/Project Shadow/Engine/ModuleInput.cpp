@@ -234,6 +234,8 @@ std::list<Input> ModuleInput::SecondPlayerConfig()
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 		ret.push_back(Input(Input::JUMPINPUT));
 
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		ret.push_back(Input(Input::LIGHT_ATTACK));
 
 	return ret;
 }

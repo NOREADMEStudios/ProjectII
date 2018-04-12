@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "../Hero.h"
 
+class Label;
 
 class Healthbar :
 	public Sprite
@@ -16,7 +17,9 @@ public:
 	bool Update(float dt) override;
 
 	Hero* assignedCharacter = nullptr;
-	Sprite* bar;
+	Sprite* bar = nullptr;
+	Sprite* characterMugShot = nullptr;
+	Label* characterText = nullptr;
 	int characterNum = 0; //0 = player 1 (up left), 1 = player 2 (up right), 2 = player 3 (down left), 3 = player 4 (down right)
 	bool leftSide = false;
 	float percent = 1;

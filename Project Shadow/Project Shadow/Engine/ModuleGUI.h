@@ -52,7 +52,7 @@ public:
 	Window* AddWindow(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled = true);
 	Window* AddWindow(const Window_Info& info);
 	Slider* AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim = { 0, 0, 0, 0 }, SDL_Rect _pressed_anim = { 0, 0, 0, 0 }, bool _axis = 1, InterfaceElement* parent = nullptr);
-	Healthbar* AddHealthbar(Hero* character, int charNum, Sprite* bar, bool leftSide = true, uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, bool _enabled = false, SDL_Rect _anim = { 0, 0, 0, 0 });
+	Healthbar* AddHealthbar(Hero* character, int charNum, Sprite* bar, Sprite * charFace, Label * playerNum, bool leftSide = true, uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, bool _enabled = false, SDL_Rect _anim = { 0, 0, 0, 0 });
 	const SDL_Texture* GetAtlas() const;
 	std::string atlas_file_name;
 
@@ -67,6 +67,7 @@ public:
 
 private:
 	SDL_Texture* atlas_texture = nullptr;
+	SDL_Texture* characterFace = nullptr;
 	uiPoint gui_size;
 	float scale;
 

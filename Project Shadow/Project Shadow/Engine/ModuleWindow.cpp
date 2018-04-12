@@ -45,6 +45,10 @@ bool ModuleWindow::Awake(pugi::xml_node& config)
 		if(fullscreen == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
+			SDL_Rect r;
+			SDL_GetDisplayBounds(0, &r);
+			width = r.w;
+			height = r.h;
 		}
 
 		if(borderless == true)

@@ -4,17 +4,11 @@
 #include "..\..\Engine\Scene.h"
 #include "..\..\Engine\ModuleCollision.h"
 
-class Button;
-class Label;
 class EndScene :
 	public Scene
 {
 public:
 
-	Button * mainMenuButton;
-	Label * mainLabel;
-	Label * winnerLabel;
-	SDL_Texture * atlas;
 
 	EndScene();
 	virtual ~EndScene();

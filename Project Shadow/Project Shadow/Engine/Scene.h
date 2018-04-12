@@ -28,8 +28,6 @@ public:
 
 	bool loaded = false;
 
-	bool paused = false;
-
 
 
 };

@@ -25,8 +25,6 @@ public:
 		FEET, 
 		HITBOX,
 		ATK,
-		DEF,
-		PARRY,
 		TRIGGER,
 		PHYSIC,
 		Amount

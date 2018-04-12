@@ -6,7 +6,7 @@
 #include <list>
 #include "UI\Label.h"
 
-#define DEFAULT_FONT "Assets/Textures/UI/TTF/Vecna.ttf"
+#define DEFAULT_FONT "fonts/open_sans/OpenSans-Regular.ttf"
 #define DEFAULT_FONT_SIZE 40
 
 struct SDL_Texture;

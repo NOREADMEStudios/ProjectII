@@ -22,9 +22,9 @@ public:
 
 	Sprite * background = nullptr;
 	int characterNumber = 0;
-	int item1_id = 0;
-	int item2_id = 0;
-	int item3_id = 0;
+	int item1_id = 1;
+	int item2_id = 1;
+	int item3_id = 1;
 
 	FrameState currentState = PRESS_BUTTON;
 

@@ -86,8 +86,10 @@ bool ItemSelecScene::Start()
 
 	item1 = App->gui->AddButton(40, 866, item_atlas, { 0,0,120,120 }, true, item1PressCallb);
 	item1->SetAnchor(0, 0);
-	item2 = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, item_atlas, { 0,0,200,200 }, true, item2PressCallb);
-	item3 = App->gui->AddButton (SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, item_atlas, { 0,0,200,200 }, true, item3PressCallb);
+	item2 = App->gui->AddButton(179, 866, item_atlas, { 0,0,120,120 }, true, item2PressCallb);
+	item2->SetAnchor(0, 0);
+	item3 = App->gui->AddButton(318, 866, item_atlas, { 0,0,120,120 }, true, item3PressCallb);
+	item3->SetAnchor(0, 0);
 	item1->OnHoverEnter = item1HoverEnCallb;
 	item1->OnHoverExit = item1HoverExCallb;
 	item2->OnHoverEnter = item2HoverEnCallb;
@@ -95,21 +97,19 @@ bool ItemSelecScene::Start()
 	item3->OnHoverEnter = item3HoverEnCallb;
 	item3->OnHoverExit = item3HoverExCallb;
 	
-	item1Stats = App->gui->AddLabel(item1->rect.w/2, -13, 25, DEFAULT_FONT, { 255, 255, 255, 255 });
+	item1Stats = App->gui->AddLabel(item1->rect.w/2, -12, 19, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item1Stats->setString(swiftBootsStr);
 	item1Stats->SetParent(item1);
 	item1Stats->culled = false;
-	item2Stats = App->gui->AddLabel(item1->rect.w / 2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	item2Stats = App->gui->AddLabel(item1->rect.w / 2, -12, 19, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item2Stats->setString(swiftBootsStr);
 	item2Stats->SetParent(item2);
-	item2Stats->SetAnchor(0.5f, 0);
 	item2Stats->culled = false;
-	item3Stats = App->gui->AddLabel(item1->rect.w / 2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	item3Stats = App->gui->AddLabel(item1->rect.w / 2, -12, 19, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item3Stats->setString(swiftBootsStr);
 	item3Stats->SetParent(item3);
-	item3Stats->SetAnchor(0.5f, 0);
 	item3Stats->culled = false;
-
+	
 	confirmButton = App->gui->AddButton(App->gui->GetGuiSize().x / 2, App->gui->GetGuiSize().y / 2, atlas, { 450, 50, 250, 61 }, false, confirmCallback, { 450, 120, 250, 61 }, { 450, 189, 250, 61 });
 	confirmLabel = App->gui->AddLabel(confirmButton->rect.w / 2, confirmButton->rect.h / 2, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string confirmStr = "CONFIRM";
@@ -122,36 +122,138 @@ bool ItemSelecScene::Start()
 
 bool ItemSelecScene::Update(float dt)
 {
-	//if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN) {
-	//	if (player1->item1_id < 6) {
-	//		if (player1->item1_id != 0 && player1->item1_id != 5) {
-	//			item1->idle_anim = { 0 + 120 * player1->item1_id, 0, 120, 120 };
-	//			player1->item1_id++;
-	//		}
-	//		if (player1->item1_id == 0) {
-	//			player1->item1_id++;
-	//			item1->idle_anim = { 0, 0, 120, 120 };
-	//		}
-	//		if (player1->item1_id == 5) {
-	//			item1->idle_anim = { 0 + 120 * player1->item1_id, 0, 120, 120 };
-	//			player1->item1_id = 0;
-	//		}
-	//	}
-	//}
-	//
-	//if (player1->item1_id == 0)
-	//	item1Stats->setString(swiftBootsStr);
-	//else if (player1->item1_id == 1)
-	//	item1Stats->setString(cursedSwordStr);
-	//else if (player1->item1_id == 2)
-	//	item1Stats->setString(paladinsStr);
-	//else if (player1->item1_id == 3)
-	//	item1Stats->setString(ringStr);
-	//else if (player1->item1_id == 4)
-	//	item1Stats->setString(dragonSlayerStr);
-	//else if (player1->item1_id == 5)
-	//	item1Stats->setString(magicRobeStr);
-
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN && !item1->pressed) {
+		if (player1->item1_id == 0) {
+			item1->idle_anim = { 0, 0, 120, 120 };
+			item1->setHoveredAnim(item1->idle_anim);
+			item1->setPressedAnim(item1->idle_anim);
+			item1Stats->setString(swiftBootsStr);
+			player1->item1_id++;
+		}
+		else if (player1->item1_id == 1) {
+			item1->idle_anim = { 0 + 120, 0, 120, 120 };
+			item1->setHoveredAnim(item1->idle_anim);
+			item1->setPressedAnim(item1->idle_anim);
+			item1Stats->setString(cursedSwordStr);
+			player1->item1_id++;
+		}
+		else if (player1->item1_id == 2) {
+			item1->idle_anim = { 0 + 120 * player1->item1_id, 0, 120, 120 };
+			item1->setHoveredAnim(item1->idle_anim);
+			item1->setPressedAnim(item1->idle_anim);
+			item1Stats->setString(paladinsStr);
+			player1->item1_id++;
+		}
+		else if (player1->item1_id == 3) {
+			item1->idle_anim = { 0 + 120 * player1->item1_id, 0, 120, 120 };
+			item1->setHoveredAnim(item1->idle_anim);
+			item1->setPressedAnim(item1->idle_anim);
+			item1Stats->setString(ringStr);
+			player1->item1_id++;
+		}
+		else if (player1->item1_id == 4) {
+			item1->idle_anim = { 0 + 120 * player1->item1_id, 0, 120, 120 };
+			item1->setHoveredAnim(item1->idle_anim);
+			item1->setPressedAnim(item1->idle_anim);
+			item1Stats->setString(dragonSlayerStr);
+			player1->item1_id++;
+		}
+		else if (player1->item1_id == 5) {
+			item1->idle_anim = { 0 + 120 * player1->item1_id, 0, 120, 120 };
+			item1->setHoveredAnim(item1->idle_anim);
+			item1->setPressedAnim(item1->idle_anim);
+			item1Stats->setString(magicRobeStr);
+			player1->item1_id = 0;
+		};
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN && item1->pressed && !item2->pressed) {
+		if (player1->item2_id == 0) {
+			item2->idle_anim = { 0, 0, 120, 120 };
+			item2->setHoveredAnim(item2->idle_anim);
+			item2->setPressedAnim(item2->idle_anim);
+			item2Stats->setString(swiftBootsStr);
+			player1->item2_id++;
+		}
+		else if (player1->item2_id == 1) {
+			item2->idle_anim = { 0 + 120, 0, 120, 120 };
+			item2->setHoveredAnim(item2->idle_anim);
+			item2->setPressedAnim(item2->idle_anim);
+			item2Stats->setString(cursedSwordStr);
+			player1->item2_id++;
+		}
+		else if (player1->item2_id == 2) {
+			item2->idle_anim = { 0 + 120 * player1->item2_id, 0, 120, 120 };
+			item2->setHoveredAnim(item2->idle_anim);
+			item2->setPressedAnim(item2->idle_anim);
+			item2Stats->setString(paladinsStr);
+			player1->item2_id++;
+		}
+		else if (player1->item2_id == 3) {
+			item2->idle_anim = { 0 + 120 * player1->item2_id, 0, 120, 120 };
+			item2->setHoveredAnim(item2->idle_anim);
+			item2->setPressedAnim(item2->idle_anim);
+			item2Stats->setString(ringStr);
+			player1->item2_id++;
+		}
+		else if (player1->item2_id == 4) {
+			item2->idle_anim = { 0 + 120 * player1->item2_id, 0, 120, 120 };
+			item2->setHoveredAnim(item2->idle_anim);
+			item2->setPressedAnim(item2->idle_anim);
+			item2Stats->setString(dragonSlayerStr);
+			player1->item2_id++;
+		}
+		else if (player1->item2_id == 5) {
+			item2->idle_anim = { 0 + 120 * player1->item2_id, 0, 120, 120 };
+			item2->setHoveredAnim(item2->idle_anim);
+			item2->setPressedAnim(item2->idle_anim);
+			item2Stats->setString(magicRobeStr);
+			player1->item2_id = 0;
+		};
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN && item1->pressed && item2->pressed && !item3->pressed) {
+		if (player1->item3_id == 0) {
+			item3->idle_anim = { 0, 0, 120, 120 };
+			item3->setHoveredAnim(item3->idle_anim);
+			item3->setPressedAnim(item3->idle_anim);
+			item3Stats->setString(swiftBootsStr);
+			player1->item3_id++;
+		}
+		else if (player1->item3_id == 1) {
+			item3->idle_anim = { 0 + 120, 0, 120, 120 };
+			item3->setHoveredAnim(item3->idle_anim);
+			item3->setPressedAnim(item3->idle_anim);
+			item3Stats->setString(cursedSwordStr);
+			player1->item3_id++;
+		}
+		else if (player1->item3_id == 2) {
+			item3->idle_anim = { 0 + 120 * player1->item3_id, 0, 120, 120 };
+			item3->setHoveredAnim(item3->idle_anim);
+			item3->setPressedAnim(item3->idle_anim);
+			item3Stats->setString(paladinsStr);
+			player1->item3_id++;
+		}
+		else if (player1->item3_id == 3) {
+			item3->idle_anim = { 0 + 120 * player1->item3_id, 0, 120, 120 };
+			item3->setHoveredAnim(item3->idle_anim);
+			item3->setPressedAnim(item3->idle_anim);
+			item3Stats->setString(ringStr);
+			player1->item3_id++;
+		}
+		else if (player1->item3_id == 4) {
+			item3->idle_anim = { 0 + 120 * player1->item3_id, 0, 120, 120 };
+			item3->setHoveredAnim(item3->idle_anim);
+			item3->setPressedAnim(item3->idle_anim);
+			item3Stats->setString(dragonSlayerStr);
+			player1->item3_id++;
+		}
+		else if (player1->item3_id == 5) {
+			item3->idle_anim = { 0 + 120 * player1->item3_id, 0, 120, 120 };
+			item3->setHoveredAnim(item3->idle_anim);
+			item3->setPressedAnim(item3->idle_anim);
+			item3Stats->setString(magicRobeStr);
+			player1->item3_id = 0;
+		};
+	}
 	return true;
 }
 
@@ -166,20 +268,22 @@ bool ItemSelecScene::CleanUp()
 void item1PressCallb(size_t arg_size...) {
 	LOG("PRESSED");
 	
-	App->scenes->itemSc->confirmButton->Enable(true);
-	App->scenes->itemSc->confirmLabel->Enable(true);
+	//App->scenes->itemSc->confirmButton->Enable(true);
+	//App->scenes->itemSc->confirmLabel->Enable(true);
 
-	if (App->scenes->itemSc->item2->pressed || App->scenes->itemSc->item3->pressed) {
-		App->scenes->itemSc->item2->pressed = false;
-		App->scenes->itemSc->item2Stats->Enable(false);
-		App->scenes->itemSc->item3->pressed = false;
-		App->scenes->itemSc->item3Stats->Enable(false);
-	}
+	//if (App->scenes->itemSc->item2->pressed || App->scenes->itemSc->item3->pressed) {
+	//	App->scenes->itemSc->item2->pressed = false;
+	//	App->scenes->itemSc->item2Stats->Enable(false);
+	//	App->scenes->itemSc->item3->pressed = false;
+	//	App->scenes->itemSc->item3Stats->Enable(false);
+	//}
 	va_list args;
 	va_start(args, arg_size);
 
 	Button* id = va_arg(args, Button*);
 	id->pressed = true;
+
+	va_end (args);
 }
 
 void item1HoverEnCallb(size_t arg_size...) {
@@ -189,97 +293,38 @@ void item1HoverEnCallb(size_t arg_size...) {
 void item1HoverExCallb(size_t arg_size...) {
 	LOG("HOVEREXIT");
 }
-
 void item2PressCallb(size_t arg_size...) {
 	LOG("PRESSED");
-	App->scenes->itemSc->confirmButton->Enable(true);
-	App->scenes->itemSc->confirmLabel->Enable(true);
-
 	va_list args;
 	va_start(args, arg_size);
 
 	Button* id = va_arg(args, Button*);
 	id->pressed = true;
 
-	if (App->scenes->itemSc->item1->pressed || App->scenes->itemSc->item3->pressed) {
-		App->scenes->itemSc->item1->pressed = false;
-		App->scenes->itemSc->item1Stats->Enable(false);
-		App->scenes->itemSc->item3->pressed = false;
-		App->scenes->itemSc->item3Stats->Enable(false);
-	}
-
+	va_end(args);
 }
-
 void item2HoverEnCallb(size_t arg_size...) {
 	LOG("HOVERENTER");
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* b = va_arg(args, Button*);
-	if (!b->pressed)
-		b->getLabel()->Enable(true);
-
-	va_end(args);
 }
-
 void item2HoverExCallb(size_t arg_size...) {
 	LOG("HOVEREXIT");
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* b = va_arg(args, Button*);
-	if (!b->pressed)
-		b->getLabel()->Enable(false);
-
-	va_end(args);
-	//App->scenes->ChangeScene(App->scenes->mainSc);
 }
-
 void item3PressCallb(size_t arg_size...) {
 	LOG("PRESSED");
-	App->scenes->itemSc->confirmButton->Enable(true);
-	App->scenes->itemSc->confirmLabel->Enable(true);
-
 	va_list args;
 	va_start(args, arg_size);
 
 	Button* id = va_arg(args, Button*);
 	id->pressed = true;
 
-	if (App->scenes->itemSc->item1->pressed || App->scenes->itemSc->item2->pressed) {
-		App->scenes->itemSc->item1->pressed = false;
-		App->scenes->itemSc->item1Stats->Enable(false);
-		App->scenes->itemSc->item2->pressed = false;
-		App->scenes->itemSc->item2Stats->Enable(false);
-	}
-
+	va_end(args);
 }
-
 void item3HoverEnCallb(size_t arg_size...) {
 	LOG("HOVERENTER");
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* b = va_arg(args, Button*);
-
-	if (!b->pressed)
-		b->getLabel()->Enable(true);
-
-	va_end(args);
-	//App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
 void item3HoverExCallb(size_t arg_size...) {
 	LOG("HOVEREXIT");
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* b = va_arg(args, Button*);
-
-	if (!b->pressed)
-		b->getLabel()->Enable(false);
-
-	va_end(args);
 }
 
 void confirmCallback(size_t arg_size...) {

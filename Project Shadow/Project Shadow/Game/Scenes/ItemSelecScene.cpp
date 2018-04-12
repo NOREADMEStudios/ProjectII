@@ -254,6 +254,19 @@ bool ItemSelecScene::Update(float dt)
 			player1->item3_id = 0;
 		};
 	}
+
+	//IF CLICKING BACKSPACE YOU CAN RETURN TO THE ITEM BEFORE
+	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN) {
+		if (item1->pressed && !item2->pressed){
+			item1->pressed = false;
+		}
+		else if (item1->pressed && item2->pressed && !item3->pressed){
+			item2->pressed = false;
+		}
+		else if (item1->pressed && item2->pressed && item3->pressed){
+			item3->pressed = false;
+		}
+	}
 	return true;
 }
 

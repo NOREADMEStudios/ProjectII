@@ -606,6 +606,12 @@ void Hero::UpdateAnimation()
 	else if (currentState == PARRY)
 	{
 		currentAnimation = &parry;
+
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(14);
+			sound_avaliable = false;
+		}
 	}
 
 }
@@ -654,19 +660,19 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 
-				if (sound_avaliable)
-				{
-					App->audio->PlayFx(10);
-					sound_avaliable = false;
-				}
+				
 			}
 			else
 			_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
+
+			App->audio->PlayFx(10);
 
 		}
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_shield")
 		{
 			_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
+
+
 
 		}
 		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")

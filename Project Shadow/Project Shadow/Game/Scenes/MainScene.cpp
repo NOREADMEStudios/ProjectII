@@ -26,7 +26,7 @@ MainScene::~MainScene()
 
 bool MainScene::Start()
 {
-	//App->audio->PlayMusic("Assets/Audio/BGM/Level1.ogg");
+	App->audio->PlayMusic("Assets/Audio/BGM/Level1.ogg");
 
 	App->map->Load("map2small.tmx");
 

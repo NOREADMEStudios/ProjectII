@@ -61,6 +61,7 @@ bool Hero::Start()
 	stats.spd = 180;
 	stats.life = 100;
 	char_depth = 20;
+	gamepos.y = 0;
 
 	initialpos.x = gamepos.x;
 	initialpos.y = gamepos.y;

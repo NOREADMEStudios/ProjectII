@@ -331,35 +331,35 @@ void ModuleRender::SetCameraInitialPos()
 
 void ModuleRender::CheckCameraPos()
 {
-	float min_x = 0;
-	float max_x = 0;
-	float min_y = 0;
-	float max_y = 0;
+	if (App->entities->numofplayers > 0) {
+		float min_x = 0;
+		float max_x = 0;
+		float min_y = 0;
+		float max_y = 0;
 
-	App->entities->CheckMidPos(min_x, max_x);
-	App->entities->CheckMidPosY(min_y, max_y);
-	int mapwidth = App->map->GetMapWidth();
-	int mapheight = App->map->GetMapHeight();
-	float scale = App->win->GetScale();
-	float mid_pos = (((max_x - min_x) / 2) + min_x);
-	float mid_pos_y = (((max_y - min_y) / 2) + min_y);
+		App->entities->CheckMidPos(min_x, max_x);
+		App->entities->CheckMidPosY(min_y, max_y);
+		int mapwidth = App->map->GetMapWidth();
+		int mapheight = App->map->GetMapHeight();
+		float scale = App->win->GetScale();
+		float mid_pos = (((max_x - min_x) / 2) + min_x);
+		float mid_pos_y = (((max_y - min_y) / 2) + min_y);
 
-	float diference = MAX((max_x - min_x), (max_y - min_y));
+		float diference = MAX((max_x - min_x), (max_y - min_y));
 
-	float min_scale = (float)camera.w / (mapwidth - (App->map->GetXTiles()) + 1);
-	float new_scale = MAX_SCALE - ((diference / (mapwidth - camera.w / MAX_SCALE)) * (MAX_SCALE - min_scale));
-	new_scale = CLAMP(new_scale, min_scale, MAX_SCALE);
-	App->win->SetScale(new_scale);
+		float min_scale = (float)camera.w / (mapwidth - (App->map->GetXTiles()) + 1);
+		float new_scale = MAX_SCALE - ((diference / (mapwidth - camera.w / MAX_SCALE)) * (MAX_SCALE - min_scale));
+		new_scale = CLAMP(new_scale, min_scale, MAX_SCALE);
+		App->win->SetScale(new_scale);
 
-	camera.x = mid_pos - camera.w / (2 * new_scale);
-	if (camera.x < 0) camera.x = 0;
-	else if (camera.x + camera.w / new_scale > mapwidth) camera.x = mapwidth - camera.w / new_scale;
+		camera.x = mid_pos - camera.w / (2 * new_scale);
+		if (camera.x < 0) camera.x = 0;
+		else if (camera.x + camera.w / new_scale > mapwidth) camera.x = mapwidth - camera.w / new_scale;
 
-	camera.y = mid_pos_y - camera.h / (2 * new_scale);
-	if (camera.y < 0) camera.y = 0;
-	else if (camera.y + camera.h / new_scale > mapheight) camera.y = mapheight - camera.h / new_scale;
-
-	
+		camera.y = mid_pos_y - camera.h / (2 * new_scale);
+		if (camera.y < 0) camera.y = 0;
+		else if (camera.y + camera.h / new_scale > mapheight) camera.y = mapheight - camera.h / new_scale;
+	}
 }
 
 SDL_Point ModuleRender::ScreenToWorld(int x, int y) const

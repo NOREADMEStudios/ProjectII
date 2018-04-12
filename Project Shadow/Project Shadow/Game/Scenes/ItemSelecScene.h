@@ -7,20 +7,44 @@
 class Button;
 class Label;
 class InterfaceElement;
+class Sprite;
+
+enum FrameState
+{
+	PRESS_BUTTON,
+	SELECTING,
+	READY
+};
+
+class CharacterFrame
+{
+public:
+
+	Sprite * background = nullptr;
+	int characterNumber = 0;
+
+	FrameState currentState = PRESS_BUTTON;
+
+	Label* stateDisplay = nullptr;
+};
 
 class ItemSelecScene:
 	public Scene
 {
 public:
 
-	Button * item1;
-	Button * item2;
-	Button * item3;
-	Button * confirmButton;
-	Label* confirmLabel;
-	Label * item1Stats;
-	Label * item2Stats;
-	Label * item3Stats;
+	Button * item1 = nullptr;
+	Button * item2 = nullptr;
+	Button * item3 = nullptr;
+	Button * confirmButton = nullptr;
+	Label* confirmLabel = nullptr;
+	Label * item1Stats = nullptr;
+	Label * item2Stats = nullptr;
+	Label * item3Stats = nullptr;
+	CharacterFrame* player1 = nullptr;
+	CharacterFrame* player2 = nullptr;
+	CharacterFrame* player3 = nullptr;
+	CharacterFrame* player4 = nullptr;
 
 	ItemSelecScene();
 	virtual ~ItemSelecScene();

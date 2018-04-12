@@ -40,7 +40,17 @@ bool ItemSelecScene::Start()
 {
 	
 	App->debug = true;
-	std::string statsStr = "Attack + ???";
+	SDL_Texture * atlas = App->textures->Load("UI/atlas.png");
+	SDL_Texture * characterFrame = App->textures->Load("UI/Character Frame.png");
+	SDL_Texture * item_atlas = App->textures->Load("UI/items.png");
+
+	String swiftBootsStr = "SPEED + 10";
+	String cursedSwordStr = "ATTACK + 10";
+	String paladinsStr = "DEFENSE + 10";
+	String ringStr = "LIFE + 10";
+	String dragonSlayerStr = "ATK.+ 5 DEF.+ 5";
+	String magicRobeStr = "ATK.+ 5 SPD.+ 5";
+
 	item1 = App->gui->AddButton(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 4, NULL, { 0,0,200,200 }, true, item1PressCallb);
 	item2 = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, NULL, { 0,0,200,200 }, true, item2PressCallb);
 	item3 = App->gui->AddButton (SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, NULL, { 0,0,200,200 }, true, item3PressCallb);
@@ -53,30 +63,63 @@ bool ItemSelecScene::Start()
 	
 	item1Stats = App->gui->AddLabel(item1->rect.w/2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item1Stats->Enable(false);
-	item1Stats->setString(statsStr);
+	item1Stats->setString(swiftBootsStr);
 	item1Stats->SetParent(item1);
 	item1Stats->SetAnchor(0.5f, 0);
 	item1Stats->culled = false;
 	item2Stats = App->gui->AddLabel(item1->rect.w / 2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item2Stats->Enable(false);
-	item2Stats->setString(statsStr);
+	item2Stats->setString(swiftBootsStr);
 	item2Stats->SetParent(item2);
 	item2Stats->SetAnchor(0.5f, 0);
 	item2Stats->culled = false;
 	item3Stats = App->gui->AddLabel(item1->rect.w / 2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item3Stats->Enable(false);
-	item3Stats->setString(statsStr);
+	item3Stats->setString(swiftBootsStr);
 	item3Stats->SetParent(item3);
 	item3Stats->SetAnchor(0.5f, 0);
 	item3Stats->culled = false;
 
-	SDL_Texture * atlas = App->textures->Load("UI/atlas.png");
 	confirmButton = App->gui->AddButton(App->gui->GetGuiSize().x / 2, App->gui->GetGuiSize().y / 2, atlas, { 450, 50, 250, 61 }, false, confirmCallback, { 450, 120, 250, 61 }, { 450, 189, 250, 61 });
 	confirmLabel = App->gui->AddLabel(confirmButton->rect.w / 2, confirmButton->rect.h / 2, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string confirmStr = "CONFIRM";
 	confirmLabel->setString(confirmStr);
 	confirmLabel->SetParent(confirmButton);
 	confirmLabel->culled = false;
+
+	player1 = new CharacterFrame();
+	player2 = new CharacterFrame();
+	player3 = new CharacterFrame();
+	player4 = new CharacterFrame();
+
+	Sprite* bgsprite1 = App->gui->AddSprite(0, 0, characterFrame, { 0,0,480, 1080 });
+	Sprite* bgsprite2 = App->gui->AddSprite((App->gui->GetGuiSize().x / 4), 0, characterFrame, { 0,0,480, 1080 });
+	Sprite* bgsprite3 = App->gui->AddSprite(((App->gui->GetGuiSize().x / 4) * 2), 0, characterFrame, { 0,0,480, 1080 });
+	Sprite* bgsprite4 = App->gui->AddSprite(((App->gui->GetGuiSize().x / 4) * 3), 0, characterFrame, { 0,0,480, 1080 });
+
+	bgsprite1->SetAnchor(0, 0);
+	player1->background = bgsprite1;
+	player1->stateDisplay = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	player1->stateDisplay->SetAnchor(0, 0);
+	player1->stateDisplay->setString("PRESS A");
+
+	bgsprite2->SetAnchor(0, 0);
+	player2->background = bgsprite2;
+	player2->stateDisplay = App->gui->AddLabel((App->gui->GetGuiSize().x / 4), 0, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	player2->stateDisplay->SetAnchor(0, 0);
+	player2->stateDisplay->setString("PRESS A");
+
+	bgsprite3->SetAnchor(0, 0);
+	player3->background = bgsprite3;
+	player3->stateDisplay = App->gui->AddLabel(((App->gui->GetGuiSize().x / 4) * 2), 0, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	player3->stateDisplay->SetAnchor(0, 0);
+	player3->stateDisplay->setString("PRESS A");
+
+	bgsprite4->SetAnchor(0, 0);
+	player4->background = bgsprite4;
+	player4->stateDisplay = App->gui->AddLabel(((App->gui->GetGuiSize().x / 4) * 3), 0, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	player4->stateDisplay->SetAnchor(0, 0);
+	player4->stateDisplay->setString("PRESS A");
 
 	return false;
 }
@@ -86,6 +129,8 @@ bool ItemSelecScene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
 		App->scenes->ChangeScene(App->scenes->introSc);
 	}
+
+
 
 	return true;
 }

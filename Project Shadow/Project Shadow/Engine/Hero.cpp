@@ -58,7 +58,7 @@ bool Hero::Start()
 	invencible.dur = 3;
 	invencible.fr = 0.2f;
 	collider = { 50 , 50 , 50, 50 };
-	stats.spd = 300;
+	stats.spd = 180;
 	stats.life = 100;
 	char_depth = 20;
 
@@ -72,11 +72,15 @@ bool Hero::Start()
 	Attack* light_3 = new Attack(ATTACK_L3, LIGHT_ATTACK, 15);
 	Attack* heavy_1 = new Attack(ATTACK_HEAVY, HEAVY_ATTACK, 12);
 	Attack* heavy_2 = new Attack(ATTACK_H2, HEAVY_ATTACK, 15);
+	Attack* jump_a = new Attack(JUMP, JUMPINPUT, 0);
+	Attack* jump_a2 = new Attack(ATTACK_J1, LIGHT_ATTACK, 10);
 	attacks.push_back(light_1);
 	attacks.push_back(light_2);
 	attacks.push_back(light_3);
 	attacks.push_back(heavy_1);
 	attacks.push_back(heavy_2);
+	attacks.push_back(jump_a);
+	attacks.push_back(jump_a2);
 
 	
 	light_1->AddChild(light_2);
@@ -84,6 +88,7 @@ bool Hero::Start()
 	heavy_1->AddChild(light_3);
 	light_2->AddChild(heavy_2);
 	heavy_1->AddChild(heavy_2);
+	jump_a->AddChild(jump_a2);
 
 
 	LoadShadow();
@@ -119,6 +124,9 @@ bool Hero::Update(float dt)
 	else
 		currentState = DEATH;
 
+	Move(dt);
+	Break(dt);
+
 
 	UpdateAnimation();
 	UpdateState();
@@ -139,9 +147,6 @@ bool Hero::Update(float dt)
 			flip = true;
 		}
 	}
-
-	Move(dt);
-	Break(dt);
 
 
 
@@ -381,13 +386,27 @@ void Hero::UpdateState()
 			currentAnimation->Reset();
 		
 	}
+	if (currentState == JUMP)
+	{
+
+		if (StateisAtk(wantedState) && last_attack != IDLE)
+		{
+			SetCombo();
+			time_attack.Start();
+		}
+
+		if (gamepos.y <= 0)
+		{
+			jumping = false;
+			speedVector.y = 0;
+			currentAnimation->Reset();
+			currentState = wantedState;
+		}
+	}
 	else if (currentAnimation->Finished())
 	{	
-		if (currentState == JUMP)
-		{
-			speedVector.y = 0;
-		}
-		else if (currentState == DEATH)
+	
+		if (currentState == DEATH)
 		{
 			if (lives > 0)
 				Respawn();
@@ -417,6 +436,8 @@ void Hero::UpdateState()
 	{
 		last_attack = IDLE;
 	}
+
+
 }
 
 void Hero::UpdateCurState(float dt)
@@ -463,29 +484,21 @@ void Hero::UpdateCurState(float dt)
 			break;
 		}
 		case JUMP:
+		case ATTACK_J1:
 		{
-
-			if (currentAnimation->getFrameIndex() >= (currentAnimation->frames.size()) / 2)
-				Accelerate(x_dir * stats.spd / 2, -10 , 0, dt);
-
+			if (jumping)
+			{
+				Accelerate(x_dir, -2, 0, dt);
+			}
 			else
-				Accelerate(x_dir * stats.spd / 2, 10, 0, dt);
-			
-			break;
-		}
-		case ATTACK_L3:
-		case ATTACK_LIGHT:
-		{
-			if (flip)
-				x_dir = -1;
-			else
-				x_dir = 1;
-
-			speedVector.x = 0;
-
-			Accelerate(x_dir, 0, 0, dt);
+			{
+				jumping = true;
+				max_speed = 1000;
+				Accelerate(x_dir, 500, 0, dt);
+			}
 			
 		}
+
 
 	}
 }
@@ -553,7 +566,10 @@ void Hero::UpdateAnimation()
 	{
 		currentAnimation = &parry;
 	}
-
+	else if (currentState == ATTACK_J1)
+	{
+		currentAnimation = &jumpAtk;
+	}
 }
 
 void Hero::Respawn()
@@ -603,12 +619,17 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 				App->audio->PlayFx(3);
 			}
 			else
-			_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
+			{
+				max_speed = 600;
+				_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
+			}
+			
 
 		}
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_shield")
 		{
-			_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
+			max_speed = 400;
+			_this->entity->Accelerate(hit_dir * 800, 0, 0, 1);
 
 		}
 		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")

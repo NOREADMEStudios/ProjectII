@@ -36,6 +36,7 @@ IntroScene::~IntroScene()
 
 bool IntroScene::Start()
 {
+	bool test= LoadBackground("UI/MainMenu.png");
 	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
 	SDL_Texture * atlas = App->textures->Load("UI/atlas.png");
 	pvpButton = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, atlas, { 50,50,384,186 }, true, PvPPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
@@ -56,14 +57,17 @@ bool IntroScene::Start()
 	exitLabel->setString(ExitStr);
 	exitLabel->SetParent(exitButton);
 	exitLabel->culled = false;
+	
 	return true;
 }
 
 bool IntroScene::Update(float dt)
 {
+	bool test = DrawBackground();
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		App->scenes->ChangeScene(App->scenes->itemSc);
 	}
+	
 
 	return true;
 }
@@ -72,7 +76,7 @@ bool IntroScene::CleanUp()
 {
 	xmlNode n;
 	App->gui->CleanUp(n);
-
+	bool test = UnLoadBackground();
 	return true;
 }
 

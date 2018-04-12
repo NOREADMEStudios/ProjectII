@@ -14,7 +14,12 @@ Entity::~Entity() {}
 
 void Entity::Draw(float dt) {
 	AnimationFrame frame = currentAnimation->GetCurrentFrame(dt);
+
 	iPoint pivot_pos = PivotPos();
+
+	if (shadowed) {
+		DrawShadow(frame);
+	}
 
 	App->render->Blit(sprites, pivot_pos.x, pivot_pos.y, &frame.GetRectSDL(),1.0f, 0.0, flip);
 }
@@ -23,6 +28,11 @@ void Entity::Move(float delta_time) {
 	gamepos.x += speedVector.x * delta_time;
 	gamepos.y += speedVector.y * delta_time;
 	gamepos.z += zVect * delta_time;
+}
+
+void Entity::LoadShadow() {
+	shadowSprites = App->textures->Load(SHADOW_PATH);
+	shadowed = true;
 }
 
 // HardCoded Valors Cough Cough -___-
@@ -64,12 +74,6 @@ void Entity::OnCollisionStay(Collider * _this, Collider * _other)
 void Entity::OnCollisionExit(Collider * _this, Collider * _other)
 {
 }
-
-//EntityState Entity::GetState()
-//{
-//	return state;
-//}
-
 
 iPoint Entity::GetPos()
 {

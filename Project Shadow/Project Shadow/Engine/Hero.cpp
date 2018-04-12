@@ -88,6 +88,7 @@ bool Hero::Start()
 	max_speed = stats.spd;
 
 	currentState = IDLE;
+
 	currentAnimation = &idle;
 	active = true;
 	return true;
@@ -182,6 +183,9 @@ bool Hero::CleanUp(pugi::xml_node&)
 {
 	
 	App->textures->UnLoad(sprites);
+
+	UnloadShadow();
+
 	if (collAtk) {
 		App->collision->RemoveCollider(collAtk);
 	}
@@ -194,6 +198,7 @@ bool Hero::CleanUp(pugi::xml_node&)
 
 	App->collision->RemoveCollider(collHitBox);
 	App->collision->RemoveCollider(collFeet);
+
 	return true;
 }
 
@@ -478,7 +483,6 @@ void Hero::UpdateCurState(float dt)
 			Accelerate(x_dir, 0, 0, dt);
 			
 		}
-
 	}
 }
 

@@ -122,19 +122,35 @@ bool ItemSelecScene::Start()
 
 bool ItemSelecScene::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN) {
-		if (item1_id < 5) {
-			++item1_id;
-			item1->idle_anim = { 0 + 120 * item1_id, 0, 120, 120 };
-		}
-		else if (item1_id == 5) {
-			item1_id = 0;
-			item1->idle_anim = { 0 + 120 * item1_id, 0, 120, 120 };
-			item1Stats->setString(magicRobeStr);
-		}
-	}
-
-
+	//if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN) {
+	//	if (player1->item1_id < 6) {
+	//		if (player1->item1_id != 0 && player1->item1_id != 5) {
+	//			item1->idle_anim = { 0 + 120 * player1->item1_id, 0, 120, 120 };
+	//			player1->item1_id++;
+	//		}
+	//		if (player1->item1_id == 0) {
+	//			player1->item1_id++;
+	//			item1->idle_anim = { 0, 0, 120, 120 };
+	//		}
+	//		if (player1->item1_id == 5) {
+	//			item1->idle_anim = { 0 + 120 * player1->item1_id, 0, 120, 120 };
+	//			player1->item1_id = 0;
+	//		}
+	//	}
+	//}
+	//
+	//if (player1->item1_id == 0)
+	//	item1Stats->setString(swiftBootsStr);
+	//else if (player1->item1_id == 1)
+	//	item1Stats->setString(cursedSwordStr);
+	//else if (player1->item1_id == 2)
+	//	item1Stats->setString(paladinsStr);
+	//else if (player1->item1_id == 3)
+	//	item1Stats->setString(ringStr);
+	//else if (player1->item1_id == 4)
+	//	item1Stats->setString(dragonSlayerStr);
+	//else if (player1->item1_id == 5)
+	//	item1Stats->setString(magicRobeStr);
 
 	return true;
 }

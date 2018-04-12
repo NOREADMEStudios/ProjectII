@@ -358,6 +358,7 @@ std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum)
 				ret.push_back(Input(Input::JUMPINPUT));
 				break;
 			case 1: //B button
+				ret.push_back(Input(Input::PARRYINPUT));
 				break;
 			case 2://X
 				ret.push_back(Input(Input::LIGHT_ATTACK));

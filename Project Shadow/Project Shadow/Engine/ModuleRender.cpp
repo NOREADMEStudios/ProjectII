@@ -352,11 +352,11 @@ void ModuleRender::CheckCameraPos()
 		new_scale = CLAMP(new_scale, min_scale, MAX_SCALE);
 		App->win->SetScale(new_scale);
 
-		camera.x = mid_pos - camera.w;
+		camera.x = mid_pos - camera.w / scale;
 		if (camera.x < 0) camera.x = 0;
 		else if (camera.x + camera.w / scale > mapwidth) camera.x = mapwidth - camera.w / scale;
 
-		camera.y = mid_pos_y - camera.h;
+		camera.y = mid_pos_y - camera.h / scale;
 		if (camera.y < 0) camera.y = 0;
 		else if (camera.y + camera.h / scale > mapheight) camera.y = mapheight - camera.h / scale;
 	}

@@ -135,14 +135,12 @@ InterfaceElement * ModuleGUI::AddElement(InterfaceElement * elem)
 
 void ModuleGUI::RemoveElement(InterfaceElement * elem)
 {
-	elements.remove(elem);
+	elements.remove(elem);	
 }
 
 Sprite* ModuleGUI::AddSprite(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled)
 {
 	Sprite* aux = new Sprite(x, y, tex, enabled, &anim);
-	aux->ComputeRects();
-
 	AddElement(aux);
 	return aux;
 }
@@ -166,8 +164,6 @@ Label* ModuleGUI::AddLabel(int x, int y, int psize, const char * font_path, SDL_
 		}
 	}
 
-	aux->ComputeRects();
-
 	AddElement(aux);
 	return aux;
 }
@@ -175,7 +171,6 @@ Label* ModuleGUI::AddLabel(int x, int y, int psize, const char * font_path, SDL_
 Button* ModuleGUI::AddButton(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
 {
 	Button* aux = new Button(_x, _y, _tex, _anim, _enabled, callback, _hovered_anim, _pressed_anim);
-	aux->ComputeRects();
 
 	AddElement(aux);
 	return aux;
@@ -184,7 +179,6 @@ Button* ModuleGUI::AddButton(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, 
 Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim, bool _axis, InterfaceElement* parent)
 {
 	Slider* aux = new Slider(_x, _y, _tex, _anim, _enabled, callback, _hovered_anim, _pressed_anim, _axis);
-	aux->ComputeRects();
 	
 	if (parent != NULL)
 		aux->SetParent(parent);
@@ -196,7 +190,6 @@ Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, 
 Window* ModuleGUI::AddWindow(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled)
 {
 	Window* aux = new Window(x, y, tex, anim, enabled);
-	aux->ComputeRects();
 
 	AddElement(aux);
 	return aux;
@@ -205,7 +198,6 @@ Window* ModuleGUI::AddWindow(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool
 Window * ModuleGUI::AddWindow(const Window_Info& info)
 {
 	Window* aux = new Window(info);
-	aux->ComputeRects();
 
 	AddElement(aux);
 	return aux;

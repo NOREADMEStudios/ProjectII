@@ -11,7 +11,7 @@ class MainScene :
 public:
 
 	
-	Entity* e,* e2, * e3, *e4;
+	Entity* e,* e2;
 	SDL_Texture* t;
 
 	MainScene();

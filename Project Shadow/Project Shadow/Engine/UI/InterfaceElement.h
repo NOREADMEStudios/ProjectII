@@ -67,7 +67,7 @@ public:
 						initial_pos;
 	float				scale = 1.0f;
 	bool				in_focus = false,
-						culled = false,
+						culled = true,
 						next_frame_enabled = true,
 						enabled = true;
 

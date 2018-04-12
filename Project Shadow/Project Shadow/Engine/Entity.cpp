@@ -5,6 +5,8 @@
 #include "ModuleCollision.h"
 #include "Log.h"
 
+#define SHADOW_PATH "Characters/Shadow.png"
+#define SHADOW_RECT {0,0,36,9}
 
 Entity::Entity(EntityTypes type) {}
 
@@ -14,40 +16,53 @@ Entity::~Entity() {}
 
 void Entity::Draw(float dt) {
 	AnimationFrame frame = currentAnimation->GetCurrentFrame(dt);
-	iPoint pivot_pos = PivotPos();
+	if (shadowed) {
+		DrawShadow(frame);
+	}
+	App->render->Blit(sprites, position.x, position.y, &frame.GetRectSDL(), 1.0f, 0.0, frame.pivot.x, frame.pivot.y);
 
-	App->render->Blit(sprites, pivot_pos.x, pivot_pos.y, &frame.GetRectSDL(),1.0f, 0.0, flip);
 }
 
 void Entity::Move(float delta_time) {
-	gamepos.x += speedVector.x * delta_time;
-	gamepos.y += speedVector.y * delta_time;
-	gamepos.z += zVect * delta_time;
+	position.x += speedVector.x * delta_time;
+	position.y += speedVector.y * delta_time;
 }
+void Entity::LoadShadow() {
+	shadowSprites = App->textures->Load(SHADOW_PATH);
+	shadowed = true;
+}
+void Entity::UnloadShadow() {
+	App->textures->UnLoad(shadowSprites);
+	shadowed = false;
+}
+void Entity::DrawShadow(AnimationFrame frame) {
 
+	iRect rect = SHADOW_RECT;
+	int x = position.x + rect.w/3;// need to fix this values
+	int y = position.y+frame.rect.h-5;// need to fix this values
+	iPoint fram = frame.pivot;
+	
+	App->render->Blit(shadowSprites, x, y, &rect.toSDL_Rect());
+}
 // HardCoded Valors Cough Cough -___-
 
 void Entity::Break(float delta_time) {
 	speedVector.x = Utils::Interpolate(speedVector.x, 0.0f, 10 * stats.spd * delta_time);
 	speedVector.y = Utils::Interpolate(speedVector.y, 0.0f, 10 * stats.spd * delta_time);
+
 	zVect = Utils::Interpolate(zVect, 0.0f, 10 * stats.spd * delta_time);
 
+
 }
 
-void Entity::Accelerate(float x, float y, float z, float delta_time) {
+void Entity::Accelerate(float x, float y, float delta_time) {
 	speedVector.x += x * 10 * stats.spd * delta_time;
 	speedVector.y += y * 10 * stats.spd * delta_time;
-	zVect += z * stats.spd * delta_time;
 
-	speedVector.x = CLAMP(speedVector.x, -max_speed, max_speed);
-	speedVector.y = CLAMP(speedVector.y, -max_speed, max_speed);
-	zVect = CLAMP(zVect, -max_speed, max_speed);
+	speedVector.x = CLAMP(speedVector.x, -stats.spd, stats.spd);
+	speedVector.y = CLAMP(speedVector.y, -stats.spd, stats.spd);
 }
 
-bool Entity::PausedUpdate() {
-	Draw(0);
-	return true;
-}
 
 //EntityState Entity::GetState()
 //{
@@ -102,10 +117,9 @@ EntityTypes Entity::GetType()
 	return type;
 }
 
-void Entity::SetPos(int x, int z)
+void Entity::SetPos(int x, int y)
 {
-	gamepos.x = x;
-	gamepos.z = z;
+	position = { x,y };
 }
 
 void Entity::SetActive(bool sactive)
@@ -122,40 +136,3 @@ iRect Entity::GetCollider() const
 {
 	return collider;
 }
-
-void Entity::CalcRealPos()
-{
-	iPoint maplimits = { 10 , 500 };
-
-	position.x = gamepos.x;
-	position.y =  ((int)gamepos.z - (int)gamepos.y);
-}
-
-Point3D Entity::GetGamePos()
-{
-	return gamepos;
-}
-
-int Entity::GetCharDepth()
-{
-	return char_depth;
-}
-
-iPoint Entity::PivotPos()
-{
-	AnimationFrame frame = currentAnimation->CurrentFrame();
-	iPoint pivot = {frame.pivot.x - frame.rect.x, frame.pivot.y - frame.rect.y};
-
-	if (flip)
-	{
-		pivot.x = frame.rect.w - pivot.x;
-	}
-
-
-	iPoint pos = { position.x - pivot.x , position.y - pivot.y };
-
-
-return pos;
-
-}
-

@@ -42,6 +42,7 @@ bool Slider::PreUpdate()
 
 			if (label != nullptr)
 				label->setColor({ 228, 204, 42, 255 });
+			OnHover();
 		}
 	}
 	else {
@@ -53,7 +54,7 @@ bool Slider::PreUpdate()
 		DragSlider();
 		if (OnClick != nullptr) {
 			float percent = GetValue();
-			OnClick(1, &percent);
+			OnClick(&percent);
 		}
 		App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 	}

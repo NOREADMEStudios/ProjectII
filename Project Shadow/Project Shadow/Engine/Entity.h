@@ -125,8 +125,7 @@ public:
 	bool breaking = false;
 	bool active = true;
 protected:
-	void LoadShadow();
-	void DrawShadow(AnimationFrame f);
+	
 
 	
 	uint priority = 0;
@@ -147,9 +146,6 @@ protected:
 	bool flip = 0;
 	InvBlit invencible;
 
-	SDL_Texture* shadowSprites;
-
-	bool shadowed = false;
 
 	// Should be same numeration as the states
 	std::list<Animation> animations;

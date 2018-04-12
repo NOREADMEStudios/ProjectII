@@ -17,9 +17,7 @@ void Entity::Draw(float dt) {
 
 	iPoint pivot_pos = PivotPos();
 
-	if (shadowed) {
-		DrawShadow(frame);
-	}
+	
 
 	App->render->Blit(sprites, pivot_pos.x, pivot_pos.y, &frame.GetRectSDL(),1.0f, 0.0, flip);
 }
@@ -30,10 +28,7 @@ void Entity::Move(float delta_time) {
 	gamepos.z += zVect * delta_time;
 }
 
-void Entity::LoadShadow() {
-	shadowSprites = App->textures->Load(SHADOW_PATH);
-	shadowed = true;
-}
+
 
 // HardCoded Valors Cough Cough -___-
 

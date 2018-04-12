@@ -184,7 +184,7 @@ bool Hero::CleanUp(pugi::xml_node&)
 	
 	App->textures->UnLoad(sprites);
 
-	UnloadShadow();
+	
 
 	if (collAtk) {
 		App->collision->RemoveCollider(collAtk);

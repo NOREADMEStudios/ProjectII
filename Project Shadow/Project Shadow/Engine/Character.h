@@ -20,7 +20,10 @@ enum Input
 	LIGHT_ATTACK,
 	HEAVY_ATTACK,
 	JUMPINPUT,
-	DEFEND
+	RUNINPUT,
+	DEFEND,
+	TAUNTINPUT,
+	PARRYINPUT,
 };
 
 enum CharStateEnum
@@ -33,9 +36,16 @@ enum CharStateEnum
 	ATTACK_LIGHT,
 	ATTACK_HEAVY,
 	ATTACK_L2,
+	ATTACK_L3,
+	ATTACK_H2,
+	STOP,
 	HIT,
 	KNOKED,
-	DEATH
+	DEATH,
+	PROTECT,
+	PARRY,
+	PARRIED,
+	TAUNT,
 };
 
 struct Attack
@@ -98,10 +108,7 @@ struct Attack
 
 };
 
-struct Directions
-{
-	bool left, down, right, up = false;
-};
+
 
 class Character : public Entity
 {
@@ -138,16 +145,19 @@ protected:
 
 	Animation idle, walking, attack , death;
 
-	Collider	*collFeet		=	nullptr,
-				*collHitBox		=	nullptr,
-				*collAtk		=	nullptr;
+	Collider	*collFeet = nullptr,
+				*collHitBox = nullptr,
+				*collAtk = nullptr,
+				*collDef = nullptr,
+				*collParry = nullptr;
+
 
 	CharacterTypes charType;
 
 	CharStateEnum currentState;
 	CharStateEnum wantedState;
 	CharStateEnum last_attack;
-	Directions directions;
+
 
 	LIST(Attack*) attacks;
 

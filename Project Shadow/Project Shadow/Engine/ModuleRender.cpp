@@ -130,7 +130,7 @@ void ModuleRender::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
-bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
+bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, bool h_flip, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
 	float scale = App->win->GetScale();
@@ -162,7 +162,12 @@ bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* sect
 		p = &pivot;
 	}
 
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	if (h_flip)
+		flip = SDL_FLIP_HORIZONTAL;
+
+
+	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
@@ -247,8 +252,8 @@ bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uin
 	SDL_Rect rec(rect);
 	if(use_camera)
 	{
-		rec.x = (int)(camera.x + rect.x * scale);
-		rec.y = (int)(camera.y + rect.y * scale);
+		rec.x = (int)(camera.x + (rect.x * scale));
+		rec.y = (int)(camera.y + (rect.y * scale));
 		rec.w *= scale;
 		rec.h *= scale;
 	}
@@ -328,38 +333,32 @@ void ModuleRender::CheckCameraPos()
 {
 	float min_x = 0;
 	float max_x = 0;
+	float min_y = 0;
+	float max_y = 0;
 
 	App->entities->CheckMidPos(min_x, max_x);
+	App->entities->CheckMidPosY(min_y, max_y);
 	int mapwidth = App->map->GetMapWidth();
+	int mapheight = App->map->GetMapHeight();
 	float scale = App->win->GetScale();
-	float mid_pos = (((max_x - min_x)/2) + min_x);
+	float mid_pos = (((max_x - min_x) / 2) + min_x);
+	float mid_pos_y = (((max_y - min_y) / 2) + min_y);
 
-	float diference = (max_x - min_x);
-	diference += diference / 2;
+	float diference = MAX((max_x - min_x), (max_y - min_y));
 
-	if (mid_pos - (camera.w  / (2* scale)  ) >= 0)
-	{
-		camera.x = (mid_pos - (camera.w / (2 * scale)));
-	}
-	else 
-	{
-		camera.x = 0;
-	}
-
-	if (mid_pos - (camera.w / (2 * scale)) >= mapwidth - (camera.w/2) - App->map->GetXTiles() + 1)
-	{
-		camera.x = mapwidth - (camera.w / 2) - App->map->GetXTiles() + 1;
-	}
-	
-
-	float min_scale = (float)camera.w / (mapwidth - (App->map->GetXTiles()*2) + 1);
-
-	// In 0 scale is max, in width the scale is min
-
-	float new_scale = MAX_SCALE - ((diference  / mapwidth)* (MAX_SCALE - min_scale));
-
-
+	float min_scale = (float)camera.w / (mapwidth - (App->map->GetXTiles()) + 1);
+	float new_scale = MAX_SCALE - ((diference / (mapwidth - camera.w / MAX_SCALE)) * (MAX_SCALE - min_scale));
+	new_scale = CLAMP(new_scale, min_scale, MAX_SCALE);
 	App->win->SetScale(new_scale);
+
+	camera.x = mid_pos - camera.w / (2 * new_scale);
+	if (camera.x < 0) camera.x = 0;
+	else if (camera.x + camera.w / new_scale > mapwidth) camera.x = mapwidth - camera.w / new_scale;
+
+	camera.y = mid_pos_y - camera.h / (2 * new_scale);
+	if (camera.y < 0) camera.y = 0;
+	else if (camera.y + camera.h / new_scale > mapheight) camera.y = mapheight - camera.h / new_scale;
+
 	
 }
 

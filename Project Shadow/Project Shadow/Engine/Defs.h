@@ -24,8 +24,8 @@
 #define ENTITIES_DIR "Entities/"
 #define INPUT_DIR "Input/"
 
-#define DEFAULT_RESOLUTION_X 1600
-#define DEFAULT_RESOLUTION_Y 900
+#define DEFAULT_RESOLUTION_X 1920
+#define DEFAULT_RESOLUTION_Y 1080
 
 typedef unsigned int uint32;
 typedef unsigned int uint;
@@ -34,7 +34,7 @@ typedef std::string String;
 
 struct Collider;
 
-typedef void (*Callback)(...);
+typedef void (*Callback)(size_t arg_size, ...);
 
 
 #define CURSOR_WIDTH 2

@@ -4,14 +4,17 @@
 #include "..\..\Engine\Scene.h"
 #include "..\..\Engine\ModuleCollision.h"
 
+class Button;
+class Label;
+
 class IntroScene:
 	public Scene
 {
 public:
-
-	Collider *c, *c2;
-	Entity *e, *e2;
-	float angle = 0;
+	Button * pvpButton;
+	Button * exitButton;
+	Label * pvpLabel;
+	Label * exitLabel;
 
 	IntroScene();
 	virtual ~IntroScene();

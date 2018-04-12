@@ -49,8 +49,9 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(textures);
 	AddModule(audio);
 	AddModule(map);
-	AddModule(scenes);
 	AddModule(entities);
+	AddModule(scenes);
+	
 	AddModule(collision);
 	/*AddModule(pathfinding);*/
 	AddModule(font);
@@ -92,8 +93,7 @@ void Application::AddModule(Module* module)
 }
 
 // Called before render is available
-bool Application::Awake()
-{
+bool Application::Awake() {
 	//PERF_START(ptimer);
 	BROFILER_CATEGORY("App_Awake", Profiler::Color::Red);
 
@@ -132,8 +132,7 @@ bool Application::Awake()
 }
 
 // Called before the first frame
-bool Application::Start()
-{
+bool Application::Start() {
 	//PERF_START(ptimer);
 	BROFILER_CATEGORY("App_Start", Profiler::Color::Blue);
 
@@ -154,7 +153,7 @@ bool Application::Update() {
 	BROFILER_CATEGORY("App_Update", Profiler::Color::Green);
 	PrepareUpdate();
 
-	if(input->GetWindowEvent(WE_QUIT) == true)
+	if(input->GetWindowEvent(WE_QUIT) == true || want_to_quit == true)
 		ret = false;
 
 	if(ret == true)
@@ -207,7 +206,7 @@ void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
 	winRes.append_attribute("width") = DEFAULT_RESOLUTION_X;
 	winRes.append_attribute("height") = DEFAULT_RESOLUTION_Y;
 	winRes.append_attribute("scale") = 1.0f;
-	window.append_child("fullscreen").append_attribute("value") = 0;
+	window.append_child("fullscreen").append_attribute("value") = 1;
 	window.append_child("borderless").append_attribute("value") = 0;
 	window.append_child("resizable").append_attribute("value") = 0;
 	window.append_child("fullscreenWindow").append_attribute("value") = 0;
@@ -299,16 +298,14 @@ void Application::FinishUpdate()
 		SavegameNow();
 
 
-	if (want_to_reload == true)
-	{
+	if (want_to_reload == true) {
 		ReloadNow();
 	}
 
 	if (want_to_load == true)
 		LoadGameNow();
 
-	if (last_sec_frame_time.Read() > 1000)
-	{
+	if (last_sec_frame_time.Read() > 1000) {
 		last_sec_frame_time.Start();
 		prev_last_sec_frame_count = last_sec_frame_count;
 		last_sec_frame_count = 0;
@@ -625,6 +622,17 @@ void Application::SetTimeScale(float ts)
 	time_scale = ts;
 }
 
+void Application::Quit()
+{
+	want_to_quit = true;
+}
+
 void Application::Reload() {
 	want_to_reload = true;
+}
+
+void Application::PauseGame(bool pause) {
+
+	entities->PauseEntities(pause);
+
 }

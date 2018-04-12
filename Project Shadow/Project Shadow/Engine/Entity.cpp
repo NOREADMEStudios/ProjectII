@@ -7,6 +7,7 @@
 
 #define SHADOW_PATH "Characters/Shadow.png"
 #define SHADOW_RECT {0,0,36,9}
+#define SHADOW_HEIGHT 5
 
 Entity::Entity(EntityTypes type) {}
 
@@ -45,9 +46,8 @@ void Entity::UnloadShadow() {
 void Entity::DrawShadow(AnimationFrame frame) {
 
 	iRect rect = SHADOW_RECT;
-	int x = position.x + rect.w/3;// need to fix this values
-	int y = position.y+frame.rect.h-5;// need to fix this values
-	iPoint fram = frame.pivot;
+	int x = position.x -(rect.w/2)  ;// need to fix this values
+	int y = position.y- SHADOW_HEIGHT;// need to fix this values
 	
 	App->render->Blit(shadowSprites, x, y, &rect.toSDL_Rect());
 }

@@ -285,14 +285,22 @@ std::list<Input> ModuleInput::FirstPlayerConfig()
 		App->audio->PlayFx(5);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
 	{
 		ret.push_back(Input(Input::LIGHT_ATTACK));
 		App->audio->PlayFx(1);
 	}
-
-	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
 		ret.push_back(Input(Input::HEAVY_ATTACK));
+
+	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)
+		ret.push_back(Input(Input::DEFEND));
+
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
+		ret.push_back(Input(Input::PARRYINPUT));
+
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+		ret.push_back(Input(Input::TAUNTINPUT));
 
 	return ret;
 }
@@ -316,15 +324,24 @@ std::list<Input> ModuleInput::SecondPlayerConfig()
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 		ret.push_back(Input(Input::JUMPINPUT));
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
 		ret.push_back(Input(Input::DEFEND));
 
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
 		ret.push_back(Input(Input::PARRYINPUT));
 
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
 		ret.push_back(Input(Input::TAUNTINPUT));
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		ret.push_back(Input(Input::LIGHT_ATTACK));
+		App->audio->PlayFx(1);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		ret.push_back(Input(Input::HEAVY_ATTACK));
 
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		ret.push_back(Input(RUNINPUT));
 	return ret;
 }
 

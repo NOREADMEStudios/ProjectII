@@ -17,7 +17,6 @@ public:
 	Hero();
 	~Hero();
 
-
 	bool Awake(pugi::xml_node&) override;
 
 	bool Start()override;
@@ -32,8 +31,6 @@ public:
 
 	bool Load(pugi::xml_node&)override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
-
-
 
 	void LoadAnimations();
 
@@ -51,7 +48,6 @@ public:
 	void GetHP(int& curr, int& max);
 
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
-
 	Timer time_attack;
 
 	Animation jump, stop, run, jumpAtk, jumpProt, kick, attack, hit, death, attack_l2, attack_l3, protect, taunt, attack_s2, parry;
@@ -60,8 +56,6 @@ public:
 	int currHP = 100;
 
 protected:
-
-	
 	iPoint initialpos;
 	int initialLife = 0;
 	uint lives = 0;

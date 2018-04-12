@@ -47,13 +47,8 @@ bool MainScene::Start()
 	App->gui->AddHealthbar((Hero*)e, 0, _bar, charFace, charNumber, true, 10, 10, t, true, { 0, 0, 264, 26 });
 	App->gui->AddHealthbar((Hero*)e2, 1, _bar2, charFace2, charNumber, false, 1590, 10, t, true, { 0, 0, 264, 26 });
 
-	App->debug = false;
-
-	//Window* w = App->gui->AddWindow(500, 500, t, {0,0,500,500}, true);
-	//Window* s = App->gui->AddWindow(0, 0, t, { 350, 520, 300, 300 }, true);
-	//s->SetParent(w);
-	//s->culled = true;
-	//w->SetContentRect(50, 50, 50, 50);
+	App->debug = true;
+	t = App->textures->Load("Maps/map2_spritesheet.png");
   
 	return false;
 }
@@ -86,11 +81,10 @@ bool MainScene::CleanUp()
 	App->entities->DestroyEntity(e3);	
 	App->entities->DestroyEntity(e2);
 	App->entities->DestroyEntity(e);
+
 	App->map->CleanUp(n);
 	App->textures->UnLoad(t);
 	App->collision->CleanUp(n);
 	App->gui->CleanUp(n);
-
-
 	return true;
 }

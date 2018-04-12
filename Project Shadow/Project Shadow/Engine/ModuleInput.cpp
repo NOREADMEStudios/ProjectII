@@ -366,6 +366,7 @@ std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum)
 				ret.push_back(Input(Input::HEAVY_ATTACK));
 				break;
 			case 4://SELECT
+				ret.push_back(Input(Input::TAUNTINPUT));
 				break;
 			case 5:
 				break;

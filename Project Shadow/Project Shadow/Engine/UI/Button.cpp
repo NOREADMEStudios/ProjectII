@@ -31,7 +31,7 @@ Button::~Button() {
 
 bool Button::PreUpdate() {
 	bool ret = InterfaceElement::PreUpdate();
-
+	
 	if (label == nullptr) //Auto set label
 	{
 		for (std::list<InterfaceElement*>::iterator current_element = elements.begin(); current_element != elements.end(); current_element++)
@@ -82,7 +82,9 @@ bool Button::PreUpdate() {
 		if (label != nullptr && (curr.r != 255 || curr.g != 255 || curr.b != 255 || curr.a != 255))
 			label->setColor({ 255, 255, 255, 255 });*/
 	}
-
+	if (in_focus) {
+		current_anim = &hovered_anim;
+	}
 	return ret;
 }
 

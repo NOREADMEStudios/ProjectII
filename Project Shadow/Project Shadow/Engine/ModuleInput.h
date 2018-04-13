@@ -118,6 +118,7 @@ public:
 	std::list<Input> FirstPlayerConfig();
 	std::list<Input> SecondPlayerConfig();
 
+	Input GetButtonFromController(int controllerNum)const;
 	std::list<Input> ControllerPlayerConfig(int playerNum);
 
 private:

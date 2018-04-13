@@ -29,7 +29,8 @@ public:
 
 
 	bool Enable(bool enable);
-	bool isEnabled();
+	bool isEnabled() const;
+	bool isCulled()const;
 	virtual bool Start();
 	virtual bool PreUpdate();
 	virtual bool Update(float dt);

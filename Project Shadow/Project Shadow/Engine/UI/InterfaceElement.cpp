@@ -28,8 +28,12 @@ bool InterfaceElement::Enable(bool enable) {
 	return enabled;
 }
 
-bool InterfaceElement::isEnabled() {
+bool InterfaceElement::isEnabled() const {
 	return enabled;
+}
+
+bool InterfaceElement::isCulled() const {
+	return culled;
 }
 
 bool InterfaceElement::Start() {

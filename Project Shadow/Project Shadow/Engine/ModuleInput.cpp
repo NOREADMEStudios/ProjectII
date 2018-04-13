@@ -352,6 +352,51 @@ std::list<Input> ModuleInput::SecondPlayerConfig()
 	return ret;
 }
 
+Input ModuleInput::GetButtonFromController(int controllerNum) const{
+	for (int i = 0; i < MAX_BUTTONS; ++i)
+	{
+		if (controllers[controllerNum - 1].buttons[i] == B_DOWN)
+		{
+			switch (i) {
+			case 0://A button
+
+				return (Input::JUMPINPUT);				
+			case 1: //B button
+				return (Input::PARRYINPUT);				
+			case 2://X
+				return (Input::LIGHT_ATTACK);				
+			case 3://Y
+				return (Input::HEAVY_ATTACK);				
+			case 4://SELECT
+				return (Input::TAUNTINPUT);				
+			case 5:
+				break;
+			case 6://START
+				   //SETTINGS MENU
+				break;
+			case 7://L STICK PRESSED
+				break;
+			case 8://R STICK PRESSED
+				break;
+			case 9://L1
+				return (Input::DEFEND);				
+			case 10://R1
+				return (Input::RUNINPUT);				
+			case 11://UP
+				return (Input::UP);				
+			case 12://DOWN
+				return (Input::DOWN);				
+			case 13://LEFT
+				return (Input::LEFT);				
+			case 14://RIGHT
+				return (Input::RIGHT);				
+			case 15:
+				break;
+			}
+		}
+	}
+}
+
 std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum)
 {
 	std::list<Input> ret;

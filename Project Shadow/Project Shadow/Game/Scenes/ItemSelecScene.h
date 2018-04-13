@@ -4,14 +4,22 @@
 #include "..\..\Engine\Scene.h"
 #include "..\..\Engine\ModuleCollision.h"
 
+#include <list>
+
 class Button;
 class Label;
 class InterfaceElement;
 
-struct Focus {
 
-	Button* focused;
-	Controller* controller;
+class Focus {
+
+public:
+	Button* but;
+	int playerNum;
+	SDL_Rect arrow;
+	SDL_Rect arrow_lock;
+	void LoadArrows();
+	
 
 };
 
@@ -20,14 +28,14 @@ class ItemSelecScene:
 {
 public:
 
-	Button * item1;
-	Button * item2;
-	Button * item3;
-	Button * confirmButton;
-	Label* confirmLabel;
-	Label * item1Stats;
-	Label * item2Stats;
-	Label * item3Stats;
+	Button *	item1 = nullptr;
+	Button *	item2 = nullptr;
+	Button *	item3 = nullptr;
+	Button *	confirmButton = nullptr;
+	Label*		confirmLabel = nullptr;
+	Label *		item1Stats = nullptr;
+	Label *		item2Stats = nullptr;
+	Label *		item3Stats = nullptr;
 
 	int controllersNum;
 
@@ -50,11 +58,20 @@ public:
 
 	bool Save(pugi::xml_node&) const override { return true; };
 
+
+private:
 	void LoadSceneUI();
 
+	
 	void SetControllerFocus();
+	void ManageDisplacementFocus();
+	void ChooseFocus();
+	void DrawArrows();
 
-	std::vector<Button*> buttons;
+	SDL_Texture* atlas;
+
+	std::list<Focus> playersFocus;
+	std::list<Button*> buttons;
 
 };
 

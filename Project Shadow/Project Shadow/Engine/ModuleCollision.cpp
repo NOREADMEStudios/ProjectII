@@ -129,7 +129,7 @@ bool ModuleCollision::Update(float dt) {
 				color = { 255,165,0,128 };//Orange
 				break;
 			}
-		
+
 			App->render->DrawQuad((*c)->collider.toSDL_Rect(), color.r, color.g, color.b, color.a);
 		}
 	}

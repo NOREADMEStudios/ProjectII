@@ -65,7 +65,7 @@ bool Hero::Start()
 
 	initialpos.x = gamepos.x;
 	initialpos.y = gamepos.y;
-	initiallife = stats.life;
+	initialLife = stats.life;
 	lives = 2;
 
 	Attack* light_1 = new Attack(ATTACK_LIGHT, LIGHT_ATTACK, 10);
@@ -592,9 +592,15 @@ void Hero::Respawn()
 	gamepos.x = initialpos.x;
 	gamepos.z = initialpos.y;
 
-	stats.life = initiallife;
+	stats.life = initialLife;
 	lives--;
 	invencible.StartInv();
+}
+
+void Hero::GetHP(int& curr, int& max)
+{
+	curr = stats.life;
+	max = initialLife;
 }
 
 void Hero::OnCollisionEnter(Collider* _this, Collider* _other)

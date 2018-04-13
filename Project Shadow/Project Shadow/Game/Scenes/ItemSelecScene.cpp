@@ -38,6 +38,8 @@ ItemSelecScene::~ItemSelecScene()
 
 bool ItemSelecScene::Start()
 {
+	SDL_Texture* bakc_items = App->textures->Load("UI/BasicMenuScene.png");
+	App->gui->AddSprite(820, 540, bakc_items, { 0,0,1750,1080 }, true);
 	
 	App->debug = true;
 	std::string statsStr = "Attack + ???";

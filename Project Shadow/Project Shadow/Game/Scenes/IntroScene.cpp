@@ -36,10 +36,14 @@ IntroScene::~IntroScene()
 
 bool IntroScene::Start()
 {
-	bool test= LoadBackground("UI/MainMenu.png");
+	//bool test= LoadBackground("UI/MainMenu.png");
+
+	SDL_Texture* bakc_menu = App->textures->Load("UI/MainMenu.png");
+	App->gui->AddSprite(820, 540, bakc_menu, { 0,0,1750,1080 }, true);
+
 	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
 	SDL_Texture * atlas = App->textures->Load("UI/atlas.png");
-	pvpButton = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, atlas, { 50,50,384,186 }, true, PvPPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+	pvpButton = App->gui->AddButton(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 4 + 300, atlas, { 50,50,384,186 }, true, PvPPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 
 	pvpButton->OnHoverEnter = PvPHoverEnCallb;
 	pvpButton->OnHoverExit = PvPHoverExCallb;
@@ -49,7 +53,7 @@ bool IntroScene::Start()
 	pvpLabel->SetParent(pvpButton);
 	pvpLabel->culled = false;
 
-	exitButton = App->gui->AddButton(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 4) * 3, atlas, { 50,50,384,186 }, true, ExitPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+	exitButton = App->gui->AddButton((SCREEN_WIDTH / 2) - 100, (SCREEN_HEIGHT / 4) * 3, atlas, { 50,50,384,186 }, true, ExitPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 	exitButton->OnHoverEnter = ExitHoverEnCallb;
 	exitButton->OnHoverExit = ExitHoverExCallb;
 	exitLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 }); 
@@ -63,7 +67,8 @@ bool IntroScene::Start()
 
 bool IntroScene::Update(float dt)
 {
-	bool test = DrawBackground();
+	//bool test = DrawBackground();
+
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		App->scenes->ChangeScene(App->scenes->itemSc);
 	}

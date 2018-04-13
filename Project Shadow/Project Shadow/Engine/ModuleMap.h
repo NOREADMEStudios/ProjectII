@@ -125,6 +125,7 @@ public:
 	int GetMapWidth();
 	int GetMapHeight();
 	int GetXTiles();
+	int GetYTiles();
 
 	float GetMapBorders_X();
 	float GetMapBorders_Z();

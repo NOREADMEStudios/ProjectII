@@ -47,7 +47,7 @@ void Entity::DrawShadow(AnimationFrame frame) {
 
 	iRect rect = SHADOW_RECT;
 	int x = position.x -(rect.w/2)  ;// need to fix this values
-	int y = position.y- SHADOW_HEIGHT;// need to fix this values
+	int y = gamepos.z;
 	
 	App->render->Blit(shadowSprites, x, y, &rect.toSDL_Rect());
 }
@@ -62,7 +62,7 @@ void Entity::Break(float delta_time) {
 void Entity::Accelerate(float x, float y, float z, float delta_time) {
 	speedVector.x += x * 10 * stats.spd * delta_time;
 	speedVector.y += y * 10 * stats.spd * delta_time;
-	zVect += z * stats.spd * delta_time;
+	zVect += z * 10 * stats.spd * delta_time;
 
 	speedVector.x = CLAMP(speedVector.x, -max_speed, max_speed);
 	speedVector.y = CLAMP(speedVector.y, -max_speed, max_speed);

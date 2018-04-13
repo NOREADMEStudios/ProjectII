@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "Hero.h"
 #include "ModuleAudio.h"
+#include "ModuleSceneManager.h"
 
 
 ModuleEntityManager::ModuleEntityManager()
@@ -71,12 +72,18 @@ bool ModuleEntityManager::PreUpdate() {
 }
 
 bool ModuleEntityManager::Update(float dt) {
-
+	uint i = 0;
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
-		if((*item)->active)
-		(*item)->Update(dt);
+		if ((*item)->active)
+		{
+			(*item)->Update(dt);
+			i++;
+		}
 	}
-
+	if (i == 1)
+	{
+		finish = true;
+	}
 	return true;
 }
 

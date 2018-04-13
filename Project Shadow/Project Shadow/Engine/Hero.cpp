@@ -60,6 +60,8 @@ bool Hero::Start()
 	collider = { 50 , 50 , 50, 50 };
 	stats.spd = 180;
 	stats.life = 100;
+	stats.atk = 8;
+	stats.def = 1;
 	char_depth = 20;
 	gamepos.y = 0;
 
@@ -68,14 +70,14 @@ bool Hero::Start()
 	initialLife = stats.life;
 	lives = 2;
 
-	Attack* light_1 = new Attack(ATTACK_LIGHT, LIGHT_ATTACK, 10);
-	Attack* light_2 = new Attack(ATTACK_L2, LIGHT_ATTACK, 12);
-	Attack* light_3 = new Attack(ATTACK_L3, LIGHT_ATTACK, 15);
-	Attack* heavy_1 = new Attack(ATTACK_HEAVY, HEAVY_ATTACK, 12);
-	Attack* heavy_2 = new Attack(ATTACK_H2, HEAVY_ATTACK, 15);
+	Attack* light_1 = new Attack(ATTACK_LIGHT, LIGHT_ATTACK, 2);
+	Attack* light_2 = new Attack(ATTACK_L2, LIGHT_ATTACK, 2);
+	Attack* light_3 = new Attack(ATTACK_L3, LIGHT_ATTACK, 5);
+	Attack* heavy_1 = new Attack(ATTACK_HEAVY, HEAVY_ATTACK, 2);
+	Attack* heavy_2 = new Attack(ATTACK_H2, HEAVY_ATTACK, 5);
 	Attack* jump_a = new Attack(JUMP, JUMPINPUT, 0);
-	Attack* jump_a2 = new Attack(ATTACK_J1, LIGHT_ATTACK, 10);
-	Attack* jump_a3 = new Attack(ATTACK_J2, HEAVY_ATTACK, 15);
+	Attack* jump_a2 = new Attack(ATTACK_J1, LIGHT_ATTACK, 2);
+	Attack* jump_a3 = new Attack(ATTACK_J2, HEAVY_ATTACK, 5);
 	attacks.push_back(light_1);
 	attacks.push_back(light_2);
 	attacks.push_back(light_3);
@@ -135,11 +137,7 @@ bool Hero::Update(float dt)
 	UpdateCurState(dt);
 
 
-	if (StateisAtk(currentState)) {
-		CalculateAtk();
-	}
-	else if (currentState != PROTECT) {
-		stats.atk = 0;
+	 if (currentState != PROTECT && !StateisAtk(currentState)) {
 		if (directions.right - directions.left == 1)
 		{
 			flip = false;
@@ -494,20 +492,20 @@ void Hero::UpdateCurState(float dt)
 		{
 			if (jumping)
 			{
-				Accelerate(x_dir, -2, 0, dt);
+				Accelerate(x_dir, -2, z_dir, dt);
 			}
 			else
 			{
 				jumping = true;
 				max_speed = 1000;
-				Accelerate(x_dir, 500, 0, dt);
+				Accelerate(x_dir, 500, z_dir, dt);
 			}	
 			break;
 		}
 		case ATTACK_J1:
 		case ATTACK_J2:
 		{	
-				Accelerate(x_dir, -1, 0, dt);
+				Accelerate(x_dir, -1, z_dir, dt);
 				break;
 		}
 
@@ -666,7 +664,6 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 
 			currentState = HIT;
-			stats.life -= _other->entity->stats.atk;
 			hit_bool = true;
 
 
@@ -681,13 +678,15 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 
 			App->audio->PlayFx(3);
 		}
+		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_hitbox" && StateisAtk(currentState))
+		{
+			_other->entity->stats.life -= _this->entity->stats.atk + GetAtk(currentState)->damage - _other->entity->stats.def;
+		}
+
 	}
 }
 
-void Hero::CalculateAtk()
-{
-	stats.atk = GetAtk(currentState)->damage;		
-}
+
 
 bool Hero::StateisAtk(CharStateEnum State)
 {

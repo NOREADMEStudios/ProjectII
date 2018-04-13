@@ -62,7 +62,7 @@ void Entity::Break(float delta_time) {
 void Entity::Accelerate(float x, float y, float z, float delta_time) {
 	speedVector.x += x * 10 * stats.spd * delta_time;
 	speedVector.y += y * 10 * stats.spd * delta_time;
-	zVect += z * stats.spd * delta_time;
+	zVect += z * 10 * stats.spd * delta_time;
 
 	speedVector.x = CLAMP(speedVector.x, -max_speed, max_speed);
 	speedVector.y = CLAMP(speedVector.y, -max_speed, max_speed);

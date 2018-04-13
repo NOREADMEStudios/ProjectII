@@ -459,6 +459,11 @@ void Hero::UpdateCurState(float dt)
 		breaking = false;
 	}
 
+	if (gamepos.y > 0 && (currentState != ATTACK_J1 && currentState != ATTACK_J2))
+	{
+		Accelerate(x_dir, -2, z_dir, dt);
+	}
+
 	switch (currentState)
 	{
 		case WALK:
@@ -489,12 +494,8 @@ void Hero::UpdateCurState(float dt)
 			break;
 		}
 		case JUMP:
-		{
-			if (jumping)
-			{
-				Accelerate(x_dir, -2, z_dir, dt);
-			}
-			else
+		{	
+			if (!jumping)
 			{
 				jumping = true;
 				max_speed = 1000;

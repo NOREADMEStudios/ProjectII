@@ -125,6 +125,9 @@ SDL_Rect InterfaceElement::GetContentRect() const {
 int InterfaceElement::getPositionX() const {
 	return rel_pos.x;
 }
+iPoint InterfaceElement::getPosition() const {
+	return rel_pos;
+}
 
 int InterfaceElement::getPositionY() const {
 	return rel_pos.y;

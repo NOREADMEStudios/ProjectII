@@ -36,10 +36,10 @@ IntroScene::~IntroScene()
 
 bool IntroScene::Start()
 {
-	//bool test= LoadBackground("UI/MainMenu.png");
+	
 
-	SDL_Texture* bakc_menu = App->textures->Load("UI/MainMenu.png");
-	App->gui->AddSprite(820, 540, bakc_menu, { 0,0,1750,1080 }, true);
+	LoadBackground("UI/MainMenu.png");
+	//App->gui->AddSprite(820, 540, bakc_menu, { 0,0,1750,1080 }, true);
 
 	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
 	SDL_Texture * atlas = App->textures->Load("UI/atlas.png");
@@ -67,7 +67,7 @@ bool IntroScene::Start()
 
 bool IntroScene::Update(float dt)
 {
-	//bool test = DrawBackground();
+	DrawBackground();
 
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		App->scenes->ChangeScene(App->scenes->itemSc);
@@ -81,7 +81,7 @@ bool IntroScene::CleanUp()
 {
 	xmlNode n;
 	App->gui->CleanUp(n);
-	bool test = UnLoadBackground();
+	UnLoadBackground();
 	return true;
 }
 

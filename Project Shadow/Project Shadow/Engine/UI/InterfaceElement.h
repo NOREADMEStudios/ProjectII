@@ -42,6 +42,7 @@ public:
 	SDL_Rect GetContentRect() const;
 	virtual int getPositionX() const;
 	virtual int getPositionY() const;
+	virtual iPoint getPosition() const;
 	virtual void setPosition(int x, int y);
 	virtual void setPositionX(int x);
 	virtual void setPositionY(int y);
@@ -82,7 +83,7 @@ protected:
 	InterfaceElement* parent = nullptr;
 
 	fPoint anchor_point = { 0.5f, 0.5f };
-	SDL_Rect* current_anim = nullptr;
+	SDL_Rect* currentAnim = nullptr;
 	bool interactuable = false;
 };
 #endif

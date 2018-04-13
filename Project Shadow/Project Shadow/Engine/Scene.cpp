@@ -4,7 +4,7 @@
 #include "ModuleTextures.h"
 #include "App.h"
 
-#define BACKGROUND_RECT {0,0,3555,2005}
+#define BACKGROUND_RECT { 0,0,1750,1080 }
 
 Scene::Scene(){}
 

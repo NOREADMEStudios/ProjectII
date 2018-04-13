@@ -7,6 +7,7 @@
 #include <list>
 
 class Button;
+class Sprite;
 class Label;
 class InterfaceElement;
 
@@ -16,9 +17,14 @@ class Focus {
 public:
 	Button* but;
 	int playerNum;
-	SDL_Rect arrow;
-	SDL_Rect arrow_lock;
-	void LoadArrows();
+	int totalControllersNum;
+	Sprite* arrow;	
+	SDL_Rect arrowRect;
+	SDL_Rect arrowLockRect;
+	bool locked = false;
+
+	void LoadArrows(SDL_Texture* tex);
+	void DrawOrderedArrow();
 	
 
 };
@@ -66,8 +72,7 @@ private:
 	void SetControllerFocus();
 	void ManageDisplacementFocus();
 	void ChooseFocus();
-	void DrawArrows();
-
+	
 	SDL_Texture* atlas;
 
 	std::list<Focus> playersFocus;

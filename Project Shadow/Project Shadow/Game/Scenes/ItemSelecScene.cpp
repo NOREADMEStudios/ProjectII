@@ -38,8 +38,8 @@ ItemSelecScene::~ItemSelecScene()
 
 bool ItemSelecScene::Start()
 {
-	SDL_Texture* bakc_items = App->textures->Load("UI/BasicMenuScene.png");
-	App->gui->AddSprite(820, 540, bakc_items, { 0,0,1750,1080 }, true);
+	LoadBackground("UI/BasicMenuScene.png");
+	
 	
 	App->debug = true;
 	
@@ -55,10 +55,12 @@ bool ItemSelecScene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
 		App->scenes->ChangeScene(App->scenes->introSc);
 	}
-
-	ManageDisplacementFocus();
-	ChooseFocus();
-	DrawArrows();
+	DrawBackground();
+	
+	if (controllersNum != 0) {
+		ManageDisplacementFocus();
+		ChooseFocus();
+	}
 
 	return true;
 }
@@ -66,8 +68,9 @@ bool ItemSelecScene::Update(float dt)
 bool ItemSelecScene::CleanUp()
 {
 	xmlNode n;
+	
 	App->gui->CleanUp(n);
-
+	UnLoadBackground();
 	return true;
 }
 
@@ -122,16 +125,6 @@ void ItemSelecScene::LoadSceneUI() {
 	confirmLabel->culled = false;
 }
 
-void ItemSelecScene::DrawArrows() {
-
-	switch (playersFocus.size()) {
-	case 0:
-		break;
-	case 1: 
-		App->render->Blit(atlas, (*playersFocus.begin()).but->getPositionX(), (*playersFocus.begin()).but->getPositionY()-10, &(*playersFocus.begin()).arrow);
-		break;
-	}
-}
 
 
 void ItemSelecScene::SetControllerFocus() {
@@ -140,18 +133,23 @@ void ItemSelecScene::SetControllerFocus() {
 	if (controllersNum == 0) {
 		return;
 	}
+	
 	Button* butt = *(buttons.begin());
-	//App->gui->setFocus(butt);
+
 	for (int i = 1; i <= controllersNum; i++) {
 	
 	Focus focus;		
 	focus.but = butt;
-	focus.playerNum = controllersNum;
-	focus.LoadArrows();
+	focus.playerNum = i;
+	focus.totalControllersNum = controllersNum;
+	focus.LoadArrows(atlas);
+	
 	
 	playersFocus.push_back(focus);
 	}
 }
+
+
 
 
 void ItemSelecScene::ChooseFocus() {
@@ -159,8 +157,9 @@ void ItemSelecScene::ChooseFocus() {
 	for (std::list<Focus>::iterator focus = playersFocus.begin(); focus != playersFocus.end(); focus++) {
 		if (App->input->GetButtonFromController((*focus).playerNum) == Input::JUMPINPUT) {
 			LOG("");
-			
-			// PUT HERE THE RESULT OF PRESSING A ITEM
+			(*focus).arrow->ChangeAnimation((*focus).arrowLockRect);
+			(*focus).locked = true;
+			// PUT HERE THE RESULT OF PRESSING A ITEM NORMAN&JOEL
 
 
 
@@ -171,29 +170,36 @@ void ItemSelecScene::ChooseFocus() {
 void ItemSelecScene::ManageDisplacementFocus() {
 
 	for (std::list<Focus>::iterator foc = playersFocus.begin(); foc != playersFocus.end(); foc++) {
-		if(App->input->GetButtonFromController((*foc).playerNum) == Input::RIGHT){			
-			for (std::list<Button*>::iterator button = buttons.begin(); button != buttons.end(); button++) {
-				if (*button == (*foc).but) {
-					button++;
-					if (button != buttons.end()) {
-						(*foc).but = (*button);
-						button--;
-						//App->gui->setFocus((*foc).but);
+		if (!(*foc).locked) {
+			if (App->input->GetButtonFromController((*foc).playerNum) == Input::RIGHT) {
+				for (std::list<Button*>::iterator button = buttons.begin(); button != buttons.end(); button++) {
+					if (*button == (*foc).but) {
+						button++;
+						if (button != buttons.end()) {
+							(*foc).but = (*button);
+							button--;
+							(*foc).DrawOrderedArrow();
+							
+						}
+						return;
 					}
-					return;
 				}
 			}
 		}
 		else if (App->input->GetButtonFromController((*foc).playerNum) == Input::LEFT) {
 			for (std::list<Button*>::iterator button = buttons.begin(); button != buttons.end(); button++) {
-				if (*button == (*foc).but) {
-					if (button != buttons.begin()) {
-						button--;
-						(*foc).but = (*button);
-						button++;
-						//App->gui->setFocus((*foc).but);
+				if (!(*foc).locked) {
+					if (*button == (*foc).but) {
+						if (button != buttons.begin()) {
+							button--;
+							(*foc).but = (*button);
+							button++;
+							(*foc).arrow->setPosition((*foc).but->getPositionX(), (*foc).but->getPositionY() - (*foc).but->rect.h / 2);
+							(*foc).DrawOrderedArrow();
+							
+						}
+						return;
 					}
-					return;
 				}
 			}
 		}
@@ -344,20 +350,37 @@ void confirmCallback(size_t arg_size...) {
 	App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
-void Focus::LoadArrows() {
-
+void Focus::LoadArrows(SDL_Texture* tex) {
+	
 	switch (playerNum) {
+	case 0: return;
 	case 1: 
-		arrow = { 730, 50, 22,19 }; //Black
+		arrowRect = { 825, 50, 22,19 }; //Yellow 
+		arrowLockRect = { 825, 87, 23,21 };
 		break;
 	case 2:
-		arrow = { 754, 50, 22,19 }; // Red
+		arrowRect = { 754, 50, 22,19 }; // Red
+		arrowLockRect = { 754, 87, 23,21 };
 		break;
 	case 3:
-		arrow = { 778, 50, 22,19 }; //Blue
+		arrowRect = { 778, 50, 22,19 }; //Blue
+		arrowLockRect = { 778, 87, 23,21 };
 		break;
 	case 4:
-		arrow = { 802, 50, 22,19 }; // Green
+		arrowRect = { 802, 50, 22,19 }; // Green
+		arrowLockRect = { 802, 87, 23,21 };
 		break;
 	}
+	
+	arrow = App->gui->AddSprite(but->getPositionX(), but->getPositionY() - but->rect.h/2,tex, arrowRect);
+	DrawOrderedArrow();
+}
+
+void Focus::DrawOrderedArrow() {
+	
+	
+	int distance = but->rect.w / (totalControllersNum+1);
+	 
+	int x = but->getPositionX() - (but->rect.w/2) + (distance * playerNum);
+	arrow->setPosition(x, but->getPositionY() - but->rect.h / 2);
 }

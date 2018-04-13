@@ -283,16 +283,11 @@ std::list<Input> ModuleInput::FirstPlayerConfig()
 		ret.push_back(Input(RUNINPUT));
 		
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		ret.push_back(Input(Input::JUMPINPUT));
-		App->audio->PlayFx(5);
-	}
+		ret.push_back(Input(Input::JUMPINPUT));	
 
 	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
-	{
 		ret.push_back(Input(Input::LIGHT_ATTACK));
-		App->audio->PlayFx(1);
-	}
+	
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
 		ret.push_back(Input(Input::HEAVY_ATTACK));
 
@@ -340,10 +335,8 @@ std::list<Input> ModuleInput::SecondPlayerConfig()
 		ret.push_back(Input(Input::TAUNTINPUT));
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
 		ret.push_back(Input(Input::LIGHT_ATTACK));
-		App->audio->PlayFx(1);
-	}
+	
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 		ret.push_back(Input(Input::HEAVY_ATTACK));
 

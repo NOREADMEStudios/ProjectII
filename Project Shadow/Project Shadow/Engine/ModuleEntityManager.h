@@ -76,6 +76,8 @@ public:
 
 	void PauseEntities(bool pause);
 
+	bool finish = false;
+
 private:
 
 	std::list<Entity*> entities;

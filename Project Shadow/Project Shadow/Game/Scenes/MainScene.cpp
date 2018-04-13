@@ -55,14 +55,16 @@ bool MainScene::Start()
 
 bool MainScene::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN ||App->entities->finish) {
 		App->input->BlockKeyboardEvent(SDL_SCANCODE_P);
 		App->scenes->ChangeScene(App->scenes->endSc);
+		App->entities->finish = false;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		paused = !paused;
 		App->PauseGame(paused);
 	}
+
 
 	App->map->Draw();
 

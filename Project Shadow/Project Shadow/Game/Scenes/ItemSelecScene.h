@@ -8,6 +8,13 @@ class Button;
 class Label;
 class InterfaceElement;
 
+struct Focus {
+
+	Button* focused;
+	Controller* controller;
+
+};
+
 class ItemSelecScene:
 	public Scene
 {
@@ -21,6 +28,8 @@ public:
 	Label * item1Stats;
 	Label * item2Stats;
 	Label * item3Stats;
+
+	int controllersNum;
 
 	ItemSelecScene();
 	virtual ~ItemSelecScene();
@@ -41,6 +50,11 @@ public:
 
 	bool Save(pugi::xml_node&) const override { return true; };
 
+	void LoadSceneUI();
+
+	void SetControllerFocus();
+
+	std::vector<Button*> buttons;
 
 };
 

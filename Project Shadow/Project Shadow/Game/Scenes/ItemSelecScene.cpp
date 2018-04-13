@@ -40,18 +40,50 @@ bool ItemSelecScene::Start()
 {
 	
 	App->debug = true;
+	
+	LoadSceneUI();
+	
+	SetControllerFocus();
+
+	return false;
+}
+
+bool ItemSelecScene::Update(float dt)
+{
+	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
+		App->scenes->ChangeScene(App->scenes->introSc);
+	}
+
+
+
+	return true;
+}
+
+bool ItemSelecScene::CleanUp()
+{
+	xmlNode n;
+	App->gui->CleanUp(n);
+
+	return true;
+}
+
+void ItemSelecScene::LoadSceneUI() {
 	std::string statsStr = "Attack + ???";
 	item1 = App->gui->AddButton(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 4, NULL, { 0,0,200,200 }, true, item1PressCallb);
 	item2 = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, NULL, { 0,0,200,200 }, true, item2PressCallb);
-	item3 = App->gui->AddButton (SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, NULL, { 0,0,200,200 }, true, item3PressCallb);
+	item3 = App->gui->AddButton(SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, NULL, { 0,0,200,200 }, true, item3PressCallb);
 	item1->OnHoverEnter = item1HoverEnCallb;
 	item1->OnHoverExit = item1HoverExCallb;
 	item2->OnHoverEnter = item2HoverEnCallb;
 	item2->OnHoverExit = item2HoverExCallb;
 	item3->OnHoverEnter = item3HoverEnCallb;
 	item3->OnHoverExit = item3HoverExCallb;
-	
-	item1Stats = App->gui->AddLabel(item1->rect.w/2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+
+	buttons.push_back(item1);
+	buttons.push_back(item2);
+	buttons.push_back(item3);
+
+	item1Stats = App->gui->AddLabel(item1->rect.w / 2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item1Stats->Enable(false);
 	item1Stats->setString(statsStr);
 	item1Stats->SetParent(item1);
@@ -71,31 +103,27 @@ bool ItemSelecScene::Start()
 	item3Stats->culled = false;
 
 	SDL_Texture * atlas = App->textures->Load("UI/atlas.png");
+
 	confirmButton = App->gui->AddButton(App->gui->GetGuiSize().x / 2, App->gui->GetGuiSize().y / 2, atlas, { 450, 50, 250, 61 }, false, confirmCallback, { 450, 120, 250, 61 }, { 450, 189, 250, 61 });
+
+	buttons.push_back(confirmButton);
+
 	confirmLabel = App->gui->AddLabel(confirmButton->rect.w / 2, confirmButton->rect.h / 2, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string confirmStr = "CONFIRM";
 	confirmLabel->setString(confirmStr);
 	confirmLabel->SetParent(confirmButton);
 	confirmLabel->culled = false;
-
-	return false;
 }
 
-bool ItemSelecScene::Update(float dt)
-{
-	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
-		App->scenes->ChangeScene(App->scenes->introSc);
+void ItemSelecScene::SetControllerFocus() {
+
+	controllersNum = App->input->GetNumControllers();
+	if (controllersNum == 0) {
+		return;
 	}
-
-	return true;
-}
-
-bool ItemSelecScene::CleanUp()
-{
-	xmlNode n;
-	App->gui->CleanUp(n);
-
-	return true;
+	for (int i = 1; i <= controllersNum; i++) {
+	
+	}
 }
 
 void item1PressCallb(size_t arg_size...) {

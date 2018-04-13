@@ -40,9 +40,9 @@ bool MainScene::Start()
 	Label* charNumber = App->gui->AddLabel(0, 0, 2, "UI/TTF/Vecna Bold.ttf", { 255, 255, 255, 255 }, Label::BLENDED, "hola");
 
 	e = App->entities->CreateCharacter({HERO,{100,100}});
-	e2 = App->entities->CreateCharacter({ HERO,{ 100,50 } });
-	e3 = App->entities->CreateCharacter({ HERO,{ 50,50 } });
-	e4= App->entities->CreateCharacter({ HERO,{ 50,100 } });
+	e2 = App->entities->CreateCharacter({ HERO,{ 10000,100 } });
+	e3 = App->entities->CreateCharacter({ HERO,{ 100,1000 } });
+	e4= App->entities->CreateCharacter({ HERO,{ 10000,1000 } });
 
 	App->gui->AddHealthbar((Hero*)e, 0, _bar, charFace, charNumber, true, 10, 10, t, true, { 0, 0, 264, 26 });
 	App->gui->AddHealthbar((Hero*)e2, 1, _bar2, charFace2, charNumber, false, 1590, 10, t, true, { 0, 0, 264, 26 });

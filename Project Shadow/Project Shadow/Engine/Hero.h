@@ -63,6 +63,7 @@ protected:
 	bool hit_bool = 0;
 	bool parried = 0;
 	bool jumping = 0;
+	bool sound_avaliable = true;
 
 };
 #endif

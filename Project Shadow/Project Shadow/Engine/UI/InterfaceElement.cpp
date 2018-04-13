@@ -239,8 +239,8 @@ void InterfaceElement::ComputeRects(){
 	if (parent != nullptr) {
 		parent->ComputeRects();
 		parent->SetContentRect();
-		abs_pos.x = rel_pos.x + parent->content_rect.x;
-		abs_pos.y = rel_pos.y + parent->content_rect.y;
+		abs_pos.x = rel_pos.x + parent->rect.x;
+		abs_pos.y = rel_pos.y + parent->rect.y;
 		SetContentRect();
 		if (culled)
 			SDL_IntersectRect(&parent->result_rect, &rect, &result_rect);

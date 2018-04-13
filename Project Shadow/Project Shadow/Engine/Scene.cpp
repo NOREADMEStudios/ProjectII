@@ -42,6 +42,7 @@ bool Scene::LoadBackground(std::string path) {
 	}
 	return ret;
 }
+
 bool Scene::DrawBackground() {
 	
 	iRect rect = BACKGROUND_RECT;

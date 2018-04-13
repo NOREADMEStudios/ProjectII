@@ -510,6 +510,11 @@ int ModuleMap::GetXTiles()
 	return data.width;
 }
 
+int ModuleMap::GetYTiles()
+{
+	return data.height;
+}
+
 float ModuleMap::GetMapBorders_X()
 {
 	return data.x_limit;

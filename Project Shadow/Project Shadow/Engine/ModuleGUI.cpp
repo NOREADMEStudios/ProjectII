@@ -7,10 +7,12 @@
 #include "ModuleInput.h"
 #include "ModuleGUI.h"
 #include "ModuleWindow.h"
+#include "UI\InterfaceElement.h"
 #include "UI\Sprite.h"
 #include "UI\Label.h"
 #include "UI\Window.h"
 #include "UI\Slider.h"
+#include "UI\Healthbar.h"
 #include "..\Brofiler\Brofiler.h"
 
 ModuleGUI::ModuleGUI() : Module()
@@ -190,6 +192,84 @@ Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, 
 		aux->SetParent(parent);
 	else
 		AddElement(aux);
+	return aux;
+}
+
+Healthbar * ModuleGUI::AddHealthbar(Hero * character, int charNum, Sprite * bar, Sprite * charFace, Label * playerNum, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect _anim)
+{
+	Healthbar* aux = new Healthbar(character, charNum, leftSide, _x, _y, _tex, _enabled, &_anim);
+
+	aux->bar = bar;
+	bar->SetParent(aux);
+
+	bar->setPosition(aux->rect.w / 2, aux->rect.h / 2);
+
+	if (charNum == 0)
+	{
+		aux->SetAnchor(0, 0);
+
+		charFace->SetAnchor(0, 0);
+
+		aux->rect.x = 10;
+		aux->rect.y = 10;
+
+		charFace->rect.x = aux->rect.x;
+		charFace->rect.y = aux->rect.y + 25;
+	}
+
+	if (charNum == 1)
+	{
+		aux->SetAnchor(1, 0);
+
+		charFace->SetAnchor(1, 0);
+
+		aux->rect.x = 1590;
+		aux->rect.y = 10;
+
+		charFace->rect.x = aux->rect.x;
+		charFace->rect.y = aux->rect.y + 25;
+	}
+
+	if (charNum == 2)
+	{
+		aux->SetAnchor(0, 1);
+
+		//charFace->SetAnchor(0, 1);
+
+		aux->rect.x = 10;
+		aux->rect.y = 300;
+
+		charFace->rect.x = aux->rect.x;
+		charFace->rect.y = aux->rect.y + 25;
+	}
+
+	if (charNum == 3)
+	{
+		aux->SetAnchor(1, 1);
+
+		//charFace->SetAnchor(1, 1);
+
+		aux->rect.x = 1590;
+		aux->rect.y = 300;
+
+		charFace->rect.x = aux->rect.x;
+		charFace->rect.y = aux->rect.y + 25;
+	}
+
+	aux->characterMugShot = charFace;
+
+	bar->SetAnchor(0.5, 0.5);
+
+	
+	iPoint margins;
+	margins.x = (aux->rect.w - bar->rect.w) / 2;
+	margins.y = (aux->rect.h - bar->rect.h) / 2;
+	aux->SetContentRect(margins.x, margins.y, margins.x, margins.y);
+
+	bar->culled = true;
+	bar->ComputeRects();
+
+	AddElement(aux);
 	return aux;
 }
 

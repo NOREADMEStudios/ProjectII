@@ -62,6 +62,7 @@ protected:
 	int hit_dir = 0;
 	bool hit_bool = 0;
 	bool parried = 0;
+	bool sound_avaliable = true;
 
 };
 #endif

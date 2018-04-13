@@ -499,27 +499,58 @@ void Hero::UpdateAnimation()
 	else if (currentState == IDLE)
 	{
 		currentAnimation = &idle;
+
+		if (!sound_avaliable)
+			sound_avaliable = true;
 	}
 	else if (currentState == ATTACK_LIGHT)
 	{
 		currentAnimation = &attack;
+
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(1);
+			sound_avaliable = false;
+		}
 	}
 	else if (currentState == ATTACK_L2)
 	{
 		currentAnimation = &attack_l2;
+
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(1);
+			sound_avaliable = false;
+		}
 	}
 	else if (currentState == HIT)
 	{
 		currentAnimation = &jumpProt;
+
+		if (sound_avaliable)
+			{
+				App->audio->PlayFx(3);
+				sound_avaliable = false;
+			}
 	}
 	else if (currentState == DEATH)
 	{
 		currentAnimation = &death;
-		App->audio->PlayFx(8);
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(8);
+			sound_avaliable = false;
+		}
 	}
 	else if (currentState == JUMP)
 	{
 		currentAnimation = &jump;
+
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(5);
+			sound_avaliable = false;
+		}
 	}
 	else if (currentState == RUN)
 	{
@@ -528,10 +559,21 @@ void Hero::UpdateAnimation()
 	else if (currentState == ATTACK_HEAVY)
 	{
 		currentAnimation = &kick;
+
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(11);
+			sound_avaliable = false;
+		}
 	}
 	else if (currentState == ATTACK_L3)
 	{
 		currentAnimation = &attack_l3;
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(1);
+			sound_avaliable = false;
+		}
 	}
 	else if (currentState == STOP)
 	{
@@ -544,14 +586,32 @@ void Hero::UpdateAnimation()
 	else if (currentState == TAUNT)
 	{
 		currentAnimation = &taunt;
+
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(13);
+			sound_avaliable = false;
+		}
 	}
 	else if (currentState == ATTACK_H2)
 	{
 		currentAnimation = &attack_s2;
+
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(12);
+			sound_avaliable = false;
+		}
 	}
 	else if (currentState == PARRY)
 	{
 		currentAnimation = &parry;
+
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(14);
+			sound_avaliable = false;
+		}
 	}
 
 }
@@ -606,15 +666,19 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 
-				App->audio->PlayFx(3);
+				
 			}
 			else
 			_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
+
+			App->audio->PlayFx(10);
 
 		}
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_shield")
 		{
 			_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
+
+
 
 		}
 		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")
@@ -642,8 +706,7 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 			{
 				hit_dir = -1 * _other->entity->stats.atk;
 			}
-
-			App->audio->PlayFx(3);
+						
 		}
 	}
 }

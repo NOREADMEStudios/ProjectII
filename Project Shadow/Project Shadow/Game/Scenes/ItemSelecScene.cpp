@@ -176,11 +176,7 @@ void ItemSelecScene::ChooseFocus() {
 		if (App->input->GetButtonFromController((*focus).playerNum) == Input::JUMPINPUT) {
 			LOG("");
 			(*focus).arrow->ChangeAnimation((*focus).arrowLockRect);
-			(*focus).locked = true;
-			// PUT HERE THE RESULT OF PRESSING A ITEM NORMAN&JOEL
-
-
-
+			(*focus).locked = true;			
 		}
 	}
 }
@@ -335,7 +331,34 @@ void Selection::DrawOrderedArrow() {
 	int x = but->getPositionX() - (but->rect.w/2) + (distance * playerNum);
 	arrow->setPosition(x, but->getPositionY() - but->rect.h / 2);
 }
+
 void ItemSelecScene::ApplyItemAttributes() {
 
+	for (std::list<Selection>::iterator focus = playersSelections.begin(); focus != playersSelections.end(); focus++) {
+		
+		if ((*focus).but == swiftBoots) {
+			//Apply the effect to the player num ( (*focus).playerNum  )
+		
+		}
+		else if ((*focus).but == cursedSword) {
+			//Apply the effect to the player num ( (*focus).playerNum  )
 
+		}
+		else if ((*focus).but == paladinsHandguards) {
+			//Apply the effect to the player num ( (*focus).playerNum  )
+
+		}
+		else if ((*focus).but == ringProtection) {
+			//Apply the effect to the player num ( (*focus).playerNum  )
+
+		}
+		else if ((*focus).but == dragonSlayer) {
+			//Apply the effect to the player num ( (*focus).playerNum  )
+
+		}
+		else if ((*focus).but == magicRobe) {
+			//Apply the effect to the player num ( (*focus).playerNum  )
+
+		}
+	}
 }

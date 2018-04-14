@@ -420,10 +420,36 @@ std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum)
 			case 14://RIGHT
 				ret.push_back(Input(Input::RIGHT));
 				break;
-
-
 			}
 
+		}
+	}
+	for (int i = 0; i < MAX_AXIS; i++)
+	{
+		if (controllers[playerNum - 1].axis[i] >= 0.5f || controllers[playerNum - 1].axis[i] <= -0.5f)
+		{
+			switch (i) {
+			case 0:
+				if (controllers[playerNum - 1].axis[i] > 0.5f)
+				{
+					ret.push_back(Input(Input::RIGHT));
+				}
+				else if (controllers[playerNum - 1].axis[i] < -0.5f)
+				{
+					ret.push_back(Input(Input::LEFT));
+				}
+				break;
+			case 1:
+				if (controllers[playerNum - 1].axis[i] > 0.5f)
+				{
+					ret.push_back(Input(Input::DOWN));
+				}
+				else if (controllers[playerNum - 1].axis[i] < -0.5f)
+				{
+					ret.push_back(Input(Input::UP));
+				}
+				break;
+			}
 		}
 	}
 		return ret;

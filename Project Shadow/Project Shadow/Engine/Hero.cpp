@@ -548,7 +548,7 @@ void Hero::UpdateAnimation()
 	}
 	else if (currentState == HIT)
 	{
-		currentAnimation = &jumpProt;
+		currentAnimation = &hit;
 
 		if (sound_avaliable)
 			{

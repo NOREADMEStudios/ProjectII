@@ -26,6 +26,15 @@ void item2HoverExCallb(size_t arg_size...);
 void item3PressCallb(size_t arg_size...);
 void item3HoverEnCallb(size_t arg_size...);
 void item3HoverExCallb(size_t arg_size...);
+void item4PressCallb(size_t arg_size...);
+void item4HoverEnCallb(size_t arg_size...);
+void item4HoverExCallb(size_t arg_size...);
+void item5PressCallb(size_t arg_size...);
+void item5HoverEnCallb(size_t arg_size...);
+void item5HoverExCallb(size_t arg_size...);
+void item6PressCallb(size_t arg_size...);
+void item6HoverEnCallb(size_t arg_size...);
+void item6HoverExCallb(size_t arg_size...);
 void confirmCallback(size_t arg_size...);
 
 ItemSelecScene::ItemSelecScene()
@@ -79,51 +88,43 @@ void ItemSelecScene::LoadSceneUI() {
 	atlas = App->textures->Load("UI/atlas.png");
 	items_atlas = App->textures->Load("UI/items.png");
 
-	String statsStr = "Attack + ???";
-	item1 = App->gui->AddButton(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 4, atlas, { 0,0,120,120 }, true, item1PressCallb, { 50,270,384,186 }, { 50,491,384,186 });
-	item2 = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, atlas, { 0,0,200,200 }, true, item2PressCallb, { 50,270,384,186 }, { 50,491,384,186 });
-	item3 = App->gui->AddButton(SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, atlas, { 0,0,200,200 }, true, item3PressCallb, { 50,270,384,186 }, { 50,491,384,186 });
-	item1->OnHoverEnter = item1HoverEnCallb;
-	item1->OnHoverExit = item1HoverExCallb;
-	item2->OnHoverEnter = item2HoverEnCallb;
-	item2->OnHoverExit = item2HoverExCallb;
-	item3->OnHoverEnter = item3HoverEnCallb;
-	item3->OnHoverExit = item3HoverExCallb;
+	
+	swiftBoots = App->gui->AddButton(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 4, items_atlas, { 0,0,120,120 }, true, item1PressCallb);
+	cursedSword = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, items_atlas, { 120,0,120,120 }, true, item2PressCallb);
+	paladinsHandguards = App->gui->AddButton(SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, items_atlas, { 240,0,120,120 }, true, item3PressCallb);
+	ringProtection = App->gui->AddButton(SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, items_atlas, { 360,0,120,120 }, true, item4PressCallb);
+	dragonSlayer = App->gui->AddButton(SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, items_atlas, { 480,0,120,120 }, true, item5PressCallb);
+	magicRobe = App->gui->AddButton(SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, items_atlas, { 600,0,120,120 }, true, item6PressCallb);
+	swiftBoots->OnHoverEnter = item1HoverEnCallb;
+	swiftBoots->OnHoverExit = item1HoverExCallb;
+	cursedSword->OnHoverEnter = item2HoverEnCallb;
+	cursedSword->OnHoverExit = item2HoverExCallb;
+	paladinsHandguards->OnHoverEnter = item3HoverEnCallb;
+	paladinsHandguards->OnHoverExit = item3HoverExCallb;
 
-	buttons.push_back(item1);
-	buttons.push_back(item2);
-	buttons.push_back(item3);
+	buttons.push_back(swiftBoots);
+	buttons.push_back(cursedSword);
+	buttons.push_back(paladinsHandguards);
+	buttons.push_back(ringProtection);
+	buttons.push_back(dragonSlayer);
+	buttons.push_back(magicRobe);
 
-	item1Stats = App->gui->AddLabel(item1->rect.w / 2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
-	item1Stats->Enable(false);
-	item1Stats->setString(statsStr);
-	item1Stats->SetParent(item1);
+	item1Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
+	item1Stats->setString(swiftBootsStr);
+	item1Stats->SetParent(swiftBoots);
 	item1Stats->SetAnchor(0.5f, 0);
 	item1Stats->culled = false;
-	item2Stats = App->gui->AddLabel(item1->rect.w / 2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
-	item2Stats->Enable(false);
-	item2Stats->setString(statsStr);
-	item2Stats->SetParent(item2);
+	item2Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
+	item2Stats->setString(cursedSwordStr);
+	item2Stats->SetParent(cursedSword);
 	item2Stats->SetAnchor(0.5f, 0);
 	item2Stats->culled = false;
-	item3Stats = App->gui->AddLabel(item1->rect.w / 2, item1->rect.h, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
-	item3Stats->Enable(false);
-	item3Stats->setString(statsStr);
-	item3Stats->SetParent(item3);
+	item3Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
+	item3Stats->setString(paladinsStr);
+	item3Stats->SetParent(paladinsHandguards);
 	item3Stats->SetAnchor(0.5f, 0);
 	item3Stats->culled = false;
 
-	
-
-	confirmButton = App->gui->AddButton(App->gui->GetGuiSize().x / 2, App->gui->GetGuiSize().y / 2, atlas, { 450, 50, 250, 61 }, false, confirmCallback, { 450, 120, 250, 61 }, { 450, 189, 250, 61 });
-
-	
-
-	confirmLabel = App->gui->AddLabel(confirmButton->rect.w / 2, confirmButton->rect.h / 2, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
-	String confirmStr = "CONFIRM";
-	confirmLabel->setString(confirmStr);
-	confirmLabel->SetParent(confirmButton);
-	confirmLabel->culled = false;
 }
 
 
@@ -210,145 +211,77 @@ void ItemSelecScene::ManageDisplacementFocus() {
 
 void item1PressCallb(size_t arg_size...) {
 	LOG("PRESSED");
-	
-	App->scenes->itemSc->confirmButton->Enable(true);
-	App->scenes->itemSc->confirmLabel->Enable(true);
-
-	if (App->scenes->itemSc->item2->pressed || App->scenes->itemSc->item3->pressed) {
-		App->scenes->itemSc->item2->pressed = false;
-		App->scenes->itemSc->item2Stats->Enable(false);
-		App->scenes->itemSc->item3->pressed = false;
-		App->scenes->itemSc->item3Stats->Enable(false);
-	}
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* id = va_arg(args, Button*);
-	id->pressed = true;
 }
 
 void item1HoverEnCallb(size_t arg_size...) {
 	LOG("HOVERENTER");
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* b = va_arg(args, Button*);
-	if (!b->pressed)
-		b->getLabel()->Enable(true);
-
-	va_end(args);
-	//App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
 void item1HoverExCallb(size_t arg_size...) {
 	LOG("HOVEREXIT");
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* b = va_arg(args, Button*);
-
-	if (!b->pressed)
-		b->getLabel()->Enable(false);
-
-	va_end(args);
-	//App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
 void item2PressCallb(size_t arg_size...) {
 	LOG("PRESSED");
-	App->scenes->itemSc->confirmButton->Enable(true);
-	App->scenes->itemSc->confirmLabel->Enable(true);
-
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* id = va_arg(args, Button*);
-	id->pressed = true;
-
-	if (App->scenes->itemSc->item1->pressed || App->scenes->itemSc->item3->pressed) {
-		App->scenes->itemSc->item1->pressed = false;
-		App->scenes->itemSc->item1Stats->Enable(false);
-		App->scenes->itemSc->item3->pressed = false;
-		App->scenes->itemSc->item3Stats->Enable(false);
-	}
-
 }
 
 void item2HoverEnCallb(size_t arg_size...) {
 	LOG("HOVERENTER");
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* b = va_arg(args, Button*);
-	if (!b->pressed)
-		b->getLabel()->Enable(true);
-
-	va_end(args);
 }
 
 void item2HoverExCallb(size_t arg_size...) {
 	LOG("HOVEREXIT");
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* b = va_arg(args, Button*);
-	if (!b->pressed)
-		b->getLabel()->Enable(false);
-
-	va_end(args);
-	//App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
 void item3PressCallb(size_t arg_size...) {
 	LOG("PRESSED");
-	App->scenes->itemSc->confirmButton->Enable(true);
-	App->scenes->itemSc->confirmLabel->Enable(true);
-
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* id = va_arg(args, Button*);
-	id->pressed = true;
-
-	if (App->scenes->itemSc->item1->pressed || App->scenes->itemSc->item2->pressed) {
-		App->scenes->itemSc->item1->pressed = false;
-		App->scenes->itemSc->item1Stats->Enable(false);
-		App->scenes->itemSc->item2->pressed = false;
-		App->scenes->itemSc->item2Stats->Enable(false);
-	}
-
 }
 
 void item3HoverEnCallb(size_t arg_size...) {
 	LOG("HOVERENTER");
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* b = va_arg(args, Button*);
-
-	if (!b->pressed)
-		b->getLabel()->Enable(true);
-
-	va_end(args);
-	//App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
 void item3HoverExCallb(size_t arg_size...) {
 	LOG("HOVEREXIT");
-	va_list args;
-	va_start(args, arg_size);
-
-	Button* b = va_arg(args, Button*);
-
-	if (!b->pressed)
-		b->getLabel()->Enable(false);
-
-	va_end(args);
 }
 
+void item4PressCallb(size_t arg_size...) {
+	LOG("PRESSED");
+}
+
+void item4HoverEnCallb(size_t arg_size...) {
+	LOG("HOVERENTER");
+}
+
+void item4HoverExCallb(size_t arg_size...) {
+	LOG("HOVEREXIT");
+}
+
+void item5PressCallb(size_t arg_size...) {
+	LOG("PRESSED");
+}
+
+void item5HoverEnCallb(size_t arg_size...) {
+	LOG("HOVERENTER");
+}
+
+void item5HoverExCallb(size_t arg_size...) {
+	LOG("HOVEREXIT");
+}
+
+void item6PressCallb(size_t arg_size...) {
+	LOG("PRESSED");
+}
+
+void item6HoverEnCallb(size_t arg_size...) {
+	LOG("HOVERENTER");
+}
+
+void item6HoverExCallb(size_t arg_size...) {
+	LOG("HOVEREXIT");
+}
 void confirmCallback(size_t arg_size...) {
 	LOG("BUTTON CONFIRM PRESSED");
-	//HERE THE ITEMS WILL BE ADDED IF ITEM ? IS PRESSED
 	App->scenes->ChangeScene(App->scenes->mainSc);
 }
 

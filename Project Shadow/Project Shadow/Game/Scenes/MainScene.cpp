@@ -13,6 +13,7 @@
 #include "../../Engine/UI/Window.h"
 #include "../../Engine/ModuleCollision.h"
 #include "../../Engine/ModuleAudio.h"
+#include "../../Engine/ModuleWindow.h"
 
 
 
@@ -32,11 +33,15 @@ bool MainScene::Start()
 	App->map->Load("map2small.tmx");
 
 	t = App->textures->Load("UI/HealthBars.png");
-	SDL_Texture* f = App->textures->Load("UI/FaceArt.png");
+	SDL_Texture* f = App->textures->Load("UI/atlas.png");
 	Sprite* _bar = App->gui->AddSprite(0, 0, t, { 0, 26, 258, 20 });
 	Sprite* _bar2 = App->gui->AddSprite(0, 0, t, { 0, 26, 258, 20 });
-	Sprite* charFace = App->gui->AddSprite(10, 35, f, { 0, 0, 128, 64 });
-	Sprite* charFace2 = App->gui->AddSprite(10, 35, f, { 0, 0, 128, 64 });
+	Sprite* _bar3 = App->gui->AddSprite(0, 0, t, { 0, 26, 258, 20 });
+	Sprite* _bar4 = App->gui->AddSprite(0, 0, t, { 0, 26, 258, 20 });
+	Sprite* charFace = App->gui->AddSprite(10, 35, f, { 890, 335, 91, 91 });
+	Sprite* charFace2 = App->gui->AddSprite(SCREEN_WIDTH - 10, 35, f, { 890, 240, 91, 91 });
+	Sprite* charFace3 = App->gui->AddSprite(56, SCREEN_HEIGHT - 81, f, { 890, 145, 91, 91 });
+	Sprite* charFace4 = App->gui->AddSprite(SCREEN_WIDTH - 56, SCREEN_HEIGHT - 81, f, { 890, 50, 91, 91 });
 	Label* charNumber = App->gui->AddLabel(0, 0, 2, "UI/TTF/Vecna Bold.ttf", { 255, 255, 255, 255 }, Label::BLENDED, "hola");
 
 	e = App->entities->CreateCharacter({HERO,{100,100}});
@@ -45,7 +50,9 @@ bool MainScene::Start()
 	e4= App->entities->CreateCharacter({ HERO,{ 10000,1000 } });
 
 	App->gui->AddHealthbar((Hero*)e, 0, _bar, charFace, charNumber, true, 10, 10, t, true, { 0, 0, 264, 26 });
-	App->gui->AddHealthbar((Hero*)e2, 1, _bar2, charFace2, charNumber, false, 1590, 10, t, true, { 0, 0, 264, 26 });
+	App->gui->AddHealthbar((Hero*)e2, 1, _bar2, charFace2, charNumber, false, SCREEN_WIDTH - 10, 10, t, true, { 0, 0, 264, 26 });
+	App->gui->AddHealthbar((Hero*)e3, 2, _bar3, charFace3, charNumber, true, 10, SCREEN_HEIGHT - 10, t, true, { 0, 0, 264, 26 });
+	App->gui->AddHealthbar((Hero*)e4, 3, _bar4, charFace4, charNumber, false, SCREEN_WIDTH - 10, SCREEN_HEIGHT - 10, t, true, { 0, 0, 264, 26 });
 
 	App->debug = true;
 	t = App->textures->Load("Maps/map2_spritesheet.png");

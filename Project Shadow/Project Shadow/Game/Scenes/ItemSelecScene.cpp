@@ -109,12 +109,12 @@ void ItemSelecScene::LoadSceneUI() {
 	paladinsHandguards->OnHoverEnter = item3HoverEnCallb;
 	paladinsHandguards->OnHoverExit = item3HoverExCallb;
 
-	buttons.push_back(swiftBoots);
-	buttons.push_back(cursedSword);
-	buttons.push_back(paladinsHandguards);
-	buttons.push_back(ringProtection);
-	buttons.push_back(dragonSlayer);
-	buttons.push_back(magicRobe);
+	buttonsForController.push_back(swiftBoots);
+	buttonsForController.push_back(cursedSword);
+	buttonsForController.push_back(paladinsHandguards);
+	buttonsForController.push_back(ringProtection);
+	buttonsForController.push_back(dragonSlayer);
+	buttonsForController.push_back(magicRobe);
 
 	item1Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
 	item1Stats->setString(swiftBootsStr);
@@ -166,7 +166,7 @@ void ItemSelecScene::SetControllerFocus() {
 		return;
 	}
 	
-	Button* butt = *(buttons.begin());
+	Button* butt = *(buttonsForController.begin());
 
 	for (int i = 1; i <= controllersNum; i++) {
 	
@@ -200,10 +200,10 @@ void ItemSelecScene::ManageDisplacementFocus() {
 	for (std::list<Selection>::iterator foc = playersSelections.begin(); foc != playersSelections.end(); foc++) {
 		if (!(*foc).locked) {
 			if (App->input->GetButtonFromController((*foc).playerNum) == Input::RIGHT) {
-				for (std::list<Button*>::iterator button = buttons.begin(); button != buttons.end(); button++) {
+				for (std::list<Button*>::iterator button = buttonsForController.begin(); button != buttonsForController.end(); button++) {
 					if (*button == (*foc).but) {
 						button++;
-						if (button != buttons.end()) {
+						if (button != buttonsForController.end()) {
 							(*foc).but = (*button);
 							button--;
 							(*foc).DrawOrderedArrow();
@@ -215,10 +215,10 @@ void ItemSelecScene::ManageDisplacementFocus() {
 			}
 
 			else if (App->input->GetButtonFromController((*foc).playerNum) == Input::LEFT) {
-				for (std::list<Button*>::iterator button = buttons.begin(); button != buttons.end(); button++) {
+				for (std::list<Button*>::iterator button = buttonsForController.begin(); button != buttonsForController.end(); button++) {
 					if (!(*foc).locked) {
 						if (*button == (*foc).but) {
-							if (button != buttons.begin()) {
+							if (button != buttonsForController.begin()) {
 								button--;
 								(*foc).but = (*button);
 								button++;
@@ -308,7 +308,7 @@ void item6HoverExCallb(size_t arg_size...) {
 }
 void confirmCallback(size_t arg_size...) {
 	LOG("BUTTON CONFIRM PRESSED");
-	//App->scenes->ChangeScene(App->scenes->mainSc);
+	if (App->scenes->itemSc->enableMouse) { App->scenes->ChangeScene(App->scenes->mainSc); }
 }
 
 void Selection::LoadArrows(SDL_Texture* tex) {

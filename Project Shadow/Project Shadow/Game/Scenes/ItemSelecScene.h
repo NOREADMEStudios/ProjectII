@@ -92,7 +92,7 @@ private:
 	SDL_Texture* items_atlas; //NEEDS TO BE REMOVED ONCE THERE IS ONLY ONE ATLAS
 
 	std::list<Selection> playersSelections;
-	std::list<Button*> buttons;
+	std::list<Button*> buttonsForController;
 
 };
 

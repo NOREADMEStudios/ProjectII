@@ -57,7 +57,8 @@ bool IntroScene::Start()
 	exitLabel->setString(ExitStr);
 	exitLabel->SetParent(exitButton);
 	exitLabel->culled = false;
-	
+
+	App->gui->setFocus(pvpButton);
 	return true;
 }
 
@@ -68,6 +69,8 @@ bool IntroScene::Update(float dt)
 		App->scenes->ChangeScene(App->scenes->itemSc);
 	}
 	
+
+	Scene::Update(dt);
 
 	return true;
 }

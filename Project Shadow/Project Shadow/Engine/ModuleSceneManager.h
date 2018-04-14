@@ -42,6 +42,8 @@ public:
 	MainScene* mainSc;
 	EndScene* endSc;
 
+	bool four_players = false;
+
 private:
 
 	std::list<Scene> scenes;

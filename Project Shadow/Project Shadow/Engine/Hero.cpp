@@ -205,6 +205,7 @@ bool Hero::CleanUp(pugi::xml_node&)
 		App->collision->RemoveCollider(collParry);
 	}
 
+
 	App->collision->RemoveCollider(collHitBox);
 	App->collision->RemoveCollider(collFeet);
 	return true;

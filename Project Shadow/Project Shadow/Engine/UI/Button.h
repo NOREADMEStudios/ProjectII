@@ -28,6 +28,9 @@ public:
 	bool PreUpdate() override;
 	void setLabel(Label* label);
 	Label* getLabel();
+	void setHoveredAnim(SDL_Rect _hovered_anim);
+	void setPressedAnim(SDL_Rect _pressed_anim);
+
 
 protected:
 	Label* label = nullptr;

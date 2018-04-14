@@ -345,23 +345,24 @@ std::list<Input> ModuleInput::SecondPlayerConfig()
 	return ret;
 }
 
-Input ModuleInput::GetButtonFromController(int controllerNum) const{
+
+Input ModuleInput::GetButtonFromController(int controllerNum) const {
+
 	for (int i = 0; i < MAX_BUTTONS; ++i)
 	{
 		if (controllers[controllerNum - 1].buttons[i] == B_DOWN)
 		{
 			switch (i) {
 			case 0://A button
-
-				return (Input::JUMPINPUT);				
+				return (Input::JUMPINPUT);
 			case 1: //B button
-				return (Input::PARRYINPUT);				
+				return (Input::PARRYINPUT);
 			case 2://X
-				return (Input::LIGHT_ATTACK);				
+				return (Input::LIGHT_ATTACK);
 			case 3://Y
-				return (Input::HEAVY_ATTACK);				
+				return (Input::HEAVY_ATTACK);
 			case 4://SELECT
-				return (Input::TAUNTINPUT);				
+				return (Input::TAUNTINPUT);
 			case 5:
 				break;
 			case 6://START
@@ -382,7 +383,7 @@ Input ModuleInput::GetButtonFromController(int controllerNum) const{
 			case 13://LEFT
 				return (Input::LEFT);				
 			case 14://RIGHT
-				return (Input::RIGHT);				
+				return (Input::RIGHT);	
 			case 15:
 				break;
 			}

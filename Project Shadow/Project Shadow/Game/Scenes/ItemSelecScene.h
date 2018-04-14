@@ -72,10 +72,12 @@ private:
 	void SetControllerFocus();
 	void ManageDisplacementFocus();
 	void ChooseFocus();
+	void ApplyItemAttributes();
+	bool AllItemsSelected();
 	
 	SDL_Texture* atlas;
 
-	std::list<Selection> playersFocus;
+	std::list<Selection> playersSelections;
 	std::list<Button*> buttons;
 
 };

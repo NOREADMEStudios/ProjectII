@@ -60,6 +60,8 @@ bool ModuleEntityManager::Start() {
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->Start();
 	}
+
+	StartItems();
 	return true;
 }
 
@@ -101,6 +103,7 @@ bool ModuleEntityManager::CleanUp(pugi::xml_node& n) {
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->CleanUp(n);
 	}
+	StartItems();
 	return true;
 }
 
@@ -236,4 +239,29 @@ bool ModuleEntityManager::IsSFXRepeated(std::list<std::string> list, std::string
 		newList.pop_front();
 	}
 	return false;
+}
+
+Entity* ModuleEntityManager::GetEntity(uint num)
+{
+	Entity* ret = nullptr;
+
+	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
+		if ((*item)->hero_num == num)
+		{
+			ret == (*item);
+		}
+	}
+	return ret;
+}
+
+void ModuleEntityManager::StartItems()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		items[i].atk = 0;
+		items[i].def = 0;
+		items[i].spd = 0;
+		items[i].life = 0;
+		items[i].mgk = 0;
+	}
 }

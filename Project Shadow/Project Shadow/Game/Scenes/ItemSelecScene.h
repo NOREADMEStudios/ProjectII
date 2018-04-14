@@ -77,7 +77,6 @@ public:
 
 	bool Save(pugi::xml_node&) const override { return true; };
 
-
 private:
 	void LoadSceneUI();
 

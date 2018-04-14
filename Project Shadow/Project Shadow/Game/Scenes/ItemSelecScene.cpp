@@ -6,6 +6,7 @@
 #include "../../Engine/App.h"
 #include "../../Engine/ModuleSceneManager.h"
 #include "../../Engine/ModuleEntityManager.h"
+#include "../../Engine/Entity.h"
 #include "../../Engine/ModuleGUI.h"
 #include "../../Engine/ModuleTextures.h"
 #include "../../Engine/ModuleInput.h"
@@ -348,31 +349,35 @@ void Selection::DrawOrderedArrow() {
 
 void ItemSelecScene::ApplyItemAttributes() {
 
+	
 	for (std::list<Selection>::iterator focus = playersSelections.begin(); focus != playersSelections.end(); focus++) {
-		
+		EntityStats* item = &App->entities->items[(*focus).playerNum];
+
 		if ((*focus).but == swiftBoots) {
 			//Apply the effect to the player num ( (*focus).playerNum  )
-		
+			item->spd += 5;
 		}
 		else if ((*focus).but == cursedSword) {
 			//Apply the effect to the player num ( (*focus).playerNum  )
-
+			item->atk += 5;
 		}
 		else if ((*focus).but == paladinsHandguards) {
 			//Apply the effect to the player num ( (*focus).playerNum  )
-
+			item->def += 5;
 		}
 		else if ((*focus).but == ringProtection) {
 			//Apply the effect to the player num ( (*focus).playerNum  )
-
+			item->life += 10;
 		}
 		else if ((*focus).but == dragonSlayer) {
 			//Apply the effect to the player num ( (*focus).playerNum  )
-
+			item->atk += 2;
+			item->def += 2;
 		}
 		else if ((*focus).but == magicRobe) {
 			//Apply the effect to the player num ( (*focus).playerNum  )
-
+			item->atk += 2;
+			item->spd += 2;
 		}
 	}
 }

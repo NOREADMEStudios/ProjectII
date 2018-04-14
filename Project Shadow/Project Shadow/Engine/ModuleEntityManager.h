@@ -28,19 +28,7 @@ struct CharacterInfo {
 	
 };
 
-class Item
-{
-	enum Stat {
-		NONE,
-		ATTACK,
-		DEFFENSE,
-		SPEED
-	};
 
-	const char* itemname = "default";
-	Stat statIncreased = NONE;
-	Uint8 increaseValue = 0;
-};
 
 
 class ModuleEntityManager : public Module
@@ -71,16 +59,20 @@ public:
 
 	void CheckMidPos(float& min_x, float& max_x);
 	void CheckMidPosY(float& min_y, float& max_y);
+	void StartItems();
 
 	uint numofplayers = 0;
 
 	void PauseEntities(bool pause);
 
+	Entity* GetEntity(uint num);
+	EntityStats items[4];
 	bool finish = false;
 
 private:
 
 	std::list<Entity*> entities;
+
 	
 };
 

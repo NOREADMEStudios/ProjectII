@@ -70,10 +70,6 @@ struct Point3D
 	float z = 0;
 };
 
-struct Items
-{
-	EntityStats stats;
-};
 
 class Entity : public Module
 {
@@ -154,7 +150,7 @@ protected:
 
 	// Should be same numeration as the states
 	std::list<Animation> animations;
-	std::list<Items> items;
+
 };
 #endif
 

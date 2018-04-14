@@ -58,7 +58,7 @@ namespace Utils {
 	int ParseInt(const char*);
 
 	template<typename TYPE>
-	size_t ClearList(typename std::list<TYPE>& list) {
+	void ClearList(typename std::list<TYPE>& list) {
 		typename std::list<TYPE>::iterator it;
 		for (it = list.begin(); it != list.end(); it++) {
 			delete *it;
@@ -67,7 +67,7 @@ namespace Utils {
 	}
 
 	template<typename TYPE>
-	size_t ClearVector(typename std::vector<TYPE>& vector) {
+	void ClearVector(typename std::vector<TYPE>& vector) {
 		typename std::vector<TYPE>::iterator it;
 		for (it = vector.begin(); it != vector.end(); it++) {
 			delete *it;

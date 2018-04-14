@@ -96,13 +96,3 @@ Label * Button::getLabel()
 {
 	return label;
 }
-
-void Button::setHoveredAnim(SDL_Rect _hovered_anim)
-{
-	hovered_anim = _hovered_anim;
-}
-
-void Button::setPressedAnim(SDL_Rect _pressed_anim)
-{
-	pressed_anim = _pressed_anim;
-}

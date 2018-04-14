@@ -10,31 +10,6 @@ class Button;
 class Sprite;
 class Label;
 class InterfaceElement;
-class Sprite;
-
-enum FrameState
-{
-	PRESS_BUTTON,
-	SELECTING,
-	READY
-};
-
-class CharacterFrame
-{
-public:
-
-	Sprite * background = nullptr;
-	int characterNumber = 0;
-	int item1_id = 1;
-	int item2_id = 1;
-	int item3_id = 1;
-
-	FrameState currentState = PRESS_BUTTON;
-
-	Label* stateDisplay = nullptr;
-
-
-};
 
 
 class Focus {
@@ -59,29 +34,16 @@ class ItemSelecScene:
 {
 public:
 
+	Button *	item1 = nullptr;
+	Button *	item2 = nullptr;
+	Button *	item3 = nullptr;
+	Button *	confirmButton = nullptr;
+	Label*		confirmLabel = nullptr;
+	Label *		item1Stats = nullptr;
+	Label *		item2Stats = nullptr;
+	Label *		item3Stats = nullptr;
 
 	int controllersNum;
-
-	Button * item1 = nullptr;
-	Button * item2 = nullptr;
-	Button * item3 = nullptr;
-	Button * confirmButton = nullptr;
-	Label* confirmLabel = nullptr;
-	Label * item1Stats = nullptr;
-	Label * item2Stats = nullptr;
-	Label * item3Stats = nullptr;
-	CharacterFrame* player1 = nullptr;
-	CharacterFrame* player2 = nullptr;
-	CharacterFrame* player3 = nullptr;
-	CharacterFrame* player4 = nullptr;
-
-	String swiftBootsStr; 
-	String cursedSwordStr; 
-	String paladinsStr; 
-	String ringStr; 
-	String dragonSlayerStr; 
-	String magicRobeStr;
-
 
 	ItemSelecScene();
 	virtual ~ItemSelecScene();
@@ -107,8 +69,6 @@ private:
 	void LoadSceneUI();
 
 	
-	void ManageItemChanging();
-
 	void SetControllerFocus();
 	void ManageDisplacementFocus();
 	void ChooseFocus();

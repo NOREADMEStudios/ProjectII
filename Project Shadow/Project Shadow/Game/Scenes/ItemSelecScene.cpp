@@ -61,6 +61,12 @@ bool ItemSelecScene::Start()
 
 bool ItemSelecScene::Update(float dt)
 {
+	if (AllItemsSelected()) {//ALL ARROWS LOCKED 
+		ApplyItemAttributes();
+		App->scenes->ChangeScene(App->scenes->mainSc);
+	}
+
+
 	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
 		App->scenes->ChangeScene(App->scenes->introSc);
 	}
@@ -69,6 +75,7 @@ bool ItemSelecScene::Update(float dt)
 	if (controllersNum != 0) {
 		ManageDisplacementFocus();
 		ChooseFocus();
+		
 	}
 
 	return true;
@@ -139,10 +146,18 @@ void ItemSelecScene::LoadSceneUI() {
 	item6Stats->SetParent(magicRobe);
 	item6Stats->SetAnchor(0.5f, 0);
 	item6Stats->culled = false;
-
 }
 
+bool ItemSelecScene::AllItemsSelected() {
 
+	bool ret = true;
+	for (std::list<Selection>::iterator focus = playersSelections.begin(); focus != playersSelections.end(); focus++) {
+		bool ret2 = (*focus).locked;
+		ret &= ret2;
+	}
+
+	return ret;
+}
 
 void ItemSelecScene::SetControllerFocus() {
 
@@ -162,7 +177,7 @@ void ItemSelecScene::SetControllerFocus() {
 	focus.LoadArrows(atlas);
 	
 	
-	playersFocus.push_back(focus);
+	playersSelections.push_back(focus);
 	}
 }
 
@@ -171,7 +186,7 @@ void ItemSelecScene::SetControllerFocus() {
 
 void ItemSelecScene::ChooseFocus() {
 
-	for (std::list<Selection>::iterator focus = playersFocus.begin(); focus != playersFocus.end(); focus++) {
+	for (std::list<Selection>::iterator focus = playersSelections.begin(); focus != playersSelections.end(); focus++) {
 		if (App->input->GetButtonFromController((*focus).playerNum) == Input::JUMPINPUT) {
 			LOG("");
 			(*focus).arrow->ChangeAnimation((*focus).arrowLockRect);
@@ -186,7 +201,7 @@ void ItemSelecScene::ChooseFocus() {
 
 void ItemSelecScene::ManageDisplacementFocus() {
 
-	for (std::list<Selection>::iterator foc = playersFocus.begin(); foc != playersFocus.end(); foc++) {
+	for (std::list<Selection>::iterator foc = playersSelections.begin(); foc != playersSelections.end(); foc++) {
 		if (!(*foc).locked) {
 			if (App->input->GetButtonFromController((*foc).playerNum) == Input::RIGHT) {
 				for (std::list<Button*>::iterator button = buttons.begin(); button != buttons.end(); button++) {
@@ -305,12 +320,12 @@ void Selection::LoadArrows(SDL_Texture* tex) {
 	switch (playerNum) {
 	case 0: return;
 	case 1: 
-		arrowRect = { 825, 50, 22,19 }; //Yellow 
-		arrowLockRect = { 825, 87, 23,21 };
-		break;
-	case 2:
 		arrowRect = { 754, 50, 22,19 }; // Red
 		arrowLockRect = { 754, 87, 23,21 };
+		break;
+	case 2:
+		arrowRect = { 825, 50, 22,19 }; //Yellow 
+		arrowLockRect = { 825, 87, 23,21 };
 		break;
 	case 3:
 		arrowRect = { 778, 50, 22,19 }; //Blue
@@ -333,4 +348,8 @@ void Selection::DrawOrderedArrow() {
 	 
 	int x = but->getPositionX() - (but->rect.w/2) + (distance * playerNum);
 	arrow->setPosition(x, but->getPositionY() - but->rect.h / 2);
+}
+void ItemSelecScene::ApplyItemAttributes() {
+
+
 }

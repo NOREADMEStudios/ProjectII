@@ -447,6 +447,12 @@ std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum)
 		}
 		else if (controllers[playerNum - 1].buttons[i] == B_REPEAT) {
 			switch (i) {
+			case 9://L1
+				ret.push_back(Input(Input::DEFEND));
+				break;
+			case 10://R1
+				ret.push_back(Input(Input::RUNINPUT));
+				break;
 			case 11://UP
 				ret.push_back(Input(Input::UP));
 				break;

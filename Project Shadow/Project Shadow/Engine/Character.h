@@ -38,6 +38,8 @@ enum CharStateEnum
 	ATTACK_L2,
 	ATTACK_L3,
 	ATTACK_H2,
+	ATTACK_J1,
+	ATTACK_J2,
 	STOP,
 	HIT,
 	KNOKED,
@@ -70,13 +72,15 @@ struct Attack
 
 	bool CheckChild(Attack* _child)
 	{
-		for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
-			if (*item == _child)
-			{
-				return true;
+		if (!childs.empty())
+		{
+			for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
+				if (*item == _child)
+				{
+					return true;
+				}
 			}
 		}
-
 		return false;
 	}
 

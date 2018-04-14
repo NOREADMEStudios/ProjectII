@@ -58,33 +58,42 @@ bool Hero::Start()
 	invencible.dur = 3;
 	invencible.fr = 0.2f;
 	collider = { 50 , 50 , 50, 50 };
-	stats.spd = 300;
+	stats.spd = 180;
 	stats.life = 100;
+	stats.atk = 8;
+	stats.def = 1;
 	char_depth = 20;
+	gamepos.y = 0;
 
 	initialpos.x = gamepos.x;
 	initialpos.y = gamepos.y;
 	initialLife = stats.life;
 	lives = 2;
 
-	Attack* light_1 = new Attack(ATTACK_LIGHT, LIGHT_ATTACK, 10);
-	Attack* light_2 = new Attack(ATTACK_L2, LIGHT_ATTACK, 12);
-	Attack* light_3 = new Attack(ATTACK_L3, LIGHT_ATTACK, 15);
-	Attack* heavy_1 = new Attack(ATTACK_HEAVY, HEAVY_ATTACK, 12);
-	Attack* heavy_2 = new Attack(ATTACK_H2, HEAVY_ATTACK, 15);
+	Attack* light_1 = new Attack(ATTACK_LIGHT, LIGHT_ATTACK, 2);
+	Attack* light_2 = new Attack(ATTACK_L2, LIGHT_ATTACK, 2);
+	Attack* light_3 = new Attack(ATTACK_L3, LIGHT_ATTACK, 5);
+	Attack* heavy_1 = new Attack(ATTACK_HEAVY, HEAVY_ATTACK, 2);
+	Attack* heavy_2 = new Attack(ATTACK_H2, HEAVY_ATTACK, 5);
+	Attack* jump_a = new Attack(JUMP, JUMPINPUT, 0);
+	Attack* jump_a2 = new Attack(ATTACK_J1, LIGHT_ATTACK, 2);
+	Attack* jump_a3 = new Attack(ATTACK_J2, HEAVY_ATTACK, 5);
 	attacks.push_back(light_1);
 	attacks.push_back(light_2);
 	attacks.push_back(light_3);
 	attacks.push_back(heavy_1);
 	attacks.push_back(heavy_2);
-
+	attacks.push_back(jump_a);
+	attacks.push_back(jump_a2);
+	attacks.push_back(jump_a3);
 	
 	light_1->AddChild(light_2);
 	light_2->AddChild(light_3);
 	heavy_1->AddChild(light_3);
 	light_2->AddChild(heavy_2);
 	heavy_1->AddChild(heavy_2);
-
+	jump_a->AddChild(jump_a2);
+	jump_a->AddChild(jump_a3);
 
 	LoadShadow();
 
@@ -119,17 +128,16 @@ bool Hero::Update(float dt)
 	else
 		currentState = DEATH;
 
+	Move(dt);
+	Break(dt);
+
 
 	UpdateAnimation();
 	UpdateState();
 	UpdateCurState(dt);
 
 
-	if (StateisAtk(currentState)) {
-		CalculateAtk();
-	}
-	else if (currentState != PROTECT) {
-		stats.atk = 0;
+	 if (currentState != PROTECT && !StateisAtk(currentState)) {
 		if (directions.right - directions.left == 1)
 		{
 			flip = false;
@@ -139,9 +147,6 @@ bool Hero::Update(float dt)
 			flip = true;
 		}
 	}
-
-	Move(dt);
-	Break(dt);
 
 
 
@@ -224,6 +229,7 @@ void Hero::LoadAnimations()
 	taunt.LoadAnimationsfromXML("win", HERO_SPRITE_ROOT);
 	attack_s2.LoadAnimationsfromXML("strong_attack", HERO_SPRITE_ROOT);
 	parry.LoadAnimationsfromXML("standup", HERO_SPRITE_ROOT);
+	attack_j2.LoadAnimationsfromXML("windwhirl", HERO_SPRITE_ROOT);
 
 }
 
@@ -381,13 +387,31 @@ void Hero::UpdateState()
 			currentAnimation->Reset();
 		
 	}
+	if (currentState == JUMP ||currentState == ATTACK_J1 ||currentState == ATTACK_J2)
+	{
+		last_attack = JUMP;
+		if (StateisAtk(wantedState))
+		{
+			SetCombo();
+			time_attack.Start();
+		}
+		if ((currentState == ATTACK_J1 || currentState == ATTACK_J2) && currentAnimation->Finished())
+		{
+			currentAnimation->Reset();
+			currentState = JUMP;
+		}
+		if (gamepos.y <= 0)
+		{
+			jumping = false;
+			speedVector.y = 0;
+			currentAnimation->Reset();
+			currentState = wantedState;
+		}
+	}
 	else if (currentAnimation->Finished())
 	{	
-		if (currentState == JUMP)
-		{
-			speedVector.y = 0;
-		}
-		else if (currentState == DEATH)
+	
+		if (currentState == DEATH)
 		{
 			if (lives > 0)
 				Respawn();
@@ -417,6 +441,8 @@ void Hero::UpdateState()
 	{
 		last_attack = IDLE;
 	}
+
+
 }
 
 void Hero::UpdateCurState(float dt)
@@ -431,6 +457,11 @@ void Hero::UpdateCurState(float dt)
 	else
 	{
 		breaking = false;
+	}
+
+	if (gamepos.y > 0 && (currentState != ATTACK_J1 && currentState != ATTACK_J2))
+	{
+		Accelerate(x_dir, -2, z_dir, dt);
 	}
 
 	switch (currentState)
@@ -463,28 +494,20 @@ void Hero::UpdateCurState(float dt)
 			break;
 		}
 		case JUMP:
-		{
-
-			if (currentAnimation->getFrameIndex() >= (currentAnimation->frames.size()) / 2)
-				Accelerate(x_dir * stats.spd / 2, -10 , 0, dt);
-
-			else
-				Accelerate(x_dir * stats.spd / 2, 10, 0, dt);
-			
+		{	
+			if (!jumping)
+			{
+				jumping = true;
+				max_speed = 1000;
+				Accelerate(x_dir, 500, z_dir, dt);
+			}	
 			break;
 		}
-		case ATTACK_L3:
-		case ATTACK_LIGHT:
-		{
-			if (flip)
-				x_dir = -1;
-			else
-				x_dir = 1;
-
-			speedVector.x = 0;
-
-			Accelerate(x_dir, 0, 0, dt);
-			
+		case ATTACK_J1:
+		case ATTACK_J2:
+		{	
+				Accelerate(x_dir, -1, z_dir, dt);
+				break;
 		}
 
 	}
@@ -525,7 +548,7 @@ void Hero::UpdateAnimation()
 	}
 	else if (currentState == HIT)
 	{
-		currentAnimation = &jumpProt;
+		currentAnimation = &hit;
 
 		if (sound_avaliable)
 			{
@@ -613,7 +636,14 @@ void Hero::UpdateAnimation()
 			sound_avaliable = false;
 		}
 	}
-
+	else if (currentState == ATTACK_J1)
+	{
+		currentAnimation = &jumpAtk;
+	}
+	else if (currentState == ATTACK_J2)
+	{
+		currentAnimation = &attack_j2;
+	}
 }
 
 void Hero::Respawn()
@@ -669,20 +699,23 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 				
 			}
 			else
-			_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
-
+			{
+				max_speed = 600;
+				_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
+			}
 			App->audio->PlayFx(10);
-
 		}
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_shield")
 		{
-			_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
+			max_speed = 400;
+			_this->entity->Accelerate(hit_dir * 800, 0, 0, 1);
 
 
 
 		}
 		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")
 		{
+			currentState = IDLE;
 			parried = true;
 		}
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_parry")
@@ -694,7 +727,6 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 
 			currentState = HIT;
-			stats.life -= _other->entity->stats.atk;
 			hit_bool = true;
 
 
@@ -708,13 +740,15 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 						
 		}
+		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_hitbox" && StateisAtk(currentState))
+		{
+			_other->entity->stats.life -= _this->entity->stats.atk + GetAtk(currentState)->damage - _other->entity->stats.def;
+		}
+
 	}
 }
 
-void Hero::CalculateAtk()
-{
-	stats.atk = GetAtk(currentState)->damage;		
-}
+
 
 bool Hero::StateisAtk(CharStateEnum State)
 {

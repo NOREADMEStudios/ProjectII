@@ -50,7 +50,7 @@ public:
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 	Timer time_attack;
 
-	Animation jump, stop, run, jumpAtk, jumpProt, kick, attack, hit, death, attack_l2, attack_l3, protect, taunt, attack_s2, parry;
+	Animation jump, stop, run, jumpAtk, jumpProt, kick, attack, hit, death, attack_l2, attack_l3, protect, taunt, attack_s2, parry, attack_j2;
 
 
 	int currHP = 100;
@@ -62,6 +62,7 @@ protected:
 	int hit_dir = 0;
 	bool hit_bool = 0;
 	bool parried = 0;
+	bool jumping = 0;
 	bool sound_avaliable = true;
 
 };

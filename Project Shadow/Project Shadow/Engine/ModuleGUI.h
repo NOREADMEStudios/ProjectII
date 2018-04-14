@@ -60,6 +60,8 @@ public:
 	uiPoint GetGuiSize();
 	void setFocus(InterfaceElement* elem);
 	InterfaceElement* getFocusedItem();
+	void FocusNext();
+	void FocusPrev();
 
 	InterfaceElement* AddElement(InterfaceElement* elem);
 	void RemoveElement(InterfaceElement* elem);

@@ -58,6 +58,24 @@ namespace Utils {
 	int ParseInt(const char*);
 
 	template<typename TYPE>
+	size_t ClearList(typename std::list<TYPE>& list) {
+		typename std::list<TYPE>::iterator it;
+		for (it = list.begin(); it != list.end(); pos++, it++) {
+			delete *it;
+		}
+		list.clear();
+	}
+
+	template<typename TYPE>
+	size_t ClearVector(typename std::vector<TYPE>& vector) {
+		typename std::vector<TYPE>::iterator it;
+		for (it = vector.begin(); it != vector.end(); pos++, it++) {
+			delete *it;
+		}
+		vector.clear();
+	}
+
+	template<typename TYPE>
 	size_t FindInList(TYPE ptr, typename std::list<TYPE>& list) {
 		size_t pos = 0;
 		typename std::list<TYPE>::iterator it;

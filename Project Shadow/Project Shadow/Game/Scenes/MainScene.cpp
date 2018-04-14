@@ -32,23 +32,18 @@ bool MainScene::Start()
 	App->map->Load("map2small.tmx");
 
 	t = App->textures->Load("UI/HealthBars.png");
-	SDL_Texture* f = App->textures->Load("UI/FaceArt.png");
-	Sprite* _bar = App->gui->AddSprite(0, 0, t, { 0, 26, 258, 20 });
-	Sprite* _bar2 = App->gui->AddSprite(0, 0, t, { 0, 26, 258, 20 });
-	Sprite* charFace = App->gui->AddSprite(10, 35, f, { 0, 0, 128, 64 });
-	Sprite* charFace2 = App->gui->AddSprite(10, 35, f, { 0, 0, 128, 64 });
-	Label* charNumber = App->gui->AddLabel(0, 0, 2, "UI/TTF/Vecna Bold.ttf", { 255, 255, 255, 255 }, Label::BLENDED, "hola");
 
 	e = App->entities->CreateCharacter({HERO,{100,100}});
 	e2 = App->entities->CreateCharacter({ HERO,{ 10000,100 } });
 	e3 = App->entities->CreateCharacter({ HERO,{ 100,1000 } });
 	e4= App->entities->CreateCharacter({ HERO,{ 10000,1000 } });
 
-	App->gui->AddHealthbar((Hero*)e, 0, _bar, charFace, charNumber, true, 10, 10, t, true, { 0, 0, 264, 26 });
-	App->gui->AddHealthbar((Hero*)e2, 1, _bar2, charFace2, charNumber, false, 1590, 10, t, true, { 0, 0, 264, 26 });
+	App->gui->AddHealthbar((Hero*)e, 0, true, 10, 10, t, true, { 0, 0, 264, 26 });
+	App->gui->AddHealthbar((Hero*)e2, 1, false, 1590, 10, t, true, { 0, 0, 264, 26 });
+	App->gui->AddHealthbar((Hero*)e3, 2, true, 1590, 10, t, true, { 0, 0, 264, 26 });
+	App->gui->AddHealthbar((Hero*)e4, 3, false, 1590, 10, t, true, { 0, 0, 264, 26 });
 
 	App->debug = true;
-	t = App->textures->Load("Maps/map2_spritesheet.png");
   
 	return false;
 }
@@ -87,6 +82,6 @@ bool MainScene::CleanUp()
 	App->map->CleanUp(n);
 	App->textures->UnLoad(t);
 	App->collision->CleanUp(n);
-	App->gui->CleanUp(n);
+	App->gui->CleanUp();
 	return true;
 }

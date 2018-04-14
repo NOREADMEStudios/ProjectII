@@ -59,8 +59,7 @@ bool EndScene::Update(float dt)
 
 bool EndScene::CleanUp()
 {
-	xmlNode n;
-	App->gui->CleanUp(n);
+	App->gui->CleanUp();
 
 	return true;
 }

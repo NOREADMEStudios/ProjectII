@@ -11,6 +11,10 @@ struct Rect {
 		return { (int)x, (int)y, (int)w, (int)h };
 	}
 
+	Rect() {
+		x = 0, y = 0, w = 0, h = 0;
+	}
+
 	Rect(const Rect &rect) {
 		x = rect.x;
 		y = rect.y;
@@ -56,7 +60,6 @@ struct Rect {
 		return r;
 	}
 
-	Rect() {}
 	Rect(TYPE x, TYPE y, TYPE w, TYPE h) : x(x), y(y), w(w), h(h) {}
 	~Rect() {}
 };

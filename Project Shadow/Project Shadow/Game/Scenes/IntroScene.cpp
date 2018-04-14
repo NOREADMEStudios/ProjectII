@@ -74,8 +74,7 @@ bool IntroScene::Update(float dt)
 
 bool IntroScene::CleanUp()
 {
-	xmlNode n;
-	App->gui->CleanUp(n);
+	App->gui->CleanUp();
 	bool test = UnLoadBackground();
 	return true;
 }

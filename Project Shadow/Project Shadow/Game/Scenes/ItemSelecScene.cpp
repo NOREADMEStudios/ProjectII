@@ -92,8 +92,7 @@ bool ItemSelecScene::Update(float dt)
 
 bool ItemSelecScene::CleanUp()
 {
-	xmlNode n;
-	App->gui->CleanUp(n);
+	App->gui->CleanUp();
 
 	return true;
 }

@@ -45,6 +45,9 @@ public:
 	Label *		item1Stats = nullptr;
 	Label *		item2Stats = nullptr;
 	Label *		item3Stats = nullptr;
+	Label *		item4Stats = nullptr;
+	Label *		item5Stats = nullptr;
+	Label *		item6Stats = nullptr;
 
 	String swiftBootsStr = "SPEED + 10"; //1
 	String cursedSwordStr = "ATTACK + 10"; //2

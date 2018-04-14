@@ -94,14 +94,14 @@ void ItemSelecScene::LoadSceneUI() {
 
 	atlas = App->textures->Load("UI/atlas.png");
 	items_atlas = App->textures->Load("UI/items.png");
-
+	uiPoint sizeScreen = App->gui->GetGuiSize();
 	
-	swiftBoots = App->gui->AddButton(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 4, items_atlas, { 0,0,120,120 }, true, item1PressCallb);
-	cursedSword = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, items_atlas, { 120,0,120,120 }, true, item2PressCallb);
-	paladinsHandguards = App->gui->AddButton(SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, items_atlas, { 240,0,120,120 }, true, item3PressCallb);
-	ringProtection = App->gui->AddButton(SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, items_atlas, { 360,0,120,120 }, true, item4PressCallb);
-	dragonSlayer = App->gui->AddButton(SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, items_atlas, { 480,0,120,120 }, true, item5PressCallb);
-	magicRobe = App->gui->AddButton(SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, items_atlas, { 600,0,120,120 }, true, item6PressCallb);
+	swiftBoots = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y / 3 + 50, items_atlas, { 0,0,120,120 }, true, item1PressCallb);
+	cursedSword = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3 + 50, items_atlas, { 120,0,120,120 }, true, item2PressCallb);
+	paladinsHandguards = App->gui->AddButton(sizeScreen.x / 4 * 3, sizeScreen.y / 3 + 50, items_atlas, { 240,0,120,120 }, true, item3PressCallb);
+	ringProtection = App->gui->AddButton(sizeScreen.x /  4, sizeScreen.y / 2 + 50, items_atlas, { 360,0,120,120 }, true, item4PressCallb);
+	dragonSlayer = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 2 + 50, items_atlas, { 480,0,120,120 }, true, item5PressCallb);
+	magicRobe = App->gui->AddButton(sizeScreen.x / 4 * 3, sizeScreen.y / 2 + 50, items_atlas, { 600,0,120,120 }, true, item6PressCallb);
 	swiftBoots->OnHoverEnter = item1HoverEnCallb;
 	swiftBoots->OnHoverExit = item1HoverExCallb;
 	cursedSword->OnHoverEnter = item2HoverEnCallb;
@@ -131,7 +131,21 @@ void ItemSelecScene::LoadSceneUI() {
 	item3Stats->SetParent(paladinsHandguards);
 	item3Stats->SetAnchor(0.5f, 0);
 	item3Stats->culled = false;
-	
+	item4Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
+	item4Stats->setString(ringStr);
+	item4Stats->SetParent(ringProtection);
+	item4Stats->SetAnchor(0.5f, 0);
+	item4Stats->culled = false;
+	item5Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
+	item5Stats->setString(dragonSlayerStr);
+	item5Stats->SetParent(dragonSlayer);
+	item5Stats->SetAnchor(0.5f, 0);
+	item5Stats->culled = false;
+	item6Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
+	item6Stats->setString(magicRobeStr);
+	item6Stats->SetParent(magicRobe);
+	item6Stats->SetAnchor(0.5f, 0);
+	item6Stats->culled = false;
 }
 
 bool ItemSelecScene::AllItemsSelected() {

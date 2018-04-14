@@ -74,6 +74,7 @@ private:
 	void ChooseFocus();
 	
 	SDL_Texture* atlas;
+	SDL_Texture* items_atlas; //NEEDS TO BE REMOVED ONCE THERE IS ONLY ONE ATLAS
 
 	std::list<Selection> playersFocus;
 	std::list<Button*> buttons;

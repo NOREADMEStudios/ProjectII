@@ -77,9 +77,10 @@ bool ItemSelecScene::CleanUp()
 void ItemSelecScene::LoadSceneUI() {
 
 	atlas = App->textures->Load("UI/atlas.png");
+	items_atlas = App->textures->Load("UI/items.png");
 
-	std::string statsStr = "Attack + ???";
-	item1 = App->gui->AddButton(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 4, atlas, { 0,0,200,200 }, true, item1PressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+	String statsStr = "Attack + ???";
+	item1 = App->gui->AddButton(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 4, atlas, { 0,0,120,120 }, true, item1PressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 	item2 = App->gui->AddButton(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, atlas, { 0,0,200,200 }, true, item2PressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 	item3 = App->gui->AddButton(SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT / 4, atlas, { 0,0,200,200 }, true, item3PressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 	item1->OnHoverEnter = item1HoverEnCallb;
@@ -119,7 +120,7 @@ void ItemSelecScene::LoadSceneUI() {
 	
 
 	confirmLabel = App->gui->AddLabel(confirmButton->rect.w / 2, confirmButton->rect.h / 2, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
-	std::string confirmStr = "CONFIRM";
+	String confirmStr = "CONFIRM";
 	confirmLabel->setString(confirmStr);
 	confirmLabel->SetParent(confirmButton);
 	confirmLabel->culled = false;

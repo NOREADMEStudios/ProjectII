@@ -60,7 +60,7 @@ namespace Utils {
 	template<typename TYPE>
 	size_t ClearList(typename std::list<TYPE>& list) {
 		typename std::list<TYPE>::iterator it;
-		for (it = list.begin(); it != list.end(); pos++, it++) {
+		for (it = list.begin(); it != list.end(); it++) {
 			delete *it;
 		}
 		list.clear();
@@ -69,7 +69,7 @@ namespace Utils {
 	template<typename TYPE>
 	size_t ClearVector(typename std::vector<TYPE>& vector) {
 		typename std::vector<TYPE>::iterator it;
-		for (it = vector.begin(); it != vector.end(); pos++, it++) {
+		for (it = vector.begin(); it != vector.end(); it++) {
 			delete *it;
 		}
 		vector.clear();

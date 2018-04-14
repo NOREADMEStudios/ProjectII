@@ -62,7 +62,7 @@ bool ItemSelecScene::Start()
 bool ItemSelecScene::Update(float dt)
 {
 	if (AllItemsSelected()) {//ALL ARROWS LOCKED 
-		ApplyItemAttributes();
+		ApplyItemAttributes();						 // NEED TO FILL 
 		App->scenes->ChangeScene(App->scenes->mainSc);
 	}
 
@@ -294,7 +294,7 @@ void item6HoverExCallb(size_t arg_size...) {
 }
 void confirmCallback(size_t arg_size...) {
 	LOG("BUTTON CONFIRM PRESSED");
-	App->scenes->ChangeScene(App->scenes->mainSc);
+	//App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
 void Selection::LoadArrows(SDL_Texture* tex) {

@@ -34,14 +34,24 @@ class ItemSelecScene:
 {
 public:
 
-	Button *	item1 = nullptr;
-	Button *	item2 = nullptr;
-	Button *	item3 = nullptr;
+	Button *	swiftBoots = nullptr;
+	Button *	cursedSword = nullptr;
+	Button *	paladinsHandguards = nullptr;
+	Button *	ringProtection = nullptr;
+	Button *	dragonSlayer = nullptr;
+	Button *	magicRobe = nullptr;
 	Button *	confirmButton = nullptr;
 	Label*		confirmLabel = nullptr;
 	Label *		item1Stats = nullptr;
 	Label *		item2Stats = nullptr;
 	Label *		item3Stats = nullptr;
+
+	String swiftBootsStr = "SPEED + 10"; //1
+	String cursedSwordStr = "ATTACK + 10"; //2
+	String paladinsStr = "DEFENSE + 10"; //3
+	String ringStr = "LIFE + 10"; //4
+	String dragonSlayerStr = "ATK.+ 5 DEF.+ 5"; //5
+	String magicRobeStr = "ATK.+ 5 SPD.+ 5"; //6
 
 	int controllersNum;
 
@@ -76,6 +86,7 @@ private:
 	bool AllItemsSelected();
 	
 	SDL_Texture* atlas;
+	SDL_Texture* items_atlas; //NEEDS TO BE REMOVED ONCE THERE IS ONLY ONE ATLAS
 
 	std::list<Selection> playersSelections;
 	std::list<Button*> buttons;

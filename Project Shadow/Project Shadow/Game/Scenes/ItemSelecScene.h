@@ -12,7 +12,7 @@ class Label;
 class InterfaceElement;
 
 
-class Focus {
+class Selection {
 
 public:
 	Button* but;
@@ -75,7 +75,7 @@ private:
 	
 	SDL_Texture* atlas;
 
-	std::list<Focus> playersFocus;
+	std::list<Selection> playersFocus;
 	std::list<Button*> buttons;
 
 };

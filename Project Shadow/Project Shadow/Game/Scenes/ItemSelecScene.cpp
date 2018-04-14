@@ -138,7 +138,7 @@ void ItemSelecScene::SetControllerFocus() {
 
 	for (int i = 1; i <= controllersNum; i++) {
 	
-	Focus focus;		
+	Selection focus;		
 	focus.but = butt;
 	focus.playerNum = i;
 	focus.totalControllersNum = controllersNum;
@@ -154,7 +154,7 @@ void ItemSelecScene::SetControllerFocus() {
 
 void ItemSelecScene::ChooseFocus() {
 
-	for (std::list<Focus>::iterator focus = playersFocus.begin(); focus != playersFocus.end(); focus++) {
+	for (std::list<Selection>::iterator focus = playersFocus.begin(); focus != playersFocus.end(); focus++) {
 		if (App->input->GetButtonFromController((*focus).playerNum) == Input::JUMPINPUT) {
 			LOG("");
 			(*focus).arrow->ChangeAnimation((*focus).arrowLockRect);
@@ -169,7 +169,7 @@ void ItemSelecScene::ChooseFocus() {
 
 void ItemSelecScene::ManageDisplacementFocus() {
 
-	for (std::list<Focus>::iterator foc = playersFocus.begin(); foc != playersFocus.end(); foc++) {
+	for (std::list<Selection>::iterator foc = playersFocus.begin(); foc != playersFocus.end(); foc++) {
 		if (!(*foc).locked) {
 			if (App->input->GetButtonFromController((*foc).playerNum) == Input::RIGHT) {
 				for (std::list<Button*>::iterator button = buttons.begin(); button != buttons.end(); button++) {
@@ -179,26 +179,27 @@ void ItemSelecScene::ManageDisplacementFocus() {
 							(*foc).but = (*button);
 							button--;
 							(*foc).DrawOrderedArrow();
-							
+
 						}
 						return;
 					}
 				}
 			}
-		}
-		else if (App->input->GetButtonFromController((*foc).playerNum) == Input::LEFT) {
-			for (std::list<Button*>::iterator button = buttons.begin(); button != buttons.end(); button++) {
-				if (!(*foc).locked) {
-					if (*button == (*foc).but) {
-						if (button != buttons.begin()) {
-							button--;
-							(*foc).but = (*button);
-							button++;
-							(*foc).arrow->setPosition((*foc).but->getPositionX(), (*foc).but->getPositionY() - (*foc).but->rect.h / 2);
-							(*foc).DrawOrderedArrow();
-							
+
+			else if (App->input->GetButtonFromController((*foc).playerNum) == Input::LEFT) {
+				for (std::list<Button*>::iterator button = buttons.begin(); button != buttons.end(); button++) {
+					if (!(*foc).locked) {
+						if (*button == (*foc).but) {
+							if (button != buttons.begin()) {
+								button--;
+								(*foc).but = (*button);
+								button++;
+								(*foc).arrow->setPosition((*foc).but->getPositionX(), (*foc).but->getPositionY() - (*foc).but->rect.h / 2);
+								(*foc).DrawOrderedArrow();
+
+							}
+							return;
 						}
-						return;
 					}
 				}
 			}
@@ -350,7 +351,7 @@ void confirmCallback(size_t arg_size...) {
 	App->scenes->ChangeScene(App->scenes->mainSc);
 }
 
-void Focus::LoadArrows(SDL_Texture* tex) {
+void Selection::LoadArrows(SDL_Texture* tex) {
 	
 	switch (playerNum) {
 	case 0: return;
@@ -376,7 +377,7 @@ void Focus::LoadArrows(SDL_Texture* tex) {
 	DrawOrderedArrow();
 }
 
-void Focus::DrawOrderedArrow() {
+void Selection::DrawOrderedArrow() {
 	
 	
 	int distance = but->rect.w / (totalControllersNum+1);

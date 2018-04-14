@@ -28,6 +28,19 @@ struct CharacterInfo {
 	
 };
 
+class Item
+{
+	enum Stat {
+		NONE,
+		ATTACK,
+		DEFFENSE,
+		SPEED
+	};
+
+	const char* itemname = "default";
+	Stat statIncreased = NONE;
+	Uint8 increaseValue = 0;
+};
 
 
 class ModuleEntityManager : public Module
@@ -51,14 +64,19 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
+	bool IsSFXRepeated(std::list<std::string> list, std::string string) const;
+
 	Entity* CreateCharacter(CharacterInfo charInfo);
 	void DestroyEntity(Entity* entity);
 
 	void CheckMidPos(float& min_x, float& max_x);
+	void CheckMidPosY(float& min_y, float& max_y);
 
 	uint numofplayers = 0;
 
 	void PauseEntities(bool pause);
+
+	bool finish = false;
 
 private:
 

@@ -21,7 +21,9 @@ enum Input
 	HEAVY_ATTACK,
 	JUMPINPUT,
 	RUNINPUT,
-	DEFEND
+	DEFEND,
+	TAUNTINPUT,
+	PARRYINPUT,
 };
 
 enum CharStateEnum
@@ -35,10 +37,17 @@ enum CharStateEnum
 	ATTACK_HEAVY,
 	ATTACK_L2,
 	ATTACK_L3,
+	ATTACK_H2,
+	ATTACK_J1,
+	ATTACK_J2,
 	STOP,
 	HIT,
 	KNOKED,
-	DEATH
+	DEATH,
+	PROTECT,
+	PARRY,
+	PARRIED,
+	TAUNT,
 };
 
 struct Attack
@@ -63,13 +72,15 @@ struct Attack
 
 	bool CheckChild(Attack* _child)
 	{
-		for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
-			if (*item == _child)
-			{
-				return true;
+		if (!childs.empty())
+		{
+			for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
+				if (*item == _child)
+				{
+					return true;
+				}
 			}
 		}
-
 		return false;
 	}
 
@@ -138,9 +149,12 @@ protected:
 
 	Animation idle, walking, attack , death;
 
-	Collider	*collFeet		=	nullptr,
-				*collHitBox		=	nullptr,
-				*collAtk		=	nullptr;
+	Collider	*collFeet = nullptr,
+				*collHitBox = nullptr,
+				*collAtk = nullptr,
+				*collDef = nullptr,
+				*collParry = nullptr;
+
 
 	CharacterTypes charType;
 

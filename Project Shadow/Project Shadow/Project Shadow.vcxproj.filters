@@ -143,6 +143,9 @@
     <ClCompile Include="Game\Scenes\MainScene.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\UI\Healthbar.cpp">
+      <Filter>Engine\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -267,6 +270,9 @@
     </ClInclude>
     <ClInclude Include="Game\Scenes\MainScene.h">
       <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\UI\Healthbar.h">
+      <Filter>Engine\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

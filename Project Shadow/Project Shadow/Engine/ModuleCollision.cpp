@@ -111,18 +111,25 @@ bool ModuleCollision::Update(float dt) {
 			SDL_Color color;
 			switch ((*c)->type) {
 			case Collider::Type::FEET:
-			color = { 255,255,0,128 };//Yellow
-			break;
+				color = { 255,255,0,128 };//Yellow
+				break;
 			case Collider::Type::ATK:
-			color = { 255,0,0,128 };//Red
-			break;
+				color = { 255,0,0,128 };//Red
+				break;
 			case Collider::Type::HITBOX:
-			color = { 0,0,255,128 };//Blue
-			break;
+				color = { 0,0,255,128 };//Blue
+				break;
 			case Collider::Type::TRIGGER:
-			color = { 0,255,0,128 };//Green
-			break;
+				color = { 0,255,0,128 };//Green
+				break;
+			case Collider::Type::DEF:
+				color = { 255,105,180,128 };//Pink
+				break;
+			case Collider::Type::PARRY:
+				color = { 255,165,0,128 };//Orange
+				break;
 			}
+
 			App->render->DrawQuad((*c)->collider.toSDL_Rect(), color.r, color.g, color.b, color.a);
 		}
 	}

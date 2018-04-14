@@ -1,8 +1,8 @@
 #ifndef __MODULE_WINDOW_H__
 #define __MODULE_WINDOW_H__
 
-#define SCREEN_HEIGHT 900
-#define SCREEN_WIDTH 1600 
+#define SCREEN_HEIGHT 1080
+#define SCREEN_WIDTH 1920 
 #define SCREEN_SIZE 1
 #define MAP_WIDTH 3200
 #define MAP_HEIGHT 460

@@ -5,6 +5,9 @@
 #include "ModuleCollision.h"
 #include "Log.h"
 
+#define SHADOW_PATH "Characters/Shadow.png"
+#define SHADOW_RECT {0,0,36,9}
+#define SHADOW_HEIGHT 5
 
 Entity::Entity(EntityTypes type) {}
 
@@ -14,9 +17,17 @@ Entity::~Entity() {}
 
 void Entity::Draw(float dt) {
 	AnimationFrame frame = currentAnimation->GetCurrentFrame(dt);
+
+	if (shadowed) {
+		DrawShadow(frame);
+	}
+	
+
+
 	iPoint pivot_pos = PivotPos();
 
 	App->render->Blit(sprites, pivot_pos.x, pivot_pos.y, &frame.GetRectSDL(),1.0f, 0.0, flip);
+
 }
 
 void Entity::Move(float delta_time) {
@@ -24,7 +35,22 @@ void Entity::Move(float delta_time) {
 	gamepos.y += speedVector.y * delta_time;
 	gamepos.z += zVect * delta_time;
 }
+void Entity::LoadShadow() {
+	shadowSprites = App->textures->Load(SHADOW_PATH);
+	shadowed = true;
+}
+void Entity::UnloadShadow() {
+	App->textures->UnLoad(shadowSprites);
+	shadowed = false;
+}
+void Entity::DrawShadow(AnimationFrame frame) {
 
+	iRect rect = SHADOW_RECT;
+	int x = position.x -(rect.w/2)  ;// need to fix this values
+	int y = gamepos.z;
+	
+	App->render->Blit(shadowSprites, x, y, &rect.toSDL_Rect());
+}
 // HardCoded Valors Cough Cough -___-
 
 void Entity::Break(float delta_time) {
@@ -36,7 +62,7 @@ void Entity::Break(float delta_time) {
 void Entity::Accelerate(float x, float y, float z, float delta_time) {
 	speedVector.x += x * 10 * stats.spd * delta_time;
 	speedVector.y += y * 10 * stats.spd * delta_time;
-	zVect += z * stats.spd * delta_time;
+	zVect += z * 10 * stats.spd * delta_time;
 
 	speedVector.x = CLAMP(speedVector.x, -max_speed, max_speed);
 	speedVector.y = CLAMP(speedVector.y, -max_speed, max_speed);
@@ -143,9 +169,18 @@ int Entity::GetCharDepth()
 iPoint Entity::PivotPos()
 {
 	AnimationFrame frame = currentAnimation->CurrentFrame();
+	iPoint pivot = {frame.pivot.x - frame.rect.x, frame.pivot.y - frame.rect.y};
 
-	iPoint downmid = { position.x + frame.rect.w / 2, position.y + frame.rect.h };
+	if (flip)
+	{
+		pivot.x = frame.rect.w - pivot.x;
+	}
 
-	return { downmid.x + frame.result_rect.x , downmid.y + frame.result_rect.y };
+
+	iPoint pos = { position.x - pivot.x , position.y - pivot.y };
+
+
+return pos;
 
 }
+

@@ -252,8 +252,8 @@ bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uin
 	SDL_Rect rec(rect);
 	if(use_camera)
 	{
-		rec.x = (int)(camera.x + rect.x * scale);
-		rec.y = (int)(camera.y + rect.y * scale);
+		rec.x = (int)(camera.x + (rect.x * scale));
+		rec.y = (int)(camera.y + (rect.y * scale));
 		rec.w *= scale;
 		rec.h *= scale;
 	}
@@ -331,41 +331,35 @@ void ModuleRender::SetCameraInitialPos()
 
 void ModuleRender::CheckCameraPos()
 {
-	float min_x = 0;
-	float max_x = 0;
+	if (App->entities->numofplayers > 0) {
+		float min_x = 0;
+		float max_x = 0;
+		float min_y = 0;
+		float max_y = 0;
 
-	App->entities->CheckMidPos(min_x, max_x);
-	int mapwidth = App->map->GetMapWidth();
-	float scale = App->win->GetScale();
-	float mid_pos = (((max_x - min_x)/2) + min_x);
+		App->entities->CheckMidPos(min_x, max_x);
+		App->entities->CheckMidPosY(min_y, max_y);
+		int mapwidth = App->map->GetMapWidth();
+		int mapheight = App->map->GetMapHeight();
+		float scale = App->win->GetScale();
+		float mid_pos = (((max_x - min_x) / 2) + min_x);
+		float mid_pos_y = (((max_y - min_y) / 2) + min_y);
 
-	float diference = (max_x - min_x);
-	diference += diference / 2;
+		float diference = MAX((max_x - min_x), (max_y - min_y));
 
-	if (mid_pos - (camera.w  / (2* scale)  ) >= 0)
-	{
-		camera.x = (mid_pos - (camera.w / (2 * scale)));
+		float min_scale = (float)camera.h / (mapheight - (App->map->GetYTiles()) + 1);
+		float new_scale = MAX_SCALE - ((diference / (mapheight - camera.h / MAX_SCALE)) * (MAX_SCALE - min_scale));
+		new_scale = CLAMP(new_scale, min_scale, MAX_SCALE);
+		App->win->SetScale(new_scale);
+
+		camera.x = mid_pos - camera.w / scale;
+		if (camera.x < 0) camera.x = 0;
+		else if (camera.x + camera.w / scale > mapwidth) camera.x = mapwidth - camera.w / scale;
+
+		camera.y = mid_pos_y - camera.h / scale;
+		if (camera.y < 0) camera.y = 0;
+		else if (camera.y + camera.h / scale > mapheight) camera.y = mapheight - camera.h / scale;
 	}
-	else 
-	{
-		camera.x = 0;
-	}
-
-	if (mid_pos - (camera.w / (2 * scale)) >= mapwidth - (camera.w/2) - App->map->GetXTiles() + 1)
-	{
-		camera.x = mapwidth - (camera.w / 2) - App->map->GetXTiles() + 1;
-	}
-	
-
-	float min_scale = (float)camera.w / (mapwidth - (App->map->GetXTiles()*2) + 1);
-
-	// In 0 scale is max, in width the scale is min
-
-	float new_scale = MAX_SCALE - ((diference  / mapwidth)* (MAX_SCALE - min_scale));
-
-
-	App->win->SetScale(new_scale);
-	
 }
 
 SDL_Point ModuleRender::ScreenToWorld(int x, int y) const

@@ -24,8 +24,8 @@
 #define ENTITIES_DIR "Entities/"
 #define INPUT_DIR "Input/"
 
-#define DEFAULT_RESOLUTION_X 1600
-#define DEFAULT_RESOLUTION_Y 900
+#define DEFAULT_RESOLUTION_X 1920
+#define DEFAULT_RESOLUTION_Y 1080
 
 typedef unsigned int uint32;
 typedef unsigned int uint;
@@ -56,6 +56,24 @@ namespace Utils {
 
 	int ParseInt(std::string);
 	int ParseInt(const char*);
+
+	template<typename TYPE>
+	void ClearList(typename std::list<TYPE>& list) {
+		typename std::list<TYPE>::iterator it;
+		for (it = list.begin(); it != list.end(); it++) {
+			delete *it;
+		}
+		list.clear();
+	}
+
+	template<typename TYPE>
+	void ClearVector(typename std::vector<TYPE>& vector) {
+		typename std::vector<TYPE>::iterator it;
+		for (it = vector.begin(); it != vector.end(); it++) {
+			delete *it;
+		}
+		vector.clear();
+	}
 
 	template<typename TYPE>
 	size_t FindInList(TYPE ptr, typename std::list<TYPE>& list) {

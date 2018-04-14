@@ -3,6 +3,7 @@
 #include "App.h"
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
+#include "ModuleAudio.h"
 #include "../SDL/include/SDL.h"
 
 
@@ -263,6 +264,9 @@ std::list<Input> ModuleInput::FirstPlayerConfig()
 	
 	std::list<Input> ret;
 
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		App->debug = !App->debug;
+
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		ret.push_back(Input(LEFT));
 
@@ -279,13 +283,22 @@ std::list<Input> ModuleInput::FirstPlayerConfig()
 		ret.push_back(Input(RUNINPUT));
 		
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		ret.push_back(Input(Input::JUMPINPUT));
+		ret.push_back(Input(Input::JUMPINPUT));	
 
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
 		ret.push_back(Input(Input::LIGHT_ATTACK));
-
-	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+	
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
 		ret.push_back(Input(Input::HEAVY_ATTACK));
+
+	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)
+		ret.push_back(Input(Input::DEFEND));
+
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
+		ret.push_back(Input(Input::PARRYINPUT));
+
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+		ret.push_back(Input(Input::TAUNTINPUT));
 
 	return ret;
 }
@@ -309,67 +322,137 @@ std::list<Input> ModuleInput::SecondPlayerConfig()
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 		ret.push_back(Input(Input::JUMPINPUT));
 
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+		ret.push_back(Input(Input::DEFEND));
 
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+		ret.push_back(Input(Input::PARRYINPUT));
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		ret.push_back(Input(Input::LIGHT_ATTACK));
+
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+		ret.push_back(Input(Input::TAUNTINPUT));
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		ret.push_back(Input(Input::LIGHT_ATTACK));
+	
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		ret.push_back(Input(Input::HEAVY_ATTACK));
+
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		ret.push_back(Input(RUNINPUT));
 	return ret;
 }
 
 std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum)
 {
 	std::list<Input> ret;
-		 for (int i = 0; i < MAX_BUTTONS; ++i)
-		 {
-			 if (controllers[playerNum-1].buttons[i] == B_DOWN)
-			 {
-				 switch (i) {
-				 case 0://A button
+	for (int i = 0; i < MAX_BUTTONS; ++i)
+	{
+		if (controllers[playerNum - 1].buttons[i] == B_DOWN)
+		{
+			switch (i) {
+			case 0://A button
 
-					 ret.push_back(Input(Input::JUMPINPUT));
-					 break;
-				 case 1: //B button
-					 break;
-				 case 2://X
-					 ret.push_back(Input(Input::LIGHT_ATTACK));
-					 break;
-				 case 3://Y
-					 ret.push_back(Input(Input::HEAVY_ATTACK));
-					 break;
-				 case 4://SELECT
-					 break;
-				 case 5:
-					 break;
-				 case 6://START
-					 //SETTINGS MENU
-					 break;
-				 case 7://L STICK PRESSED
-					 break;
-				 case 8://R STICK PRESSED
-					 break;
-				 case 9://L1
-					 ret.push_back(Input(Input::DEFEND));
-					 break;
-				 case 10://R1
-					 ret.push_back(Input(Input::RUNINPUT));
-					 break;
-				 case 11://UP
-					 ret.push_back(Input(Input::UP));
-					 break;
-				 case 12://DOWN
-					 ret.push_back(Input(Input::DOWN));
-					 break;
-				 case 13://LEFT
-					 ret.push_back(Input(Input::LEFT));
-					 break;
-				 case 14://RIGHT
-					 ret.push_back(Input(Input::RIGHT));
-					 break;
-				 case 15:
-					 break;
+				ret.push_back(Input(Input::JUMPINPUT));
+				break;
+			case 1: //B button
+				ret.push_back(Input(Input::PARRYINPUT));
+				break;
+			case 2://X
+				ret.push_back(Input(Input::LIGHT_ATTACK));
+				break;
+			case 3://Y
+				ret.push_back(Input(Input::HEAVY_ATTACK));
+				break;
+			case 4://SELECT
+				ret.push_back(Input(Input::TAUNTINPUT));
+				break;
+			case 5:
+				break;
+			case 6://START
+				//SETTINGS MENU
+				break;
+			case 7://L STICK PRESSED
+				break;
+			case 8://R STICK PRESSED
+				break;
+			case 9://L1
+				ret.push_back(Input(Input::DEFEND));
+				break;
+			case 10://R1
+				ret.push_back(Input(Input::RUNINPUT));
+				break;
+			case 11://UP
+				ret.push_back(Input(Input::UP));
+				break;
+			case 12://DOWN
+				ret.push_back(Input(Input::DOWN));
+				break;
+			case 13://LEFT
+				ret.push_back(Input(Input::LEFT));
+				break;
+			case 14://RIGHT
+				ret.push_back(Input(Input::RIGHT));
+				break;
+			case 15:
+				break;
+			}
+		}
+		else if (controllers[playerNum - 1].buttons[i] == B_REPEAT) {
+			switch (i) {
+			case 9://L1
+				ret.push_back(Input(Input::DEFEND));
+				break;
+			case 10://R1
+				ret.push_back(Input(Input::RUNINPUT));
+				break;
+			case 11://UP
+				ret.push_back(Input(Input::UP));
+				break;
+			case 12://DOWN
+				ret.push_back(Input(Input::DOWN));
+				break;
+			case 13://LEFT
+				ret.push_back(Input(Input::LEFT));
+				break;
+			case 14://RIGHT
+				ret.push_back(Input(Input::RIGHT));
+				break;
+			}
 
+		}
+	}
+	for (int i = 0; i < MAX_AXIS; i++)
+	{
+		if (controllers[playerNum - 1].axis[i] >= 0.5f || controllers[playerNum - 1].axis[i] <= -0.5f)
+		{
+			switch (i) {
+			case 0:
+				if (controllers[playerNum - 1].axis[i] > 0.5f)
+				{
+					ret.push_back(Input(Input::RIGHT));
+				}
+				else if (controllers[playerNum - 1].axis[i] < -0.5f)
+				{
+					ret.push_back(Input(Input::LEFT));
+				}
+				break;
+			case 1:
+				if (controllers[playerNum - 1].axis[i] > 0.5f)
+				{
+					ret.push_back(Input(Input::DOWN));
+				}
+				else if (controllers[playerNum - 1].axis[i] < -0.5f)
+				{
+					ret.push_back(Input(Input::UP));
+				}
+				break;
+			}
+		}
+	}
+		return ret;
 
-
-				 }
-			 }
-		 }
-		 return ret;
 	
 }

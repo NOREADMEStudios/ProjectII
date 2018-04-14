@@ -23,7 +23,8 @@ public:
 		TEXT_INPUT,
 		CHECK_BUTTON,
 		WINDOW,
-		SLIDER
+		SLIDER,
+		HEALTHBAR
 	};
 
 

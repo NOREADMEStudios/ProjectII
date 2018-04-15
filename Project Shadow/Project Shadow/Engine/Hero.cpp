@@ -74,7 +74,7 @@ bool Hero::Start()
 	initialpos.x = gamepos.x;
 	initialpos.y = gamepos.y;
 	initialLife = stats.life;
-	lives = 2;
+	lives = maxLives;
 
 	Attack* light_1 = new Attack(ATTACK_LIGHT, LIGHT_ATTACK, 2);
 	Attack* light_2 = new Attack(ATTACK_L2, LIGHT_ATTACK, 2);
@@ -411,6 +411,7 @@ void Hero::UpdateState()
 	
 		if (currentState == DEATH)
 		{
+			lives--;
 			if (lives > 0)
 				Respawn();
 
@@ -650,7 +651,6 @@ void Hero::Respawn()
 	gamepos.z = initialpos.y;
 
 	stats.life = initialLife;
-	lives--;
 	invencible.StartInv();
 }
 
@@ -766,12 +766,22 @@ Attack* Hero::GetAtk(CharStateEnum atk)
 	return ret;
 }
 
+uint Hero::GetMaxLives() const
+{
+	return maxLives;
+}
+
+uint Hero::GetCurrentLives() const
+{
+	return lives;
+}
+
 void Hero::SetCombo()
 {
 	Attack* wanted_atk = GetAtk(wantedState);
 	Attack* current_atk = GetAtk(last_attack);
 
-	if (wanted_atk != nullptr && current_atk->CheckChildInput(wanted_atk->input))
+	if (current_atk != nullptr && wanted_atk != nullptr && current_atk->CheckChildInput(wanted_atk->input))
 	{
 		currentState = current_atk->GetChildInput(wanted_atk->input)->state;
 	}

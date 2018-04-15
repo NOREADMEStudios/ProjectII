@@ -277,7 +277,6 @@ Healthbar * ModuleGUI::AddHealthbar(Hero * character, int charNum, bool leftSide
 	bar->SetParent(aux);
 	bar->setPosition(aux->rect.w / 2, aux->rect.h / 2);
 
-
 	iRect charFaceRect;
 	uiPoint screenDims = GetGuiSize();
 	fPoint anchor;
@@ -330,7 +329,19 @@ Healthbar * ModuleGUI::AddHealthbar(Hero * character, int charNum, bool leftSide
 	charFace->SetParent(aux);
 
 	charNumber->setPositionX(charFace->getPositionX() + (charFace->rect.w + screenMargin) * (leftSide ? 1 : -1));
-	charNumber->setPositionY(charFace->getPositionY() +  screenMargin * (anchor.y == 0.f ? 1 : -1));
+	charNumber->setPositionY(charFace->getPositionY() + screenMargin * (anchor.y == 0.f ? 1 : -1));
+
+	iRect livesSpriteRect = { 451 + 52 * charNum, 330, 52, 55 };
+	for (size_t i = 0; i < character->GetMaxLives(); i++) {
+		Sprite* spr = App->gui->AddSprite(0, 0, nullptr, livesSpriteRect.toSDL_Rect());
+		spr->SetParent(aux);
+		spr->SetAnchor(anchor.x, anchor.y);
+		iPoint p = charNumber->getPosition();
+		p.x += ((50 + (60 * (int)i)) * (leftSide ? 1 : -1) );
+		p.y += (5 + screenMargin) * (anchor.y == 0.f ? 1 : -1);
+		spr->setPosition(p.x, p.y);
+		aux->lives.push_back(spr);
+	}
 
 	bar->SetAnchor(0.5f, 0.5f);
 

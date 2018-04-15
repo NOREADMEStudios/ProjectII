@@ -13,7 +13,13 @@ class IntroScene:
 {
 public:
 	Button * pvpButton;
+	Button * onevsoneButton;
 	Button * exitButton;
+
+	Label * onevsLabel;
+	Label * pvpLabel;
+	Label * exitLabel;
+
 
 	IntroScene();
 	virtual ~IntroScene();
@@ -38,18 +44,13 @@ public:
 
 
 	//-------CONTROLLER MANAGEMENT
-	class Selected {
-	public:
-		Button* but;
-	};
+	
 	void ChooseFocus();
 	void SetControllerFocus();
 	void ManageDisplacement();
 
 	int controllersNum;
 
-	std::list<Button*> buttonsForController;
-	Selected player1;
 };
 
 #endif

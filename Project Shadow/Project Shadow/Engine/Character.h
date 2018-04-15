@@ -62,8 +62,6 @@ struct Attack
 		state = _state;
 		input = _input;
 		damage = _damage;
-
-
 	}
 
 	void AddChild(Attack* _child)

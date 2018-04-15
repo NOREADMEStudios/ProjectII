@@ -83,7 +83,7 @@ void EndScene::LoadUIButtons() {
 	SDL_Texture* back_end = App->textures->Load("UI/YouWin.png");
 	App->gui->AddSprite(820, 540, back_end, { 0,0,1750,1080 }, true);
 
-	mainMenuButton = App->gui->AddButton((SCREEN_WIDTH / 2) + 400, (SCREEN_HEIGHT / 4) * 3, nullptr, { 50,50,384,186 }, true, MainButtonPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+	mainMenuButton = App->gui->AddButton((SCREEN_WIDTH / 2) + 400, (SCREEN_HEIGHT / 4) * 3, nullptr, { 50,50,384,195 }, true, MainButtonPressCallb, { 50,270,384,195 }, { 50,491,384,195 });
 	mainMenuButton->OnHoverEnter = MainButtonHoverEnCallb;
 	mainMenuButton->OnHoverExit = MainButtonHoverExCallb;
 	mainLabel = App->gui->AddLabel(mainMenuButton->rect.w / 2, mainMenuButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });

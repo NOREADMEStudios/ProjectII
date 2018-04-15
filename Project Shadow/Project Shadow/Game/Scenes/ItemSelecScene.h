@@ -84,8 +84,6 @@ private:
 	void ApplyItemAttributes();
 	bool AllItemsSelected();
 	
-	//SDL_Texture* items_atlas; //NEEDS TO BE REMOVED ONCE THERE IS ONLY ONE ATLAS
-
 	std::list<Selection> playersSelections;
 	std::list<Button*> buttonsForController;
 };

@@ -1,7 +1,8 @@
-version: 0.0.{build}
+version: 0.1.{build}
 branches:
   only:
   - develop2
+  - master
 image: Visual Studio 2017
 configuration:
 - Debug
@@ -20,5 +21,5 @@ deploy:
 - provider: GitHub
   description: Auto-generated Release
   auth_token:
-    secure: yFY18sYdSeukPo6/3iIEC8Xu4wteTFCbaF+QOaPab7da25L1t6gxK4ZNg8+uj+es
+    secure: RzMTc5lLR4Y04ijGQ6vShmFcA8FnRgemYQ5h3AVL/XaysDWDxOh3DWOz8pEywtZF
   draft: true

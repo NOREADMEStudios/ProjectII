@@ -71,8 +71,7 @@ struct Attack
 
 	bool CheckChild(Attack* _child)
 	{
-		if (!childs.empty())
-		{
+		if (!childs.empty()) {
 			for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
 				if (*item == _child)
 				{

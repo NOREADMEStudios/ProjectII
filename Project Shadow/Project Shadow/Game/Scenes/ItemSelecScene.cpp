@@ -62,14 +62,7 @@ bool ItemSelecScene::Update(float dt)
 		App->scenes->ChangeScene(App->scenes->mainSc);
 	}
 
-
-	/*if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
-		App->scenes->ChangeScene(App->scenes->introSc);
-	}*/
-
 	DrawBackground();
-	App->debug = true;
-
 	App->input->CheckControllers();
 
 	if (controllersNum != 0) {

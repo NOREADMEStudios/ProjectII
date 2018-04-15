@@ -6,10 +6,6 @@ Healthbar::Healthbar(Hero * character, int charNum, bool leftSide, uint _x, uint
 	this->leftSide = leftSide;
 	characterNum = charNum;
 
-	/*if (charNum == 0)
-	{
-		this->setPosition(10, 10);
-	}*/
 }
 
 Healthbar::~Healthbar()

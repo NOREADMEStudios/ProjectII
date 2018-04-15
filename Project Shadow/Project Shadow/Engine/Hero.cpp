@@ -48,6 +48,7 @@ bool Hero::Start()
 	collFeet = App->collision->CreateCollider({}, "player_feet", Collider::FEET);
 	collDef = App->collision->CreateCollider({}, "player_shield", Collider::DEF);
 	collParry = App->collision->CreateCollider({}, "player_parry", Collider::PARRY);
+
 	//Testing things
 	App->collision->AddCollider(collAtk, this);
 	App->collision->AddCollider(collHitBox, this);
@@ -83,6 +84,7 @@ bool Hero::Start()
 	Attack* jump_a = new Attack(JUMP, JUMPINPUT, 0);
 	Attack* jump_a2 = new Attack(ATTACK_J1, LIGHT_ATTACK, 2);
 	Attack* jump_a3 = new Attack(ATTACK_J2, HEAVY_ATTACK, 5);
+
 	attacks.push_back(light_1);
 	attacks.push_back(light_2);
 	attacks.push_back(light_3);
@@ -91,7 +93,7 @@ bool Hero::Start()
 	attacks.push_back(jump_a);
 	attacks.push_back(jump_a2);
 	attacks.push_back(jump_a3);
-	
+
 	light_1->AddChild(light_2);
 	light_2->AddChild(light_3);
 	heavy_1->AddChild(light_3);
@@ -101,7 +103,6 @@ bool Hero::Start()
 	jump_a->AddChild(jump_a3);
 
 	LoadShadow();
-
 
 	max_speed = stats.spd;
 
@@ -210,6 +211,8 @@ bool Hero::CleanUp(pugi::xml_node&)
 		App->collision->RemoveCollider(collParry);
 	}
 
+	Utils::ClearList(attacks);
+
 	App->collision->RemoveCollider(collHitBox);
 	App->collision->RemoveCollider(collFeet);
 	return true;
@@ -235,26 +238,21 @@ void Hero::LoadAnimations()
 	attack_s2.LoadAnimationsfromXML("strong_attack", HERO_SPRITE_ROOT);
 	parry.LoadAnimationsfromXML("standup", HERO_SPRITE_ROOT);
 	attack_j2.LoadAnimationsfromXML("windwhirl", HERO_SPRITE_ROOT);
-
 }
 
 void Hero::RequestState() {
 	std::list<Input> inputs;
 	int NumControllers = App->input->GetNumControllers();
 	if (hero_num <= NumControllers) {
-
 		inputs = App->input->ControllerPlayerConfig(hero_num);
-
 	}
 	else {
 		if (hero_num-NumControllers == 1) {
 			inputs = App->input->FirstPlayerConfig();
 		}
 
-
 		else if (hero_num - NumControllers == 2)
 			inputs = App->input->SecondPlayerConfig();
-
 	}
 	
 
@@ -272,52 +270,47 @@ void Hero::RequestState() {
 	directions.right = false;
 
 	for (std::list<Input>::iterator item = inputs.begin(); item != inputs.end(); item++) {
-		
-		if ((*item) == DOWN)
+		Input input = *item;
+		switch (input)
 		{
-			directions.down = true;
-		}
-		else if ((*item) == LEFT)
-		{
-			directions.left = true;
-		}
-		else if ((*item) == RIGHT)
-		{
-			directions.right = true;
-		}
-		else if ((*item) == UP)
-		{
+		case NONEINPUT:
+			break;
+		case UP:
 			directions.up = true;
-		}
-		else if ((*item) == LIGHT_ATTACK)
-		{
+			break;
+		case DOWN:
+			directions.down = true;
+			break;
+		case RIGHT:
+			directions.right = true;
+			break;
+		case LEFT:
+			directions.left = true;
+			break;
+		case LIGHT_ATTACK:
 			l_attack = true;
-		}
-		else if ((*item) == HEAVY_ATTACK)
-		{
+			break;
+		case HEAVY_ATTACK:
 			s_attack = true;
-		}
-		else if ((*item) == JUMPINPUT)
-		{
+			break;
+		case JUMPINPUT:
 			jump = true;
-		}
-		else if ((*item) == DEFEND)
-		{
-			block = true;
-		}
-		else if ((*item) == RUNINPUT)
-		{
+			break;
+		case RUNINPUT:
 			run = true;
-		}
-		else if ((*item) == TAUNTINPUT)
-		{
+			break;
+		case DEFEND:
+			block = true;
+			break;
+		case TAUNTINPUT:
 			taunt_b = true;
-		}
-		else if ((*item) == PARRYINPUT)
-		{
+			break;
+		case PARRYINPUT:
 			parry_b = true;
+			break;
+		default:
+			break;
 		}
-
 	}
 
 	wantedState = IDLE;

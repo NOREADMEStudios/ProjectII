@@ -34,9 +34,7 @@ bool EndScene::Start()
 	SDL_Texture* back_end = App->textures->Load("UI/YouWin.png");
 	App->gui->AddSprite(820, 540, back_end, { 0,0,1750,1080 }, true);
 
-
-	atlas = App->textures->Load("UI/atlas.png");
-	mainMenuButton = App->gui->AddButton((SCREEN_WIDTH / 2) + 400, (SCREEN_HEIGHT / 4) * 3, atlas, { 50,50,384,186 }, true, MainButtonPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+	mainMenuButton = App->gui->AddButton((SCREEN_WIDTH / 2) + 400, (SCREEN_HEIGHT / 4) * 3, nullptr, { 50,50,384,186 }, true, MainButtonPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 	mainMenuButton->OnHoverEnter = MainButtonHoverEnCallb;
 	mainMenuButton->OnHoverExit = MainButtonHoverExCallb;
 	mainLabel = App->gui->AddLabel(mainMenuButton->rect.w / 2, mainMenuButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
@@ -63,8 +61,7 @@ bool EndScene::Update(float dt)
 
 bool EndScene::CleanUp()
 {
-	xmlNode n;
-	App->gui->CleanUp(n);
+	App->gui->CleanUp();
 
 	return true;
 }

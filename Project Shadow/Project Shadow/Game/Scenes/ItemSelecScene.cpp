@@ -49,12 +49,8 @@ ItemSelecScene::~ItemSelecScene()
 bool ItemSelecScene::Start()
 {
 	LoadBackground("UI/BasicMenuScene.png");
-	
-	
-	App->debug = true;
-	
+
 	LoadSceneUI();
-	
 	SetControllerFocus();
 
 	return false;
@@ -71,29 +67,28 @@ bool ItemSelecScene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
 		App->scenes->ChangeScene(App->scenes->introSc);
 	}
+
 	DrawBackground();
-	
+
+	App->input->CheckControllers();
+
 	if (controllersNum != 0) {
 		ManageDisplacementFocus();
 		ChooseFocus();
-		
 	}
 
 	return true;
 }
 
 bool ItemSelecScene::CleanUp()
-{
-	xmlNode n;
-	
-	App->gui->CleanUp(n);
+{	
+	App->gui->CleanUp();
+	App->textures->UnLoad(items_atlas);
 	UnLoadBackground();
 	return true;
 }
 
 void ItemSelecScene::LoadSceneUI() {
-
-	atlas = App->textures->Load("UI/atlas.png");
 	items_atlas = App->textures->Load("UI/items.png");
 	uiPoint sizeScreen = App->gui->GetGuiSize();
 	
@@ -170,15 +165,13 @@ void ItemSelecScene::SetControllerFocus() {
 	Button* butt = *(buttonsForController.begin());
 
 	for (int i = 1; i <= controllersNum; i++) {
-	
-	Selection focus;		
-	focus.but = butt;
-	focus.playerNum = i;
-	focus.totalControllersNum = controllersNum;
-	focus.LoadArrows(atlas);
-	
-	
-	playersSelections.push_back(focus);
+		Selection focus;
+		focus.but = butt;
+		focus.playerNum = i;
+		focus.totalControllersNum = controllersNum;
+		focus.LoadArrows();
+
+		playersSelections.push_back(focus);
 	}
 }
 
@@ -197,7 +190,6 @@ void ItemSelecScene::ChooseFocus() {
 }
 
 void ItemSelecScene::ManageDisplacementFocus() {
-
 	for (std::list<Selection>::iterator foc = playersSelections.begin(); foc != playersSelections.end(); foc++) {
 		if (!(*foc).locked) {
 			if (App->input->GetButtonFromController((*foc).playerNum) == Input::RIGHT) {
@@ -312,7 +304,7 @@ void confirmCallback(size_t arg_size...) {
 	if (App->scenes->itemSc->enableMouse) { App->scenes->ChangeScene(App->scenes->mainSc); }
 }
 
-void Selection::LoadArrows(SDL_Texture* tex) {
+void Selection::LoadArrows() {
 	
 	switch (playerNum) {
 	case 0: return;
@@ -334,7 +326,7 @@ void Selection::LoadArrows(SDL_Texture* tex) {
 		break;
 	}
 	
-	arrow = App->gui->AddSprite(but->getPositionX(), but->getPositionY() - but->rect.h/2,tex, arrowRect);
+	arrow = App->gui->AddSprite(but->getPositionX(), but->getPositionY() - but->rect.h/2, nullptr, arrowRect);
 	DrawOrderedArrow();
 }
 

@@ -126,8 +126,6 @@ bool ModuleInput::PreUpdate() {
 		}
 	}
 
-	CheckControllers();
-
 	while (SDL_PollEvent(&event) != 0)
 	{
 		switch (event.type)
@@ -167,12 +165,15 @@ bool ModuleInput::PreUpdate() {
 			break;
 
 		case SDL_MOUSEMOTION:
-			float scale = 1.f;// (int)App->win->GetScale();
-			mouse_motion_x = event.motion.xrel / scale;
-			mouse_motion_y = event.motion.yrel / scale;
-			mouse_x = mouse_x_prev = event.motion.x / scale;
-			mouse_y = mouse_y_prev = event.motion.y / scale;
+			mouse_motion_x = event.motion.xrel;
+			mouse_motion_y = event.motion.yrel;
+			mouse_x = mouse_x_prev = event.motion.x;
+			mouse_y = mouse_y_prev = event.motion.y;
 			//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
+			break;
+		case SDL_CONTROLLERDEVICEADDED:
+		case SDL_CONTROLLERDEVICEREMOVED:
+			//CheckControllers();
 			break;
 		}
 	}
@@ -268,37 +269,37 @@ std::list<Input> ModuleInput::FirstPlayerConfig()
 		App->debug = !App->debug;
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		ret.push_back(Input(LEFT));
+		ret.push_back(Input::LEFT);
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		ret.push_back(Input(RIGHT));
+		ret.push_back(Input::RIGHT);
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		ret.push_back(Input(UP));
+		ret.push_back(Input::UP);
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		ret.push_back(Input(DOWN));
+		ret.push_back(Input::DOWN);
 
 	if (App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
-		ret.push_back(Input(RUNINPUT));
+		ret.push_back(Input::RUNINPUT);
 		
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		ret.push_back(Input(Input::JUMPINPUT));	
+		ret.push_back(Input::JUMPINPUT);	
 
 	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
-		ret.push_back(Input(Input::LIGHT_ATTACK));
+		ret.push_back(Input::LIGHT_ATTACK);
 	
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
-		ret.push_back(Input(Input::HEAVY_ATTACK));
+		ret.push_back(Input::HEAVY_ATTACK);
 
 	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)
-		ret.push_back(Input(Input::DEFEND));
+		ret.push_back(Input::DEFEND);
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
-		ret.push_back(Input(Input::PARRYINPUT));
+		ret.push_back(Input::PARRYINPUT);
 
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
-		ret.push_back(Input(Input::TAUNTINPUT));
+		ret.push_back(Input::TAUNTINPUT);
 
 	return ret;
 }
@@ -308,89 +309,105 @@ std::list<Input> ModuleInput::SecondPlayerConfig()
 	std::list<Input> ret;
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		ret.push_back(Input(LEFT));
+		ret.push_back(Input::LEFT);
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-		ret.push_back(Input(RIGHT));
+		ret.push_back(Input::RIGHT);
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-		ret.push_back(Input(UP));
+		ret.push_back(Input::UP);
 
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-		ret.push_back(Input(DOWN));
+		ret.push_back(Input::DOWN);
 
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-		ret.push_back(Input(Input::JUMPINPUT));
+		ret.push_back(Input::JUMPINPUT);
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
-		ret.push_back(Input(Input::DEFEND));
+		ret.push_back(Input::DEFEND);
 
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
-		ret.push_back(Input(Input::PARRYINPUT));
+		ret.push_back(Input::PARRYINPUT);
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
-		ret.push_back(Input(Input::LIGHT_ATTACK));
+		ret.push_back(Input::LIGHT_ATTACK);
 
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
-		ret.push_back(Input(Input::TAUNTINPUT));
+		ret.push_back(Input::TAUNTINPUT);
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		ret.push_back(Input(Input::LIGHT_ATTACK));
+		ret.push_back(Input::LIGHT_ATTACK);
 	
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-		ret.push_back(Input(Input::HEAVY_ATTACK));
+		ret.push_back(Input::HEAVY_ATTACK);
 
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		ret.push_back(Input(RUNINPUT));
+		ret.push_back(Input::RUNINPUT);
 	return ret;
 }
 
-Input ModuleInput::GetButtonFromController(int controllerNum) const{
+Input ModuleInput::GetButtonFromController(int controllerNum) const {
+	Input ret = (Input)SDL_CONTROLLER_BUTTON_INVALID;
 	for (int i = 0; i < MAX_BUTTONS; ++i)
 	{
 		if (controllers[controllerNum - 1].buttons[i] == B_DOWN)
 		{
 			switch (i) {
-			case 0://A button
-
-				return (Input::JUMPINPUT);				
-			case 1: //B button
-				return (Input::PARRYINPUT);				
-			case 2://X
-				return (Input::LIGHT_ATTACK);				
-			case 3://Y
-				return (Input::HEAVY_ATTACK);				
-			case 4://SELECT
-				return (Input::TAUNTINPUT);				
-			case 5:
+			case SDL_CONTROLLER_BUTTON_A:
+				ret = Input::JUMPINPUT;
 				break;
-			case 6://START
-				   //SETTINGS MENU
+			case SDL_CONTROLLER_BUTTON_B:
+				ret = Input::PARRYINPUT;
 				break;
-			case 7://L STICK PRESSED
+			case SDL_CONTROLLER_BUTTON_X:
+				ret = Input::LIGHT_ATTACK;
 				break;
-			case 8://R STICK PRESSED
+			case SDL_CONTROLLER_BUTTON_Y:
+				ret = Input::HEAVY_ATTACK;
 				break;
-			case 9://L1
-				return (Input::DEFEND);				
-			case 10://R1
-				return (Input::RUNINPUT);				
-			case 11://UP
-				return (Input::UP);				
-			case 12://DOWN
-				return (Input::DOWN);				
-			case 13://LEFT
-				return (Input::LEFT);				
-			case 14://RIGHT
-				return (Input::RIGHT);				
-			case 15:
+			case SDL_CONTROLLER_BUTTON_BACK:
+				ret = Input::TAUNTINPUT;
+				break;
+			case SDL_CONTROLLER_BUTTON_GUIDE:
+				break;
+			case SDL_CONTROLLER_BUTTON_START:
+				break;
+			case SDL_CONTROLLER_BUTTON_LEFTSTICK:
+				break;
+			case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
+				break;
+			case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+				ret = Input::DEFEND;
+				break;
+			case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+				ret = Input::RUNINPUT;
+				break;
+			case SDL_CONTROLLER_BUTTON_DPAD_UP:
+				ret = Input::UP;
+				break;
+			case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+				ret = Input::DOWN;
+				break;
+			case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+				ret = Input::LEFT;
+				break;
+			case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+				ret = Input::RIGHT;
+				break;
+			case SDL_CONTROLLER_BUTTON_MAX:
 				break;
 			}
 		}
 	}
+	return ret;
 }
 
-std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum)
+bool ModuleInput::GetButtonDown(int controller, int input) const
+{
+	return controllers[controller - 1].buttons[input] == ButtonState::B_DOWN;
+}
+
+std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum) const
 {
 	std::list<Input> ret;
 	for (int i = 0; i < MAX_BUTTONS; ++i)
@@ -398,77 +415,101 @@ std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum)
 		if (controllers[playerNum - 1].buttons[i] == B_DOWN)
 		{
 			switch (i) {
-			case 0://A button
-
-				ret.push_back(Input(Input::JUMPINPUT));
+			case SDL_CONTROLLER_BUTTON_A:
+				ret.push_back(Input::JUMPINPUT);
 				break;
-			case 1: //B button
-				ret.push_back(Input(Input::PARRYINPUT));
+			case SDL_CONTROLLER_BUTTON_B:
+				ret.push_back(Input::PARRYINPUT);
 				break;
-			case 2://X
-				ret.push_back(Input(Input::LIGHT_ATTACK));
+			case SDL_CONTROLLER_BUTTON_X:
+				ret.push_back(Input::LIGHT_ATTACK);
 				break;
-			case 3://Y
-				ret.push_back(Input(Input::HEAVY_ATTACK));
+			case SDL_CONTROLLER_BUTTON_Y:
+				ret.push_back(Input::HEAVY_ATTACK);
 				break;
-			case 4://SELECT
-				ret.push_back(Input(Input::TAUNTINPUT));
+			case SDL_CONTROLLER_BUTTON_BACK:
+				ret.push_back(Input::TAUNTINPUT);
 				break;
-			case 5:
+			case SDL_CONTROLLER_BUTTON_GUIDE:
 				break;
-			case 6://START
+			case SDL_CONTROLLER_BUTTON_START:
 				//SETTINGS MENU
 				break;
-			case 7://L STICK PRESSED
+			case SDL_CONTROLLER_BUTTON_LEFTSTICK:
 				break;
-			case 8://R STICK PRESSED
+			case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
 				break;
-			case 9://L1
-				ret.push_back(Input(Input::DEFEND));
+			case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+				ret.push_back(Input::DEFEND);
 				break;
-			case 10://R1
-				ret.push_back(Input(Input::RUNINPUT));
+			case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+				ret.push_back(Input::RUNINPUT);
 				break;
-			case 11://UP
-				ret.push_back(Input(Input::UP));
+			case SDL_CONTROLLER_BUTTON_DPAD_UP:
+				ret.push_back(Input::UP);
 				break;
-			case 12://DOWN
-				ret.push_back(Input(Input::DOWN));
+			case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+				ret.push_back(Input::DOWN);
 				break;
-			case 13://LEFT
-				ret.push_back(Input(Input::LEFT));
+			case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+				ret.push_back(Input::LEFT);
 				break;
-			case 14://RIGHT
-				ret.push_back(Input(Input::RIGHT));
+			case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+				ret.push_back(Input::RIGHT);
 				break;
-			case 15:
+			case SDL_CONTROLLER_BUTTON_MAX:
 				break;
 			}
 		}
 		else if (controllers[playerNum - 1].buttons[i] == B_REPEAT) {
 			switch (i) {
-			case 9://L1
-				ret.push_back(Input(Input::DEFEND));
+			case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+				ret.push_back(Input::DEFEND);
 				break;
-			case 10://R1
-				ret.push_back(Input(Input::RUNINPUT));
+			case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+				ret.push_back(Input::RUNINPUT);
 				break;
-			case 11://UP
-				ret.push_back(Input(Input::UP));
+			case SDL_CONTROLLER_BUTTON_DPAD_UP:
+				ret.push_back(Input::UP);
 				break;
-			case 12://DOWN
-				ret.push_back(Input(Input::DOWN));
+			case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+				ret.push_back(Input::DOWN);
 				break;
-			case 13://LEFT
-				ret.push_back(Input(Input::LEFT));
+			case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+				ret.push_back(Input::LEFT);
 				break;
-			case 14://RIGHT
-				ret.push_back(Input(Input::RIGHT));
+			case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+				ret.push_back(Input::RIGHT);
 				break;
-
-
 			}
-
+		}
+	}
+	for (int i = 0; i < MAX_AXIS; i++)
+	{
+		if (controllers[playerNum - 1].axis[i] >= 0.5f || controllers[playerNum - 1].axis[i] <= -0.5f)
+		{
+			switch (i) {
+			case 0:
+				if (controllers[playerNum - 1].axis[i] > 0.5f)
+				{
+					ret.push_back(Input::RIGHT);
+				}
+				else if (controllers[playerNum - 1].axis[i] < -0.5f)
+				{
+					ret.push_back(Input::LEFT);
+				}
+				break;
+			case 1:
+				if (controllers[playerNum - 1].axis[i] > 0.5f)
+				{
+					ret.push_back(Input::DOWN);
+				}
+				else if (controllers[playerNum - 1].axis[i] < -0.5f)
+				{
+					ret.push_back(Input::UP);
+				}
+				break;
+			}
 		}
 	}
 		return ret;

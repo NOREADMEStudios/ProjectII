@@ -11,7 +11,6 @@ class Sprite;
 class Label;
 class InterfaceElement;
 
-
 class Selection {
 
 public:
@@ -23,10 +22,8 @@ public:
 	SDL_Rect arrowLockRect;
 	bool locked = false;
 
-	void LoadArrows(SDL_Texture* tex);
+	void LoadArrows();
 	void DrawOrderedArrow();
-	
-
 };
 
 class ItemSelecScene:
@@ -41,7 +38,7 @@ public:
 	Button *	dragonSlayer = nullptr;
 	Button *	magicRobe = nullptr;
 	Button *	confirmButton = nullptr;
-	Label*		confirmLabel = nullptr;
+	Label *		confirmLabel = nullptr;
 	Label *		item1Stats = nullptr;
 	Label *		item2Stats = nullptr;
 	Label *		item3Stats = nullptr;
@@ -87,12 +84,10 @@ private:
 	void ApplyItemAttributes();
 	bool AllItemsSelected();
 	
-	SDL_Texture* atlas;
 	SDL_Texture* items_atlas; //NEEDS TO BE REMOVED ONCE THERE IS ONLY ONE ATLAS
 
 	std::list<Selection> playersSelections;
 	std::list<Button*> buttonsForController;
-
 };
 
 #endif

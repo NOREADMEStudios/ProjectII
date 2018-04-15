@@ -47,8 +47,8 @@ bool Button::PreUpdate() {
 	Mouse.h = CURSOR_WIDTH;
 
 	SDL_Rect result;
-	if (SDL_IntersectRect(&result_rect, &Mouse, &result) == SDL_TRUE) {
-		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
+	if (SDL_IntersectRect(&result_rect, &Mouse, &result) == SDL_TRUE || in_focus) {
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
 			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 			currentAnim = &pressed_anim;
 

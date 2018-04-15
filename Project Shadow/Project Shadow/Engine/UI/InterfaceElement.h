@@ -57,6 +57,13 @@ public:
 
 	void SetParent(InterfaceElement* parent);
 
+	InterfaceElement* getNextChild(InterfaceElement*);
+	InterfaceElement* getPrevChild(InterfaceElement*);
+	InterfaceElement* getNextSibling();
+	InterfaceElement* getPrevSibling();
+
+	bool isInteractuable();
+
 	void ComputeRects();
 
 	SDL_Texture*		tex = nullptr;

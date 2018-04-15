@@ -80,7 +80,7 @@ bool Hero::Start()
 	Attack* light_2 = new Attack(ATTACK_L2, LIGHT_ATTACK, 2);
 	Attack* light_3 = new Attack(ATTACK_L3, LIGHT_ATTACK, 5);
 	Attack* heavy_1 = new Attack(ATTACK_HEAVY, HEAVY_ATTACK, 2);
-	Attack* heavy_2 = new Attack(ATTACK_H2, HEAVY_ATTACK, 5);
+	Attack* heavy_2 = new Attack(ATTACK_H2, HEAVY_ATTACK, 2);
 	Attack* jump_a = new Attack(JUMP, JUMPINPUT, 0);
 	Attack* jump_a2 = new Attack(ATTACK_J1, LIGHT_ATTACK, 2);
 	Attack* jump_a3 = new Attack(ATTACK_J2, HEAVY_ATTACK, 5);
@@ -738,7 +738,7 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 						
 		}
-		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_hitbox" && StateisAtk(currentState))
+		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_hitbox")
 		{
 			_other->entity->stats.life -= _this->entity->stats.atk + GetAtk(currentState)->damage - _other->entity->stats.def;
 		}

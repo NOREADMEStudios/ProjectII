@@ -68,6 +68,7 @@ public:
 	Entity* GetEntity(uint num);
 	EntityStats items[4];
 	bool finish = false;
+	uint winner;
 
 private:
 

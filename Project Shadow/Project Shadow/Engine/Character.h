@@ -86,14 +86,15 @@ struct Attack
 
 	bool CheckChildInput(Input input)
 	{
-
-		for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
-			if ((*item)->input == input)
-			{
-				return true;
+		if (!childs.empty())
+		{
+			for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
+				if ((*item)->input == input)
+				{
+					return true;
+				}
 			}
 		}
-
 		return false;
 	}
 

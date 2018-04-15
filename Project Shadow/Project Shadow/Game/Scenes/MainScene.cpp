@@ -35,13 +35,26 @@ bool MainScene::Start()
 
 	e = App->entities->CreateCharacter({HERO,{100,100}});
 	e2 = App->entities->CreateCharacter({ HERO,{ 10000,100 } });
+
+	
 	e3 = App->entities->CreateCharacter({ HERO,{ 100,1000 } });
-	e4= App->entities->CreateCharacter({ HERO,{ 10000,1000 } });
+	e4 = App->entities->CreateCharacter({ HERO,{ 10000,1000 } });
+
+	if (!App->scenes->four_players)
+	{
+		e3->active = false;
+		e4->active = false;
+	}
+	else
+	{
+		App->gui->AddHealthbar((Hero*)e3, 2, true, 1590, 10, t, true, { 0, 0, 264, 26 });
+		App->gui->AddHealthbar((Hero*)e4, 3, false, 1590, 10, t, true, { 0, 0, 264, 26 });
+	}
+
 
 	App->gui->AddHealthbar((Hero*)e, 0, true, 10, 10, t, true, { 0, 0, 264, 26 });
 	App->gui->AddHealthbar((Hero*)e2, 1, false, 1590, 10, t, true, { 0, 0, 264, 26 });
-	App->gui->AddHealthbar((Hero*)e3, 2, true, 1590, 10, t, true, { 0, 0, 264, 26 });
-	App->gui->AddHealthbar((Hero*)e4, 3, false, 1590, 10, t, true, { 0, 0, 264, 26 });
+
 
 	return false;
 }

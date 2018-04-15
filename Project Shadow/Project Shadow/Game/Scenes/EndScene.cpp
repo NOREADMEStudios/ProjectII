@@ -94,6 +94,20 @@ void EndScene::LoadUIButtons() {
 
 	winnerLabel = App->gui->AddLabel(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 4) * 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string winnerStr = "WINNER: CHARACTER 1";
+
+	if (App->entities->winner == 2)
+	{
+		winnerStr = "WINNER: CHARACTER 2";
+	}
+	else if (App->entities->winner == 3)
+	{
+		winnerStr = "WINNER: CHARACTER 3";
+	}
+	else if (App->entities->winner == 4)
+	{
+		winnerStr = "WINNER: CHARACTER 4";
+	}
+
 	winnerLabel->setString(winnerStr);
 
 }

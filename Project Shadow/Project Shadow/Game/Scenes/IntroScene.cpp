@@ -39,11 +39,7 @@ bool IntroScene::Start()
 {
 	bool test= LoadBackground("UI/MainMenu.png");
 	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
-	SDL_Texture * atlas = App->textures->Load("UI/atlas.png");
-
-
-
-	
+	atlas = App->textures->Load("UI/atlas.png");	
 	LoadBackground("UI/MainMenu.png");
 	//App->gui->AddSprite(820, 540, bakc_menu, { 0,0,1750,1080 }, true);
  
@@ -56,10 +52,6 @@ bool IntroScene::Start()
 bool IntroScene::Update(float dt)
 {
 	DrawBackground();
-
-	/*if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
-		App->scenes->ChangeScene(App->scenes->itemSc);
-	}*/
 
 	//App->input->CheckControllers();
 
@@ -128,7 +120,7 @@ void IntroScene::LoadUIButtons() {
 	//pvpLabel->culled = false;
 
 	uiPoint win_size = App->gui->GetGuiSize();
-	pvpButton = App->gui->AddButton((win_size.x / 2) - (win_size.x / 6), win_size.y / 2, atlas, { 50,50,384,186 }, true, PvPPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+	pvpButton = App->gui->AddButton((win_size.x / 2) - (win_size.x / 6), win_size.y / 2, atlas, { 50,50,384,195 }, true, PvPPressCallb, { 50,270,384,195 }, { 50,491,384,195 });
 
 	pvpButton->OnHoverEnter = PvPHoverEnCallb;
 	pvpButton->OnHoverExit = PvPHoverExCallb;
@@ -138,7 +130,7 @@ void IntroScene::LoadUIButtons() {
 	pvpLabel->SetParent(pvpButton);
 	pvpLabel->culled = false;
 
-	onevsoneButton = App->gui->AddButton((win_size.x / 6) + (win_size.x / 2), win_size.y / 2, atlas, { 50,50,384,186 }, true, OnevsPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+	onevsoneButton = App->gui->AddButton((win_size.x / 6) + (win_size.x / 2), win_size.y / 2, atlas, { 50,50,384,195 }, true, OnevsPressCallb, { 50,270,384,195 }, { 50,491,384,195 });
 
 	onevsoneButton->OnHoverEnter = PvPHoverEnCallb;
 	onevsoneButton->OnHoverExit = PvPHoverExCallb;
@@ -149,7 +141,7 @@ void IntroScene::LoadUIButtons() {
 	onevsLabel->culled = false;
 
 
-	exitButton = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3, atlas, { 50,50,384,186 }, true, ExitPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+	exitButton = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3, atlas, { 50,50,384,195 }, true, ExitPressCallb, { 50,270,384,195 }, { 50,491,384,195 });
 	exitButton->OnHoverEnter = ExitHoverEnCallb;
 	exitButton->OnHoverExit = ExitHoverExCallb;
 	Label* exitLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });

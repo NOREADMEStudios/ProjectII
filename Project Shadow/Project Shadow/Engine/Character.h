@@ -62,8 +62,6 @@ struct Attack
 		state = _state;
 		input = _input;
 		damage = _damage;
-
-
 	}
 
 	void AddChild(Attack* _child)
@@ -73,8 +71,7 @@ struct Attack
 
 	bool CheckChild(Attack* _child)
 	{
-		if (!childs.empty())
-		{
+		if (!childs.empty()) {
 			for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
 				if (*item == _child)
 				{

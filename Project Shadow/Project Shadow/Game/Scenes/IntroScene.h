@@ -13,7 +13,13 @@ class IntroScene:
 {
 public:
 	Button * pvpButton;
+	Button * onevsoneButton;
 	Button * exitButton;
+
+	Label * onevsLabel;
+	Label * pvpLabel;
+	Label * exitLabel;
+
 
 	IntroScene();
 	virtual ~IntroScene();

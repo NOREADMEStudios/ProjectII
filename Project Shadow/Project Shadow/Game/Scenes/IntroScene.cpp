@@ -25,6 +25,7 @@ void ExitPressCallb(size_t arg_size...);
 void ExitHoverEnCallb(size_t arg_size...);
 void ExitHoverExCallb(size_t arg_size...);
 
+void OnevsPressCallb(size_t arg_size...);
 
 IntroScene::IntroScene()
 {
@@ -36,6 +37,12 @@ IntroScene::~IntroScene()
 
 bool IntroScene::Start()
 {
+	bool test= LoadBackground("UI/MainMenu.png");
+	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
+	SDL_Texture * atlas = App->textures->Load("UI/atlas.png");
+
+
+
 	
 	LoadBackground("UI/MainMenu.png");
 	//App->gui->AddSprite(820, 540, bakc_menu, { 0,0,1750,1080 }, true);
@@ -74,7 +81,17 @@ bool IntroScene::CleanUp()
 }
 
 void PvPPressCallb(size_t arg_size...) {
+
+	App->scenes->ChangeScene(App->scenes->itemSc);
+	App->scenes->four_players = true;
+}
+
+void OnevsPressCallb(size_t arg_size...) {
+	App->scenes->ChangeScene(App->scenes->itemSc);
+	App->scenes->four_players = false;
+
 App->scenes->ChangeScene(App->scenes->itemSc);
+
 }
 
 void PvPHoverEnCallb(size_t arg_size...) {
@@ -100,17 +117,39 @@ void ExitHoverExCallb(size_t arg_size...) {
 void IntroScene::LoadUIButtons() {
 
 	SDL_Texture* atlas = App->textures->Load("UI/atlas.png");
-	pvpButton = App->gui->AddButton(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 4 + 300, atlas, { 50,50,384,186 }, true, PvPPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+	//pvpButton = App->gui->AddButton(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 4 + 300, atlas, { 50,50,384,186 }, true, PvPPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+
+	//pvpButton->OnHoverEnter = PvPHoverEnCallb;
+	//pvpButton->OnHoverExit = PvPHoverExCallb;
+	//Label* pvpLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
+	//std::string PvPStr = "PvP";
+	//pvpLabel->setString(PvPStr);
+	//pvpLabel->SetParent(pvpButton);
+	//pvpLabel->culled = false;
+
+	uiPoint win_size = App->gui->GetGuiSize();
+	pvpButton = App->gui->AddButton((win_size.x / 2) - (win_size.x / 6), win_size.y / 2, atlas, { 50,50,384,186 }, true, PvPPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 
 	pvpButton->OnHoverEnter = PvPHoverEnCallb;
 	pvpButton->OnHoverExit = PvPHoverExCallb;
-	Label* pvpLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
-	std::string PvPStr = "PvP";
+	pvpLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string PvPStr = "4vs4";
 	pvpLabel->setString(PvPStr);
 	pvpLabel->SetParent(pvpButton);
 	pvpLabel->culled = false;
 
-	exitButton = App->gui->AddButton((SCREEN_WIDTH / 2) - 100, (SCREEN_HEIGHT / 4) * 3, atlas, { 50,50,384,186 }, true, ExitPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+	onevsoneButton = App->gui->AddButton((win_size.x / 6) + (win_size.x / 2), win_size.y / 2, atlas, { 50,50,384,186 }, true, OnevsPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+
+	onevsoneButton->OnHoverEnter = PvPHoverEnCallb;
+	onevsoneButton->OnHoverExit = PvPHoverExCallb;
+	onevsLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string oneStr = "1vs1";
+	onevsLabel->setString(oneStr);
+	onevsLabel->SetParent(onevsoneButton);
+	onevsLabel->culled = false;
+
+
+	exitButton = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3, atlas, { 50,50,384,186 }, true, ExitPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 	exitButton->OnHoverEnter = ExitHoverEnCallb;
 	exitButton->OnHoverExit = ExitHoverExCallb;
 	Label* exitLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });

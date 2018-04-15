@@ -159,8 +159,7 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 void ModuleEntityManager::DestroyEntity(Entity* entity) {
 	pugi::xml_node n;
 	if (entity->hero_num != 0) {
-		numofplayers--;
-	
+		numofplayers--;	
 	}
 	entity->CleanUp(n);
 	entities.remove(entity);

@@ -38,18 +38,13 @@ public:
 
 
 	//-------CONTROLLER MANAGEMENT
-	class Selected {
-	public:
-		Button* but;
-	};
+	
 	void ChooseFocus();
 	void SetControllerFocus();
 	void ManageDisplacement();
 
 	int controllersNum;
 
-	std::list<Button*> buttonsForController;
-	Selected player1;
 };
 
 #endif

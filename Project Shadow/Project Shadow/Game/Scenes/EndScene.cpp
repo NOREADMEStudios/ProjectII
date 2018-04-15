@@ -31,21 +31,8 @@ EndScene::~EndScene()
 
 bool EndScene::Start()
 {
-	SDL_Texture* back_end = App->textures->Load("UI/YouWin.png");
-	App->gui->AddSprite(820, 540, back_end, { 0,0,1750,1080 }, true);
-
-	mainMenuButton = App->gui->AddButton((SCREEN_WIDTH / 2) + 400, (SCREEN_HEIGHT / 4) * 3, nullptr, { 50,50,384,186 }, true, MainButtonPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
-	mainMenuButton->OnHoverEnter = MainButtonHoverEnCallb;
-	mainMenuButton->OnHoverExit = MainButtonHoverExCallb;
-	mainLabel = App->gui->AddLabel(mainMenuButton->rect.w / 2, mainMenuButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
-	std::string mainStr = "Main Menu";
-	mainLabel->setString(mainStr);
-	mainLabel->SetParent(mainMenuButton);
-	mainLabel->culled = false;
-
-	winnerLabel = App->gui->AddLabel(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 4)*2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
-	std::string winnerStr = "WINNER: CHARACTER 1";
-	winnerLabel->setString(winnerStr);
+	LoadUIButtons();
+	SetControllerFocus();
 
 	return false;
 }
@@ -54,6 +41,10 @@ bool EndScene::Update(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
 		App->scenes->ChangeScene(App->scenes->introSc);
+	}
+	if (controllersNum != 0) {
+		
+		ChooseFocus();
 	}
 
 	return true;
@@ -75,5 +66,40 @@ void MainButtonHoverEnCallb(size_t arg_size...) {
 }
 
 void MainButtonHoverExCallb(size_t arg_size...) {
+
+}
+
+void EndScene::SetControllerFocus() {
+
+	controllersNum = App->input->GetNumControllers();
+	if (controllersNum == 0) {
+		return;
+	}
+	App->gui->setFocus(mainMenuButton);
+
+}
+void EndScene::LoadUIButtons() {
+
+	SDL_Texture* back_end = App->textures->Load("UI/YouWin.png");
+	App->gui->AddSprite(820, 540, back_end, { 0,0,1750,1080 }, true);
+
+	mainMenuButton = App->gui->AddButton((SCREEN_WIDTH / 2) + 400, (SCREEN_HEIGHT / 4) * 3, nullptr, { 50,50,384,186 }, true, MainButtonPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+	mainMenuButton->OnHoverEnter = MainButtonHoverEnCallb;
+	mainMenuButton->OnHoverExit = MainButtonHoverExCallb;
+	mainLabel = App->gui->AddLabel(mainMenuButton->rect.w / 2, mainMenuButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string mainStr = "Main Menu";
+	mainLabel->setString(mainStr);
+	mainLabel->SetParent(mainMenuButton);
+	mainLabel->culled = false;
+
+	winnerLabel = App->gui->AddLabel(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 4) * 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string winnerStr = "WINNER: CHARACTER 1";
+	winnerLabel->setString(winnerStr);
+
+}
+void EndScene::ChooseFocus() {
+	if (App->input->GetButtonDown(1, SDL_CONTROLLER_BUTTON_A)) {
+		((Button*)App->gui->getFocusedItem())->OnClick(0);
+	}
 
 }

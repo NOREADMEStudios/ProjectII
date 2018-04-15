@@ -313,7 +313,7 @@ void Selection::LoadArrows() {
 		arrowLockRect = { 754, 87, 23,21 };
 		break;
 	case 2:
-		arrowRect = { 825, 50, 22,19 }; //Yellow 
+		arrowRect = { 825, 50, 22,19 }; // Green
 		arrowLockRect = { 825, 87, 23,21 };
 		break;
 	case 3:
@@ -321,7 +321,7 @@ void Selection::LoadArrows() {
 		arrowLockRect = { 778, 87, 23,21 };
 		break;
 	case 4:
-		arrowRect = { 802, 50, 22,19 }; // Green
+		arrowRect = { 802, 50, 22,19 }; // Yellow (should be gray)
 		arrowLockRect = { 802, 87, 23,21 };
 		break;
 	}

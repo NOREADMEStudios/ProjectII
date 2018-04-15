@@ -711,9 +711,6 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			max_speed = 400;
 			_this->entity->Accelerate(hit_dir * 800, 0, 0, 1);
-
-
-
 		}
 		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")
 		{
@@ -723,11 +720,9 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_parry")
 		{
 			currentState = HIT;
-
 		}
 		else if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack")
 		{
-
 			currentState = HIT;
 			hit_bool = true;
 
@@ -742,7 +737,7 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 						
 		}
-		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_hitbox")
+		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_hitbox" && StateisAtk(currentState))
 		{
 			Attack * atk = GetAtk(currentState);
 			if (atk != nullptr)
@@ -754,9 +749,14 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 
 
 
-bool Hero::StateisAtk(CharStateEnum State)
+bool Hero::StateisAtk(CharStateEnum state)
 {
-	return (State != WALK && State != RUN && State != IDLE && State != JUMP && State != DEATH && State != DEFEND && State != HIT && State != PROTECT && State != TAUNT && State != STOP && State != PARRY);
+	return ((state != WALK &&
+		state != RUN && state != IDLE &&
+		state != JUMP && state != DEATH &&
+		state != DEFEND && state != HIT &&
+		state != PROTECT && state != TAUNT &&
+		state != STOP && state != PARRY) || state == ATTACK_H2);
 }
 
 Attack* Hero::GetAtk(CharStateEnum atk)

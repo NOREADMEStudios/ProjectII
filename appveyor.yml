@@ -2,6 +2,7 @@ version: 0.0.{build}
 branches:
   only:
   - develop2
+  - master
 image: Visual Studio 2017
 configuration:
 - Debug

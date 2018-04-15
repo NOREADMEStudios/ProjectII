@@ -54,7 +54,7 @@ struct Attack
 {
 	CharStateEnum state;
 	int damage = 0;
-	LIST(Attack*) childs;
+	LIST(Attack*) childs {};
 	Input input;
 
 	Attack(CharStateEnum _state, Input _input, int _damage = 0)
@@ -62,7 +62,6 @@ struct Attack
 		state = _state;
 		input = _input;
 		damage = _damage;
-
 	}
 
 	void AddChild(Attack* _child)
@@ -72,8 +71,7 @@ struct Attack
 
 	bool CheckChild(Attack* _child)
 	{
-		if (!childs.empty())
-		{
+		if (!childs.empty()) {
 			for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
 				if (*item == _child)
 				{
@@ -86,7 +84,6 @@ struct Attack
 
 	bool CheckChildInput(Input input)
 	{
-
 		for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {
 			if ((*item)->input == input)
 			{

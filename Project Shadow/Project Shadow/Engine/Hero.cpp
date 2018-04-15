@@ -66,10 +66,10 @@ bool Hero::Start()
 	char_depth = 20;
 	gamepos.y = 0;
 
-	stats.atk += App->entities->items[hero_num].atk;
-	stats.def += App->entities->items[hero_num].def;
-	stats.spd += App->entities->items[hero_num].spd;
-	stats.life += App->entities->items[hero_num].life;
+	stats.atk += App->entities->items[hero_num-1].atk;
+	stats.def += App->entities->items[hero_num-1].def;
+	stats.spd += App->entities->items[hero_num-1].spd;
+	stats.life += App->entities->items[hero_num-1].life;
 
 	initialpos.x = gamepos.x;
 	initialpos.y = gamepos.y;

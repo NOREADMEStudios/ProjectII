@@ -343,7 +343,7 @@ void ItemSelecScene::ApplyItemAttributes() {
 
 	
 	for (std::list<Selection>::iterator focus = playersSelections.begin(); focus != playersSelections.end(); focus++) {
-		EntityStats* item = &App->entities->items[(*focus).playerNum];
+		EntityStats* item = &App->entities->items[(*focus).playerNum-1];
 
 		if ((*focus).but == swiftBoots) {
 			//Apply the effect to the player num ( (*focus).playerNum  )

@@ -79,6 +79,7 @@ bool ModuleEntityManager::Update(float dt) {
 		if ((*item)->active)
 		{
 			(*item)->Update(dt);
+			winner = (*item)->hero_num;
 			i++;
 		}
 	}

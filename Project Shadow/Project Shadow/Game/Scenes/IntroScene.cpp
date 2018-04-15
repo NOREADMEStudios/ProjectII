@@ -36,6 +36,7 @@ IntroScene::~IntroScene()
 
 bool IntroScene::Start()
 {
+	
 	LoadBackground("UI/MainMenu.png");
 	//App->gui->AddSprite(820, 540, bakc_menu, { 0,0,1750,1080 }, true);
  
@@ -53,7 +54,7 @@ bool IntroScene::Update(float dt)
 		App->scenes->ChangeScene(App->scenes->itemSc);
 	}*/
 
-	App->input->CheckControllers();
+	//App->input->CheckControllers();
 
 	if (controllersNum != 0) {
 		ManageDisplacement();
@@ -97,7 +98,9 @@ void ExitHoverExCallb(size_t arg_size...) {
 }
 
 void IntroScene::LoadUIButtons() {
-	pvpButton = App->gui->AddButton(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 4 + 300, nullptr, { 50,50,384,186 }, true, PvPPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+
+	SDL_Texture* atlas = App->textures->Load("UI/atlas.png");
+	pvpButton = App->gui->AddButton(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 4 + 300, atlas, { 50,50,384,186 }, true, PvPPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 
 	pvpButton->OnHoverEnter = PvPHoverEnCallb;
 	pvpButton->OnHoverExit = PvPHoverExCallb;
@@ -107,7 +110,7 @@ void IntroScene::LoadUIButtons() {
 	pvpLabel->SetParent(pvpButton);
 	pvpLabel->culled = false;
 
-	exitButton = App->gui->AddButton((SCREEN_WIDTH / 2) - 100, (SCREEN_HEIGHT / 4) * 3, nullptr, { 50,50,384,186 }, true, ExitPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
+	exitButton = App->gui->AddButton((SCREEN_WIDTH / 2) - 100, (SCREEN_HEIGHT / 4) * 3, atlas, { 50,50,384,186 }, true, ExitPressCallb, { 50,270,384,186 }, { 50,491,384,186 });
 	exitButton->OnHoverEnter = ExitHoverEnCallb;
 	exitButton->OnHoverExit = ExitHoverExCallb;
 	Label* exitLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });

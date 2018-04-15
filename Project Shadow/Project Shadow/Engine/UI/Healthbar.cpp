@@ -5,7 +5,6 @@ Healthbar::Healthbar(Hero * character, int charNum, bool leftSide, uint _x, uint
 	assignedCharacter = character;
 	this->leftSide = leftSide;
 	characterNum = charNum;
-
 }
 
 Healthbar::~Healthbar()
@@ -30,6 +29,12 @@ bool Healthbar::Update(float dt)
 
 		else
 			SetContentRect(margin, INT_MAX, INT_MAX, INT_MAX);
+
+		uint _lives = assignedCharacter->GetCurrentLives();
+		for (size_t i = 0; i < lives.size(); i++) {
+			if (i < _lives) continue;
+			lives[i]->Enable(false);
+		}
 
 		ret = true;
 	}

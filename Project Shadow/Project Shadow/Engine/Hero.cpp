@@ -74,7 +74,7 @@ bool Hero::Start()
 	initialpos.x = gamepos.x;
 	initialpos.y = gamepos.y;
 	initialLife = stats.life;
-	lives = 2;
+	lives = maxLives;
 
 	Attack* light_1 = new Attack(ATTACK_LIGHT, LIGHT_ATTACK, 2);
 	Attack* light_2 = new Attack(ATTACK_L2, LIGHT_ATTACK, 2);
@@ -411,6 +411,7 @@ void Hero::UpdateState()
 	
 		if (currentState == DEATH)
 		{
+			lives--;
 			if (lives > 0)
 				Respawn();
 
@@ -460,6 +461,10 @@ void Hero::UpdateCurState(float dt)
 	if (gamepos.y > 0 && (currentState != ATTACK_J1 && currentState != ATTACK_J2))
 	{
 		Accelerate(x_dir, -2, z_dir, dt);
+	}
+	else if (gamepos.y < 0)
+	{
+		gamepos.y = 0;
 	}
 
 	switch (currentState)
@@ -650,7 +655,6 @@ void Hero::Respawn()
 	gamepos.z = initialpos.y;
 
 	stats.life = initialLife;
-	lives--;
 	invencible.StartInv();
 }
 
@@ -707,9 +711,6 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			max_speed = 400;
 			_this->entity->Accelerate(hit_dir * 800, 0, 0, 1);
-
-
-
 		}
 		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")
 		{
@@ -719,11 +720,9 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_parry")
 		{
 			currentState = HIT;
-
 		}
 		else if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack")
 		{
-
 			currentState = HIT;
 			hit_bool = true;
 
@@ -738,9 +737,11 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 						
 		}
-		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_hitbox")
+		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_hitbox" && StateisAtk(currentState))
 		{
-			_other->entity->stats.life -= _this->entity->stats.atk + GetAtk(currentState)->damage - _other->entity->stats.def;
+			Attack * atk = GetAtk(currentState);
+			if (atk != nullptr)
+				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 		}
 
 	}
@@ -748,9 +749,14 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 
 
 
-bool Hero::StateisAtk(CharStateEnum State)
+bool Hero::StateisAtk(CharStateEnum state)
 {
-	return (State != WALK && State != RUN && State != IDLE && State != JUMP && State != DEATH && State != DEFEND && State != HIT && State != PROTECT && State != TAUNT && State != STOP && State != PARRY);
+	return ((state != WALK &&
+		state != RUN && state != IDLE &&
+		state != JUMP && state != DEATH &&
+		state != DEFEND && state != HIT &&
+		state != PROTECT && state != TAUNT &&
+		state != STOP && state != PARRY) || state == ATTACK_H2);
 }
 
 Attack* Hero::GetAtk(CharStateEnum atk)
@@ -760,10 +766,20 @@ Attack* Hero::GetAtk(CharStateEnum atk)
 	for (std::list<Attack*>::iterator item = attacks.begin(); item != attacks.end(); item++) {
 		if ((**item).state == atk)
 		{
-			ret = &(**item);
+			ret = (*item);
 		}
 	}
 	return ret;
+}
+
+uint Hero::GetMaxLives() const
+{
+	return maxLives;
+}
+
+uint Hero::GetCurrentLives() const
+{
+	return lives;
 }
 
 void Hero::SetCombo()
@@ -771,7 +787,7 @@ void Hero::SetCombo()
 	Attack* wanted_atk = GetAtk(wantedState);
 	Attack* current_atk = GetAtk(last_attack);
 
-	if (wanted_atk != nullptr && current_atk->CheckChildInput(wanted_atk->input))
+	if (current_atk != nullptr && wanted_atk != nullptr && current_atk->CheckChildInput(wanted_atk->input))
 	{
 		currentState = current_atk->GetChildInput(wanted_atk->input)->state;
 	}

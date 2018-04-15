@@ -41,6 +41,10 @@ public:
 	void CalculateAtk();
 	bool StateisAtk(CharStateEnum State);
 	Attack* GetAtk(CharStateEnum atk);
+
+	uint GetMaxLives() const;
+	uint GetCurrentLives() const;
+
 	void SetCombo();
 
 	void Respawn();
@@ -58,7 +62,7 @@ public:
 protected:
 	iPoint initialpos;
 	int initialLife = 0;
-	uint lives = 0;
+	uint lives = 0, maxLives = 3;
 	int hit_dir = 0;
 	bool hit_bool = 0;
 	bool parried = 0;

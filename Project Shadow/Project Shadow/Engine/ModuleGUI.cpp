@@ -198,6 +198,9 @@ void ModuleGUI::FocusPrev()
 
 Sprite* ModuleGUI::AddSprite(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled)
 {
+	if (tex == nullptr)
+		tex = atlas_texture;
+
 	Sprite* aux = new Sprite(x, y, tex, enabled, &anim);
 	aux->ComputeRects();
 
@@ -232,6 +235,9 @@ Label* ModuleGUI::AddLabel(int x, int y, int psize, const char * font_path, SDL_
 
 Button* ModuleGUI::AddButton(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
 {
+	if (_tex == nullptr)
+		_tex = atlas_texture;
+
 	Button* aux = new Button(_x, _y, _tex, _anim, _enabled, callback, _hovered_anim, _pressed_anim);
 	aux->ComputeRects();
 
@@ -241,6 +247,9 @@ Button* ModuleGUI::AddButton(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, 
 
 Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim, bool _axis, InterfaceElement* parent)
 {
+	if (_tex == nullptr)
+		_tex = atlas_texture;
+
 	Slider* aux = new Slider(_x, _y, _tex, _anim, _enabled, callback, _hovered_anim, _pressed_anim, _axis);
 	aux->ComputeRects();
 	
@@ -253,6 +262,9 @@ Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, 
 
 Healthbar * ModuleGUI::AddHealthbar(Hero * character, int charNum, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect _anim)
 {
+	if (_tex == nullptr)
+		_tex = atlas_texture;
+
 	Healthbar* aux = new Healthbar(character, charNum, leftSide, _x, _y, _tex, _enabled, &_anim);
 	Sprite* bar = App->gui->AddSprite(0, 0, _tex, { 0, 26, 258, 20 });
 	Label* charNumber = App->gui->AddLabel(0, 0, 48, "Assets/Textures/UI/TTF/Vecna Bold.ttf", { 255, 255, 255, 255 }, Label::BLENDED, "");

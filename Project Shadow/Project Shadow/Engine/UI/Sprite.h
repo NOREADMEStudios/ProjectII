@@ -17,7 +17,10 @@ public:
 	~Sprite();
 	bool Update(float dt) override;
 
+	void ChangeAnimation(SDL_Rect anim);
+
 	SDL_Rect idle_anim;
+	SDL_Rect secondary_anim;
 };
 
 #endif

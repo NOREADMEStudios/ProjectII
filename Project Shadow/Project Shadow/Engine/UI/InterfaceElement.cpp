@@ -28,8 +28,12 @@ bool InterfaceElement::Enable(bool enable) {
 	return enabled;
 }
 
-bool InterfaceElement::isEnabled() {
+bool InterfaceElement::isEnabled() const {
 	return enabled;
+}
+
+bool InterfaceElement::isCulled() const {
+	return culled;
 }
 
 bool InterfaceElement::Start() {
@@ -120,6 +124,9 @@ SDL_Rect InterfaceElement::GetContentRect() const {
 
 int InterfaceElement::getPositionX() const {
 	return rel_pos.x;
+}
+iPoint InterfaceElement::getPosition() const {
+	return rel_pos;
 }
 
 int InterfaceElement::getPositionY() const {

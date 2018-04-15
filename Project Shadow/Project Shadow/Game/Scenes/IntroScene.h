@@ -7,14 +7,13 @@
 class Button;
 class Label;
 
+
 class IntroScene:
 	public Scene
 {
 public:
 	Button * pvpButton;
 	Button * exitButton;
-	Label * pvpLabel;
-	Label * exitLabel;
 
 	IntroScene();
 	virtual ~IntroScene();
@@ -35,6 +34,22 @@ public:
 
 	bool Save(pugi::xml_node&) const override { return true; };
 
+	void LoadUIButtons();
+
+
+	//-------CONTROLLER MANAGEMENT
+	class Selected {
+	public:
+		Button* but;
+	};
+	void ChooseFocus();
+	void SetControllerFocus();
+	void ManageDisplacement();
+
+	int controllersNum;
+
+	std::list<Button*> buttonsForController;
+	Selected player1;
 };
 
 #endif

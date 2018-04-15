@@ -5,7 +5,7 @@
 #include "App.h"
 #include "ModuleGUI.h"
 
-#define BACKGROUND_RECT {0,0,3555,2005}
+#define BACKGROUND_RECT { 0,0,1750,1080 }
 
 Scene::Scene(){}
 

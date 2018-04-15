@@ -43,8 +43,6 @@ bool MainScene::Start()
 	App->gui->AddHealthbar((Hero*)e3, 2, true, 1590, 10, t, true, { 0, 0, 264, 26 });
 	App->gui->AddHealthbar((Hero*)e4, 3, false, 1590, 10, t, true, { 0, 0, 264, 26 });
 
-	App->debug = true;
-  
 	return false;
 }
 

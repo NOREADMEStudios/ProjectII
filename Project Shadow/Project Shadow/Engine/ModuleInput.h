@@ -31,7 +31,7 @@ enum KeyState
 	KEY_UP
 };
 
-enum BUTTON_STATE
+enum ButtonState
 {
 	B_IDLE = 0,
 	B_DOWN,
@@ -46,7 +46,7 @@ struct KeyEvent {
 
 class Controller {
 public:
-	BUTTON_STATE buttons[MAX_BUTTONS];
+	ButtonState buttons[MAX_BUTTONS];
 	float axis[MAX_AXIS];
 	bool connected = false;
 	SDL_GameController* controller = nullptr;
@@ -118,7 +118,9 @@ public:
 	std::list<Input> FirstPlayerConfig();
 	std::list<Input> SecondPlayerConfig();
 
-	std::list<Input> ControllerPlayerConfig(int playerNum);
+	Input GetButtonFromController(int controllerNum) const;
+	bool GetButtonDown(int controller, int input) const;
+	std::list<Input> ControllerPlayerConfig(int playerNum) const;
 
 private:
 

@@ -36,6 +36,8 @@ public:
 	bool loaded = false;
 	bool paused = false;
 
+	bool enableMouse = false;
+
 	SDL_Texture* background;
 
 };

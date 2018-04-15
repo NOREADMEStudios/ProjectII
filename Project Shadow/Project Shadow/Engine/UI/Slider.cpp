@@ -30,7 +30,7 @@ bool Slider::PreUpdate()
 	if (SDL_IntersectRect(&r, &Mouse, &result) == SDL_TRUE)
 	{
 		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
-			current_anim = &pressed_anim;
+			currentAnim = &pressed_anim;
 			App->gui->setFocus(this);
 			dragging = true;
 			iPoint m = { Mouse.x, Mouse.y };
@@ -38,14 +38,14 @@ bool Slider::PreUpdate()
 			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 		}
 		else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_IDLE) {
-			current_anim = &hovered_anim;
+			currentAnim = &hovered_anim;
 
 			if (label != nullptr)
 				label->setColor({ 228, 204, 42, 255 });
 		}
 	}
 	else {
-		current_anim = &idle_anim;
+		currentAnim = &idle_anim;
 	}
 
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus && dragging)

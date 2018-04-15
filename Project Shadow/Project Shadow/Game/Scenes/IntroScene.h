@@ -7,6 +7,7 @@
 class Button;
 class Label;
 
+
 class IntroScene:
 	public Scene
 {
@@ -14,9 +15,11 @@ public:
 	Button * pvpButton;
 	Button * onevsoneButton;
 	Button * exitButton;
+
 	Label * onevsLabel;
 	Label * pvpLabel;
 	Label * exitLabel;
+
 
 	IntroScene();
 	virtual ~IntroScene();
@@ -36,6 +39,17 @@ public:
 	bool Load(pugi::xml_node&) override { return true; };
 
 	bool Save(pugi::xml_node&) const override { return true; };
+
+	void LoadUIButtons();
+
+
+	//-------CONTROLLER MANAGEMENT
+	
+	void ChooseFocus();
+	void SetControllerFocus();
+	void ManageDisplacement();
+
+	int controllersNum;
 
 };
 

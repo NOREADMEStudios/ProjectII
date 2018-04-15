@@ -20,7 +20,7 @@ Button::Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enable
 	else
 		pressed_anim = _pressed_anim;
 
-	current_anim = &idle_anim;
+	currentAnim = &idle_anim;
 
 	OnClick = callback;
 	interactuable = true;
@@ -31,7 +31,7 @@ Button::~Button() {
 
 bool Button::PreUpdate() {
 	bool ret = InterfaceElement::PreUpdate();
-
+	
 	if (label == nullptr) //Auto set label
 	{
 		for (std::list<InterfaceElement*>::iterator current_element = elements.begin(); current_element != elements.end(); current_element++)
@@ -47,10 +47,10 @@ bool Button::PreUpdate() {
 	Mouse.h = CURSOR_WIDTH;
 
 	SDL_Rect result;
-	if (SDL_IntersectRect(&result_rect, &Mouse, &result) == SDL_TRUE) {
-		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
+	if (SDL_IntersectRect(&result_rect, &Mouse, &result) == SDL_TRUE || in_focus) {
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
 			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
-			current_anim = &pressed_anim;
+			currentAnim = &pressed_anim;
 
 			//SetFocus();
 			if (OnClick != nullptr) {
@@ -60,7 +60,7 @@ bool Button::PreUpdate() {
 			}
 		}
 		else {
-			current_anim = &hovered_anim;
+			currentAnim = &hovered_anim;
 			
 			if (state != HOVERED)
 				if (OnHoverEnter != nullptr)
@@ -70,7 +70,7 @@ bool Button::PreUpdate() {
 		}
 	}
 	else {
-		current_anim = &idle_anim;
+		currentAnim = &idle_anim;
 
 		if (state == HOVERED)
 			if (OnHoverExit != nullptr)
@@ -82,7 +82,9 @@ bool Button::PreUpdate() {
 		if (label != nullptr && (curr.r != 255 || curr.g != 255 || curr.b != 255 || curr.a != 255))
 			label->setColor({ 255, 255, 255, 255 });*/
 	}
-
+	if (in_focus) {
+		currentAnim = &hovered_anim;
+	}
 	return ret;
 }
 

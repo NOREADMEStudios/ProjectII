@@ -35,6 +35,11 @@ public:
 
 	bool Save(pugi::xml_node&) const override { return true; };
 
+	void SetControllerFocus();
+
+	void LoadUIButtons();
+	int controllersNum;
+	void ChooseFocus();
 };
 
 #endif

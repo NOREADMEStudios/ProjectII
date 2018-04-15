@@ -41,6 +41,7 @@ bool ModuleGUI::Awake(pugi::xml_node& conf)
 // Called before the first frame
 bool ModuleGUI::Start()
 {
+	atlas_texture = App->textures->Load("UI/atlas.png");
 	return true;
 }
 
@@ -104,6 +105,17 @@ bool ModuleGUI::CleanUp(pugi::xml_node& )
 	return true;
 }
 
+bool ModuleGUI::CleanUp() {
+	std::list<InterfaceElement*>::reverse_iterator current_element;
+
+	for (current_element = elements.rbegin(); current_element != elements.rend(); current_element++) {
+		(*current_element)->enabled = (*current_element)->next_frame_enabled;
+		(*current_element)->CleanUp();
+	}
+	elements.clear();
+	return true;
+}
+
 // const getter for atlas
 const SDL_Texture* ModuleGUI::GetAtlas() const
 {
@@ -140,8 +152,55 @@ void ModuleGUI::RemoveElement(InterfaceElement * elem)
 	elements.remove(elem);
 }
 
+void ModuleGUI::FocusNext()
+{
+	if (focused_item != nullptr) {
+		size_t times = 0;
+		InterfaceElement* item = focused_item;
+		do {
+			item = item->getNextSibling();
+			if (item == nullptr) {
+				size_t pos = Utils::FindInList(focused_item, elements) + 1 + times;
+				if (pos >= elements.size())
+					pos = 0;
+				LIST_ITERATOR(InterfaceElement*) it = elements.begin();
+				for (size_t i = 0; i < pos; it++, i++) {
+				}
+				item = *it;
+				times++;
+			}
+		} while (!item->isInteractuable());
+		setFocus(item);
+	}
+}
+
+void ModuleGUI::FocusPrev()
+{
+	if (focused_item != nullptr) {
+		size_t times = 0;
+		InterfaceElement* item = focused_item;
+		do {
+			item = item->getPrevSibling();
+			if (item == nullptr) {
+				int pos = Utils::FindInList(focused_item, elements) - 1 - times;
+				if (pos < 0)
+					pos = elements.size() - 1;
+				LIST_ITERATOR(InterfaceElement*) it = elements.begin();
+				for (size_t i = 0; i < pos; it++, i++) {
+				}
+				item = *it;
+				times++;
+			}
+		} while (!item->isInteractuable());
+		setFocus(item);
+	}
+}
+
 Sprite* ModuleGUI::AddSprite(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled)
 {
+	if (tex == nullptr)
+		tex = atlas_texture;
+
 	Sprite* aux = new Sprite(x, y, tex, enabled, &anim);
 	aux->ComputeRects();
 
@@ -176,6 +235,9 @@ Label* ModuleGUI::AddLabel(int x, int y, int psize, const char * font_path, SDL_
 
 Button* ModuleGUI::AddButton(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
 {
+	if (_tex == nullptr)
+		_tex = atlas_texture;
+
 	Button* aux = new Button(_x, _y, _tex, _anim, _enabled, callback, _hovered_anim, _pressed_anim);
 	aux->ComputeRects();
 
@@ -185,6 +247,9 @@ Button* ModuleGUI::AddButton(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, 
 
 Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim, bool _axis, InterfaceElement* parent)
 {
+	if (_tex == nullptr)
+		_tex = atlas_texture;
+
 	Slider* aux = new Slider(_x, _y, _tex, _anim, _enabled, callback, _hovered_anim, _pressed_anim, _axis);
 	aux->ComputeRects();
 	
@@ -195,72 +260,80 @@ Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, 
 	return aux;
 }
 
-Healthbar * ModuleGUI::AddHealthbar(Hero * character, int charNum, Sprite * bar, Sprite * charFace, Label * playerNum, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect _anim)
+Healthbar * ModuleGUI::AddHealthbar(Hero * character, int charNum, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect _anim)
 {
+	if (_tex == nullptr)
+		_tex = atlas_texture;
+
 	Healthbar* aux = new Healthbar(character, charNum, leftSide, _x, _y, _tex, _enabled, &_anim);
+	Sprite* bar = App->gui->AddSprite(0, 0, _tex, { 0, 26, 258, 20 });
+	Label* charNumber = App->gui->AddLabel(0, 0, 48, "Assets/Textures/UI/TTF/Vecna Bold.ttf", { 255, 255, 255, 255 }, Label::BLENDED, "");
+
+	aux->characterText = charNumber;
+	charNumber->SetParent(aux);
+	charNumber->setString("%d", charNum+1);
 
 	aux->bar = bar;
 	bar->SetParent(aux);
-
 	bar->setPosition(aux->rect.w / 2, aux->rect.h / 2);
 
-	if (charNum == 0)
+
+	iRect charFaceRect;
+	uiPoint screenDims = GetGuiSize();
+	fPoint anchor;
+	uint screenMargin = 10;
+
+	switch(charNum)
 	{
-		aux->SetAnchor(0, 0);
+	case 0:
+		anchor.x = 0;
+		anchor.y = 0;
 
-		charFace->SetAnchor(0, 0);
+		charFaceRect = { 890, 335, 91, 91 };
+		break;
 
-		aux->rect.x = 10;
-		aux->rect.y = 10;
+	case 1:
+		anchor.x = 1;
+		anchor.y = 0;
 
-		charFace->rect.x = aux->rect.x;
-		charFace->rect.y = aux->rect.y + 25;
+		charFaceRect = { 890, 240, 91, 91 };
+		break;
+
+	case 2:
+		anchor.x = 0;
+		anchor.y = 1;
+
+		charFaceRect = { 890, 145, 91, 91 };
+		break;
+
+	case 3:
+		anchor.x = 1;
+		anchor.y = 1;
+
+		charFaceRect = { 890, 50, 91, 91 };
+		break;
 	}
 
-	if (charNum == 1)
-	{
-		aux->SetAnchor(1, 0);
+	Sprite* charFace = App->gui->AddSprite(0, 0, atlas_texture, charFaceRect.toSDL_Rect());
 
-		charFace->SetAnchor(1, 0);
+	aux->SetAnchor(anchor.x, anchor.y);
+	charFace->SetAnchor(anchor.x, anchor.y);
+	charNumber->SetAnchor(anchor.x, anchor.y);
 
-		aux->rect.x = 1590;
-		aux->rect.y = 10;
+	aux->setPositionX(screenMargin + ((screenDims.x - (screenMargin * 2)) * anchor.x));
+	aux->setPositionY(screenMargin + ((screenDims.y - (screenMargin * 2)) * anchor.y));
 
-		charFace->rect.x = aux->rect.x;
-		charFace->rect.y = aux->rect.y + 25;
-	}
-
-	if (charNum == 2)
-	{
-		aux->SetAnchor(0, 1);
-
-		//charFace->SetAnchor(0, 1);
-
-		aux->rect.x = 10;
-		aux->rect.y = 300;
-
-		charFace->rect.x = aux->rect.x;
-		charFace->rect.y = aux->rect.y + 25;
-	}
-
-	if (charNum == 3)
-	{
-		aux->SetAnchor(1, 1);
-
-		//charFace->SetAnchor(1, 1);
-
-		aux->rect.x = 1590;
-		aux->rect.y = 300;
-
-		charFace->rect.x = aux->rect.x;
-		charFace->rect.y = aux->rect.y + 25;
-	}
+	charFace->setPosition(aux->rect.w * anchor.x, aux->rect.h * (1 - anchor.y));
+	charFace->culled = false;
 
 	aux->characterMugShot = charFace;
+	charFace->SetParent(aux);
 
-	bar->SetAnchor(0.5, 0.5);
+	charNumber->setPositionX(charFace->getPositionX() + (charFace->rect.w + screenMargin) * (leftSide ? 1 : -1));
+	charNumber->setPositionY(charFace->getPositionY() +  screenMargin * (anchor.y == 0.f ? 1 : -1));
 
-	
+	bar->SetAnchor(0.5f, 0.5f);
+
 	iPoint margins;
 	margins.x = (aux->rect.w - bar->rect.w) / 2;
 	margins.y = (aux->rect.h - bar->rect.h) / 2;

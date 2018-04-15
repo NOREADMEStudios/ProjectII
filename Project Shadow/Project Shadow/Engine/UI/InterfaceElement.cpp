@@ -28,8 +28,12 @@ bool InterfaceElement::Enable(bool enable) {
 	return enabled;
 }
 
-bool InterfaceElement::isEnabled() {
+bool InterfaceElement::isEnabled() const {
 	return enabled;
+}
+
+bool InterfaceElement::isCulled() const {
+	return culled;
 }
 
 bool InterfaceElement::Start() {
@@ -121,6 +125,9 @@ SDL_Rect InterfaceElement::GetContentRect() const {
 int InterfaceElement::getPositionX() const {
 	return rel_pos.x;
 }
+iPoint InterfaceElement::getPosition() const {
+	return rel_pos;
+}
 
 int InterfaceElement::getPositionY() const {
 	return rel_pos.y;
@@ -200,40 +207,44 @@ void InterfaceElement::SetParent(InterfaceElement * parent) {
 		App->gui->AddElement(this);
 }
 
-/*void InterfaceElement::SetFocus()
+InterfaceElement * InterfaceElement::getNextChild(InterfaceElement * child)
 {
-	p2List_item<InterfaceElement*>* curr = nullptr;
+	if (elements.size() <= 0) return nullptr;
+	size_t pos = Utils::FindInList(child, elements) + 1;
+	if (pos >= elements.size())
+		pos = 0;
+	LIST_ITERATOR(InterfaceElement*) it = elements.begin();
+	for (size_t i = 0; i <= pos; it++, i++) {}
+	return *it;
+}
 
-	if (parent == NULL)
-		curr = App->gui->elements.start;
-	else
-		curr = parent->elements.start;
-
-	while (curr != NULL)
-	{
-		curr->data->in_focus = false;
-		curr = curr->next;
-	}
-	this->in_focus = true;
-}*/
-
-/*InterfaceElement * InterfaceElement::NextElement(InterfaceElement* curr_child)
+InterfaceElement * InterfaceElement::getPrevChild(InterfaceElement * child)
 {
-	if (elements.start == nullptr) {
-		return parent->NextElement(this);
-	}
-	
-	int index = elements.find(curr_child);
-	if (index < 0) {
-		LOG("Could not find desired object %d in this obejct", curr_child);
-		return nullptr;
-	}
+	if (elements.size() <= 0) return nullptr;
+	int pos = (int)Utils::FindInList(child, elements) - 1;
+	if (pos < 0)
+		pos = elements.size() - 1;
+	LIST_ITERATOR(InterfaceElement*) it = elements.begin();
+	for (size_t i = 0; i <= pos; it++, i++) {}
+	return *it;
+}
 
-	if (elements.At(index)->next == nullptr) {
-		return elements.At(0)->data;
-	}
-	else return elements.At(index)->data;
-}*/
+InterfaceElement * InterfaceElement::getNextSibling()
+{
+	if (parent == nullptr) return nullptr;
+	return parent->getNextChild(this);
+}
+
+InterfaceElement * InterfaceElement::getPrevSibling()
+{
+	if (parent == nullptr) return nullptr;
+	return parent->getPrevChild(this);
+}
+
+bool InterfaceElement::isInteractuable()
+{
+	return interactuable;
+}
 
 void InterfaceElement::ComputeRects(){
 	if (parent != nullptr) {

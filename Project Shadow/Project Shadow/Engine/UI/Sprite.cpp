@@ -26,7 +26,7 @@ Sprite::Sprite(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _an
 
 	content_rect = rect;
 
-	current_anim = &idle_anim;
+	currentAnim = &idle_anim;
 }
 
 
@@ -36,12 +36,12 @@ Sprite::~Sprite()
 
 bool Sprite::Update(float dt)
 {
-	if (current_anim == nullptr)
+	if (currentAnim == nullptr)
 		return false;
 
 	if (culled && parent != nullptr) {
 		SDL_Rect actual_anim_rect = { 0, 0, 0, 0 };
-		actual_anim_rect = *current_anim;
+		actual_anim_rect = *currentAnim;
 		actual_anim_rect.x += result_rect.x - rect.x;
 		actual_anim_rect.y += result_rect.y - rect.y;
 		actual_anim_rect.w += result_rect.w - rect.w;
@@ -49,8 +49,13 @@ bool Sprite::Update(float dt)
 
 		App->render->BlitGui(tex, result_rect.x, result_rect.y, &actual_anim_rect, false);
 	}
-	else App->render->BlitGui(tex, rect.x, rect.y, current_anim, false);
+	else App->render->BlitGui(tex, rect.x, rect.y, currentAnim, false);
 
 	bool ret = InterfaceElement::Update(dt);
 	return ret;
+}
+
+void Sprite::ChangeAnimation(SDL_Rect anim){
+	secondary_anim = anim;
+	currentAnim = &secondary_anim;
 }

@@ -462,6 +462,10 @@ void Hero::UpdateCurState(float dt)
 	{
 		Accelerate(x_dir, -2, z_dir, dt);
 	}
+	else if (gamepos.y < 0)
+	{
+		gamepos.y = 0;
+	}
 
 	switch (currentState)
 	{

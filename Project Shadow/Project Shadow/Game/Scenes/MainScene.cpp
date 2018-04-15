@@ -13,7 +13,7 @@
 #include "../../Engine/UI/Window.h"
 #include "../../Engine/ModuleCollision.h"
 #include "../../Engine/ModuleAudio.h"
-
+#include "../../Engine/ModuleWindow.h"
 
 
 MainScene::MainScene()
@@ -72,6 +72,7 @@ bool MainScene::PostUpdate()
 bool MainScene::CleanUp()
 {
 	xmlNode n;
+	App->win->SetScale(1.0f);
 	App->entities->DestroyEntity(e4);
 	App->entities->DestroyEntity(e3);	
 	App->entities->DestroyEntity(e2);

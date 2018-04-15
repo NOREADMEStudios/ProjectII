@@ -31,7 +31,7 @@ bool MainScene::Start()
 
 	App->map->Load("map2small.tmx");
 
-	t = App->textures->Load("UI/HealthBars.png");
+	atlas = App->textures->Load("UI/atlas.png");
 
 	e = App->entities->CreateCharacter({HERO,{100,100}});
 	e2 = App->entities->CreateCharacter({ HERO,{ 10000,100 } });
@@ -47,13 +47,13 @@ bool MainScene::Start()
 	}
 	else
 	{
-		App->gui->AddHealthbar((Hero*)e3, 2, true, 1590, 10, t, true, { 0, 0, 264, 26 });
-		App->gui->AddHealthbar((Hero*)e4, 3, false, 1590, 10, t, true, { 0, 0, 264, 26 });
+		App->gui->AddHealthbar((Hero*)e3, 2, true, 1590, 10, atlas, true, { 451, 271, 264, 26 });
+		App->gui->AddHealthbar((Hero*)e4, 3, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
 	}
 
 
-	App->gui->AddHealthbar((Hero*)e, 0, true, 10, 10, t, true, { 0, 0, 264, 26 });
-	App->gui->AddHealthbar((Hero*)e2, 1, false, 1590, 10, t, true, { 0, 0, 264, 26 });
+	App->gui->AddHealthbar((Hero*)e, 0, true, 10, 10, atlas, true, { 451, 271, 264, 26 });
+	App->gui->AddHealthbar((Hero*)e2, 1, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
 
 
 	return false;
@@ -92,7 +92,7 @@ bool MainScene::CleanUp()
 	App->entities->DestroyEntity(e);
 
 	App->map->CleanUp(n);
-	App->textures->UnLoad(t);
+	App->textures->UnLoad(atlas);
 	App->collision->CleanUp(n);
 	App->gui->CleanUp();
 	return true;

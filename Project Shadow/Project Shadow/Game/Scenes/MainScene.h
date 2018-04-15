@@ -12,7 +12,6 @@ public:
 
 	
 	Entity* e,* e2, * e3, *e4;
-	SDL_Texture* t;
 
 	MainScene();
 	virtual ~MainScene();

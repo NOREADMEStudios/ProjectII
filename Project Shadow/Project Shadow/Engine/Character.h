@@ -54,7 +54,7 @@ struct Attack
 {
 	CharStateEnum state;
 	int damage = 0;
-	LIST(Attack*) childs;
+	LIST(Attack*) childs {};
 	Input input;
 
 	Attack(CharStateEnum _state, Input _input, int _damage = 0)
@@ -62,6 +62,7 @@ struct Attack
 		state = _state;
 		input = _input;
 		damage = _damage;
+
 
 	}
 

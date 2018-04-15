@@ -39,6 +39,7 @@ public:
 	bool enableMouse = false;
 
 	SDL_Texture* background;
+	SDL_Texture* atlas;
 
 };
 #endif

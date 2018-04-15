@@ -36,7 +36,6 @@ void item5HoverExCallb(size_t arg_size...);
 void item6PressCallb(size_t arg_size...);
 void item6HoverEnCallb(size_t arg_size...);
 void item6HoverExCallb(size_t arg_size...);
-void confirmCallback(size_t arg_size...);
 
 ItemSelecScene::ItemSelecScene()
 {
@@ -64,11 +63,12 @@ bool ItemSelecScene::Update(float dt)
 	}
 
 
-	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
+	/*if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
 		App->scenes->ChangeScene(App->scenes->introSc);
-	}
+	}*/
 
 	DrawBackground();
+	App->debug = true;
 
 	App->input->CheckControllers();
 
@@ -83,21 +83,21 @@ bool ItemSelecScene::Update(float dt)
 bool ItemSelecScene::CleanUp()
 {	
 	App->gui->CleanUp();
-	App->textures->UnLoad(items_atlas);
+	App->textures->UnLoad(atlas);
 	UnLoadBackground();
 	return true;
 }
 
 void ItemSelecScene::LoadSceneUI() {
-	items_atlas = App->textures->Load("UI/items.png");
+	atlas = App->textures->Load("UI/atlas.png");
 	uiPoint sizeScreen = App->gui->GetGuiSize();
 	
-	swiftBoots = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y / 3 + 50, items_atlas, { 0,0,120,120 }, true, item1PressCallb);
-	cursedSword = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3 + 50, items_atlas, { 120,0,120,120 }, true, item2PressCallb);
-	paladinsHandguards = App->gui->AddButton(sizeScreen.x / 4 * 3, sizeScreen.y / 3 + 50, items_atlas, { 240,0,120,120 }, true, item3PressCallb);
-	ringProtection = App->gui->AddButton(sizeScreen.x /  4, sizeScreen.y / 2 + 50, items_atlas, { 360,0,120,120 }, true, item4PressCallb);
-	dragonSlayer = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 2 + 50, items_atlas, { 480,0,120,120 }, true, item5PressCallb);
-	magicRobe = App->gui->AddButton(sizeScreen.x / 4 * 3, sizeScreen.y / 2 + 50, items_atlas, { 600,0,120,120 }, true, item6PressCallb);
+	swiftBoots = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y / 3 + 50, atlas, { 451,492,130,130 }, true, item1PressCallb);
+	cursedSword = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3 + 50, atlas, { 581,492,130,130 }, true, item2PressCallb);
+	paladinsHandguards = App->gui->AddButton(sizeScreen.x / 4 * 3, sizeScreen.y / 3 + 50, atlas, { 711,492,130,130 }, true, item3PressCallb);
+	ringProtection = App->gui->AddButton(sizeScreen.x /  4, sizeScreen.y / 2 + 50, atlas, { 841,492,130,130 }, true, item4PressCallb);
+	dragonSlayer = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 2 + 50, atlas, { 971,492,130,130 }, true, item5PressCallb);
+	magicRobe = App->gui->AddButton(sizeScreen.x / 4 * 3, sizeScreen.y / 2 + 50, atlas, { 1101,492,130,130 }, true, item6PressCallb);
 	swiftBoots->OnHoverEnter = item1HoverEnCallb;
 	swiftBoots->OnHoverExit = item1HoverExCallb;
 	cursedSword->OnHoverEnter = item2HoverEnCallb;
@@ -298,10 +298,6 @@ void item6HoverEnCallb(size_t arg_size...) {
 
 void item6HoverExCallb(size_t arg_size...) {
 	LOG("HOVEREXIT");
-}
-void confirmCallback(size_t arg_size...) {
-	LOG("BUTTON CONFIRM PRESSED");
-	if (App->scenes->itemSc->enableMouse) { App->scenes->ChangeScene(App->scenes->mainSc); }
 }
 
 void Selection::LoadArrows() {

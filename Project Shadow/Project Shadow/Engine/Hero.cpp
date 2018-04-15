@@ -744,7 +744,9 @@ void Hero::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_hitbox")
 		{
-			_other->entity->stats.life -= _this->entity->stats.atk + GetAtk(currentState)->damage - _other->entity->stats.def;
+			Attack * atk = GetAtk(currentState);
+			if (atk != nullptr)
+				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 		}
 
 	}
@@ -764,7 +766,7 @@ Attack* Hero::GetAtk(CharStateEnum atk)
 	for (std::list<Attack*>::iterator item = attacks.begin(); item != attacks.end(); item++) {
 		if ((**item).state == atk)
 		{
-			ret = &(**item);
+			ret = (*item);
 		}
 	}
 	return ret;

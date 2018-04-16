@@ -1,20 +1,21 @@
 ﻿# UPC School Vertical Slice for Project II 
 
 
-- Check our website in [here](https://github.com/NOREADMEStudios/ProjectII).
-- You can download our vertical slice in [here](https://github.com/NOREADMEStudios/ProjectII/releases).
+- Check our website [here](https://github.com/NOREADMEStudios/ProjectII).
+- You can download our vertical slice [here](https://github.com/NOREADMEStudios/ProjectII/releases).
 
 ## Game Description
 
-Mystara Arena is a college project game that will be developed over the course of the subject, Project II by our team, NOREADME Studios. The objective of this project is to create a fully featured game that can be played through from beginning to end and that can be learned in about 10 to 20 minutes. We will be taking most of the art & sounds from the arcade game "Dungeons and Dragons: Shadow over Mystara", a beat'em up game released by Capcom in 1996. 
-In this Vertical Slice we want to show how our game mechanics are, before going on with the final game. You can play against a friend or against 3 of them together in our 1vs1 and 4vs4 modes. Once selected you can choose different items that will help you to face your opponents. Your hero is able to perform combos & linking your attacks to make your friend bite the dust. Are you ready to enter the Arena?
+Mystara Arena is a college project game that will be developed over the course of the subject, Project II by our team, NOREADME Studios. The objective of this project is to create a fully featured game that can be played completely and that can be learned in around 10 to 20 minutes. We will be taking most of the art & sounds from the arcade game "Dungeons and Dragons: Shadow over Mystara", a beat'em up game released by Capcom in 1996.
+
+In this Vertical Slice we want to show our game mechanics, before going on with the final game. You can play against a friend or against 3 of them together in our 1vs1 and 4-player free for all modes. Once selected you can choose different items that will help you face your opponents. Your hero is able to perform combos & linking your attacks to make your friends bite the dust. Are you ready to enter the Arena?
 
 ## Tips 
 
-- For the gameplay, it's recommended the usage of controllers for every player. 
+- For the gameplay, it's recommended the usage of a controller for each player. 
 - Test all your attacks to perform combos!
-- In the Arena, once you health bar is empty you will lose a live, be careful, you only have 3 of them.
-- (Pro Tip) The parry state allows you to stun your enemy if he is attacking you, only if you have parried when the enemy started the attack.
+- In the Arena, once your health bar is empty you will lose a life. But be careful, you only have 3 of them.
+- (Pro Tip) The parry state allows you to stun your enemy if performed on a precise moment of your oponent's attack.
 
 ## Controlls
 (XBox Controller)
@@ -44,7 +45,7 @@ Designer
 **[@Ninalb13](https://github.com/Ninalb13)**
 Artist
 
-**[albertmas](https://github.com/albertmas)**
+**[@albertmas](https://github.com/albertmas)**
 QA
 
 **[@dynamiczero99](https://github.com/dynamiczero99)**
@@ -57,12 +58,12 @@ UI
 
 ## Our Combos
 
-LightAttack + LightAttack + LightAttack
-Strong Attack + LightAttack
-Strong Attack + Strong Attack
-LightAttack + LightAttack + Strong Attack
-Jump + Strong Attack
-Jump + Light Attack
+- LightAttack + LightAttack + LightAttack
+- Strong Attack + LightAttack
+- Strong Attack + Strong Attack
+- LightAttack + LightAttack + Strong Attack
+- Jump + Strong Attack
+- Jump + Light Attack
 
 ## License
 MIT License

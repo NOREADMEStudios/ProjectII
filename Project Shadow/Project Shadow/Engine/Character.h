@@ -7,7 +7,12 @@
 #include "Entity.h"
 #include "ModuleCollision.h"
 
-enum CharacterTypes;
+
+
+#define COMBO_MARGIN 0.2
+#define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
+
+
 
 
 enum Input
@@ -48,6 +53,13 @@ enum CharStateEnum
 	PARRY,
 	PARRIED,
 	TAUNT,
+};
+
+struct State
+{
+	CharStateEnum state;
+	Animation anim;
+
 };
 
 struct Attack
@@ -136,18 +148,36 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; };
 
 	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
-	
+
+	void RequestState();
+	void UpdateState();
+	void UpdateCurState(float dt);
+	void UpdateAnimation();
+	bool StateisAtk(CharStateEnum State);
+	Attack* GetAtk(CharStateEnum atk);
+
+	uint GetMaxLives() const;
+	uint GetCurrentLives() const;
+
+	void SetCombo();
+
+	void Respawn();
+
+	void GetHP(int& curr, int& max);
+
+	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
+	Timer time_attack;
 
 	
 protected:
 	void GetCollidersFromAnimation();
 	void UpdateCollidersPosition();
+	void LoadState(CharStateEnum _state, std::string animationName);
+	void LoadBasicStates();
 
-	void LoadAnimations();
+	virtual bool HeroStart() { return true; };
+	virtual bool HeroUpdate(float dt) { return true; };
 	
-
-	Animation idle, walking, attack , death;
-
 	Collider	*collFeet = nullptr,
 				*collHitBox = nullptr,
 				*collAtk = nullptr,
@@ -161,6 +191,16 @@ protected:
 	CharStateEnum wantedState;
 	CharStateEnum last_attack;
 
+	LIST(State*) states;
+
+	iPoint initialpos;
+	int initialLife = 0;
+	uint lives = 0, maxLives = 3;
+	int hit_dir = 0;
+	bool hit_bool = 0;
+	bool parried = 0;
+	bool jumping = 0;
+	bool sound_avaliable = true;
 
 	LIST(Attack*) attacks;
 

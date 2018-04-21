@@ -46,8 +46,8 @@ public:
 	uint GetCurrentLives() const;
 
 	std::list<CharInput> GetControllerInputs()const;
-	std::list<CharInput> Hero::FirstPlayerConfig();
-	std::list<CharInput> Hero::SecondPlayerConfig();
+	std::list<CharInput> FirstPlayerConfig();
+	std::list<CharInput> SecondPlayerConfig();
 
 	void SetCombo();
 

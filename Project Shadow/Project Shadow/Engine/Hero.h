@@ -45,6 +45,10 @@ public:
 	uint GetMaxLives() const;
 	uint GetCurrentLives() const;
 
+	std::list<CharInput> GetControllerInputs()const;
+	std::list<CharInput> FirstPlayerConfig();
+	std::list<CharInput> SecondPlayerConfig();
+
 	void SetCombo();
 
 	void Respawn();

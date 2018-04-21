@@ -174,7 +174,7 @@ void ItemSelecScene::SetControllerFocus() {
 void ItemSelecScene::ChooseFocus() {
 
 	for (std::list<Selection>::iterator focus = playersSelections.begin(); focus != playersSelections.end(); focus++) {
-		if (App->input->GetButtonFromController((*focus).playerNum) == Input::JUMPINPUT) {
+		if (App->input->GetButtonFromController((*focus).playerNum) == Input::BUTTON_A) {
 			LOG("");
 			(*focus).arrow->ChangeAnimation((*focus).arrowLockRect);
 			(*focus).locked = true;			

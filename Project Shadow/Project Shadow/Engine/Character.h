@@ -10,13 +10,13 @@
 enum CharacterTypes;
 
 
-enum Input
+enum CharInput
 {
-	NONEINPUT,
-	UP,
-	DOWN,
-	RIGHT,
-	LEFT,
+	NONECHARINPUT,
+	CH_UP,
+	CH_DOWN,
+	CH_RIGHT,
+	CH_LEFT,
 	LIGHT_ATTACK,
 	HEAVY_ATTACK,
 	JUMPINPUT,
@@ -55,9 +55,9 @@ struct Attack
 	CharStateEnum state;
 	int damage = 0;
 	LIST(Attack*) childs {};
-	Input input;
+	CharInput input;
 
-	Attack(CharStateEnum _state, Input _input, int _damage = 0)
+	Attack(CharStateEnum _state, CharInput _input, int _damage = 0)
 	{
 		state = _state;
 		input = _input;
@@ -82,7 +82,7 @@ struct Attack
 		return false;
 	}
 
-	bool CheckChildInput(Input input)
+	bool CheckChildInput(CharInput input)
 	{
 		if (!childs.empty())
 		{
@@ -96,7 +96,7 @@ struct Attack
 		return false;
 	}
 
-	Attack* GetChildInput(Input input)
+	Attack* GetChildInput(CharInput input)
 	{
 
 		for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {

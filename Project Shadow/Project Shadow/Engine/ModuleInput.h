@@ -15,6 +15,24 @@
 struct _SDL_GameController;
 typedef struct _SDL_GameController SDL_GameController;
 
+enum Input
+{
+	NONEINPUT,
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT,
+	BUTTON_A,
+	BUTTON_B,
+	BUTTON_X,
+	BUTTON_Y,
+	L_SHOULDER,
+	R_SHOULDER,
+	BUTTON_START,
+	BUTTON_SELECT,
+};
+
+
 enum WindowEvent
 {
 	WE_QUIT = 0,
@@ -115,12 +133,13 @@ public:
 	void BlockMouseEvent(int event_id);
 	void BlockKeyboardEvent(int event_id);
 
-	std::list<Input> FirstPlayerConfig();
-	std::list<Input> SecondPlayerConfig();
+	//7std::list<CharInput> FirstPlayerConfig();
+	//std::list<CharInput> SecondPlayerConfig();
 
+	std::list<Input> GetInputListFromController(int controllerNum) const;
 	Input GetButtonFromController(int controllerNum) const;
 	bool GetButtonDown(int controller, int input) const;
-	std::list<Input> ControllerPlayerConfig(int playerNum) const;
+	
 
 private:
 

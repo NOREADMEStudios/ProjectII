@@ -26,7 +26,7 @@ bool Hero::Awake(pugi::xml_node&)
 
 bool Hero::Start()
 {
-	switch (hero_num) {
+	switch (heroNum) {
 	case 1: 
 		sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
 		break;
@@ -66,10 +66,10 @@ bool Hero::Start()
 	char_depth = 20;
 	gamepos.y = 0;
 
-	stats.atk += App->entities->items[hero_num-1].atk;
-	stats.def += App->entities->items[hero_num-1].def;
-	stats.spd += App->entities->items[hero_num-1].spd;
-	stats.life += App->entities->items[hero_num-1].life;
+	stats.atk += App->entities->items[heroNum-1].atk;
+	stats.def += App->entities->items[heroNum-1].def;
+	stats.spd += App->entities->items[heroNum-1].spd;
+	stats.life += App->entities->items[heroNum-1].life;
 
 	initialpos.x = gamepos.x;
 	initialpos.y = gamepos.y;
@@ -241,18 +241,18 @@ void Hero::LoadAnimations()
 }
 
 void Hero::RequestState() {
-	std::list<Input> inputs;
+	std::list<CharInput> inputs;
 	int NumControllers = App->input->GetNumControllers();
-	if (hero_num <= NumControllers) {
-		inputs = App->input->ControllerPlayerConfig(hero_num);
+	if (heroNum <= NumControllers) {
+		inputs = GetControllerInputs();
 	}
 	else {
-		if (hero_num-NumControllers == 1) {
-			inputs = App->input->FirstPlayerConfig();
+		if (heroNum-NumControllers == 1) {
+			inputs = FirstPlayerConfig();
 		}
 
-		else if (hero_num - NumControllers == 2)
-			inputs = App->input->SecondPlayerConfig();
+		else if (heroNum - NumControllers == 2)
+			inputs = SecondPlayerConfig();
 	}
 	
 
@@ -269,22 +269,22 @@ void Hero::RequestState() {
 	directions.left = false;
 	directions.right = false;
 
-	for (std::list<Input>::iterator item = inputs.begin(); item != inputs.end(); item++) {
-		Input input = *item;
+	for (std::list<CharInput>::iterator item = inputs.begin(); item != inputs.end(); item++) {
+		CharInput input = *item;
 		switch (input)
 		{
-		case NONEINPUT:
+		case NONECHARINPUT:
 			break;
-		case UP:
+		case CH_UP:
 			directions.up = true;
 			break;
-		case DOWN:
+		case CH_DOWN:
 			directions.down = true;
 			break;
-		case RIGHT:
+		case CH_RIGHT:
 			directions.right = true;
 			break;
-		case LEFT:
+		case CH_LEFT:
 			directions.left = true;
 			break;
 		case LIGHT_ATTACK:
@@ -795,4 +795,141 @@ void Hero::SetCombo()
 	{
 		currentState = wantedState;
 	}
+}
+
+
+std::list<CharInput> Hero::FirstPlayerConfig()
+{
+
+	std::list<CharInput> ret;
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		App->debug = !App->debug;
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		ret.push_back(CharInput::CH_LEFT);
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		ret.push_back(CharInput::CH_RIGHT);
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		ret.push_back(CharInput::CH_UP);
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		ret.push_back(CharInput::CH_DOWN);
+
+	if (App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
+		ret.push_back(CharInput::RUNINPUT);
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		ret.push_back(CharInput::JUMPINPUT);
+
+	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+		ret.push_back(CharInput::LIGHT_ATTACK);
+
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+		ret.push_back(CharInput::HEAVY_ATTACK);
+
+	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)
+		ret.push_back(CharInput::DEFEND);
+
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
+		ret.push_back(CharInput::PARRYINPUT);
+
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+		ret.push_back(CharInput::TAUNTINPUT);
+
+	return ret;
+}
+
+std::list<CharInput> Hero::SecondPlayerConfig()
+{
+	std::list<CharInput> ret;
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		ret.push_back(CharInput::CH_LEFT);
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		ret.push_back(CharInput::CH_RIGHT);
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		ret.push_back(CharInput::CH_UP);
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		ret.push_back(CharInput::CH_DOWN);
+
+	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		ret.push_back(CharInput::JUMPINPUT);
+
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+		ret.push_back(CharInput::DEFEND);
+
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+		ret.push_back(CharInput::PARRYINPUT);
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		ret.push_back(CharInput::LIGHT_ATTACK);
+
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+		ret.push_back(CharInput::TAUNTINPUT);
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		ret.push_back(CharInput::LIGHT_ATTACK);
+
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		ret.push_back(CharInput::HEAVY_ATTACK);
+
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		ret.push_back(CharInput::RUNINPUT);
+	return ret;
+}
+
+std::list<CharInput> Hero::GetControllerInputs() const {
+
+	std::list<Input> inputs;
+	std::list<CharInput> charInputs;
+	inputs = App->input->GetInputListFromController(heroNum);
+	for (std::list<Input>::iterator item = inputs.begin(); item != inputs.end(); item++) {
+		Input input = *item;
+		switch (input) {
+		case NONEINPUT:
+			break;
+		case UP:
+			charInputs.push_back(CharInput::CH_UP);
+			break;
+		case DOWN:
+			charInputs.push_back(CharInput::CH_DOWN);
+			break;
+		case RIGHT:
+			charInputs.push_back(CharInput::CH_RIGHT);
+			break;
+		case LEFT:
+			charInputs.push_back(CharInput::CH_LEFT);
+			break;
+		case BUTTON_A:
+			charInputs.push_back(CharInput::JUMPINPUT);
+			break;
+		case BUTTON_B:
+			charInputs.push_back(CharInput::PARRYINPUT);
+			break;
+		case BUTTON_X:
+			charInputs.push_back(CharInput::LIGHT_ATTACK);
+			break;
+		case BUTTON_Y:
+			charInputs.push_back(CharInput::HEAVY_ATTACK);
+			break;
+		case L_SHOULDER:
+			charInputs.push_back(CharInput::DEFEND);
+			break;
+		case R_SHOULDER:
+			charInputs.push_back(CharInput::RUNINPUT);
+			break;
+		case BUTTON_SELECT:
+			charInputs.push_back(CharInput::TAUNTINPUT);
+			break;
+		default:
+			break;
+		}
+	}
+	return charInputs;
 }

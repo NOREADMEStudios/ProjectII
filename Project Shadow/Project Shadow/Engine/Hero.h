@@ -45,6 +45,10 @@ public:
 	uint GetMaxLives() const;
 	uint GetCurrentLives() const;
 
+	std::list<CharInput> GetControllerInputs()const;
+	std::list<CharInput> Hero::FirstPlayerConfig();
+	std::list<CharInput> Hero::SecondPlayerConfig();
+
 	void SetCombo();
 
 	void Respawn();

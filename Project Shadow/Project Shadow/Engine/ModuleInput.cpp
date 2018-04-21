@@ -259,155 +259,7 @@ void ModuleInput::BlockKeyboard() {
 	}
 }
 
-
-std::list<Input> ModuleInput::FirstPlayerConfig()
-{
-	
-	std::list<Input> ret;
-
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		App->debug = !App->debug;
-
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		ret.push_back(Input::LEFT);
-
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		ret.push_back(Input::RIGHT);
-
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		ret.push_back(Input::UP);
-
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		ret.push_back(Input::DOWN);
-
-	if (App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
-		ret.push_back(Input::RUNINPUT);
-		
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		ret.push_back(Input::JUMPINPUT);	
-
-	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
-		ret.push_back(Input::LIGHT_ATTACK);
-	
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
-		ret.push_back(Input::HEAVY_ATTACK);
-
-	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)
-		ret.push_back(Input::DEFEND);
-
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
-		ret.push_back(Input::PARRYINPUT);
-
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
-		ret.push_back(Input::TAUNTINPUT);
-
-	return ret;
-}
-
-std::list<Input> ModuleInput::SecondPlayerConfig()
-{
-	std::list<Input> ret;
-
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		ret.push_back(Input::LEFT);
-
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-		ret.push_back(Input::RIGHT);
-
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-		ret.push_back(Input::UP);
-
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-		ret.push_back(Input::DOWN);
-
-	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-		ret.push_back(Input::JUMPINPUT);
-
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
-		ret.push_back(Input::DEFEND);
-
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
-		ret.push_back(Input::PARRYINPUT);
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
-		ret.push_back(Input::LIGHT_ATTACK);
-
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
-		ret.push_back(Input::TAUNTINPUT);
-
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		ret.push_back(Input::LIGHT_ATTACK);
-	
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-		ret.push_back(Input::HEAVY_ATTACK);
-
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		ret.push_back(Input::RUNINPUT);
-	return ret;
-}
-
-Input ModuleInput::GetButtonFromController(int controllerNum) const {
-	Input ret = (Input)SDL_CONTROLLER_BUTTON_INVALID;
-	for (int i = 0; i < MAX_BUTTONS; ++i)
-	{
-		if (controllers[controllerNum - 1].buttons[i] == B_DOWN)
-		{
-			switch (i) {
-			case SDL_CONTROLLER_BUTTON_A:
-				ret = Input::JUMPINPUT;
-				break;
-			case SDL_CONTROLLER_BUTTON_B:
-				ret = Input::PARRYINPUT;
-				break;
-			case SDL_CONTROLLER_BUTTON_X:
-				ret = Input::LIGHT_ATTACK;
-				break;
-			case SDL_CONTROLLER_BUTTON_Y:
-				ret = Input::HEAVY_ATTACK;
-				break;
-			case SDL_CONTROLLER_BUTTON_BACK:
-				ret = Input::TAUNTINPUT;
-				break;
-			case SDL_CONTROLLER_BUTTON_GUIDE:
-				break;
-			case SDL_CONTROLLER_BUTTON_START:
-				break;
-			case SDL_CONTROLLER_BUTTON_LEFTSTICK:
-				break;
-			case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
-				break;
-			case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-				ret = Input::DEFEND;
-				break;
-			case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-				ret = Input::RUNINPUT;
-				break;
-			case SDL_CONTROLLER_BUTTON_DPAD_UP:
-				ret = Input::UP;
-				break;
-			case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-				ret = Input::DOWN;
-				break;
-			case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-				ret = Input::LEFT;
-				break;
-			case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-				ret = Input::RIGHT;
-				break;
-			case SDL_CONTROLLER_BUTTON_MAX:
-				break;
-			}
-		}
-	}
-	return ret;
-}
-
-bool ModuleInput::GetButtonDown(int controller, int input) const
-{
-	return controllers[controller - 1].buttons[input] == ButtonState::B_DOWN;
-}
-
-std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum) const
+std::list<Input> ModuleInput::GetInputListFromController(int playerNum)const
 {
 	std::list<Input> ret;
 	for (int i = 0; i < MAX_BUTTONS; ++i)
@@ -416,34 +268,34 @@ std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum) const
 		{
 			switch (i) {
 			case SDL_CONTROLLER_BUTTON_A:
-				ret.push_back(Input::JUMPINPUT);
+				ret.push_back(Input::BUTTON_A);
 				break;
 			case SDL_CONTROLLER_BUTTON_B:
-				ret.push_back(Input::PARRYINPUT);
+				ret.push_back(Input::BUTTON_B);
 				break;
 			case SDL_CONTROLLER_BUTTON_X:
-				ret.push_back(Input::LIGHT_ATTACK);
+				ret.push_back(Input::BUTTON_X);
 				break;
 			case SDL_CONTROLLER_BUTTON_Y:
-				ret.push_back(Input::HEAVY_ATTACK);
+				ret.push_back(Input::BUTTON_Y);
 				break;
 			case SDL_CONTROLLER_BUTTON_BACK:
-				ret.push_back(Input::TAUNTINPUT);
+				ret.push_back(Input::BUTTON_SELECT);
 				break;
 			case SDL_CONTROLLER_BUTTON_GUIDE:
 				break;
 			case SDL_CONTROLLER_BUTTON_START:
-				//SETTINGS MENU
+				ret.push_back(Input::BUTTON_START);
 				break;
 			case SDL_CONTROLLER_BUTTON_LEFTSTICK:
 				break;
 			case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
 				break;
 			case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-				ret.push_back(Input::DEFEND);
+				ret.push_back(Input::L_SHOULDER);
 				break;
 			case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-				ret.push_back(Input::RUNINPUT);
+				ret.push_back(Input::R_SHOULDER);
 				break;
 			case SDL_CONTROLLER_BUTTON_DPAD_UP:
 				ret.push_back(Input::UP);
@@ -464,10 +316,10 @@ std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum) const
 		else if (controllers[playerNum - 1].buttons[i] == B_REPEAT) {
 			switch (i) {
 			case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-				ret.push_back(Input::DEFEND);
+				ret.push_back(Input::L_SHOULDER);
 				break;
 			case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-				ret.push_back(Input::RUNINPUT);
+				ret.push_back(Input::R_SHOULDER);
 				break;
 			case SDL_CONTROLLER_BUTTON_DPAD_UP:
 				ret.push_back(Input::UP);
@@ -512,7 +364,67 @@ std::list<Input> ModuleInput::ControllerPlayerConfig(int playerNum) const
 			}
 		}
 	}
-		return ret;
+	return ret;
+	}
 
-	
+Input ModuleInput::GetButtonFromController(int controllerNum) const {
+	Input ret = (Input)SDL_CONTROLLER_BUTTON_INVALID;
+	for (int i = 0; i < MAX_BUTTONS; ++i)
+	{
+		if (controllers[controllerNum - 1].buttons[i] == B_DOWN)
+		{
+			switch (i) {
+			case SDL_CONTROLLER_BUTTON_A:
+				ret = Input::BUTTON_A;
+				break;
+			case SDL_CONTROLLER_BUTTON_B:
+				ret = Input::BUTTON_B;
+				break;
+			case SDL_CONTROLLER_BUTTON_X:
+				ret = Input::BUTTON_X;
+				break;
+			case SDL_CONTROLLER_BUTTON_Y:
+				ret = Input::BUTTON_Y;
+				break;
+			case SDL_CONTROLLER_BUTTON_BACK:
+				ret = Input::BUTTON_SELECT;
+				break;
+			case SDL_CONTROLLER_BUTTON_GUIDE:
+				break;
+			case SDL_CONTROLLER_BUTTON_START:
+				ret = Input::BUTTON_START;
+				break;
+			case SDL_CONTROLLER_BUTTON_LEFTSTICK:
+				break;
+			case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
+				break;
+			case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+				ret = Input::L_SHOULDER;
+				break;
+			case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+				ret = Input::R_SHOULDER;
+				break;
+			case SDL_CONTROLLER_BUTTON_DPAD_UP:
+				ret = Input::UP;
+				break;
+			case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+				ret = Input::DOWN;
+				break;
+			case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+				ret = Input::LEFT;
+				break;
+			case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+				ret = Input::RIGHT;
+				break;
+			case SDL_CONTROLLER_BUTTON_MAX:
+				break;
+			}
+		}
+	}
+	return ret;
+}
+
+bool ModuleInput::GetButtonDown(int controller, int input) const
+{
+	return controllers[controller - 1].buttons[input] == ButtonState::B_DOWN;
 }

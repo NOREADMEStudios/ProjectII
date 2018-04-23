@@ -67,7 +67,7 @@ bool FireBall::Update(float dt) {
 	if (CheckLifetime()) {
 		pugi::xml_node n;
 		CleanUp(n);
-		active = false;
+		active = false; //need to destroy for the list
 	}
 	return true;
 }

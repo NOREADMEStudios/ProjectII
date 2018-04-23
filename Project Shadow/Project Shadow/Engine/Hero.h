@@ -30,7 +30,7 @@ public:
 
 	bool Load(pugi::xml_node&)override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
-
+	void UpdateSpecStates();
 
 
 protected:

@@ -80,7 +80,37 @@ bool Character::PreUpdate()
 bool Character::Update(float dt)
 { 
 
-	HeroUpdate(dt);
+	if (paused) {
+		return PausedUpdate();
+	}
+	currentAnimation = &states.front()->anim;
+
+
+	if (stats.life > 0)
+		RequestState();
+	else
+		currentState = DEATH;
+
+	Move(dt);
+	Break(dt);
+
+
+	UpdateAnimation();
+	UpdateMainStates();
+	UpdateSpecStates();
+	UpdateCurState(dt);
+
+
+	if (currentState != PROTECT && !StateisAtk(currentState)) {
+		if (directions.right - directions.left == 1)
+		{
+			flip = false;
+		}
+		else if (directions.right - directions.left == -1)
+		{
+			flip = true;
+		}
+	}
 
 	priority = gamepos.z;
 	collider.x = position.x;
@@ -219,19 +249,15 @@ void Character::RequestState() {
 			inputs = App->input->SecondPlayerConfig();
 	}
 
-
-	bool l_attack = false,
-		s_attack = false,
-		jump = false,
-		block = false,
-		run = false,
-		taunt_b = false,
-		parry_b = false;
-
+	bool run = false,
+		block = false;
 	directions.down = false;
 	directions.up = false;
 	directions.left = false;
 	directions.right = false;
+
+	wantedState = IDLE;
+	wantedTag = 0;
 
 	for (std::list<Input>::iterator item = inputs.begin(); item != inputs.end(); item++) {
 		Input input = *item;
@@ -240,88 +266,75 @@ void Character::RequestState() {
 		case NONEINPUT:
 			break;
 		case UP:
+			wantedState = WALK;
 			directions.up = true;
 			break;
 		case DOWN:
+			wantedState = WALK;
 			directions.down = true;
 			break;
 		case RIGHT:
+			wantedState = WALK;
 			directions.right = true;
 			break;
 		case LEFT:
+			wantedState = WALK;
 			directions.left = true;
 			break;
 		case LIGHT_ATTACK:
-			l_attack = true;
+			wantedState = ATTACK_LIGHT;
+			wantedTag = 1;
 			break;
 		case HEAVY_ATTACK:
-			s_attack = true;
+			wantedState = ATTACK_HEAVY;
+			wantedTag = 2;
 			break;
 		case JUMPINPUT:
-			jump = true;
+			wantedState = JUMP;
+			wantedTag = 3;
 			break;
 		case RUNINPUT:
-			run = true;
+			wantedState = RUN;
 			break;
 		case DEFEND:
-			block = true;
+			wantedState = PROTECT;
 			break;
 		case TAUNTINPUT:
-			taunt_b = true;
+			wantedState = TAUNT;
 			break;
 		case PARRYINPUT:
-			parry_b = true;
+			wantedState = PARRY;
 			break;
 		default:
 			break;
 		}
 	}
 
-	wantedState = IDLE;
-
-	if (directions.down || directions.left || directions.right || directions.up)
-	{
-		if (run)
-			wantedState = RUN;
-		else
-			wantedState = WALK;
-	}
-
-	if (taunt_b)
-		wantedState = TAUNT;
-
-	if (jump)
-	{
-		wantedState = JUMP;
-	}
-	if (l_attack)
-	{
-		wantedState = ATTACK_LIGHT;
-	}
-	else if (s_attack)
-	{
-		wantedState = ATTACK_HEAVY;
-	}
-	else if (block)
-		wantedState = PROTECT;
-	else if (parry_b)
-		wantedState = PARRY;
-
-
 
 }
 
-void Character::UpdateState()
+void Character::UpdateMainStates()
 {
 
 	if (currentState == WALK || currentState == IDLE)
 	{
 		currentState = wantedState;
-
-		if (StateisAtk(wantedState) && last_attack != IDLE)
+		if (wantedTag != 0)
 		{
-			SetCombo();
+			if (last_attack != 0)
+			{
+				SetCombo();
+			}
+			else
+			{
+				currentTag = wantedTag;
+				last_attack = currentTag;
+			}
 			time_attack.Start();
+		}
+		else
+		{
+			currentTag = 0;
 		}
 	}
 	else if (currentState == RUN)
@@ -329,35 +342,16 @@ void Character::UpdateState()
 		if (wantedState != RUN)
 			currentState = STOP;
 	}
-	else if (currentState == PARRY)
+	
+	if (currentState == JUMP || (currentState == AD_ACTION && GetAtk(currentTag)->air))
 	{
-		if (parried)
-		{
-			currentAnimation->Reset();
-			currentState = wantedState;
-			parried = false;
-		}
-		else if (currentAnimation->Finished())
-		{
-			currentAnimation->Reset();
-			currentState = wantedState;
-		}
-	}
-	else if (currentState == PROTECT && wantedState != PROTECT)
-	{
-		currentState = wantedState;
-		currentAnimation->Reset();
-
-	}
-	if (currentState == JUMP || currentState == ATTACK_J1 || currentState == ATTACK_J2)
-	{
-		last_attack = JUMP;
+		last_attack = 3;
 		if (StateisAtk(wantedState))
 		{
 			SetCombo();
 			time_attack.Start();
 		}
-		if ((currentState == ATTACK_J1 || currentState == ATTACK_J2) && currentAnimation->Finished())
+		if ((currentState == AD_ACTION && GetAtk(currentTag)->air) && currentAnimation->Finished())
 		{
 			currentAnimation->Reset();
 			currentState = JUMP;
@@ -372,7 +366,6 @@ void Character::UpdateState()
 	}
 	else if (currentAnimation->Finished())
 	{
-
 		if (currentState == DEATH)
 		{
 			lives--;
@@ -382,30 +375,37 @@ void Character::UpdateState()
 			else
 				active = false;
 		}
-		;
+		
+		if (StateisAtk(currentState))
+			time_attack.Start();
 
-		last_attack = currentState;
 		currentState = wantedState;
 
 		currentAnimation->Reset();
 
-		if (!StateisAtk(last_attack))
+		if (wantedTag != 0)
 		{
-			currentState = wantedState;
+			if (last_attack != 0)
+			{
+				SetCombo();
+			}
+			else
+			{
+				currentTag = wantedTag;
+				last_attack = currentTag;
+			}
+			time_attack.Start();
 		}
 		else
 		{
-			SetCombo();
-			time_attack.Start();
+			currentTag = 0;
 		}
 	}
 
 	if (time_attack.Count(COMBO_MARGIN))
 	{
-		last_attack = IDLE;
+		last_attack = 0;
 	}
-
-
 }
 
 void Character::UpdateCurState(float dt)
@@ -413,18 +413,13 @@ void Character::UpdateCurState(float dt)
 	int z_dir = directions.down - directions.up;
 	int x_dir = directions.right - directions.left;
 
-	if (currentState == ATTACK_H2)
-	{
-		breaking = true;
-	}
-	else
-	{
-		breaking = false;
-	}
 
-	if (gamepos.y > 0 && (currentState != ATTACK_J1 && currentState != ATTACK_J2))
+	if (gamepos.y > 0)
 	{
-		Accelerate(x_dir, -2, z_dir, dt);
+		if ((currentState != AD_ACTION && currentTag != 0 && !GetAtk(currentTag)->air) ||currentState == JUMP)
+			Accelerate(x_dir, -2, z_dir, dt);
+		else
+			Accelerate(x_dir, -1, z_dir, dt);
 	}
 	else if (gamepos.y < 0)
 	{
@@ -433,63 +428,72 @@ void Character::UpdateCurState(float dt)
 
 	switch (currentState)
 	{
-	case WALK:
-	{
-		max_speed = stats.spd;
-		Accelerate(x_dir * stats.spd, 0, z_dir * stats.spd, dt);
-		break;
-	}
-	case RUN:
-	{
-		max_speed = stats.spd * 1.5f;
-		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
-		break;
-	}
-	case PROTECT:
-	{
-		max_speed = stats.spd * 0.5f;
-		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
-		break;
-	}
-	case HIT:
-	{
-		if (hit_bool)
+		case WALK:
 		{
-			Accelerate(hit_dir, 0, 0, dt);
-			hit_bool = false;
+			max_speed = stats.spd;
+			Accelerate(x_dir * stats.spd, 0, z_dir * stats.spd, dt);
+			break;
 		}
-		break;
-	}
-	case JUMP:
-	{
-		if (!jumping)
+		case RUN:
 		{
-			jumping = true;
-			max_speed = 1000;
-			Accelerate(x_dir, 500, z_dir, dt);
+			max_speed = stats.spd * 1.5f;
+			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+			break;
 		}
-		break;
-	}
-	case ATTACK_J1:
-	case ATTACK_J2:
-	{
-		Accelerate(x_dir, -1, z_dir, dt);
-		break;
-	}
+		case PROTECT:
+		{
+			max_speed = stats.spd * 0.5f;
+			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+			break;
+		}
+		case HIT:
+		{
+			if (hit_bool)
+			{
+				Accelerate(hit_dir, 0, 0, dt);
+				hit_bool = false;
+			}
+			break;
+		}
+		case JUMP:
+		{
+			if (!jumping)
+			{
+				jumping = true;
+				max_speed = 1000;
+				Accelerate(x_dir, 500, z_dir, dt);
+			}
+			break;
+		}
 
 	}
 }
 
 void Character::UpdateAnimation()
 {
-	for (std::list<State*>::iterator item = states.begin(); item != states.end(); item++) 
+	if (!StateisAtk(currentState))
 	{
-		if ((*item)->state == currentState)
+		for (std::list<State*>::iterator item = states.begin(); item != states.end(); item++)
 		{
-			currentAnimation = &(*item)->anim;
-			break;
+			if ((*item)->state == currentState)
+			{
+				currentAnimation = &(*item)->anim;
+				break;
+			}
 		}
 	}
+	else
+	{
+		for (std::list<Attack*>::iterator item = attacks.begin(); item != attacks.end(); item++)
+		{
+			if ((*item)->tag == currentTag)
+			{
+				currentAnimation = &(*item)->anim;
+				break;
+			}
+		}
+	}
+
 }
 
 void Character::Respawn()
@@ -594,20 +598,15 @@ void Character::OnCollisionEnter(Collider* _this, Collider* _other)
 
 bool Character::StateisAtk(CharStateEnum state)
 {
-	return ((state != WALK &&
-		state != RUN && state != IDLE &&
-		state != JUMP && state != DEATH &&
-		state != DEFEND && state != HIT &&
-		state != PROTECT && state != TAUNT &&
-		state != STOP && state != PARRY) || state == ATTACK_H2);
+	return (state == ATTACK_LIGHT || state == ATTACK_HEAVY || state == AD_ACTION);
 }
 
-Attack* Character::GetAtk(CharStateEnum atk)
+Attack* Character::GetAtk(uint atk)
 {
 	Attack* ret = nullptr;
 
 	for (std::list<Attack*>::iterator item = attacks.begin(); item != attacks.end(); item++) {
-		if ((**item).state == atk)
+		if ((**item).tag == atk)
 		{
 			ret = (*item);
 		}
@@ -627,17 +626,22 @@ uint Character::GetCurrentLives() const
 
 void Character::SetCombo()
 {
-	Attack* wanted_atk = GetAtk(wantedState);
+	Attack* wanted_atk = GetAtk(wantedTag);
 	Attack* current_atk = GetAtk(last_attack);
 
 	if (current_atk != nullptr && wanted_atk != nullptr && current_atk->CheckChildInput(wanted_atk->input))
 	{
-		currentState = current_atk->GetChildInput(wanted_atk->input)->state;
+		current_atk = current_atk->GetChildInput(wanted_atk->input);
+		currentState = AD_ACTION;
+		last_attack = current_atk->tag;
+		currentTag = last_attack;
 	}
 	else
 	{
-		currentState = wantedState;
+		currentTag = wantedTag;
+		last_attack = currentTag;
 	}
+
 }
 
 void Character::LoadState(CharStateEnum _state, std::string animationName)
@@ -659,8 +663,17 @@ void Character::LoadBasicStates()
 	LoadState(HIT, "hit");
 	LoadState(DEATH, "death");
 	LoadState(TAUNT, "win");
+	LoadState(PROTECT, "protect");
+	LoadState(PARRY, "standup");
 
 }
 
-
-		
+void Character::UpdateTag(uint& t)
+{
+	if (currentState == ATTACK_LIGHT)
+		t = 1;
+	else if (currentState == ATTACK_HEAVY)
+		t = 2;
+	else
+		t = 0;
+}

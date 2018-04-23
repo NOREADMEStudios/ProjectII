@@ -9,7 +9,7 @@
 
 
 
-#define COMBO_MARGIN 0.2
+#define COMBO_MARGIN 0.5
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
 
 
@@ -37,14 +37,8 @@ enum CharStateEnum
 	JUMP,
 	WALK,
 	RUN,
-	DASH,
 	ATTACK_LIGHT,
 	ATTACK_HEAVY,
-	ATTACK_L2,
-	ATTACK_L3,
-	ATTACK_H2,
-	ATTACK_J1,
-	ATTACK_J2,
 	STOP,
 	HIT,
 	KNOKED,
@@ -53,6 +47,7 @@ enum CharStateEnum
 	PARRY,
 	PARRIED,
 	TAUNT,
+	AD_ACTION,
 };
 
 struct State
@@ -64,16 +59,20 @@ struct State
 
 struct Attack
 {
-	CharStateEnum state;
+	uint tag;
 	int damage = 0;
 	LIST(Attack*) childs {};
 	Input input;
+	Animation anim;
+	bool air;
 
-	Attack(CharStateEnum _state, Input _input, int _damage = 0)
+	Attack(uint _tag, Input _input, std::string animationName, int _damage = 0, bool _air = false)
 	{
-		state = _state;
+		tag = _tag;
 		input = _input;
 		damage = _damage;
+		anim.LoadAnimationsfromXML(animationName, HERO_SPRITE_ROOT);
+		air = _air;
 	}
 
 	void AddChild(Attack* _child)
@@ -149,12 +148,7 @@ public:
 
 	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
 
-	void RequestState();
-	void UpdateState();
-	void UpdateCurState(float dt);
-	void UpdateAnimation();
-	bool StateisAtk(CharStateEnum State);
-	Attack* GetAtk(CharStateEnum atk);
+
 
 	uint GetMaxLives() const;
 	uint GetCurrentLives() const;
@@ -170,13 +164,22 @@ public:
 
 	
 protected:
+
+	void RequestState();
+	void UpdateMainStates();
+	void UpdateCurState(float dt);
+	void UpdateAnimation();
+	bool StateisAtk(CharStateEnum State);
+	Attack* GetAtk(uint atk);
 	void GetCollidersFromAnimation();
 	void UpdateCollidersPosition();
 	void LoadState(CharStateEnum _state, std::string animationName);
 	void LoadBasicStates();
+	void UpdateTag(uint& t);
 
 	virtual bool HeroStart() { return true; };
 	virtual bool HeroUpdate(float dt) { return true; };
+	virtual void UpdateSpecStates() {};
 	
 	Collider	*collFeet = nullptr,
 				*collHitBox = nullptr,
@@ -189,7 +192,7 @@ protected:
 
 	CharStateEnum currentState;
 	CharStateEnum wantedState;
-	CharStateEnum last_attack;
+	uint last_attack;
 
 	LIST(State*) states;
 
@@ -201,6 +204,8 @@ protected:
 	bool parried = 0;
 	bool jumping = 0;
 	bool sound_avaliable = true;
+	uint currentTag = 0;
+	uint wantedTag = 0;
 
 	LIST(Attack*) attacks;
 

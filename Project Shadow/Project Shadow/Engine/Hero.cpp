@@ -50,14 +50,14 @@ bool Hero::HeroStart()
 
 
 
-	Attack* light_1 = new Attack(ATTACK_LIGHT, LIGHT_ATTACK, 2);
-	Attack* light_2 = new Attack(ATTACK_L2, LIGHT_ATTACK, 2);
-	Attack* light_3 = new Attack(ATTACK_L3, LIGHT_ATTACK, 5);
-	Attack* heavy_1 = new Attack(ATTACK_HEAVY, HEAVY_ATTACK, 2);
-	Attack* heavy_2 = new Attack(ATTACK_H2, HEAVY_ATTACK, 2);
-	Attack* jump_a = new Attack(JUMP, JUMPINPUT, 0);
-	Attack* jump_a2 = new Attack(ATTACK_J1, LIGHT_ATTACK, 2);
-	Attack* jump_a3 = new Attack(ATTACK_J2, HEAVY_ATTACK, 5);
+	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", 2);
+	Attack* light_2 = new Attack(4, LIGHT_ATTACK, "attack_knee", 2);
+	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", 5);
+	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK,"kick", 2);
+	Attack* heavy_2 = new Attack(5, HEAVY_ATTACK,"strong_attack", 2);
+	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", 0, true);
+	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK,"jump_attack", 2, true);
+	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", 5, true);
 
 	attacks.push_back(light_1);
 	attacks.push_back(light_2);
@@ -90,40 +90,6 @@ bool Hero::PreUpdate()
 bool Hero::HeroUpdate(float dt)
 {
 
-	if (paused) {		
-		return PausedUpdate();
-	}
-	currentAnimation = &states.front()->anim;
-
-	
-	if (stats.life > 0)
-		RequestState();
-	else
-		currentState = DEATH;
-
-	Move(dt);
-	Break(dt);
-
-
-	UpdateAnimation();
-	UpdateState();
-	UpdateCurState(dt);
-
-
-	 if (currentState != PROTECT && !StateisAtk(currentState)) {
-		if (directions.right - directions.left == 1)
-		{
-			flip = false;
-		}
-		else if (directions.right - directions.left == -1)
-		{
-			flip = true;
-		}
-	}
-
-
-
-
 	return true;
 }
 
@@ -138,3 +104,26 @@ bool Hero::CleanUp(pugi::xml_node&)
 	return true;
 }
 
+void Hero::UpdateSpecStates()
+{
+	if (currentState == PARRY)
+	{
+		if (parried)
+		{
+			currentAnimation->Reset();
+			currentState = wantedState;
+			parried = false;
+		}
+		else if (currentAnimation->Finished())
+		{
+			currentAnimation->Reset();
+			currentState = wantedState;
+		}
+	}
+	else if (currentState == PROTECT && wantedState != PROTECT)
+	{
+		currentState = wantedState;
+		currentAnimation->Reset();
+
+	}
+}

@@ -165,6 +165,6 @@ protected:
 	LIST(Attack*) attacks;
 
 };
-#endif
 
+#endif
 

@@ -58,7 +58,7 @@ bool Hero::Start()
 
 	invencible.dur = 3;
 	invencible.fr = 0.2f;
-	collider = { 50 , 50 , 50, 50 };
+	//collider = { 50 , 50 , 50, 50 };
 	stats.spd = 180;
 	stats.life = 100;
 	stats.atk = 8;
@@ -157,8 +157,8 @@ bool Hero::Update(float dt)
 
 
 	priority = gamepos.z;
-	collider.x = position.x;
-	collider.y = position.y;
+	//collider.x = position.x;
+	//collider.y = position.y;
 
 
 
@@ -829,7 +829,7 @@ std::list<CharInput> Hero::FirstPlayerConfig()
 
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
 		ret.push_back(CharInput::HEAVY_ATTACK);
-		App->entities->CreateSpell({ FIREBALL,  position });
+		App->entities->CreateSpell({ FIREBALL, {(float) position.x, (float)position.y } });
 	}
 	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)
 		ret.push_back(CharInput::DEFEND);

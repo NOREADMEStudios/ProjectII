@@ -35,7 +35,7 @@ struct CharacterInfo {
 struct SpellsInfo {
 
 	SpellsType spType = NOSPELL;
-	iPoint pos{ 0,0 };
+	Point3D pos{ 0,0 };
 
 };
 

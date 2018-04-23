@@ -70,6 +70,7 @@ bool ModuleEntityManager::PreUpdate() {
 
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->PreUpdate();
+				
 	}
 	return true;
 }

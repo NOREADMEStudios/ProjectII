@@ -1,6 +1,7 @@
 #include "FireBall.h"
 #include "../../Engine/ModuleTextures.h"
 
+#define MS_LIFETIME	3000
 
 
 FireBall::FireBall() : Spells(SpellsType::FIREBALL)
@@ -17,7 +18,22 @@ bool FireBall::Start() {
 	spellAnim.PushBack({0,0,45,65});
 	spellAnim.PushBack({ 50,0,45,65 });
 	currentAnimation = &spellAnim;
+	
 	spellColl = App->collision->CreateCollider({}, "FireBall_Spell", Collider::ATK);
+	spellColl->collider = { 0,0,45,65 };
+	App->collision->AddCollider(spellColl, this);
+	//collider = { 0,0,45,65 };
+
+	stats.atk = 8;
+
+	char_depth = 20;
+	
+
+	lifeTime.Start();
+	lifetime = MS_LIFETIME;
+
+	
+
 
 	return true;
 }
@@ -35,8 +51,29 @@ bool FireBall::Update(float dt) {
 	if (paused) {
 		return PausedUpdate();
 	}
+	
 
+	priority = gamepos.z;
+	spellColl->collider.x = gamepos.x;
+	spellColl->collider.y= gamepos.z;
+
+
+	CalcRealPos();
+
+	//UpdateCollidersPosition();
 
 	App->render->FillQueue(this);//prints the spell
+
+	if (CheckLifetime()) {
+		pugi::xml_node n;
+		CleanUp(n);
+		active = false;
+	}
 	return true;
+}
+
+void FireBall::Dead() {
+
+	
+	App->entities->DestroyEntity(this);
 }

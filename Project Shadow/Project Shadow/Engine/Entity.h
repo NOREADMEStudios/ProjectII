@@ -122,6 +122,8 @@ public:
 	uint heroNum = 0;
 	bool breaking = false;
 	bool active = true;
+	bool to_delete = false;
+
 protected:
 	
 	uint priority = 0;

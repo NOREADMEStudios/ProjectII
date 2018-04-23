@@ -4,6 +4,7 @@
 #include "Animation.h"
 #include "ModuleEntityManager.h"
 #include "ModuleCollision.h"
+#include "Timer.h"
 
 enum SpellsType;
 
@@ -30,9 +31,15 @@ public:
 
 protected:
 
+	void UpdateCollidersPosition();
+	bool CheckLifetime() const;
+	void DestroySpell();
+
 	SpellsType spellType;
 	Animation spellAnim;
-	Collider* spellColl;
+	Collider* spellColl = nullptr;
+	Timer lifeTime;
+	uint lifetime;
 
 };
 

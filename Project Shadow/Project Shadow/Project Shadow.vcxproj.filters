@@ -42,6 +42,9 @@
     <Filter Include="Engine\Entities\Character\Hero">
       <UniqueIdentifier>{bce3fe1e-a5af-4c7b-9208-3be77bb6a26e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Entities\Spells">
+      <UniqueIdentifier>{a126cbc1-329d-4ff8-8822-8304f45abdc6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\App.cpp">
@@ -145,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="Engine\UI\Healthbar.cpp">
       <Filter>Engine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Spells.cpp">
+      <Filter>Engine\Entities\Spells</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -273,6 +279,9 @@
     </ClInclude>
     <ClInclude Include="Engine\UI\Healthbar.h">
       <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Spells.h">
+      <Filter>Engine\Entities\Spells</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

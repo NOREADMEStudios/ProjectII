@@ -132,6 +132,7 @@
     <ClCompile Include="Engine\PerfTimer.cpp" />
     <ClCompile Include="Engine\Hero.cpp" />
     <ClCompile Include="Engine\Scene.cpp" />
+    <ClCompile Include="Engine\Spells.cpp" />
     <ClCompile Include="Engine\Timer.cpp" />
     <ClCompile Include="Engine\Log.cpp" />
     <ClCompile Include="Engine\ModuleAudio.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Engine\ModuleEntityManager.h" />
     <ClInclude Include="Engine\ModuleSceneManager.h" />
     <ClInclude Include="Engine\Scene.h" />
+    <ClInclude Include="Engine\Spells.h" />
     <ClInclude Include="Engine\Timer.h" />
     <ClInclude Include="Engine\Log.h" />
     <ClInclude Include="Engine\ModuleAudio.h" />

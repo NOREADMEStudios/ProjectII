@@ -29,3 +29,14 @@ bool FireBall::CleanUp(pugi::xml_node&)
 
 	return true;
 }
+
+bool FireBall::Update(float dt) {
+
+	if (paused) {
+		return PausedUpdate();
+	}
+
+
+	App->render->FillQueue(this);//prints the spell
+	return true;
+}

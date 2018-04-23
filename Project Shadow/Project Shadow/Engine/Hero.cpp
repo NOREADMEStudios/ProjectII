@@ -827,9 +827,10 @@ std::list<CharInput> Hero::FirstPlayerConfig()
 	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
 		ret.push_back(CharInput::LIGHT_ATTACK);
 
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
 		ret.push_back(CharInput::HEAVY_ATTACK);
-
+		App->entities->CreateSpell({ FIREBALL,  position });
+	}
 	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)
 		ret.push_back(CharInput::DEFEND);
 

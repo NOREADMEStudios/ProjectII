@@ -2,6 +2,7 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "Hero.h"
+#include "../Game/Spells/FireBall.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
 
@@ -149,6 +150,31 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	ret->SetPos(charInfo.pos.x, charInfo.pos.y);
 
 	
+	entities.push_back(ret);
+	ret->Start();
+
+	return ret;
+}
+
+Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
+
+	Entity* ret = nullptr;
+
+	if (spellsInfo.spType == SpellsType::FIREBALL)
+	{
+		ret = new FireBall();
+		
+	}
+	
+	else
+	{		
+		return nullptr;//
+	}
+
+	ret->type = SPELLS;
+	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y);
+
+
 	entities.push_back(ret);
 	ret->Start();
 

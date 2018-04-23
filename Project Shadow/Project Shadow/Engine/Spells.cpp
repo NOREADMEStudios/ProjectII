@@ -2,7 +2,7 @@
 
 
 
-Spells::Spells()
+Spells::Spells(SpellsType spellType): Entity(EntityTypes::SPELLS)
 {
 }
 

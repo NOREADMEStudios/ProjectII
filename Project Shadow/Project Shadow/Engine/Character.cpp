@@ -99,18 +99,9 @@ bool Character::Update(float dt)
 	UpdateMainStates();
 	UpdateSpecStates();
 	UpdateCurState(dt);
+	HeroUpdate(dt);
 
 
-	if (currentState != PROTECT && !StateisAtk(currentState)) {
-		if (directions.right - directions.left == 1)
-		{
-			flip = false;
-		}
-		else if (directions.right - directions.left == -1)
-		{
-			flip = true;
-		}
-	}
 
 	priority = gamepos.z;
 	collider.x = position.x;
@@ -437,12 +428,6 @@ void Character::UpdateCurState(float dt)
 		case RUN:
 		{
 			max_speed = stats.spd * 1.5f;
-			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
-			break;
-		}
-		case PROTECT:
-		{
-			max_speed = stats.spd * 0.5f;
 			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
 			break;
 		}

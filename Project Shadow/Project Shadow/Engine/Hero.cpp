@@ -90,6 +90,30 @@ bool Hero::PreUpdate()
 bool Hero::HeroUpdate(float dt)
 {
 
+	int z_dir = directions.down - directions.up;
+	int x_dir = directions.right - directions.left;
+
+	switch (currentState)
+	{
+		case PROTECT:
+		{
+			max_speed = stats.spd * 0.5f;
+			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+			break;
+		}
+	}
+
+
+	if (currentState != PROTECT && !StateisAtk(currentState)) {
+		if (directions.right - directions.left == 1)
+		{
+			flip = false;
+		}
+		else if (directions.right - directions.left == -1)
+		{
+			flip = true;
+		}
+	}
 	return true;
 }
 

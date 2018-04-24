@@ -70,7 +70,7 @@ bool IntroScene::CleanUp() {
 
 void PvPPressCallb(size_t arg_size...) {
 	App->scenes->four_players = true;
-	App->transition->MakeTransition(ChangeSceneCallback, ModuleTransition::Transition::FADE_TO_BLACK, 1.0f);
+	App->transition->MakeTransition(ChangeSceneCallback, ModuleTransition::Transition::SCROLL_LEFT, 1.0f);
 }
 
 void OnevsPressCallb(size_t arg_size...) {

@@ -29,7 +29,7 @@ public:
 	virtual bool Start();
 
 	// Called each loop iteration
-	virtual bool PreUpdate();
+	virtual bool PostUpdate();
 
 	// Called each loop iteration
 	virtual bool Update(float dt);

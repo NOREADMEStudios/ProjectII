@@ -82,7 +82,7 @@ void ModuleTransition::FadeToBlack()
 void ModuleTransition::Scrolling()
 {
 	if (scrollTexture != nullptr) {
-		App->render->Blit(scrollTexture, dstRect.x, dstRect.y, nullptr, 0.0f);
+		App->render->BlitGui(scrollTexture, dstRect.x, dstRect.y, nullptr, false);
 	}
 	switch (scrollState)
 	{
@@ -134,17 +134,8 @@ bool ModuleTransition::Start()
 	return true;
 }
 
-bool ModuleTransition::PreUpdate()
+bool ModuleTransition::PostUpdate()
 {
-	return true;
-}
-
-bool ModuleTransition::Update(float dt)
-{
-	bool ret = true;
-
-	transitionTimeCurrent += dt;
-
 	if (!completed)
 	{
 		switch (type)
@@ -161,10 +152,30 @@ bool ModuleTransition::Update(float dt)
 			break;
 		case ModuleTransition::SCROLL_RIGHT:
 		case ModuleTransition::SCROLL_LEFT:
-			dstRect.x += speed * dt;
 			Scrolling();
 			break;
 		case ModuleTransition::LOADING_SCREEN:
+			break;
+		default:
+			break;
+		}
+	}
+	return true;
+}
+
+bool ModuleTransition::Update(float dt)
+{
+	bool ret = true;
+
+	transitionTimeCurrent += dt;
+
+	if (!completed)
+	{
+		switch (type)
+		{
+		case ModuleTransition::SCROLL_RIGHT:
+		case ModuleTransition::SCROLL_LEFT:
+			dstRect.x += speed * dt;
 			break;
 		default:
 			break;

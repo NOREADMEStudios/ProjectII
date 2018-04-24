@@ -6,6 +6,7 @@
 
 ModuleTransition::ModuleTransition()
 {
+	name = "transition";
 }
 
 
@@ -188,5 +189,11 @@ bool ModuleTransition::Update(float dt)
 
 bool ModuleTransition::CleanUp(pugi::xml_node &)
 {
-	return false;
+	if (fadeTexture != nullptr)
+		SDL_DestroyTexture(fadeTexture);
+	if (scrollTexture != nullptr)
+		SDL_DestroyTexture(scrollTexture);
+	fadeTexture = nullptr;
+	scrollTexture = nullptr;
+	return true;
 }

@@ -123,6 +123,7 @@ public:
 	bool breaking = false;
 	bool active = true;
 
+	bool to_delete = false;
 
 protected:
 	
@@ -148,6 +149,9 @@ protected:
 	Directions directions;
 	bool flip = 0;
 	InvBlit invencible;
+
+	
+
 
 
 	// Should be same numeration as the states

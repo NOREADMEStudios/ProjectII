@@ -69,9 +69,23 @@ bool ModuleEntityManager::Start() {
 bool ModuleEntityManager::PreUpdate() {
 
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
-		(*item)->PreUpdate();
-				
+		(*item)->PreUpdate();				
 	}
+
+	VECTOR(LIST_ITERATOR(Entity*)) ents;
+	for (LIST_ITERATOR(Entity*) ent = entities.begin(); ent != entities.end(); ent++) {
+		if ((*ent)->to_delete) {
+			ents.push_back(ent);
+		
+		}
+	}
+
+	for (size_t c = 0; c < ents.size(); c++) {
+		Utils::Release(*ents[c]);
+		entities.erase(ents[c]);
+		//(*col)->c2->collisions.erase(cols[c]);
+	}
+
 	return true;
 }
 

@@ -242,10 +242,11 @@ InterfaceElement * InterfaceElement::getPrevSibling()
 	return parent->getPrevChild(this);
 }
 
-void InterfaceElement::SetRelation(InterfaceElement * elem, Directions dir)
+void InterfaceElement::SetRelation(InterfaceElement * elem, Directions dir, bool assignOther)
 {
 	relations[dir] = elem;
-	elem->relations[dir < 2 ? dir + 2 : dir - 2] = this;
+	if (assignOther)
+		elem->relations[dir < 2 ? dir + 2 : dir - 2] = this;
 }
 
 InterfaceElement * InterfaceElement::GetRelativeElement(Directions dir)

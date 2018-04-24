@@ -70,7 +70,7 @@ public:
 	InterfaceElement* getNextSibling();
 	InterfaceElement* getPrevSibling();
 
-	void SetRelation(InterfaceElement* elem, Directions dir);
+	void SetRelation(InterfaceElement* elem, Directions dir, bool assignOther = true);
 	InterfaceElement* GetRelativeElement(Directions dir);
 
 	bool isInteractuable();

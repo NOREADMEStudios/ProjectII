@@ -146,6 +146,9 @@
     <ClCompile Include="Engine\UI\Healthbar.cpp">
       <Filter>Engine\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\UI\Menu.cpp">
+      <Filter>Engine\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -272,6 +275,9 @@
       <Filter>Game\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Engine\UI\Healthbar.h">
+      <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\UI\Menu.h">
       <Filter>Engine\UI</Filter>
     </ClInclude>
   </ItemGroup>

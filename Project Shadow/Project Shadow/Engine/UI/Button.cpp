@@ -34,7 +34,7 @@ bool Button::PreUpdate() {
 	
 	if (label == nullptr) //Auto set label
 	{
-		for (std::list<InterfaceElement*>::iterator current_element = elements.begin(); current_element != elements.end(); current_element++)
+		for (std::list<InterfaceElement*>::iterator current_element = children.begin(); current_element != children.end(); current_element++)
 		{
 			if ((*current_element)->type == LABEL)
 				label = (Label*)(*current_element);

@@ -20,8 +20,8 @@ class ModuleAudio;
 class ModuleMap;
 class ModuleCollision;
 /*class j1Scene;
-class j1PathFinding;
-class j1Transition;*/
+class j1PathFinding;*/
+class ModuleTransition;
 class ModuleFonts;
 class ModuleGUI;
 class ModuleSceneManager;
@@ -116,8 +116,8 @@ public:
 	ModuleMap*				map = nullptr;
 	ModuleCollision*		collision = nullptr;
 	/*j1Scene*			scene = nullptr;
-	j1PathFinding*		pathfinding = nullptr;	
-	j1Transition*		transition = nullptr;*/
+	j1PathFinding*		pathfinding = nullptr;*/
+	ModuleTransition*			transition = nullptr;
 	ModuleFonts*			font = nullptr;
 	ModuleGUI*				gui = nullptr;
 	ModuleSceneManager*		scenes = nullptr;

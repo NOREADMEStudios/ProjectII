@@ -147,7 +147,10 @@
       <Filter>Engine\UI</Filter>
     </ClCompile>
     <ClCompile Include="Engine\UI\Menu.cpp">
-      <Filter>Engine\UI</Filter>
+      <Filter>Engine\UI</Filter>    
+    </ClCompile>
+    <ClCompile Include="Engine\ModuleTransition.cpp">
+      <Filter>Engine\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -279,6 +282,9 @@
     </ClInclude>
     <ClInclude Include="Engine\UI\Menu.h">
       <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleTransition.h">
+      <Filter>Engine\Modules</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

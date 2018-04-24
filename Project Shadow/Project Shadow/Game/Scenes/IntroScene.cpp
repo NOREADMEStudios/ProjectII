@@ -56,7 +56,7 @@ bool IntroScene::Update(float dt)
 		ChooseFocus();
 	}
 
-	Scene::Update(dt);
+	//Scene::Update(dt);
 
 	return true;
 }
@@ -123,6 +123,12 @@ void IntroScene::LoadUIButtons() {
 	exitLabel->setString(ExitStr);
 	exitLabel->SetParent(exitButton);
 	exitLabel->culled = false;
+
+
+	pvpButton->SetRelation(onevsoneButton, InterfaceElement::Directions::RIGHT);
+	pvpButton->SetRelation(exitButton, InterfaceElement::Directions::DOWN);
+	exitButton->SetRelation(onevsoneButton, InterfaceElement::Directions::DOWN);
+	exitButton->SetRelation(exitButton, InterfaceElement::Directions::DOWN, false);
 }
 
 void IntroScene::SetControllerFocus() {
@@ -134,18 +140,29 @@ void IntroScene::SetControllerFocus() {
 }
 
 void IntroScene::ManageDisplacement() {
-
 	if (App->input->GetButtonFromController(1) == Input::DOWN) {
-		App->gui->FocusNext();
+		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::DOWN);
+		if (elem != nullptr)
+			App->gui->setFocus(elem);
 	}
 	if (App->input->GetButtonFromController(1) == Input::UP) {
-		App->gui->FocusPrev();
+		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::UP);
+		if (elem != nullptr)
+			App->gui->setFocus(elem);
 	}
-
+	if (App->input->GetButtonFromController(1) == Input::LEFT) {
+		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::LEFT);
+		if (elem != nullptr)
+			App->gui->setFocus(elem);
+	}
+	if (App->input->GetButtonFromController(1) == Input::RIGHT) {
+		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::RIGHT);
+		if (elem != nullptr)
+			App->gui->setFocus(elem);
+	}
 }
 void IntroScene::ChooseFocus() {
-		if (App->input->GetButtonDown(1, SDL_CONTROLLER_BUTTON_A)) {
-			((Button*)App->gui->getFocusedItem())->OnClick(0);
-		}
-	
+	if (App->input->GetButtonDown(1, SDL_CONTROLLER_BUTTON_A)) {
+		((Button*)App->gui->getFocusedItem())->OnClick(0);
+	}
 }

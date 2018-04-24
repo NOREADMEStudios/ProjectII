@@ -145,6 +145,7 @@
     <ClCompile Include="Engine\UI\Healthbar.cpp" />
     <ClCompile Include="Engine\UI\InterfaceElement.cpp" />
     <ClCompile Include="Engine\UI\Label.cpp" />
+    <ClCompile Include="Engine\UI\Menu.cpp" />
     <ClCompile Include="Engine\UI\Slider.cpp" />
     <ClCompile Include="Engine\UI\Sprite.cpp" />
     <ClCompile Include="Engine\UI\Window.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Engine\UI\Healthbar.h" />
     <ClInclude Include="Engine\UI\InterfaceElement.h" />
     <ClInclude Include="Engine\UI\Label.h" />
+    <ClInclude Include="Engine\UI\Menu.h" />
     <ClInclude Include="Engine\UI\Slider.h" />
     <ClInclude Include="Engine\UI\Sprite.h" />
     <ClInclude Include="Engine\UI\Window.h" />

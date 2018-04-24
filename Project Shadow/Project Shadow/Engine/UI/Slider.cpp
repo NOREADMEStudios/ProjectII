@@ -87,9 +87,9 @@ float Slider::GetValue()
 
 void Slider::Focus()
 {
-	/*LIST_ITERATOR(InterfaceElement*) curr = elements.begin();
+	/*LIST_ITERATOR(InterfaceElement*) curr = children.begin();
 
-	while (curr != elements.end())
+	while (curr != children.end())
 	{
 		if (curr->data->in_focus)
 		{
@@ -98,7 +98,7 @@ void Slider::Focus()
 			{
 				onfocus->in_focus = false;
 				if (curr->next == NULL)
-					onfocus = elements.start->data;
+					onfocus = children.start->data;
 
 				else
 					onfocus = curr->next->data;
@@ -109,7 +109,7 @@ void Slider::Focus()
 			{
 				onfocus->in_focus = false;
 				if (curr->prev == NULL)
-					onfocus = elements.end->data;
+					onfocus = children.end->data;
 
 				else
 					onfocus = curr->prev->data;

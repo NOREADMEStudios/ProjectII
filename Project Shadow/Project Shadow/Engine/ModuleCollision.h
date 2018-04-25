@@ -27,6 +27,7 @@ public:
 		ATK,
 		DEF,
 		PARRY,
+		SPELL,
 		TRIGGER,
 		PHYSIC,
 		Amount

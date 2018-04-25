@@ -17,9 +17,10 @@ bool FireBall::Start() {
 	sprites = App->textures->Load("Spells/Fireball.png");
 	spellAnim.PushBack({0,0,45,65});
 	spellAnim.PushBack({ 50,0,45,65 });
+	spellAnim.PushBack({ 101,0,45,65 });
 	currentAnimation = &spellAnim;
 	
-	spellColl = App->collision->CreateCollider({}, "FireBall_Spell", Collider::ATK);
+	spellColl = App->collision->CreateCollider({}, "FireBall_Spell", Collider::SPELL);
 	spellColl->collider = { 0,0,45,65 };
 	App->collision->AddCollider(spellColl, this);
 	//collider = { 0,0,45,65 };
@@ -41,7 +42,7 @@ bool FireBall::Start() {
 bool FireBall::CleanUp(pugi::xml_node&)
 {
 	App->textures->UnLoad(sprites);
-	App->collision->RemoveCollider(spellColl);
+	bool ret = App->collision->RemoveCollider(spellColl);
 
 	return true;
 }
@@ -64,11 +65,17 @@ bool FireBall::Update(float dt) {
 
 	App->render->FillQueue(this);//prints the spell
 
+	
+	return true;
+}
+
+bool FireBall::PostUpdate() {
 	if (CheckLifetime()) {
 		pugi::xml_node n;
 		CleanUp(n);
 		to_delete = true;
 	}
+
 	return true;
 }
 

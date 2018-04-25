@@ -91,8 +91,10 @@ bool ModuleCollision::PreUpdate() {
 		for (LIST_ITERATOR(Collision*) col = colliders[i]->collisions.begin(); col != colliders[i]->collisions.end(); col++) {
 			SDL_Rect result;
 			if (SDL_IntersectRect(&(*col)->c2->collider.toSDL_Rect(), &colliders[i]->collider.toSDL_Rect(), &result) == SDL_FALSE) {
-				(*col)->CallOnExit();
-				cols.push_back(col);
+				
+					(*col)->CallOnExit();
+					cols.push_back(col);
+				
 			}
 		}
 
@@ -115,6 +117,9 @@ bool ModuleCollision::Update(float dt) {
 				break;
 			case Collider::Type::ATK:
 				color = { 255,0,0,128 };//Red
+				break;
+			case Collider::Type::SPELL:
+				color = { 143,0,255,128 };//violet
 				break;
 			case Collider::Type::HITBOX:
 				color = { 0,0,255,128 };//Blue

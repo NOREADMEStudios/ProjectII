@@ -13,7 +13,7 @@ public:
 
 	bool Update(float dt)override;
 
-	bool PostUpdate()override { return true; }
+	bool PostUpdate()override;
 
 	bool CleanUp(pugi::xml_node&)override;
 

@@ -51,11 +51,11 @@ bool Hero::HeroStart()
 
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", 2);
-	Attack* light_2 = new Attack(4, LIGHT_ATTACK, "attack_knee", 2);
-	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", 5);
-	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK,"kick", 2);
-	Attack* heavy_2 = new Attack(5, HEAVY_ATTACK,"strong_attack", 2);
+	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "kick", 2, false, true);
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", 0, true);
+	Attack* light_2 = new Attack(4, LIGHT_ATTACK, "attack_knee", 2);
+	Attack* heavy_2 = new Attack(5, HEAVY_ATTACK, "strong_attack", 2);
+	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", 5);
 	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK,"jump_attack", 2, true);
 	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", 5, true);
 
@@ -70,11 +70,14 @@ bool Hero::HeroStart()
 
 	light_1->AddChild(light_2);
 	light_2->AddChild(light_3);
-	heavy_1->AddChild(light_3);
+	//heavy_1->AddChild(light_3);
 	light_2->AddChild(heavy_2);
-	heavy_1->AddChild(heavy_2);
+	//heavy_1->AddChild(heavy_2);
 	jump_a->AddChild(jump_a2);
 	jump_a->AddChild(jump_a3);
+
+	Ability* kick = new Ability(heavy_1, 3);
+	AdAbility(*kick);
 
 	
 	return true;

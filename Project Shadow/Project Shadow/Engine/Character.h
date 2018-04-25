@@ -65,14 +65,16 @@ struct Attack
 	CharInput input;
 	Animation anim;
 	bool air;
+	bool ability;
 
-	Attack(uint _tag, CharInput _input, std::string animationName, int _damage = 0, bool _air = false)
+	Attack(uint _tag, CharInput _input, std::string animationName, int _damage = 0, bool _air = false, bool ab = false)
 	{
 		tag = _tag;
 		input = _input;
 		damage = _damage;
 		anim.LoadAnimationsfromXML(animationName, HERO_SPRITE_ROOT);
 		air = _air;
+		ability = ab;
 	}
 
 	void AddChild(Attack* _child)
@@ -118,6 +120,28 @@ struct Attack
 		}
 
 		return nullptr;
+	}
+
+};
+
+struct Ability
+{
+	Attack* atk = nullptr;
+	Timer timer;
+	float cooldown = 0;
+	bool active = false;
+
+	Ability(Attack* _atk, float cd = 0)
+	{
+		atk = _atk;
+		cooldown = cd;
+		active = false;
+	}
+
+	void Activate()
+	{
+		timer.Start();
+		active = false;
 	}
 
 };
@@ -171,11 +195,14 @@ protected:
 	void UpdateAnimation();
 	bool StateisAtk(CharStateEnum State);
 	Attack* GetAtk(uint atk);
+	Ability* GetAbAtk(uint atk);
 	void GetCollidersFromAnimation();
 	void UpdateCollidersPosition();
 	void LoadState(CharStateEnum _state, std::string animationName);
 	void LoadBasicStates();
 	void UpdateTag(uint& t);
+	void UpdateAbilities();
+	void AdAbility(Ability ab);
 
 	virtual bool HeroStart() { return true; };
 	virtual bool HeroUpdate(float dt) { return true; };
@@ -208,6 +235,7 @@ protected:
 	uint wantedTag = 0;
 
 	LIST(Attack*) attacks;
+	LIST(Ability) abilities;
 
 };
 #endif

@@ -94,7 +94,7 @@ bool Character::Update(float dt)
 	Move(dt);
 	Break(dt);
 
-
+	UpdateAbilities();
 	UpdateAnimation();
 	UpdateMainStates();
 	UpdateSpecStates();
@@ -306,6 +306,16 @@ void Character::RequestState() {
 
 void Character::UpdateMainStates()
 {
+	if (wantedTag != 0 && GetAtk(wantedTag)->ability)
+	{
+		if (!GetAbAtk(wantedTag)->active)
+		{
+			wantedTag = 0;
+			wantedState = IDLE;
+		}
+		else
+			GetAbAtk(wantedTag)->Activate();
+	}
 
 	if (currentState == WALK || currentState == IDLE)
 	{
@@ -599,6 +609,23 @@ Attack* Character::GetAtk(uint atk)
 	return ret;
 }
 
+Ability* Character::GetAbAtk(uint atk)
+{
+
+	Ability* ret = nullptr;
+	for (std::list<Ability>::iterator item = abilities.begin(); item != abilities.end(); item++) 
+	{
+
+		if (item->atk->tag == atk)
+		{
+			ret = &(*item);
+		}
+
+	}
+	return ret;
+}
+
+
 uint Character::GetMaxLives() const
 {
 	return maxLives;
@@ -661,4 +688,20 @@ void Character::UpdateTag(uint& t)
 		t = 2;
 	else
 		t = 0;
+}
+
+void Character::UpdateAbilities()
+{
+	for (std::list<Ability>::iterator item = abilities.begin(); item != abilities.end(); item++)
+	{
+		if (item->timer.Count(item->cooldown))
+		{
+			item->active = true;
+		}
+	}
+}
+
+void Character::AdAbility(Ability ab)
+{
+	abilities.push_back(ab);
 }

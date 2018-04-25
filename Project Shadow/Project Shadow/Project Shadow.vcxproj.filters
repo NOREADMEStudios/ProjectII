@@ -146,6 +146,12 @@
     <ClCompile Include="Engine\UI\Healthbar.cpp">
       <Filter>Engine\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\UI\Menu.cpp">
+      <Filter>Engine\UI</Filter>    
+    </ClCompile>
+    <ClCompile Include="Engine\ModuleTransition.cpp">
+      <Filter>Engine\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -273,6 +279,12 @@
     </ClInclude>
     <ClInclude Include="Engine\UI\Healthbar.h">
       <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\UI\Menu.h">
+      <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleTransition.h">
+      <Filter>Engine\Modules</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

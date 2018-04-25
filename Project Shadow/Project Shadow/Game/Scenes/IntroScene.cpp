@@ -17,15 +17,12 @@
 #include "../../Engine/ModuleCollision.h"
 #include "../../Engine/ModuleAudio.h"
 #include "../../Engine/ModuleFonts.h"
+#include "../../Engine/ModuleTransition.h"
 
 void PvPPressCallb(size_t arg_size...);
-void PvPHoverEnCallb(size_t arg_size...);
-void PvPHoverExCallb(size_t arg_size...);
 void ExitPressCallb(size_t arg_size...);
-void ExitHoverEnCallb(size_t arg_size...);
-void ExitHoverExCallb(size_t arg_size...);
-
 void OnevsPressCallb(size_t arg_size...);
+void ChangeSceneCallback(size_t arg_size...);
 
 IntroScene::IntroScene()
 {
@@ -60,50 +57,33 @@ bool IntroScene::Update(float dt)
 		ChooseFocus();
 	}
 
-	Scene::Update(dt);
+	//Scene::Update(dt);
 
 	return true;
 }
 
-bool IntroScene::CleanUp()
-{
+bool IntroScene::CleanUp() {
 	App->gui->CleanUp();
 	UnLoadBackground();
 	return true;
 }
 
 void PvPPressCallb(size_t arg_size...) {
-
-	App->scenes->ChangeScene(App->scenes->itemSc);
 	App->scenes->four_players = true;
+	App->transition->MakeTransition(ChangeSceneCallback, ModuleTransition::Transition::SCROLL_LEFT, 1.0f);
 }
 
 void OnevsPressCallb(size_t arg_size...) {
-	App->scenes->ChangeScene(App->scenes->itemSc);
 	App->scenes->four_players = false;
-
-App->scenes->ChangeScene(App->scenes->itemSc);
-
-}
-
-void PvPHoverEnCallb(size_t arg_size...) {
-
-}
-
-void PvPHoverExCallb(size_t arg_size...) {
-
+	App->transition->MakeTransition(ChangeSceneCallback, ModuleTransition::Transition::FADE_TO_BLACK, 1.0f);
 }
 
 void ExitPressCallb(size_t arg_size...) {
 	App->Quit();
 }
 
-void ExitHoverEnCallb(size_t arg_size...) {
-
-}
-
-void ExitHoverExCallb(size_t arg_size...) {
-
+void ChangeSceneCallback(size_t arg_size...) {
+	App->scenes->ChangeScene(App->scenes->itemSc);
 }
 
 void IntroScene::LoadUIButtons() {
@@ -122,8 +102,6 @@ void IntroScene::LoadUIButtons() {
 	uiPoint win_size = App->gui->GetGuiSize();
 	pvpButton = App->gui->AddButton((win_size.x / 2) - (win_size.x / 6), win_size.y / 2, atlas, { 50,50,384,195 }, true, PvPPressCallb, { 50,270,384,195 }, { 50,491,384,195 });
 
-	pvpButton->OnHoverEnter = PvPHoverEnCallb;
-	pvpButton->OnHoverExit = PvPHoverExCallb;
 	pvpLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string PvPStr = "4vs4";
 	pvpLabel->setString(PvPStr);
@@ -132,8 +110,6 @@ void IntroScene::LoadUIButtons() {
 
 	onevsoneButton = App->gui->AddButton((win_size.x / 6) + (win_size.x / 2), win_size.y / 2, atlas, { 50,50,384,195 }, true, OnevsPressCallb, { 50,270,384,195 }, { 50,491,384,195 });
 
-	onevsoneButton->OnHoverEnter = PvPHoverEnCallb;
-	onevsoneButton->OnHoverExit = PvPHoverExCallb;
 	onevsLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string oneStr = "1vs1";
 	onevsLabel->setString(oneStr);
@@ -142,13 +118,18 @@ void IntroScene::LoadUIButtons() {
 
 
 	exitButton = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3, atlas, { 50,50,384,195 }, true, ExitPressCallb, { 50,270,384,195 }, { 50,491,384,195 });
-	exitButton->OnHoverEnter = ExitHoverEnCallb;
-	exitButton->OnHoverExit = ExitHoverExCallb;
+
 	Label* exitLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string ExitStr = "EXIT";
 	exitLabel->setString(ExitStr);
 	exitLabel->SetParent(exitButton);
 	exitLabel->culled = false;
+
+
+	pvpButton->SetRelation(onevsoneButton, InterfaceElement::Directions::RIGHT);
+	pvpButton->SetRelation(exitButton, InterfaceElement::Directions::DOWN);
+	exitButton->SetRelation(onevsoneButton, InterfaceElement::Directions::DOWN);
+	exitButton->SetRelation(exitButton, InterfaceElement::Directions::DOWN, false);
 }
 
 void IntroScene::SetControllerFocus() {
@@ -160,18 +141,29 @@ void IntroScene::SetControllerFocus() {
 }
 
 void IntroScene::ManageDisplacement() {
-
 	if (App->input->GetButtonFromController(1) == Input::DOWN) {
-		App->gui->FocusNext();
+		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::DOWN);
+		if (elem != nullptr)
+			App->gui->setFocus(elem);
 	}
 	if (App->input->GetButtonFromController(1) == Input::UP) {
-		App->gui->FocusPrev();
+		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::UP);
+		if (elem != nullptr)
+			App->gui->setFocus(elem);
 	}
-
+	if (App->input->GetButtonFromController(1) == Input::LEFT) {
+		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::LEFT);
+		if (elem != nullptr)
+			App->gui->setFocus(elem);
+	}
+	if (App->input->GetButtonFromController(1) == Input::RIGHT) {
+		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::RIGHT);
+		if (elem != nullptr)
+			App->gui->setFocus(elem);
+	}
 }
 void IntroScene::ChooseFocus() {
-		if (App->input->GetButtonDown(1, SDL_CONTROLLER_BUTTON_A)) {
-			((Button*)App->gui->getFocusedItem())->OnClick(0);
-		}
-	
+	if (App->input->GetButtonDown(1, SDL_CONTROLLER_BUTTON_A)) {
+		((Button*)App->gui->getFocusedItem())->OnClick(0);
+	}
 }

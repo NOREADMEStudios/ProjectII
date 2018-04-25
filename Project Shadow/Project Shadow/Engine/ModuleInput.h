@@ -115,12 +115,12 @@ public:
 	void BlockMouseEvent(int event_id);
 	void BlockKeyboardEvent(int event_id);
 
-	std::list<Input> FirstPlayerConfig();
-	std::list<Input> SecondPlayerConfig();
+	std::list<CharInput> FirstPlayerConfig();
+	std::list<CharInput> SecondPlayerConfig();
 
-	Input GetButtonFromController(int controllerNum) const;
+	CharInput GetButtonFromController(int controllerNum) const;
 	bool GetButtonDown(int controller, int input) const;
-	std::list<Input> ControllerPlayerConfig(int playerNum) const;
+	std::list<CharInput> ControllerPlayerConfig(int playerNum) const;
 
 private:
 

@@ -66,7 +66,7 @@ struct Attack
 	Animation anim;
 	bool air;
 
-	Attack(uint _tag, Input _input, std::string animationName, int _damage = 0, bool _air = false)
+	Attack(uint _tag, CharInput _input, std::string animationName, int _damage = 0, bool _air = false)
 	{
 		tag = _tag;
 		input = _input;

@@ -141,22 +141,22 @@ void IntroScene::SetControllerFocus() {
 }
 
 void IntroScene::ManageDisplacement() {
-	if (App->input->GetButtonFromController(1) == Input::DOWN) {
+	if (App->input->GetButtonFromController(1) == CharInput::CH_DOWN) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::DOWN);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
 	}
-	if (App->input->GetButtonFromController(1) == Input::UP) {
+	if (App->input->GetButtonFromController(1) == CharInput::CH_UP) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::UP);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
 	}
-	if (App->input->GetButtonFromController(1) == Input::LEFT) {
+	if (App->input->GetButtonFromController(1) == CharInput::CH_LEFT) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::LEFT);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
 	}
-	if (App->input->GetButtonFromController(1) == Input::RIGHT) {
+	if (App->input->GetButtonFromController(1) == CharInput::CH_RIGHT) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::RIGHT);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);

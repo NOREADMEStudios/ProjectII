@@ -15,13 +15,13 @@
 
 
 
-enum Input
+enum CharInput
 {
-	NONEINPUT,
-	UP,
-	DOWN,
-	RIGHT,
-	LEFT,
+	NONECHARINPUT,
+	CH_UP,
+	CH_DOWN,
+	CH_RIGHT,
+	CH_LEFT,
 	LIGHT_ATTACK,
 	HEAVY_ATTACK,
 	JUMPINPUT,
@@ -62,7 +62,7 @@ struct Attack
 	uint tag;
 	int damage = 0;
 	LIST(Attack*) childs {};
-	Input input;
+	CharInput input;
 	Animation anim;
 	bool air;
 
@@ -93,7 +93,7 @@ struct Attack
 		return false;
 	}
 
-	bool CheckChildInput(Input input)
+	bool CheckChildInput(CharInput input)
 	{
 		if (!childs.empty())
 		{
@@ -107,7 +107,7 @@ struct Attack
 		return false;
 	}
 
-	Attack* GetChildInput(Input input)
+	Attack* GetChildInput(CharInput input)
 	{
 
 		for (std::list<Attack*>::const_iterator item = childs.begin(); item != childs.end(); item++) {

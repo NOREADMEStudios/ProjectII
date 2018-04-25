@@ -226,7 +226,7 @@ void Character::GetCollidersFromAnimation() {
 
 
 void Character::RequestState() {
-	std::list<Input> inputs;
+	std::list<CharInput> inputs;
 	int NumControllers = App->input->GetNumControllers();
 	if (hero_num <= NumControllers) {
 		inputs = App->input->ControllerPlayerConfig(hero_num);
@@ -250,25 +250,25 @@ void Character::RequestState() {
 	wantedState = IDLE;
 	wantedTag = 0;
 
-	for (std::list<Input>::iterator item = inputs.begin(); item != inputs.end(); item++) {
-		Input input = *item;
+	for (std::list<CharInput>::iterator item = inputs.begin(); item != inputs.end(); item++) {
+		CharInput input = *item;
 		switch (input)
 		{
-		case NONEINPUT:
+		case NONECHARINPUT:
 			break;
-		case UP:
+		case CH_UP:
 			wantedState = WALK;
 			directions.up = true;
 			break;
-		case DOWN:
+		case CH_DOWN:
 			wantedState = WALK;
 			directions.down = true;
 			break;
-		case RIGHT:
+		case CH_RIGHT:
 			wantedState = WALK;
 			directions.right = true;
 			break;
-		case LEFT:
+		case CH_LEFT:
 			wantedState = WALK;
 			directions.left = true;
 			break;

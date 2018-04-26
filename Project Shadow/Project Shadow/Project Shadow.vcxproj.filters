@@ -147,10 +147,13 @@
       <Filter>Engine\UI</Filter>
     </ClCompile>
     <ClCompile Include="Engine\UI\Menu.cpp">
-      <Filter>Engine\UI</Filter>    
+      <Filter>Engine\UI</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ModuleTransition.cpp">
       <Filter>Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\CharSelecScene.cpp">
+      <Filter>Game\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -285,6 +288,9 @@
     </ClInclude>
     <ClInclude Include="Engine\ModuleTransition.h">
       <Filter>Engine\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\CharSelecScene.h">
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -153,6 +153,7 @@
     <ClCompile Include="Game\Scenes\IntroScene.cpp" />
     <ClCompile Include="Game\Scenes\ItemSelecScene.cpp" />
     <ClCompile Include="Game\Scenes\MainScene.cpp" />
+    <ClCompile Include="Game\Scenes\CharSelecScene.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +195,7 @@
     <ClInclude Include="Game\Scenes\IntroScene.h" />
     <ClInclude Include="Game\Scenes\ItemSelecScene.h" />
     <ClInclude Include="Game\Scenes\MainScene.h" />
+    <ClInclude Include="Game\Scenes\CharSelecScene.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
   </ItemGroup>

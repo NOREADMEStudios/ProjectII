@@ -79,7 +79,7 @@ bool ModuleEntityManager::Update(float dt) {
 		if ((*item)->active)
 		{
 			(*item)->Update(dt);
-			winner = (*item)->heroNum;
+			winner = (*item)->hero_num;
 			i++;
 		}
 	}
@@ -137,7 +137,7 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	{
 		ret = new Hero();
 		numofplayers++;
-		ret->heroNum = numofplayers;
+		ret->hero_num = numofplayers;
 	}
 	else
 	{
@@ -158,7 +158,7 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
 void ModuleEntityManager::DestroyEntity(Entity* entity) {
 	pugi::xml_node n;
-	if (entity->heroNum != 0) {
+	if (entity->hero_num != 0) {
 		numofplayers--;	
 	}
 	entity->CleanUp(n);
@@ -246,7 +246,7 @@ Entity* ModuleEntityManager::GetEntity(uint num)
 	Entity* ret = nullptr;
 
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
-		if ((*item)->heroNum == num)
+		if ((*item)->hero_num == num)
 		{
 			ret == (*item);
 		}

@@ -26,9 +26,6 @@ public:
 	// Called before quitting
 	bool CleanUp(pugi::xml_node&) override;
 
-	// Update
-	bool Update(float dt);
-
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
@@ -49,20 +46,12 @@ public:
 	void SetFxVolume(float volume);
 	float GetFxVolume() const;
 
-	void fadingIn();
-	void fadingOut();
-
-
 private:
 	float currentmusicvolume;
 	float currentfxvolume;
-	bool fading = false;
-	float fade_time = 0.0f;
-	float Dvolume = 0.0f;
 
 
-	_Mix_Music*			music = nullptr;
-	_Mix_Music*			newMusic = nullptr;
+	_Mix_Music*			music;
 	std::vector<Mix_Chunk*>	fx;
 	std::experimental::filesystem::path assetsPath;
 };

@@ -119,7 +119,7 @@ public:
 
 	bool paused = false;
 
-	uint heroNum = 0;
+	uint hero_num = 0;
 	bool breaking = false;
 	bool active = true;
 protected:

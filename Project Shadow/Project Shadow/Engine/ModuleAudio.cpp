@@ -83,71 +83,58 @@ bool ModuleAudio::CleanUp(pugi::xml_node&)
 	return true;
 }
 
-// Update
-bool ModuleAudio::Update(float dt)
-{
-	if (fading)
-	{
-		Dvolume = currentmusicvolume / (fade_time / dt);
-		if (Dvolume < 1)
-			Dvolume = 1;
-		if (Dvolume > currentmusicvolume / fade_time)
-			Dvolume > currentmusicvolume / fade_time;
-		if (newMusic != nullptr) //It means we are still fading out the initial music
-		{
-			fadingOut();
-		}
-		else
-		{
-			fadingIn();
-		}
-	}
-
-	return true;
-}
-
 // Play a music file
 bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
 
-	if (!active)
+	if(!active)
 		return false;
 
-	if (music == NULL)
+	if(music != NULL)
 	{
-		music = Mix_LoadMUS(path);
-		if (Mix_PlayMusic(music, -1) < 0)
+		if(fade_time > 0.0f)
 		{
-			LOG("Cannot play in music %s. Mix_GetError(): %s", path, Mix_GetError());
-			ret = false;
+			Mix_FadeOutMusic(int(fade_time * 1000.0f));
 		}
-	}
-	else
-		newMusic = Mix_LoadMUS(path);
+		else
+		{
+			Mix_HaltMusic();
+		}
 
-	if (fade_time > 0)
-	{
-		fading = true;
-		this->fade_time = fade_time;
-		LOG("Started Fading %s", path);
-	}
-	else
-	{
-		Mix_HaltMusic();
+		// this call blocks until fade out is done
 		Mix_FreeMusic(music);
-		music = newMusic;
-		if (Mix_PlayMusic(music, -1) < 0)
-		{
-			LOG("Cannot play in music %s. Mix_GetError(): %s", path, Mix_GetError());
-			ret = false;
-		}
-		newMusic = nullptr;
-		LOG("Successfully playing %s", path);
 	}
 
-	return ret;
+	music = Mix_LoadMUS(path);
 
+	if(music == NULL)
+	{
+		LOG("Cannot load music %s. Mix_GetError(): %s\n", path, Mix_GetError());
+		ret = false;
+	}
+	else
+	{
+		if(fade_time > 0.0f)
+		{
+			if(Mix_FadeInMusic(music, -1, (int) (fade_time * 1000.0f)) < 0)
+			{
+				LOG("Cannot fade in music %s. Mix_GetError(): %s", path, Mix_GetError());
+				ret = false;
+			}
+		}
+		else
+		{
+			if(Mix_PlayMusic(music, -1) < 0)
+			{
+				LOG("Cannot play in music %s. Mix_GetError(): %s", path, Mix_GetError());
+				ret = false;
+			}
+		}
+	}
+
+	LOG("Successfully playing %s", path);
+	return ret;
 }
 
 // Load WAV
@@ -219,7 +206,7 @@ float ModuleAudio::GetFxVolume() const {
 
 float ModuleAudio::GetMusicVolume() const {
 
-	return Mix_VolumeMusic(-1);;
+	return currentmusicvolume;
 }
 
 bool ModuleAudio::Load(pugi::xml_node& data) {
@@ -245,38 +232,4 @@ bool ModuleAudio::Save(pugi::xml_node& data)const {
 	fx.append_attribute("volume") = GetFxVolume();
 
 	return true;
-}
-
-void ModuleAudio::fadingIn()
-{
-	if (music != NULL)
-	{
-		int newVolume = GetMusicVolume() + Dvolume;
-		if (newVolume > currentmusicvolume)
-			newVolume = currentmusicvolume;
-		Mix_VolumeMusic(newVolume);
-		if (newVolume == currentmusicvolume)
-		{
-			fading = false;
-		}
-	}
-}
-
-void ModuleAudio::fadingOut()
-{
-	if (music != NULL)
-	{
-		int newVolume = GetMusicVolume() - Dvolume;
-		if (newVolume < 0)
-			newVolume = 0;
-		Mix_VolumeMusic(newVolume);
-		if (newVolume == 0)
-		{
-			Mix_FreeMusic(music);
-			music = newMusic;
-			newMusic = nullptr;
-			if (Mix_PlayMusic(music, -1) < 0)
-				LOG("Cannot play in music. Mix_GetError(): %s", Mix_GetError());
-		}
-	}
 }

@@ -14,12 +14,6 @@ struct Collision;
 struct Collider {
 
 public:
-	~Collider() {
-		for (LIST_ITERATOR(Collision*) it = collisions.begin(); it != collisions.end(); it++) {
-			Utils::Release(*it);
-		}
-		collisions.clear();
-	}
 
 	enum Type {
 		FEET, 
@@ -41,6 +35,8 @@ public:
 
 //private:
 	Collider() {}
+	~Collider() {}
+	void CleanUp();
 	friend class ModuleCollision;
 };
 
@@ -51,10 +47,7 @@ struct Collision {
 		c2 = _c2;
 		state = ON_ENTER;
 	}
-	~Collision() {
-		Utils::RemoveFromList(this, c1->collisions);
-		Utils::RemoveFromList(this, c2->collisions);
-	}
+	~Collision() {}
 
 	void CallOnStay() {
 		c1->entity->OnCollisionStay(c1, c2);
@@ -71,6 +64,11 @@ struct Collision {
 		c2->entity->OnCollisionExit(c2, c1);
 	}
 
+	void CleanUp(){
+		Utils::RemoveFromList(this, c1->collisions);
+		Utils::RemoveFromList(this, c2->collisions);
+	}
+
 	enum State {
 		ON_ENTER,
 		ON_STAY,
@@ -81,6 +79,8 @@ struct Collision {
 						*c2 = nullptr;
 
 	iRect				collisionArea;
+
+	bool				updated = false;
 };
 
 class ModuleCollision

@@ -201,7 +201,7 @@ bool Hero::CleanUp(pugi::xml_node&)
 
 	UnloadShadow();
 
-	if (collAtk) {
+	/*if (collAtk) {
 		App->collision->RemoveCollider(collAtk);
 	}
 	if (collDef) {
@@ -210,11 +210,10 @@ bool Hero::CleanUp(pugi::xml_node&)
 	if (collParry) {
 		App->collision->RemoveCollider(collParry);
 	}
+	App->collision->RemoveCollider(collHitBox);
+	App->collision->RemoveCollider(collFeet);*/
 
 	Utils::ClearList(attacks);
-
-	App->collision->RemoveCollider(collHitBox);
-	App->collision->RemoveCollider(collFeet);
 	return true;
 }
 

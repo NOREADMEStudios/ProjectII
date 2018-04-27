@@ -107,10 +107,15 @@ bool ModuleEntityManager::Update(float dt) {
 }
 
 bool ModuleEntityManager::PostUpdate() {
-
+	ARRAY(Entity*)toDestroy;
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->PostUpdate();
+		if ((*item)->to_delete)
+			toDestroy.push_back(*item);
+	}
 
+	for (Entity* e : toDestroy) {
+		DestroyEntity(e);
 	}
 	return true;
 }

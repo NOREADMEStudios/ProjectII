@@ -18,24 +18,6 @@
 #include "../../Engine/ModuleCollision.h"
 #include "../../Engine/ModuleFonts.h"
 
-void item1PressCallb(size_t arg_size...);
-void item1HoverEnCallb(size_t arg_size...);
-void item1HoverExCallb(size_t arg_size...);
-void item2PressCallb(size_t arg_size...);
-void item2HoverEnCallb(size_t arg_size...);
-void item2HoverExCallb(size_t arg_size...);
-void item3PressCallb(size_t arg_size...);
-void item3HoverEnCallb(size_t arg_size...);
-void item3HoverExCallb(size_t arg_size...);
-void item4PressCallb(size_t arg_size...);
-void item4HoverEnCallb(size_t arg_size...);
-void item4HoverExCallb(size_t arg_size...);
-void item5PressCallb(size_t arg_size...);
-void item5HoverEnCallb(size_t arg_size...);
-void item5HoverExCallb(size_t arg_size...);
-void item6PressCallb(size_t arg_size...);
-void item6HoverEnCallb(size_t arg_size...);
-void item6HoverExCallb(size_t arg_size...);
 
 ItemSelecScene::ItemSelecScene()
 {
@@ -52,18 +34,18 @@ bool ItemSelecScene::Start()
 	LoadSceneUI();
 	SetControllerFocus();
 
-	return false;
+	return true;
 }
 
 bool ItemSelecScene::Update(float dt)
 {
-	if (AllItemsSelected()) {//ALL ARROWS LOCKED 
+	if (AllPlayersReady()) {//ALL ARROWS LOCKED 
 		ApplyItemAttributes();						 // NEED TO FILL 
 		App->scenes->ChangeScene(App->scenes->mainSc);
 	}
 
 	DrawBackground();
-	App->input->CheckControllers();
+	//App->input->CheckControllers();
 
 	if (controllersNum != 0) {
 		ManageDisplacementFocus();
@@ -82,9 +64,35 @@ bool ItemSelecScene::CleanUp()
 }
 
 void ItemSelecScene::LoadSceneUI() {
-	atlas = App->textures->Load("UI/atlas.png");
+	atlas = App->textures->Load("UI/items.png");
 	uiPoint sizeScreen = App->gui->GetGuiSize();
-	
+
+	int i = 0;
+
+	items[i] = new Item("firstItem", { 0,0,120,120}, { 10,20,30,50 });
+	items[i]->butt = App->gui->AddButton(100,100,atlas, items[i]->animRect, true, nullptr );//0	
+	App->gui->setFocus(items[i]->butt);
+
+	items[++i] = new Item("secItem", { 120,0,120,120 }, { 11,20,30,50 });
+	items[i]->butt = App->gui->AddButton(300, 100, atlas, items[i]->animRect, true, nullptr);//1
+
+	items[++i] = new Item("thirdItem", { 240,0,120,120 }, { 12,20,30,50 });
+	items[i]->butt = App->gui->AddButton(500, 100, atlas, items[i]->animRect, true, nullptr);//2
+
+	items[++i] = new Item("fourthItem", { 360,0,120,120 }, { 13,20,30,50 });
+	items[i]->butt = App->gui->AddButton(700, 100, atlas, items[i]->animRect, true, nullptr);//3
+
+	items[++i] = new Item("fifthItem", { 480,0,120,120 }, { 14,20,30,50 });
+	items[i]->butt = App->gui->AddButton(900, 100, atlas, items[i]->animRect, true, nullptr);//4
+
+
+
+	items[0]->butt->SetRelation(items[1]->butt, InterfaceElement::Directions::RIGHT);
+	items[1]->butt->SetRelation(items[2]->butt, InterfaceElement::Directions::RIGHT);
+	items[2]->butt->SetRelation(items[3]->butt, InterfaceElement::Directions::RIGHT);
+	items[3]->butt->SetRelation(items[4]->butt, InterfaceElement::Directions::RIGHT);
+	items[4]->butt->SetRelation(items[0]->butt, InterfaceElement::Directions::RIGHT);
+	/*
 	swiftBoots = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y / 3 + 50, atlas, { 451,492,130,130 }, true, item1PressCallb);
 	cursedSword = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3 + 50, atlas, { 581,492,130,130 }, true, item2PressCallb);
 	paladinsHandguards = App->gui->AddButton(sizeScreen.x / 4 * 3, sizeScreen.y / 3 + 50, atlas, { 711,492,130,130 }, true, item3PressCallb);
@@ -134,18 +142,23 @@ void ItemSelecScene::LoadSceneUI() {
 	item6Stats->setString(magicRobeStr);
 	item6Stats->SetParent(magicRobe);
 	item6Stats->SetAnchor(0.5f, 0);
-	item6Stats->culled = false;
+	item6Stats->culled = false;*/
 }
 
-bool ItemSelecScene::AllItemsSelected() {
-
+bool ItemSelecScene::AllPlayersReady() {
+	
 	bool ret = true;
-	for (std::list<Selection>::iterator focus = playersSelections.begin(); focus != playersSelections.end(); focus++) {
-		bool ret2 = (*focus).locked;
+	for (int i = 0; i < controllersNum; i++) {
+		if (players[i].locked == 3) {
+			players[i].ready = true;
+		}
+	}
+	for (int i = 0; i < controllersNum; i++) {
+		bool ret2 = players[i].ready;
 		ret &= ret2;
 	}
-
-	return ret;
+	
+	return ret;//
 }
 
 void ItemSelecScene::SetControllerFocus() {
@@ -154,17 +167,18 @@ void ItemSelecScene::SetControllerFocus() {
 	if (controllersNum == 0) {
 		return;
 	}
+
 	
-	Button* butt = *(buttonsForController.begin());
+	Button* butt = (Button*)App->gui->getFocusedItem();
 
 	for (int i = 1; i <= controllersNum; i++) {
-		Selection focus;
-		focus.but = butt;
-		focus.playerNum = i;
-		focus.totalControllersNum = controllersNum;
-		focus.LoadArrows();
-
-		playersSelections.push_back(focus);
+		Player player;		
+		player.focusedItem = items[0];
+	
+		player.playerNum = i;
+		player.totalControllersNum = controllersNum;
+		player.LoadArrows();
+		players.push_back(player);
 	}
 }
 
@@ -173,127 +187,66 @@ void ItemSelecScene::SetControllerFocus() {
 
 void ItemSelecScene::ChooseFocus() {
 
-	for (std::list<Selection>::iterator focus = playersSelections.begin(); focus != playersSelections.end(); focus++) {
-		if (App->input->GetButtonFromController((*focus).playerNum) == CharInput::JUMPINPUT) {
+	for (int i = 0; i < controllersNum; i++) {
+		if (players[i].ready) {
+			return;
+		}
+		if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::JUMPINPUT) {
 			LOG("");
-			(*focus).arrow->ChangeAnimation((*focus).arrowLockRect);
-			(*focus).locked = true;			
+			
+			players[i].locked++;
+			players[i].playerItems[players[i].locked] = players[i].focusedItem;
+			players[i].LockedArrow(players[i].locked);
+			
 		}
 	}
 }
 
 void ItemSelecScene::ManageDisplacementFocus() {
-	for (std::list<Selection>::iterator foc = playersSelections.begin(); foc != playersSelections.end(); foc++) {
-		if (!(*foc).locked) {
-			if (App->input->GetButtonFromController((*foc).playerNum) == CharInput::CH_RIGHT) {
-				for (std::list<Button*>::iterator button = buttonsForController.begin(); button != buttonsForController.end(); button++) {
-					if (*button == (*foc).but) {
-						button++;
-						if (button != buttonsForController.end()) {
-							(*foc).but = (*button);
-							button--;
-							(*foc).DrawOrderedArrow();
+	for (int i = 0; i < controllersNum; i++) {
+		if (players[i].ready) {
+			return;
+		}
+		if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::CH_DOWN) {
 
-						}
-						return;
-					}
-				}
-			}
-
-			else if (App->input->GetButtonFromController((*foc).playerNum) == CharInput::CH_LEFT) {
-				for (std::list<Button*>::iterator button = buttonsForController.begin(); button != buttonsForController.end(); button++) {
-					if (!(*foc).locked) {
-						if (*button == (*foc).but) {
-							if (button != buttonsForController.begin()) {
-								button--;
-								(*foc).but = (*button);
-								button++;
-								(*foc).arrow->setPosition((*foc).but->getPositionX(), (*foc).but->getPositionY() - (*foc).but->rect.h / 2);
-								(*foc).DrawOrderedArrow();
-
-							}
-							return;
-						}
-					}
-				}
+			InterfaceElement* elem = players[i].focusedItem->butt->GetRelativeElement(InterfaceElement::Directions::DOWN);			
+			if (elem != nullptr) {
+				players[i].focusedItem->butt = (Button*)elem;
+				players[i].DrawOrderedArrow();
+				App->gui->setFocus(elem);
 			}
 		}
+		else if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::CH_UP) {
+			InterfaceElement* elem = players[i].focusedItem->butt->GetRelativeElement(InterfaceElement::Directions::UP);
+			if (elem != nullptr) {
+				players[i].focusedItem->butt = (Button*)elem;
+				players[i].DrawOrderedArrow();
+				App->gui->setFocus(elem);
+			}
+		}
+		else if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::CH_LEFT) {
+			InterfaceElement* elem = players[i].focusedItem->butt->GetRelativeElement(InterfaceElement::Directions::LEFT);						if (elem != nullptr)
+				if (elem != nullptr) {
+					players[i].focusedItem->butt = (Button*)elem;
+					players[i].DrawOrderedArrow();
+					App->gui->setFocus(elem);
+				}
+		}
+		else if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::CH_RIGHT) {
+			InterfaceElement* elem = players[i].focusedItem->butt->GetRelativeElement(InterfaceElement::Directions::RIGHT);						if (elem != nullptr)
+				if (elem != nullptr) {
+					players[i].focusedItem->butt = (Button*)elem;
+					players[i].DrawOrderedArrow();
+					App->gui->setFocus(elem);
+					
+				}
+		}
+		
 	}
 }
 
-void item1PressCallb(size_t arg_size...) {
-	LOG("PRESSED");
-}
 
-void item1HoverEnCallb(size_t arg_size...) {
-	LOG("HOVERENTER");
-}
-
-void item1HoverExCallb(size_t arg_size...) {
-	LOG("HOVEREXIT");
-}
-
-void item2PressCallb(size_t arg_size...) {
-	LOG("PRESSED");
-}
-
-void item2HoverEnCallb(size_t arg_size...) {
-	LOG("HOVERENTER");
-}
-
-void item2HoverExCallb(size_t arg_size...) {
-	LOG("HOVEREXIT");
-}
-
-void item3PressCallb(size_t arg_size...) {
-	LOG("PRESSED");
-}
-
-void item3HoverEnCallb(size_t arg_size...) {
-	LOG("HOVERENTER");
-}
-
-void item3HoverExCallb(size_t arg_size...) {
-	LOG("HOVEREXIT");
-}
-
-void item4PressCallb(size_t arg_size...) {
-	LOG("PRESSED");
-}
-
-void item4HoverEnCallb(size_t arg_size...) {
-	LOG("HOVERENTER");
-}
-
-void item4HoverExCallb(size_t arg_size...) {
-	LOG("HOVEREXIT");
-}
-
-void item5PressCallb(size_t arg_size...) {
-	LOG("PRESSED");
-}
-
-void item5HoverEnCallb(size_t arg_size...) {
-	LOG("HOVERENTER");
-}
-
-void item5HoverExCallb(size_t arg_size...) {
-	LOG("HOVEREXIT");
-}
-
-void item6PressCallb(size_t arg_size...) {
-	LOG("PRESSED");
-}
-
-void item6HoverEnCallb(size_t arg_size...) {
-	LOG("HOVERENTER");
-}
-
-void item6HoverExCallb(size_t arg_size...) {
-	LOG("HOVEREXIT");
-}
-
-void Selection::LoadArrows() {
+void ItemSelecScene::Player::LoadArrows() {
 	
 	switch (playerNum) {
 	case 0: return;
@@ -315,22 +268,20 @@ void Selection::LoadArrows() {
 		break;
 	}
 	
-	arrow = App->gui->AddSprite(but->getPositionX(), but->getPositionY() - but->rect.h/2, nullptr, arrowRect);
+	arrow = App->gui->AddSprite(focusedItem->butt->getPositionX(), focusedItem->butt->getPositionY() - focusedItem->butt->rect.h/2, nullptr, arrowRect);
 	DrawOrderedArrow();
 }
 
-void Selection::DrawOrderedArrow() {
-	
-	
-	int distance = but->rect.w / (totalControllersNum+1);
+void ItemSelecScene::Player::DrawOrderedArrow() {		
+	int distance = focusedItem->butt->rect.w / (totalControllersNum+1);
 	 
-	int x = but->getPositionX() - (but->rect.w/2) + (distance * playerNum);
-	arrow->setPosition(x, but->getPositionY() - but->rect.h / 2);
+	int x = focusedItem->butt->getPositionX() - (focusedItem->butt->rect.w/2) + (distance * playerNum);
+	arrow->setPosition(x, focusedItem->butt->getPositionY() - focusedItem->butt->rect.h / 2);
 }
 
 void ItemSelecScene::ApplyItemAttributes() {
 
-	
+	/*
 	for (std::list<Selection>::iterator focus = playersSelections.begin(); focus != playersSelections.end(); focus++) {
 		EntityStats* item = &App->entities->items[(*focus).playerNum-1];
 
@@ -360,5 +311,10 @@ void ItemSelecScene::ApplyItemAttributes() {
 			item->atk += 2;
 			item->spd += 2;
 		}
-	}
+	}*/
+}
+
+void ItemSelecScene::Player::LockedArrow(uint lockedNum) {
+	lockedArrows[lockedNum-1] = App->gui->AddSprite(arrow->getPositionX(), arrow->getPositionY() , nullptr, arrowLockRect);
+
 }

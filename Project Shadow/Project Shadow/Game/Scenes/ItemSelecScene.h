@@ -6,53 +6,56 @@
 
 #include <list>
 
+
 class Button;
 class Sprite;
 class Label;
 class InterfaceElement;
 
-class Selection {
-
-public:
-	Button* but;
-	int playerNum;
-	int totalControllersNum;
-	Sprite* arrow;	
-	SDL_Rect arrowRect;
-	SDL_Rect arrowLockRect;
-	bool locked = false;
-
-	void LoadArrows();
-	void DrawOrderedArrow();
-};
 
 class ItemSelecScene:
 	public Scene
 {
 public:
 
-	Button *	swiftBoots = nullptr;
-	Button *	cursedSword = nullptr;
-	Button *	paladinsHandguards = nullptr;
-	Button *	ringProtection = nullptr;
-	Button *	dragonSlayer = nullptr;
-	Button *	magicRobe = nullptr;
-	Button *	confirmButton = nullptr;
-	Label *		confirmLabel = nullptr;
-	Label *		item1Stats = nullptr;
-	Label *		item2Stats = nullptr;
-	Label *		item3Stats = nullptr;
-	Label *		item4Stats = nullptr;
-	Label *		item5Stats = nullptr;
-	Label *		item6Stats = nullptr;
 
-	String swiftBootsStr = "SPEED + 10"; //1
-	String cursedSwordStr = "ATTACK + 10"; //2
-	String paladinsStr = "DEFENSE + 10"; //3
-	String ringStr = "LIFE + 10"; //4
-	String dragonSlayerStr = "ATK.+ 5 DEF.+ 5"; //5
-	String magicRobeStr = "ATK.+ 5 SPD.+ 5"; //6
+	
 
+
+	struct Item {
+		Item();
+		Item(std::string _name, SDL_Rect _animRect, EntityStats _stats) {
+			name = _name;
+			animRect = _animRect;
+			stats = _stats;
+		}
+		std::string name;
+		Button* butt = nullptr;
+		Label* label = nullptr;
+		EntityStats stats;
+		SDL_Rect animRect;
+	};
+
+	class Player {
+
+	public:
+		Item* focusedItem = nullptr;
+		int playerNum;
+		int totalControllersNum;
+		Sprite* arrow = nullptr;
+		SDL_Rect arrowRect;
+		Sprite* lockedArrows[3];		
+		SDL_Rect arrowLockRect;
+		uint locked = 0;
+		Item* playerItems[3];
+		bool ready = false;
+
+		void LockedArrow(uint lockedNum);
+		void LoadArrows();
+		void DrawOrderedArrow();
+	};
+
+	Item* items[15];
 	int controllersNum;
 
 	ItemSelecScene();
@@ -82,9 +85,9 @@ private:
 	void ManageDisplacementFocus();
 	void ChooseFocus();
 	void ApplyItemAttributes();
-	bool AllItemsSelected();
+	bool AllPlayersReady();
 	
-	std::list<Selection> playersSelections;
+	std::vector<Player> players;
 	std::list<Button*> buttonsForController;
 };
 

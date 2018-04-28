@@ -123,7 +123,7 @@ public:
 	ModuleSceneManager*		scenes = nullptr;
 	ModuleEntityManager*	entities = nullptr;
 
-	bool debug = false;
+	bool debug = true;
 
 private:
 

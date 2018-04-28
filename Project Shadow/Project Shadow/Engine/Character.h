@@ -7,7 +7,12 @@
 #include "Entity.h"
 #include "ModuleCollision.h"
 
-enum CharacterTypes;
+
+
+#define COMBO_MARGIN 0.5
+#define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
+
+
 
 
 enum CharInput
@@ -32,14 +37,8 @@ enum CharStateEnum
 	JUMP,
 	WALK,
 	RUN,
-	DASH,
 	ATTACK_LIGHT,
 	ATTACK_HEAVY,
-	ATTACK_L2,
-	ATTACK_L3,
-	ATTACK_H2,
-	ATTACK_J1,
-	ATTACK_J2,
 	STOP,
 	HIT,
 	KNOKED,
@@ -48,20 +47,34 @@ enum CharStateEnum
 	PARRY,
 	PARRIED,
 	TAUNT,
+	AD_ACTION,
+};
+
+struct State
+{
+	CharStateEnum state;
+	Animation anim;
+
 };
 
 struct Attack
 {
-	CharStateEnum state;
+	uint tag;
 	int damage = 0;
 	LIST(Attack*) childs {};
 	CharInput input;
+	Animation anim;
+	bool air;
+	bool ability;
 
-	Attack(CharStateEnum _state, CharInput _input, int _damage = 0)
+	Attack(uint _tag, CharInput _input, std::string animationName, int _damage = 0, bool _air = false, bool ab = false)
 	{
-		state = _state;
+		tag = _tag;
 		input = _input;
 		damage = _damage;
+		anim.LoadAnimationsfromXML(animationName, HERO_SPRITE_ROOT);
+		air = _air;
+		ability = ab;
 	}
 
 	void AddChild(Attack* _child)
@@ -111,6 +124,28 @@ struct Attack
 
 };
 
+struct Ability
+{
+	Attack* atk = nullptr;
+	Timer timer;
+	float cooldown = 0;
+	bool active = false;
+
+	Ability(Attack* _atk, float cd = 0)
+	{
+		atk = _atk;
+		cooldown = cd;
+		active = false;
+	}
+
+	void Activate()
+	{
+		timer.Start();
+		active = false;
+	}
+
+};
+
 
 
 class Character : public Entity
@@ -136,18 +171,43 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; };
 
 	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
-	
+
+
+
+	uint GetMaxLives() const;
+	uint GetCurrentLives() const;
+
+	void SetCombo();
+
+	void Respawn();
+
+	void GetHP(int& curr, int& max);
+
+	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
+	Timer time_attack;
 
 	
 protected:
+
+	void RequestState();
+	void UpdateMainStates();
+	void UpdateCurState(float dt);
+	void UpdateAnimation();
+	bool StateisAtk(CharStateEnum State);
+	Attack* GetAtk(uint atk);
+	Ability* GetAbAtk(uint atk);
 	void GetCollidersFromAnimation();
 	void UpdateCollidersPosition();
+	void LoadState(CharStateEnum _state, std::string animationName);
+	void LoadBasicStates();
+	void UpdateTag(uint& t);
+	void UpdateAbilities();
+	void AdAbility(Ability ab);
 
-	void LoadAnimations();
+	virtual bool HeroStart() { return true; };
+	virtual bool HeroUpdate(float dt) { return true; };
+	virtual void UpdateSpecStates() {};
 	
-
-	Animation idle, walking, attack , death;
-
 	Collider	*collFeet = nullptr,
 				*collHitBox = nullptr,
 				*collAtk = nullptr,
@@ -159,10 +219,23 @@ protected:
 
 	CharStateEnum currentState;
 	CharStateEnum wantedState;
-	CharStateEnum last_attack;
+	uint last_attack;
 
+	LIST(State*) states;
+
+	iPoint initialpos;
+	int initialLife = 0;
+	uint lives = 0, maxLives = 3;
+	int hit_dir = 0;
+	bool hit_bool = 0;
+	bool parried = 0;
+	bool jumping = 0;
+	bool sound_avaliable = true;
+	uint currentTag = 0;
+	uint wantedTag = 0;
 
 	LIST(Attack*) attacks;
+	LIST(Ability) abilities;
 
 };
 

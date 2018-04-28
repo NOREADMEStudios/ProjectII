@@ -17,6 +17,7 @@
 #include "ModuleSceneManager.h"
 #include "ModuleEntityManager.h"
 #include "ModuleCollision.h"
+#include "ModuleTransition.h"
 
 #include "..\Brofiler\Brofiler.h"
 
@@ -40,7 +41,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	/*pathfinding = new j1PathFinding();*/
 	font = new ModuleFonts();
 	gui = new ModuleGUI();
-	//transition = new j1Transition();
+	transition = new ModuleTransition();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -56,7 +57,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	/*AddModule(pathfinding);*/
 	AddModule(font);
 	AddModule(gui);
-	//AddModule(transition);
+	AddModule(transition);
 
 	// render last to swap buffer
 	AddModule(render);

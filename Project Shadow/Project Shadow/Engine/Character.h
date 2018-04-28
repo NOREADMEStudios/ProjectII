@@ -9,10 +9,8 @@
 
 
 
-#define COMBO_MARGIN 0.5
+#define COMBO_MARGIN 1
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
-
-
 
 
 enum CharInput
@@ -146,6 +144,22 @@ struct Ability
 
 };
 
+struct EventState
+{
+	bool active = 0;
+	Timer timer;
+	float time_active = 0;
+	EntityStats stats;
+
+	EventState(float time, int atk, int def, int spd)
+	{
+		time_active = time;
+		stats.atk = atk;
+		stats.def = def;
+		stats.spd = spd;
+	}
+};
+
 
 
 class Character : public Entity
@@ -186,6 +200,7 @@ public:
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 	Timer time_attack;
 
+	void AdBuff(float time = 0, float spd = 0, float atk = 0, float def = 0);
 	
 protected:
 
@@ -203,6 +218,8 @@ protected:
 	void UpdateTag(uint& t);
 	void UpdateAbilities();
 	void AdAbility(Ability ab);
+	void UpdateEventStates();
+
 
 	virtual bool HeroStart() { return true; };
 	virtual bool HeroUpdate(float dt) { return true; };
@@ -222,6 +239,8 @@ protected:
 	uint last_attack;
 
 	LIST(State*) states;
+	LIST(EventState*) eventstates;
+
 
 	iPoint initialpos;
 	int initialLife = 0;

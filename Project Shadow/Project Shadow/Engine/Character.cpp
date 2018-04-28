@@ -66,6 +66,7 @@ bool Character::Start()
 
 	HeroStart();
 
+
 	active = true;
 	return true; 
 }
@@ -90,6 +91,9 @@ bool Character::Update(float dt)
 		RequestState();
 	else
 		currentState = DEATH;
+
+	if (!eventstates.empty())
+		UpdateEventStates();
 
 	Move(dt);
 	Break(dt);
@@ -156,6 +160,7 @@ bool Character::CleanUp(pugi::xml_node&)
 	}
 
 	Utils::ClearList(attacks);
+
 
 	App->collision->RemoveCollider(collHitBox);
 	App->collision->RemoveCollider(collFeet);
@@ -306,6 +311,8 @@ void Character::RequestState() {
 
 void Character::UpdateMainStates()
 {
+
+
 	if (wantedTag != 0 && GetAtk(wantedTag)->ability)
 	{
 		if (!GetAbAtk(wantedTag)->active)
@@ -344,7 +351,7 @@ void Character::UpdateMainStates()
 			currentState = STOP;
 	}
 	
-	if (currentState == JUMP || (currentState == AD_ACTION && GetAtk(currentTag)->air))
+	if (currentState == JUMP || (currentState == AD_ACTION && currentTag != 0 &&  GetAtk(currentTag)->air))
 	{
 		last_attack = 3;
 		if (StateisAtk(wantedState))
@@ -544,15 +551,13 @@ void Character::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 			else
 			{
-				max_speed = 600;
-				_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
+				_this->entity->Impulsate(hit_dir * 8000, 0, 0);
 			}
 			App->audio->PlayFx(10);
 		}
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_shield")
 		{
-			max_speed = 400;
-			_this->entity->Accelerate(hit_dir * 800, 0, 0, 1);
+			_this->entity->Impulsate(hit_dir * 8000, 0, 0);
 		}
 		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")
 		{
@@ -704,4 +709,32 @@ void Character::UpdateAbilities()
 void Character::AdAbility(Ability ab)
 {
 	abilities.push_back(ab);
+}
+
+void Character::UpdateEventStates()
+{
+	std::list<EventState*>::iterator item = eventstates.begin(); 
+
+	while (item != eventstates.end())
+	{
+		if ((*item)->timer.Count((*item)->time_active))
+		{
+			stats = stats - (*item)->stats;
+			item = eventstates.erase(item);
+		}
+		else
+		{
+			item++;
+		}
+	}
+
+}
+
+void Character::AdBuff(float time, float spd, float atk, float def)
+{
+	EventState* buff = new EventState(time, atk, def, spd);
+	stats =  stats + buff->stats;
+
+	eventstates.push_back(buff);
+
 }

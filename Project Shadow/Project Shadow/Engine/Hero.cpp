@@ -58,6 +58,7 @@ bool Hero::HeroStart()
 	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", 5);
 	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK,"jump_attack", 2, true);
 	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", 5, true);
+	//Attack* ulti = new Attack(9, TAUNTINPUT, "win", 0, 0, true);
 
 	attacks.push_back(light_1);
 	attacks.push_back(light_2);
@@ -67,6 +68,7 @@ bool Hero::HeroStart()
 	attacks.push_back(jump_a);
 	attacks.push_back(jump_a2);
 	attacks.push_back(jump_a3);
+	//attacks.push_back(ulti);
 
 	light_1->AddChild(light_2);
 	light_2->AddChild(light_3);
@@ -79,7 +81,8 @@ bool Hero::HeroStart()
 	Ability* kick = new Ability(heavy_1, 3);
 	AdAbility(*kick);
 
-	
+	Ability* Aulti = new Ability(light_2, 3);
+	AdAbility(*Aulti);
 	return true;
 }
 
@@ -104,6 +107,7 @@ bool Hero::HeroUpdate(float dt)
 			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
 			break;
 		}
+
 	}
 
 
@@ -117,6 +121,16 @@ bool Hero::HeroUpdate(float dt)
 			flip = true;
 		}
 	}
+
+	if (currentTag == 4 && GetAbAtk(currentTag)->active)
+	{
+		buffed = true;
+	}
+	else
+	{
+		buffed = false;
+	}
+	
 	return true;
 }
 
@@ -151,6 +165,12 @@ void Hero::UpdateSpecStates()
 	{
 		currentState = wantedState;
 		currentAnimation->Reset();
-
 	}
+
+	if (currentTag == 4 && !buffed)
+	{
+		AdBuff(5, 300);
+		buffed = true;
+	}
+	
 }

@@ -149,19 +149,11 @@
     <ClCompile Include="Engine\UI\Healthbar.cpp">
       <Filter>Engine\UI</Filter>
     </ClCompile>
-
     <ClCompile Include="Engine\Spells.cpp">
       <Filter>Engine\Entities\Spells</Filter>
     </ClCompile>
     <ClCompile Include="Game\Spells\FireBall.cpp">
       <Filter>Engine\Entities\Spells</Filter>
-
-    <ClCompile Include="Engine\UI\Menu.cpp">
-      <Filter>Engine\UI</Filter>    
-    </ClCompile>
-    <ClCompile Include="Engine\ModuleTransition.cpp">
-      <Filter>Engine\Modules</Filter>
-
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -291,19 +283,11 @@
     <ClInclude Include="Engine\UI\Healthbar.h">
       <Filter>Engine\UI</Filter>
     </ClInclude>
-
     <ClInclude Include="Engine\Spells.h">
       <Filter>Engine\Entities\Spells</Filter>
     </ClInclude>
     <ClInclude Include="Game\Spells\FireBall.h">
       <Filter>Engine\Entities\Spells</Filter>
-
-    <ClInclude Include="Engine\UI\Menu.h">
-      <Filter>Engine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ModuleTransition.h">
-      <Filter>Engine\Modules</Filter>
-
     </ClInclude>
   </ItemGroup>
 </Project>

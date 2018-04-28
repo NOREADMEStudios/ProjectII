@@ -65,13 +65,11 @@ public:
 
 	SDL_Point ScreenToWorld(int x, int y) const;
 
+
 	std::priority_queue<Entity*, std::vector<Entity*>, OrderCrit> SpriteOrderer;
 
 	void FillQueue(Entity* entity);
 	void PrintFromQueue(std::priority_queue<Entity*, std::vector<Entity*>, OrderCrit>& queue, float dt);
-
-	// Returns a texture containing the current image of the program
-	SDL_Texture* Snapshot();
 
 public:
 

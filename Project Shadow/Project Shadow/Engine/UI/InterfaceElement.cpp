@@ -14,7 +14,6 @@ InterfaceElement::InterfaceElement() : next_frame_enabled(true), scale(App->win-
 	content_rect_margins = { 0,0,0,0 };
 	result_rect = { 0,0,0,0 };
 	initial_pos = { 0,0 };
-	memset(relations, NULL, Directions::AMOUNT);
 }
 
 
@@ -46,8 +45,8 @@ bool InterfaceElement::PreUpdate() {
 
 	ComputeRects();
 
-	for (std::list<InterfaceElement*>::reverse_iterator current_element = children.rbegin();
-		current_element != children.rend() && ret == true;
+	for (std::list<InterfaceElement*>::reverse_iterator current_element = elements.rbegin();
+		current_element != elements.rend() && ret == true;
 		current_element++)
 	{
 		InterfaceElement* ele = (*current_element);
@@ -62,8 +61,8 @@ bool InterfaceElement::PreUpdate() {
 bool InterfaceElement::Update(float dt) {
 	bool ret = true;
 
-	for (std::list<InterfaceElement*>::iterator current_element = children.begin();
-		current_element != children.end() && ret;
+	for (std::list<InterfaceElement*>::iterator current_element = elements.begin();
+		current_element != elements.end() && ret;
 		current_element++)
 	{
 		if ((*current_element)->isEnabled())
@@ -80,8 +79,8 @@ bool InterfaceElement::Update(float dt) {
 bool InterfaceElement::PostUpdate() {
 	bool ret = true;
 
-	for (LIST_ITERATOR(InterfaceElement*) current_element = children.begin();
-		current_element != children.end() && ret; current_element++) {
+	for (LIST_ITERATOR(InterfaceElement*) current_element = elements.begin();
+		current_element != elements.end() && ret; current_element++) {
 		if ((*current_element)->isEnabled())
 			ret = (*current_element)->PostUpdate();
 	}
@@ -92,13 +91,13 @@ bool InterfaceElement::PostUpdate() {
 bool InterfaceElement::CleanUp() {
 	bool ret = true;
 	
-	for (LIST_REVERSE_ITERATOR(InterfaceElement*) current_element = children.rbegin();
-		current_element != children.rend() && ret; current_element++) {
+	for (LIST_REVERSE_ITERATOR(InterfaceElement*) current_element = elements.rbegin();
+		current_element != elements.rend() && ret; current_element++) {
 		ret = (*current_element)->CleanUp();
 		Utils::Release(*current_element);
 	}
 
-	children.clear();
+	elements.clear();
 
 	return ret;
 }
@@ -190,13 +189,13 @@ void InterfaceElement::DebugDraw() {
 }
 
 InterfaceElement * InterfaceElement::AddElement(InterfaceElement * elem) {
-	children.push_back(elem);
+	elements.push_back(elem);
 	return elem;
 }
 
 void InterfaceElement::SetParent(InterfaceElement * parent) {
 	if (this->parent != nullptr) {	// Erase the element from its previous parent if it already has one
-		Utils::RemoveFromList(this, this->parent->children);
+		Utils::RemoveFromList(this, this->parent->elements);
 	} else
 		App->gui->RemoveElement(this);
 
@@ -210,22 +209,22 @@ void InterfaceElement::SetParent(InterfaceElement * parent) {
 
 InterfaceElement * InterfaceElement::getNextChild(InterfaceElement * child)
 {
-	if (children.size() <= 0) return nullptr;
-	size_t pos = Utils::FindInList(child, children) + 1;
-	if (pos >= children.size())
+	if (elements.size() <= 0) return nullptr;
+	size_t pos = Utils::FindInList(child, elements) + 1;
+	if (pos >= elements.size())
 		pos = 0;
-	LIST_ITERATOR(InterfaceElement*) it = children.begin();
+	LIST_ITERATOR(InterfaceElement*) it = elements.begin();
 	for (size_t i = 0; i <= pos; it++, i++) {}
 	return *it;
 }
 
 InterfaceElement * InterfaceElement::getPrevChild(InterfaceElement * child)
 {
-	if (children.size() <= 0) return nullptr;
-	int pos = (int)Utils::FindInList(child, children) - 1;
+	if (elements.size() <= 0) return nullptr;
+	int pos = (int)Utils::FindInList(child, elements) - 1;
 	if (pos < 0)
-		pos = children.size() - 1;
-	LIST_ITERATOR(InterfaceElement*) it = children.begin();
+		pos = elements.size() - 1;
+	LIST_ITERATOR(InterfaceElement*) it = elements.begin();
 	for (size_t i = 0; i <= pos; it++, i++) {}
 	return *it;
 }
@@ -240,18 +239,6 @@ InterfaceElement * InterfaceElement::getPrevSibling()
 {
 	if (parent == nullptr) return nullptr;
 	return parent->getPrevChild(this);
-}
-
-void InterfaceElement::SetRelation(InterfaceElement * elem, Directions dir, bool assignOther)
-{
-	relations[dir] = elem;
-	if (assignOther)
-		elem->relations[dir < 2 ? dir + 2 : dir - 2] = this;
-}
-
-InterfaceElement * InterfaceElement::GetRelativeElement(Directions dir)
-{
-	return relations[dir];
 }
 
 bool InterfaceElement::isInteractuable()

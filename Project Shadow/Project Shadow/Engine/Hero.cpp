@@ -3,7 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
-
+#include "ModuleAudio.h"
 #include "ModuleMap.h"
 #include "App.h"
 
@@ -24,9 +24,9 @@ bool Hero::Awake(pugi::xml_node&)
 	return true;
 }
 
-bool Hero::HeroStart()
+bool Hero::Start()
 {
-	switch (hero_num) {
+	switch (heroNum) {
 	case 1: 
 		sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
 		break;
@@ -41,32 +41,49 @@ bool Hero::HeroStart()
 		break;
 	}
 
+	LoadAnimations();
 
+	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
+	collHitBox = App->collision->CreateCollider({}, "player_hitbox", Collider::HITBOX);
+	collFeet = App->collision->CreateCollider({}, "player_feet", Collider::FEET);
+	collDef = App->collision->CreateCollider({}, "player_shield", Collider::DEF);
+	collParry = App->collision->CreateCollider({}, "player_parry", Collider::PARRY);
 
+	//Testing things
+	App->collision->AddCollider(collAtk, this);
+	App->collision->AddCollider(collHitBox, this);
+	App->collision->AddCollider(collFeet, this);
+	App->collision->AddCollider(collDef, this);
+	App->collision->AddCollider(collParry, this);
 
 	invencible.dur = 3;
 	invencible.fr = 0.2f;
 	//collider = { 50 , 50 , 50, 50 };
-
+	stats.spd = 180;
+	stats.life = 100;
+	stats.atk = 8;
+	stats.def = 1;
 	char_depth = 20;
 	gamepos.y = 0;
 
-	stats.atk += App->entities->items[hero_num-1].atk;
-	stats.def += App->entities->items[hero_num-1].def;
-	stats.spd += App->entities->items[hero_num-1].spd;
-	stats.life += App->entities->items[hero_num-1].life;
+	stats.atk += App->entities->items[heroNum-1].atk;
+	stats.def += App->entities->items[heroNum-1].def;
+	stats.spd += App->entities->items[heroNum-1].spd;
+	stats.life += App->entities->items[heroNum-1].life;
 
+	initialpos.x = gamepos.x;
+	initialpos.y = gamepos.y;
+	initialLife = stats.life;
+	lives = maxLives;
 
-
-
-	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", 2);
-	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "kick", 2, false, true);
-	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", 0, true);
-	Attack* light_2 = new Attack(4, LIGHT_ATTACK, "attack_knee", 2);
-	Attack* heavy_2 = new Attack(5, HEAVY_ATTACK, "strong_attack", 2);
-	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", 5);
-	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK,"jump_attack", 2, true);
-	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", 5, true);
+	Attack* light_1 = new Attack(ATTACK_LIGHT, LIGHT_ATTACK, 2);
+	Attack* light_2 = new Attack(ATTACK_L2, LIGHT_ATTACK, 2);
+	Attack* light_3 = new Attack(ATTACK_L3, LIGHT_ATTACK, 5);
+	Attack* heavy_1 = new Attack(ATTACK_HEAVY, HEAVY_ATTACK, 2);
+	Attack* heavy_2 = new Attack(ATTACK_H2, HEAVY_ATTACK, 2);
+	Attack* jump_a = new Attack(JUMP, JUMPINPUT, 0);
+	Attack* jump_a2 = new Attack(ATTACK_J1, LIGHT_ATTACK, 2);
+	Attack* jump_a3 = new Attack(ATTACK_J2, HEAVY_ATTACK, 5);
 
 	attacks.push_back(light_1);
 	attacks.push_back(light_2);
@@ -79,16 +96,20 @@ bool Hero::HeroStart()
 
 	light_1->AddChild(light_2);
 	light_2->AddChild(light_3);
-	//heavy_1->AddChild(light_3);
+	heavy_1->AddChild(light_3);
 	light_2->AddChild(heavy_2);
-	//heavy_1->AddChild(heavy_2);
+	heavy_1->AddChild(heavy_2);
 	jump_a->AddChild(jump_a2);
 	jump_a->AddChild(jump_a3);
 
-	Ability* kick = new Ability(heavy_1, 3);
-	AdAbility(*kick);
+	LoadShadow();
 
-	
+	max_speed = stats.spd;
+
+	currentState = IDLE;
+
+	currentAnimation = &idle;
+	active = true;
 	return true;
 }
 
@@ -99,24 +120,30 @@ bool Hero::PreUpdate()
 	return true;
 }
 
-bool Hero::HeroUpdate(float dt)
+bool Hero::Update(float dt)
 {
 
-	int z_dir = directions.down - directions.up;
-	int x_dir = directions.right - directions.left;
-
-	switch (currentState)
-	{
-		case PROTECT:
-		{
-			max_speed = stats.spd * 0.5f;
-			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
-			break;
-		}
+	if (paused) {		
+		return PausedUpdate();
 	}
+	currentAnimation = &idle;
+
+	
+	if (stats.life > 0)
+		RequestState();
+	else
+		currentState = DEATH;
+
+	Move(dt);
+	Break(dt);
 
 
-	if (currentState != PROTECT && !StateisAtk(currentState)) {
+	UpdateAnimation();
+	UpdateState();
+	UpdateCurState(dt);
+
+
+	 if (currentState != PROTECT && !StateisAtk(currentState)) {
 		if (directions.right - directions.left == 1)
 		{
 			flip = false;
@@ -126,7 +153,6 @@ bool Hero::HeroUpdate(float dt)
 			flip = true;
 		}
 	}
-
 
 
 
@@ -171,7 +197,6 @@ bool Hero::PostUpdate()
 bool Hero::CleanUp(pugi::xml_node&)
 {
 	
-
 	App->textures->UnLoad(sprites);
 
 	UnloadShadow();
@@ -189,13 +214,157 @@ bool Hero::CleanUp(pugi::xml_node&)
 	App->collision->RemoveCollider(collFeet);*/
 
 	Utils::ClearList(attacks);
-
 	return true;
 }
 
-void Hero::UpdateSpecStates()
+void Hero::LoadAnimations()
 {
-	if (currentState == PARRY)
+	idle.LoadAnimationsfromXML("idle",HERO_SPRITE_ROOT);
+	walking.LoadAnimationsfromXML("walking",HERO_SPRITE_ROOT);
+	jump.LoadAnimationsfromXML("jump", HERO_SPRITE_ROOT);
+	stop.LoadAnimationsfromXML("stop", HERO_SPRITE_ROOT);
+	run.LoadAnimationsfromXML("run", HERO_SPRITE_ROOT);
+	jumpAtk.LoadAnimationsfromXML("jump_attack", HERO_SPRITE_ROOT);
+	jumpProt.LoadAnimationsfromXML("jump_protect", HERO_SPRITE_ROOT);
+	hit.LoadAnimationsfromXML("hit", HERO_SPRITE_ROOT);
+	kick.LoadAnimationsfromXML("kick", HERO_SPRITE_ROOT);
+	attack.LoadAnimationsfromXML("attack", HERO_SPRITE_ROOT);
+	death.LoadAnimationsfromXML("death", HERO_SPRITE_ROOT);
+	attack_l2.LoadAnimationsfromXML("attack_knee", HERO_SPRITE_ROOT);
+	attack_l3.LoadAnimationsfromXML("attack_2", HERO_SPRITE_ROOT);
+	protect.LoadAnimationsfromXML("protect", HERO_SPRITE_ROOT);
+	taunt.LoadAnimationsfromXML("win", HERO_SPRITE_ROOT);
+	attack_s2.LoadAnimationsfromXML("strong_attack", HERO_SPRITE_ROOT);
+	parry.LoadAnimationsfromXML("standup", HERO_SPRITE_ROOT);
+	attack_j2.LoadAnimationsfromXML("windwhirl", HERO_SPRITE_ROOT);
+}
+
+void Hero::RequestState() {
+	std::list<CharInput> inputs;
+	int NumControllers = App->input->GetNumControllers();
+	if (heroNum <= NumControllers) {
+		inputs = GetControllerInputs();
+	}
+	else {
+		if (heroNum-NumControllers == 1) {
+			inputs = FirstPlayerConfig();
+		}
+
+		else if (heroNum - NumControllers == 2)
+			inputs = SecondPlayerConfig();
+	}
+	
+
+	bool l_attack = false, 
+		s_attack = false, 
+		jump = false, 
+		block = false, 
+		run = false,
+		taunt_b = false,
+		parry_b = false;
+
+	directions.down = false;
+	directions.up = false;
+	directions.left = false;
+	directions.right = false;
+
+	for (std::list<CharInput>::iterator item = inputs.begin(); item != inputs.end(); item++) {
+		CharInput input = *item;
+		switch (input)
+		{
+		case NONECHARINPUT:
+			break;
+		case CH_UP:
+			directions.up = true;
+			break;
+		case CH_DOWN:
+			directions.down = true;
+			break;
+		case CH_RIGHT:
+			directions.right = true;
+			break;
+		case CH_LEFT:
+			directions.left = true;
+			break;
+		case LIGHT_ATTACK:
+			l_attack = true;
+			break;
+		case HEAVY_ATTACK:
+			s_attack = true;
+			break;
+		case JUMPINPUT:
+			jump = true;
+			break;
+		case RUNINPUT:
+			run = true;
+			break;
+		case DEFEND:
+			block = true;
+			break;
+		case TAUNTINPUT:
+			taunt_b = true;
+			break;
+		case PARRYINPUT:
+			parry_b = true;
+			break;
+		default:
+			break;
+		}
+	}
+
+	wantedState = IDLE;
+
+	if (directions.down || directions.left || directions.right || directions.up)
+	{
+		if (run)
+			wantedState = RUN;
+		else
+			wantedState = WALK;
+	}
+
+	if (taunt_b)
+		wantedState = TAUNT;
+
+	if (jump)
+	{
+		wantedState = JUMP;
+	}
+	if (l_attack)
+	{
+		wantedState = ATTACK_LIGHT;
+	}
+	else if (s_attack)
+	{
+		wantedState = ATTACK_HEAVY;
+	}
+	else if (block)
+		wantedState = PROTECT;
+	else if (parry_b)
+		wantedState = PARRY;
+	
+
+
+}
+
+void Hero::UpdateState()
+{
+
+	if (currentState == WALK  || currentState == IDLE)
+	{
+		currentState = wantedState;
+
+		if (StateisAtk(wantedState) && last_attack != IDLE)
+		{
+			SetCombo();
+			time_attack.Start();
+		}	
+	}
+	else if (currentState == RUN)
+	{
+		if (wantedState != RUN)
+			currentState = STOP;
+	}
+	else if (currentState == PARRY)
 	{
 		if (parried)
 		{
@@ -211,12 +380,140 @@ void Hero::UpdateSpecStates()
 	}
 	else if (currentState == PROTECT && wantedState != PROTECT)
 	{
+			currentState = wantedState;
+			currentAnimation->Reset();
+		
+	}
+	if (currentState == JUMP ||currentState == ATTACK_J1 ||currentState == ATTACK_J2)
+	{
+		last_attack = JUMP;
+		if (StateisAtk(wantedState))
+		{
+			SetCombo();
+			time_attack.Start();
+		}
+		if ((currentState == ATTACK_J1 || currentState == ATTACK_J2) && currentAnimation->Finished())
+		{
+			currentAnimation->Reset();
+			currentState = JUMP;
+		}
+		if (gamepos.y <= 0)
+		{
+			jumping = false;
+			speedVector.y = 0;
+			currentAnimation->Reset();
+			currentState = wantedState;
+		}
+	}
+	else if (currentAnimation->Finished())
+	{	
+	
+		if (currentState == DEATH)
+		{
+			lives--;
+			if (lives > 0)
+				Respawn();
+
+			else
+				active = false;
+		}
+;
+
+		last_attack = currentState;
 		currentState = wantedState;
+
 		currentAnimation->Reset();
+
+		if (!StateisAtk(last_attack))
+		{
+			currentState = wantedState;
+		}
+		else 
+		{
+			SetCombo();
+			time_attack.Start();	
+		}
+	}
+
+	if (time_attack.Count(COMBO_MARGIN))
+	{
+		last_attack = IDLE;
+	}
+
+
+}
+
+void Hero::UpdateCurState(float dt)
+{
+	int z_dir =  directions.down - directions.up;
+	int x_dir =	 directions.right - directions.left;
+
+	if (currentState == ATTACK_H2)
+	{
+		breaking = true;
+	}
+	else
+	{
+		breaking = false;
+	}
+
+	if (gamepos.y > 0 && (currentState != ATTACK_J1 && currentState != ATTACK_J2))
+	{
+		Accelerate(x_dir, -2, z_dir, dt);
+	}
+	else if (gamepos.y < 0)
+	{
+		gamepos.y = 0;
+	}
+
+	switch (currentState)
+	{
+		case WALK:
+		{
+			max_speed = stats.spd;
+			Accelerate(x_dir * stats.spd,0, z_dir * stats.spd, dt);
+			break;
+		}
+		case RUN:
+		{
+			max_speed = stats.spd * 1.5f;
+			Accelerate((x_dir * stats.spd), 0,(z_dir * stats.spd), dt);
+			break;
+		}
+		case PROTECT:
+		{
+			max_speed = stats.spd * 0.5f;
+			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+			break;
+		}
+		case HIT:
+		{
+			if (hit_bool)
+			{
+				Accelerate(hit_dir, 0, 0, dt);
+				hit_bool = false;
+			}
+			break;
+		}
+		case JUMP:
+		{	
+			if (!jumping)
+			{
+				jumping = true;
+				max_speed = 1000;
+				Accelerate(x_dir, 500, z_dir, dt);
+			}	
+			break;
+		}
+		case ATTACK_J1:
+		case ATTACK_J2:
+		{	
+				Accelerate(x_dir, -1, z_dir, dt);
+				break;
+		}
 
 	}
 }
-
 
 void Hero::UpdateAnimation()
 {
@@ -636,4 +933,3 @@ std::list<CharInput> Hero::GetControllerInputs() const {
 	}
 	return charInputs;
 }
-

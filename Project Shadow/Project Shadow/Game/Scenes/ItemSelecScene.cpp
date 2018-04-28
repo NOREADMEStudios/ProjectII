@@ -87,62 +87,12 @@ void ItemSelecScene::LoadSceneUI() {
 
 
 
-	items[0]->butt->SetRelation(items[1]->butt, InterfaceElement::Directions::RIGHT);
-	items[1]->butt->SetRelation(items[2]->butt, InterfaceElement::Directions::RIGHT);
-	items[2]->butt->SetRelation(items[3]->butt, InterfaceElement::Directions::RIGHT);
-	items[3]->butt->SetRelation(items[4]->butt, InterfaceElement::Directions::RIGHT);
-	items[4]->butt->SetRelation(items[0]->butt, InterfaceElement::Directions::RIGHT);
-	/*
-	swiftBoots = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y / 3 + 50, atlas, { 451,492,130,130 }, true, item1PressCallb);
-	cursedSword = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3 + 50, atlas, { 581,492,130,130 }, true, item2PressCallb);
-	paladinsHandguards = App->gui->AddButton(sizeScreen.x / 4 * 3, sizeScreen.y / 3 + 50, atlas, { 711,492,130,130 }, true, item3PressCallb);
-	ringProtection = App->gui->AddButton(sizeScreen.x /  4, sizeScreen.y / 2 + 50, atlas, { 841,492,130,130 }, true, item4PressCallb);
-	dragonSlayer = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 2 + 50, atlas, { 971,492,130,130 }, true, item5PressCallb);
-	magicRobe = App->gui->AddButton(sizeScreen.x / 4 * 3, sizeScreen.y / 2 + 50, atlas, { 1101,492,130,130 }, true, item6PressCallb);
-	swiftBoots->OnHoverEnter = item1HoverEnCallb;
-	swiftBoots->OnHoverExit = item1HoverExCallb;
-	cursedSword->OnHoverEnter = item2HoverEnCallb;
-	cursedSword->OnHoverExit = item2HoverExCallb;
-	paladinsHandguards->OnHoverEnter = item3HoverEnCallb;
-	paladinsHandguards->OnHoverExit = item3HoverExCallb;
-
-	buttonsForController.push_back(swiftBoots);
-	buttonsForController.push_back(cursedSword);
-	buttonsForController.push_back(paladinsHandguards);
-	buttonsForController.push_back(ringProtection);
-	buttonsForController.push_back(dragonSlayer);
-	buttonsForController.push_back(magicRobe);
-
-	item1Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
-	item1Stats->setString(swiftBootsStr);
-	item1Stats->SetParent(swiftBoots);
-	item1Stats->SetAnchor(0.5f, 0);
-	item1Stats->culled = false;
-	item2Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
-	item2Stats->setString(cursedSwordStr);
-	item2Stats->SetParent(cursedSword);
-	item2Stats->SetAnchor(0.5f, 0);
-	item2Stats->culled = false;
-	item3Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
-	item3Stats->setString(paladinsStr);
-	item3Stats->SetParent(paladinsHandguards);
-	item3Stats->SetAnchor(0.5f, 0);
-	item3Stats->culled = false;
-	item4Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
-	item4Stats->setString(ringStr);
-	item4Stats->SetParent(ringProtection);
-	item4Stats->SetAnchor(0.5f, 0);
-	item4Stats->culled = false;
-	item5Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
-	item5Stats->setString(dragonSlayerStr);
-	item5Stats->SetParent(dragonSlayer);
-	item5Stats->SetAnchor(0.5f, 0);
-	item5Stats->culled = false;
-	item6Stats = App->gui->AddLabel(swiftBoots->rect.w / 2, swiftBoots->rect.h, 30, DEFAULT_FONT, { 255, 255, 255, 255 });
-	item6Stats->setString(magicRobeStr);
-	item6Stats->SetParent(magicRobe);
-	item6Stats->SetAnchor(0.5f, 0);
-	item6Stats->culled = false;*/
+	items[0]->SetRelation(items[1], InterfaceElement::Directions::RIGHT);
+	items[1]->SetRelation(items[2], InterfaceElement::Directions::RIGHT);
+	items[2]->SetRelation(items[3], InterfaceElement::Directions::RIGHT);
+	items[3]->SetRelation(items[4], InterfaceElement::Directions::RIGHT);
+	items[4]->SetRelation(items[0], InterfaceElement::Directions::RIGHT);
+	
 }
 
 bool ItemSelecScene::AllPlayersReady() {
@@ -168,9 +118,6 @@ void ItemSelecScene::SetControllerFocus() {
 		return;
 	}
 
-	
-	Button* butt = (Button*)App->gui->getFocusedItem();
-
 	for (int i = 1; i <= controllersNum; i++) {
 		Player player;		
 		player.focusedItem = items[0];
@@ -193,9 +140,9 @@ void ItemSelecScene::ChooseFocus() {
 		}
 		if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::JUMPINPUT) {
 			LOG("");
-			
-			players[i].locked++;
+
 			players[i].playerItems[players[i].locked] = players[i].focusedItem;
+			players[i].locked++;			
 			players[i].LockedArrow(players[i].locked);
 			
 		}
@@ -209,42 +156,43 @@ void ItemSelecScene::ManageDisplacementFocus() {
 		}
 		if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::CH_DOWN) {
 
-			InterfaceElement* elem = players[i].focusedItem->butt->GetRelativeElement(InterfaceElement::Directions::DOWN);			
-			if (elem != nullptr) {
-				players[i].focusedItem->butt = (Button*)elem;
-				players[i].DrawOrderedArrow();
-				App->gui->setFocus(elem);
-			}
+			FindNextArrowUnlocked(i, InterfaceElement::Directions::DOWN);
 		}
 		else if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::CH_UP) {
-			InterfaceElement* elem = players[i].focusedItem->butt->GetRelativeElement(InterfaceElement::Directions::UP);
-			if (elem != nullptr) {
-				players[i].focusedItem->butt = (Button*)elem;
-				players[i].DrawOrderedArrow();
-				App->gui->setFocus(elem);
-			}
+			FindNextArrowUnlocked(i, InterfaceElement::Directions::UP);
 		}
 		else if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::CH_LEFT) {
-			InterfaceElement* elem = players[i].focusedItem->butt->GetRelativeElement(InterfaceElement::Directions::LEFT);						if (elem != nullptr)
-				if (elem != nullptr) {
-					players[i].focusedItem->butt = (Button*)elem;
-					players[i].DrawOrderedArrow();
-					App->gui->setFocus(elem);
-				}
+			FindNextArrowUnlocked(i, InterfaceElement::Directions::LEFT);
 		}
 		else if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::CH_RIGHT) {
-			InterfaceElement* elem = players[i].focusedItem->butt->GetRelativeElement(InterfaceElement::Directions::RIGHT);						if (elem != nullptr)
-				if (elem != nullptr) {
-					players[i].focusedItem->butt = (Button*)elem;
-					players[i].DrawOrderedArrow();
-					App->gui->setFocus(elem);
-					
-				}
+			FindNextArrowUnlocked(i, InterfaceElement::Directions::RIGHT);
 		}
 		
 	}
 }
 
+
+void ItemSelecScene::FindNextArrowUnlocked(uint playerNum, InterfaceElement::Directions direction) {
+	Item* nextItem = players[playerNum].focusedItem->GetRelativeItem(direction);
+	
+		if (nextItem != nullptr) {
+			
+			players[playerNum].focusedItem = nextItem;
+
+			if (players[playerNum].locked!=0) {
+				for (int i = 0; i <= players[playerNum].locked; i++) { // check if the item is already taken
+					if (players[playerNum].playerItems[i] == players[playerNum].focusedItem) {
+						FindNextArrowUnlocked(playerNum, direction);
+					}
+				}
+			}
+			
+			players[playerNum].DrawOrderedArrow();
+			//App->gui->setFocus(nextElem);
+
+		}
+
+}
 
 void ItemSelecScene::Player::LoadArrows() {
 	
@@ -317,4 +265,15 @@ void ItemSelecScene::ApplyItemAttributes() {
 void ItemSelecScene::Player::LockedArrow(uint lockedNum) {
 	lockedArrows[lockedNum-1] = App->gui->AddSprite(arrow->getPositionX(), arrow->getPositionY() , nullptr, arrowLockRect);
 
+}
+void ItemSelecScene::Item::SetRelation(Item* item, InterfaceElement::Directions direction, bool assignOther){
+	
+	relations[direction] = item;
+	if (assignOther)
+		item->relations[direction < 2 ? direction + 2 : direction - 2] = this;
+}
+
+ItemSelecScene::Item* ItemSelecScene::Item::GetRelativeItem(InterfaceElement::Directions dir){
+
+	return relations[dir];
 }

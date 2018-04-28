@@ -3,6 +3,7 @@
 
 #include "..\..\Engine\Scene.h"
 #include "..\..\Engine\ModuleCollision.h"
+#include "..\..\Engine\UI\InterfaceElement.h"
 
 #include <list>
 
@@ -10,19 +11,17 @@
 class Button;
 class Sprite;
 class Label;
-class InterfaceElement;
+
+
 
 
 class ItemSelecScene:
 	public Scene
 {
 public:
-
-
 	
-
-
-	struct Item {
+	class Item {
+	public:
 		Item();
 		Item(std::string _name, SDL_Rect _animRect, EntityStats _stats) {
 			name = _name;
@@ -34,6 +33,10 @@ public:
 		Label* label = nullptr;
 		EntityStats stats;
 		SDL_Rect animRect;
+		Item* relations[InterfaceElement::Directions::AMOUNT];
+
+		Item* GetRelativeItem(InterfaceElement::Directions dir);
+		void SetRelation(Item* item, InterfaceElement::Directions direction, bool assignOther = true);
 	};
 
 	class Player {
@@ -79,13 +82,13 @@ public:
 
 private:
 	void LoadSceneUI();
-
+	void FindNextArrowUnlocked(uint player, InterfaceElement::Directions direction);
 	
 	void SetControllerFocus();
 	void ManageDisplacementFocus();
 	void ChooseFocus();
 	void ApplyItemAttributes();
-	bool AllPlayersReady();
+	bool AllPlayersReady() ;
 	
 	std::vector<Player> players;
 	std::list<Button*> buttonsForController;

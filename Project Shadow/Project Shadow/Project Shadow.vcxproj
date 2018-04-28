@@ -129,10 +129,10 @@
     <ClCompile Include="Engine\Entity.cpp" />
     <ClCompile Include="Engine\ModuleEntityManager.cpp" />
     <ClCompile Include="Engine\ModuleSceneManager.cpp" />
-    <ClCompile Include="Engine\ModuleTransition.cpp" />
     <ClCompile Include="Engine\PerfTimer.cpp" />
     <ClCompile Include="Engine\Hero.cpp" />
     <ClCompile Include="Engine\Scene.cpp" />
+    <ClCompile Include="Engine\Spells.cpp" />
     <ClCompile Include="Engine\Timer.cpp" />
     <ClCompile Include="Engine\Log.cpp" />
     <ClCompile Include="Engine\ModuleAudio.cpp" />
@@ -145,7 +145,6 @@
     <ClCompile Include="Engine\UI\Healthbar.cpp" />
     <ClCompile Include="Engine\UI\InterfaceElement.cpp" />
     <ClCompile Include="Engine\UI\Label.cpp" />
-    <ClCompile Include="Engine\UI\Menu.cpp" />
     <ClCompile Include="Engine\UI\Slider.cpp" />
     <ClCompile Include="Engine\UI\Sprite.cpp" />
     <ClCompile Include="Engine\UI\Window.cpp" />
@@ -153,6 +152,7 @@
     <ClCompile Include="Game\Scenes\IntroScene.cpp" />
     <ClCompile Include="Game\Scenes\ItemSelecScene.cpp" />
     <ClCompile Include="Game\Scenes\MainScene.cpp" />
+    <ClCompile Include="Game\Spells\FireBall.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,7 +165,6 @@
     <ClInclude Include="Engine\ModuleFonts.h" />
     <ClInclude Include="Engine\ModuleGUI.h" />
     <ClInclude Include="Engine\ModuleMap.h" />
-    <ClInclude Include="Engine\ModuleTransition.h" />
     <ClInclude Include="Engine\PerfTimer.h" />
     <ClInclude Include="Engine\Hero.h" />
     <ClInclude Include="Engine\Point.h" />
@@ -174,6 +173,7 @@
     <ClInclude Include="Engine\ModuleEntityManager.h" />
     <ClInclude Include="Engine\ModuleSceneManager.h" />
     <ClInclude Include="Engine\Scene.h" />
+    <ClInclude Include="Engine\Spells.h" />
     <ClInclude Include="Engine\Timer.h" />
     <ClInclude Include="Engine\Log.h" />
     <ClInclude Include="Engine\ModuleAudio.h" />
@@ -186,7 +186,6 @@
     <ClInclude Include="Engine\UI\Healthbar.h" />
     <ClInclude Include="Engine\UI\InterfaceElement.h" />
     <ClInclude Include="Engine\UI\Label.h" />
-    <ClInclude Include="Engine\UI\Menu.h" />
     <ClInclude Include="Engine\UI\Slider.h" />
     <ClInclude Include="Engine\UI\Sprite.h" />
     <ClInclude Include="Engine\UI\Window.h" />
@@ -194,6 +193,7 @@
     <ClInclude Include="Game\Scenes\IntroScene.h" />
     <ClInclude Include="Game\Scenes\ItemSelecScene.h" />
     <ClInclude Include="Game\Scenes\MainScene.h" />
+    <ClInclude Include="Game\Spells\FireBall.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
   </ItemGroup>

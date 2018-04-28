@@ -27,14 +27,6 @@ public:
 		HEALTHBAR
 	};
 
-	enum Directions {
-		UP,
-		RIGHT,
-		DOWN,
-		LEFT,
-		AMOUNT
-	};
-
 
 	bool Enable(bool enable);
 	bool isEnabled() const;
@@ -70,9 +62,6 @@ public:
 	InterfaceElement* getNextSibling();
 	InterfaceElement* getPrevSibling();
 
-	void SetRelation(InterfaceElement* elem, Directions dir, bool assignOther = true);
-	InterfaceElement* GetRelativeElement(Directions dir);
-
 	bool isInteractuable();
 
 	void ComputeRects();
@@ -97,13 +86,11 @@ protected:
 	void DebugDraw();
 
 	InterfaceElement* AddElement(InterfaceElement* elem);
+	std::list<InterfaceElement*> elements;
+	InterfaceElement* parent = nullptr;
 
-	LIST(InterfaceElement*)	children;
-	InterfaceElement*		parent = nullptr;
-	InterfaceElement*		relations[Directions::AMOUNT];
-
-	fPoint					anchor_point = { 0.5f, 0.5f };
-	SDL_Rect*				currentAnim = nullptr;
-	bool					interactuable = false;
+	fPoint anchor_point = { 0.5f, 0.5f };
+	SDL_Rect* currentAnim = nullptr;
+	bool interactuable = false;
 };
 #endif

@@ -72,7 +72,7 @@ void Window::DragWindow()
 
 void Window::Focus()
 {
-	/*p2List_item<InterfaceElement*>* curr = children.start;
+	/*p2List_item<InterfaceElement*>* curr = elements.start;
 
 	while(curr != NULL)
 	{
@@ -83,7 +83,7 @@ void Window::Focus()
 			{
 				onfocus->in_focus = false;
 				if (curr->next == NULL)
-					onfocus = children.start->data;
+					onfocus = elements.start->data;
 				
 				else
 					onfocus = curr->next->data;
@@ -94,7 +94,7 @@ void Window::Focus()
 			{
 				onfocus->in_focus = false;
 				if (curr->prev == NULL)
-					onfocus = children.end->data;
+					onfocus = elements.end->data;
 
 				else
 					onfocus = curr->prev->data;

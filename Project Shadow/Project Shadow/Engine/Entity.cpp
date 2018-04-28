@@ -21,13 +21,10 @@ void Entity::Draw(float dt) {
 	if (shadowed) {
 		DrawShadow(frame);
 	}
-	
-
 
 	iPoint pivot_pos = PivotPos();
 
 	App->render->Blit(sprites, pivot_pos.x, pivot_pos.y, &frame.GetRectSDL(),1.0f, 0.0, flip);
-
 }
 
 void Entity::Move(float delta_time) {
@@ -35,14 +32,17 @@ void Entity::Move(float delta_time) {
 	gamepos.y += speedVector.y * delta_time;
 	gamepos.z += zVect * delta_time;
 }
+
 void Entity::LoadShadow() {
 	shadowSprites = App->textures->Load(SHADOW_PATH);
 	shadowed = true;
 }
+
 void Entity::UnloadShadow() {
 	App->textures->UnLoad(shadowSprites);
 	shadowed = false;
 }
+
 void Entity::DrawShadow(AnimationFrame frame) {
 
 	iRect rect = SHADOW_RECT;
@@ -178,11 +178,7 @@ iPoint Entity::PivotPos()
 		pivot.x = frame.rect.w - pivot.x;
 	}
 
-
 	iPoint pos = { position.x - pivot.x , position.y - pivot.y };
-
-
-return pos;
-
+	return pos;
 }
 

@@ -174,7 +174,7 @@ void ItemSelecScene::SetControllerFocus() {
 void ItemSelecScene::ChooseFocus() {
 
 	for (std::list<Selection>::iterator focus = playersSelections.begin(); focus != playersSelections.end(); focus++) {
-		if (App->input->GetButtonFromController((*focus).playerNum) == CharInput::JUMPINPUT) {
+		if (App->input->GetButtonFromController((*focus).playerNum) == Input::BUTTON_A) {
 			LOG("");
 			(*focus).arrow->ChangeAnimation((*focus).arrowLockRect);
 			(*focus).locked = true;			
@@ -185,7 +185,7 @@ void ItemSelecScene::ChooseFocus() {
 void ItemSelecScene::ManageDisplacementFocus() {
 	for (std::list<Selection>::iterator foc = playersSelections.begin(); foc != playersSelections.end(); foc++) {
 		if (!(*foc).locked) {
-			if (App->input->GetButtonFromController((*foc).playerNum) == CharInput::CH_RIGHT) {
+			if (App->input->GetButtonFromController((*foc).playerNum) == Input::RIGHT) {
 				for (std::list<Button*>::iterator button = buttonsForController.begin(); button != buttonsForController.end(); button++) {
 					if (*button == (*foc).but) {
 						button++;
@@ -200,7 +200,7 @@ void ItemSelecScene::ManageDisplacementFocus() {
 				}
 			}
 
-			else if (App->input->GetButtonFromController((*foc).playerNum) == CharInput::CH_LEFT) {
+			else if (App->input->GetButtonFromController((*foc).playerNum) == Input::LEFT) {
 				for (std::list<Button*>::iterator button = buttonsForController.begin(); button != buttonsForController.end(); button++) {
 					if (!(*foc).locked) {
 						if (*button == (*foc).but) {

@@ -2,6 +2,7 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "Hero.h"
+#include "../Game/Spells/FireBall.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
 
@@ -68,8 +69,23 @@ bool ModuleEntityManager::Start() {
 bool ModuleEntityManager::PreUpdate() {
 
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
-		(*item)->PreUpdate();
+		(*item)->PreUpdate();				
 	}
+
+	VECTOR(LIST_ITERATOR(Entity*)) ents;
+	for (LIST_ITERATOR(Entity*) ent = entities.begin(); ent != entities.end(); ent++) {
+		if ((*ent)->to_delete) {
+			ents.push_back(ent);
+		
+		}
+	}
+
+	for (size_t c = 0; c < ents.size(); c++) {
+		Utils::Release(*ents[c]);
+		entities.erase(ents[c]);
+		//(*col)->c2->collisions.erase(cols[c]);
+	}
+
 	return true;
 }
 
@@ -79,7 +95,7 @@ bool ModuleEntityManager::Update(float dt) {
 		if ((*item)->active)
 		{
 			(*item)->Update(dt);
-			winner = (*item)->hero_num;
+			winner = (*item)->heroNum;
 			i++;
 		}
 	}
@@ -91,10 +107,15 @@ bool ModuleEntityManager::Update(float dt) {
 }
 
 bool ModuleEntityManager::PostUpdate() {
-
+	ARRAY(Entity*)toDestroy;
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->PostUpdate();
+		if ((*item)->to_delete)
+			toDestroy.push_back(*item);
+	}
 
+	for (Entity* e : toDestroy) {
+		DestroyEntity(e);
 	}
 	return true;
 }
@@ -137,7 +158,7 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	{
 		ret = new Hero();
 		numofplayers++;
-		ret->hero_num = numofplayers;
+		ret->heroNum = numofplayers;
 	}
 	else
 	{
@@ -155,10 +176,35 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	return ret;
 }
 
+Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
+
+	Entity* ret = nullptr;
+
+	if (spellsInfo.spType == SpellsType::FIREBALL)
+	{
+		ret = new FireBall();
+		
+	}
+	
+	else
+	{		
+		return nullptr;//
+	}
+
+	ret->type = SPELLS;
+	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y);
+
+
+	entities.push_back(ret);
+	ret->Start();
+
+	return ret;
+}
+
 
 void ModuleEntityManager::DestroyEntity(Entity* entity) {
 	pugi::xml_node n;
-	if (entity->hero_num != 0) {
+	if (entity->heroNum != 0) {
 		numofplayers--;	
 	}
 	entity->CleanUp(n);
@@ -246,7 +292,7 @@ Entity* ModuleEntityManager::GetEntity(uint num)
 	Entity* ret = nullptr;
 
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
-		if ((*item)->hero_num == num)
+		if ((*item)->heroNum == num)
 		{
 			ret == (*item);
 		}

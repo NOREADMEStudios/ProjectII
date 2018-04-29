@@ -70,23 +70,68 @@ void ItemSelecScene::LoadSceneUI() {
 
 	int i = 0;
 
-	items[i] = new Item("firstItem", { 0,0,120,120}, { 10,20,30,50 });
-	items[i]->butt = App->gui->AddButton(100,100,atlas, items[i]->animRect, true, nullptr );//0	
+	items[i] = new Item("Plate Mail", PLATE, { 480,0,120,120 }, { 0,0,5,0,0 });
+	items[i]->butt = App->gui->AddButton(100, 100, atlas, items[i]->animRect, true, nullptr);//0
+	AddLabelToButton(items[i]);
 	App->gui->setFocus(items[i]->butt);
 
-	items[++i] = new Item("secItem", { 120,0,120,120 }, { 11,20,30,50 });
+	items[++i] = new Item("Normal Sword", SWORD, { 480,0,120,120 }, { 0,5,0,0,0 });
 	items[i]->butt = App->gui->AddButton(300, 100, atlas, items[i]->animRect, true, nullptr);//1
-
-	items[++i] = new Item("thirdItem", { 240,0,120,120 }, { 12,20,30,50 });
+	AddLabelToButton(items[i]);
+	
+	items[++i] = new Item("Swift Boots", SWIFT_BOOTS, { 0,0,120,120 }, { 0,0,0,10,0 });
 	items[i]->butt = App->gui->AddButton(500, 100, atlas, items[i]->animRect, true, nullptr);//2
+	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("fourthItem", { 360,0,120,120 }, { 13,20,30,50 });
+	items[++i] = new Item("Magic Robe", ROBE, { 120,0,120,120 }, { 0,10,0,0 });
 	items[i]->butt = App->gui->AddButton(700, 100, atlas, items[i]->animRect, true, nullptr);//3
+	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("fifthItem", { 480,0,120,120 }, { 14,20,30,50 });
+	items[++i] = new Item("Mage Hat", MAGE_HAT, { 240,0,120,120 }, { 0,0,0,0,0 }); // increases stamina??
 	items[i]->butt = App->gui->AddButton(900, 100, atlas, items[i]->animRect, true, nullptr);//4
+	AddLabelToButton(items[i]);
 
 
+	items[++i] = new Item("Thief Hood", HOOD, { 360,0,120,120 }, { 0,0,0,10,0 });
+	items[i]->butt = App->gui->AddButton(100, 300, atlas, items[i]->animRect, true, nullptr);//5
+	AddLabelToButton(items[i]);
+	
+	items[++i] = new Item("Cleric Hat", CLERIC_HAT, { 0,0,120,120 }, { 0,0,0,0,0 });
+	items[i]->butt = App->gui->AddButton(300,300, atlas, items[i]->animRect, true, nullptr);//6
+	AddLabelToButton(items[i]);
+
+	items[++i] = new Item("Ring of Protection", RING, { 360,0,120,120 }, { 0,0,10,0,0 });
+	items[i]->butt = App->gui->AddButton(500, 300, atlas, items[i]->animRect, true, nullptr);//7
+	AddLabelToButton(items[i]);
+
+	items[++i] = new Item("Tiara", TIARA, { 0,0,120,120 }, { 0,20,0,0,0 });
+	items[i]->butt = App->gui->AddButton(700, 300, atlas, items[i]->animRect, true, nullptr);//8
+	AddLabelToButton(items[i]);
+
+	items[++i] = new Item("Cursed Sword",CURSED_SWORD, { 120,0,120,120 }, { 0,10,0,0 });
+	items[i]->butt = App->gui->AddButton(900, 300, atlas, items[i]->animRect, true, nullptr);//9
+	AddLabelToButton(items[i]);
+
+
+	items[++i] = new Item("Boots of Haste", HASTE_BOOTS, { 0,0,120,120 }, { 0,0,0,15,0 });
+	items[i]->butt = App->gui->AddButton(100, 500, atlas, items[i]->animRect, true, nullptr);//10
+	AddLabelToButton(items[i]);
+
+	items[++i] = new Item("Paladin’s Handguards", HANDGUARDS,{ 240,0,120,120 }, { 0,0,15,0,0 });
+	items[i]->butt = App->gui->AddButton(300, 500, atlas, items[i]->animRect, true, nullptr);//11
+	AddLabelToButton(items[i]);
+
+	items[++i] = new Item("Earrings of Energy", EARRINGS, { 0,0,120,120 }, { 0,0,0,0,0 });
+	items[i]->butt = App->gui->AddButton(500, 500, atlas, items[i]->animRect, true, nullptr);//12
+	AddLabelToButton(items[i]);
+
+	items[++i] = new Item("Dragon Slayer",DRAGONSLAYER, { 0,0,120,120 }, { 0,20,0,0,0 });
+	items[i]->butt = App->gui->AddButton(700, 500, atlas, items[i]->animRect, true, nullptr);//13
+	AddLabelToButton(items[i]);
+
+	items[++i] = new Item("Staff of Thoth", STAFF, { 0,0,120,120 }, { 0,35,0,0,0 });
+	items[i]->butt = App->gui->AddButton(900, 500, atlas, items[i]->animRect, true, nullptr);//14
+	AddLabelToButton(items[i]);
 
 	items[0]->SetRelation(items[1], InterfaceElement::Directions::RIGHT);
 	items[1]->SetRelation(items[2], InterfaceElement::Directions::RIGHT);
@@ -94,6 +139,36 @@ void ItemSelecScene::LoadSceneUI() {
 	items[3]->SetRelation(items[4], InterfaceElement::Directions::RIGHT);
 	items[4]->SetRelation(items[0], InterfaceElement::Directions::RIGHT);
 	
+	items[5]->SetRelation(items[6], InterfaceElement::Directions::RIGHT);
+	items[6]->SetRelation(items[7], InterfaceElement::Directions::RIGHT);
+	items[7]->SetRelation(items[8], InterfaceElement::Directions::RIGHT);
+	items[8]->SetRelation(items[9], InterfaceElement::Directions::RIGHT);
+	items[9]->SetRelation(items[5], InterfaceElement::Directions::RIGHT);
+
+	items[10]->SetRelation(items[11], InterfaceElement::Directions::RIGHT);
+	items[11]->SetRelation(items[12], InterfaceElement::Directions::RIGHT);
+	items[12]->SetRelation(items[13], InterfaceElement::Directions::RIGHT);
+	items[13]->SetRelation(items[14], InterfaceElement::Directions::RIGHT);
+	items[14]->SetRelation(items[10], InterfaceElement::Directions::RIGHT);
+
+	items[0]->SetRelation(items[5], InterfaceElement::Directions::DOWN);
+	items[1]->SetRelation(items[6], InterfaceElement::Directions::DOWN);
+	items[2]->SetRelation(items[7], InterfaceElement::Directions::DOWN);
+	items[3]->SetRelation(items[8], InterfaceElement::Directions::DOWN);
+	items[4]->SetRelation(items[9], InterfaceElement::Directions::DOWN);
+	
+	items[5]->SetRelation(items[10], InterfaceElement::Directions::DOWN);
+	items[6]->SetRelation(items[11], InterfaceElement::Directions::DOWN);
+	items[7]->SetRelation(items[12], InterfaceElement::Directions::DOWN);
+	items[8]->SetRelation(items[13], InterfaceElement::Directions::DOWN);
+	items[9]->SetRelation(items[14], InterfaceElement::Directions::DOWN);
+
+	items[10]->SetRelation(items[0], InterfaceElement::Directions::DOWN);
+	items[11]->SetRelation(items[1], InterfaceElement::Directions::DOWN);
+	items[12]->SetRelation(items[2], InterfaceElement::Directions::DOWN);
+	items[13]->SetRelation(items[3], InterfaceElement::Directions::DOWN);
+	items[14]->SetRelation(items[4], InterfaceElement::Directions::DOWN);
+
 }
 
 bool ItemSelecScene::AllPlayersReady() {
@@ -110,6 +185,30 @@ bool ItemSelecScene::AllPlayersReady() {
 	}
 	
 	return ret;//
+}
+
+void ItemSelecScene::AddLabelToButton(Item* item) {
+	int fontSize = 25;
+	item->label = App->gui->AddLabel(item->butt->getPositionX(), item->butt->getPositionY() + item->butt->rect.w / 2, fontSize, DEFAULT_FONT, {255,255,255,255});
+	std::string string = item->name;
+	
+	if (item->stats.life > 0) {
+		string += "\n + %d life", item->stats.life;		
+	}
+	if (item->stats.atk > 0) {
+		string += "\n + %d atk", item->stats.atk;
+	}
+	if (item->stats.def > 0) {
+		string += "\n + %d def", item->stats.def;
+	}
+	if (item->stats.spd > 0) {
+		string += "\n + %d spd", item->stats.spd;
+	}
+	if (item->stats.mgk > 0) {
+		string += "\n + %d mgk", item->stats.mgk;
+	}
+	item->label->setString(string);
+	//item->label->SetParent(item->butt);
 }
 
 void ItemSelecScene::SetControllerFocus() {
@@ -148,10 +247,16 @@ void ItemSelecScene::ChooseFocus() {
 	}
 }
 void ItemSelecScene::RemoveSelectedItem() {
+
+
 	for (int i = 0; i < controllersNum; i++) {
 		Player* player = &players[i];
-		if (App->input->GetButtonFromController(player->playerNum) == CharInput::PARRYINPUT) {
+		
+		if (App->input->GetButtonFromController(player->playerNum) == CharInput::PARRYINPUT) {			
 			if (player->locked > 0) {
+				if (player->ready) {
+					player->ready = false;
+				}
 				player->locked--;
 				player->playerItems[player->locked] = nullptr;
 				App->gui->RemoveElement(player->MiniatureItems[player->locked]);
@@ -200,12 +305,9 @@ void ItemSelecScene::FindNextArrowUnlocked(uint playerNum, InterfaceElement::Dir
 					}
 				}
 			}
-			
 			players[playerNum].DrawOrderedArrow();
 			//App->gui->setFocus(nextElem);
-
 		}
-
 }
 
 void ItemSelecScene::Player::LoadArrows() {
@@ -261,7 +363,13 @@ void ItemSelecScene::FindFirstFreeItem(uint playerNum) {
 }
 
 void ItemSelecScene::ApplyItemAttributes() {
-
+	for (int i = 0; i < controllersNum; i++) {
+		switch (players[i].focusedItem->type)
+		{
+		case ItemType::PLATE:
+		{}
+		}
+	}
 	/*
 	for (std::list<Selection>::iterator focus = playersSelections.begin(); focus != playersSelections.end(); focus++) {
 		EntityStats* item = &App->entities->items[(*focus).playerNum-1];

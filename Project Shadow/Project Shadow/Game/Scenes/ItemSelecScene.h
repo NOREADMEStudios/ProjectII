@@ -12,7 +12,25 @@ class Button;
 class Sprite;
 class Label;
 
+enum ItemType { // NEED to change to real names
+	NO_ITEM,
+	PLATE,
+	SWORD,
+	SWIFT_BOOTS,
+	ROBE,
+	MAGE_HAT,
+	HOOD,
+	CLERIC_HAT,
+	RING,
+	TIARA,
+	CURSED_SWORD,
+	HASTE_BOOTS,
+	HANDGUARDS,
+	EARRINGS,
+	DRAGONSLAYER,
+	STAFF
 
+};
 
 
 class ItemSelecScene:
@@ -23,12 +41,14 @@ public:
 	class Item {
 	public:
 		Item();
-		Item(std::string _name, SDL_Rect _animRect, EntityStats _stats) {
+		Item(std::string _name, ItemType _type, SDL_Rect _animRect, EntityStats _stats) {
 			name = _name;
+			type = _type;
 			animRect = _animRect;
 			stats = _stats;
 		}
 		std::string name;
+		ItemType type= NO_ITEM;
 		Button* butt = nullptr;
 		Label* label = nullptr;
 		EntityStats stats;
@@ -94,6 +114,7 @@ private:
 	void ApplyItemAttributes();
 	bool AllPlayersReady();
 	void FindFirstFreeItem(uint playerNum);
+	void AddLabelToButton(Item* item);
 	
 	std::vector<Player> players;
 	std::list<Button*> buttonsForController;

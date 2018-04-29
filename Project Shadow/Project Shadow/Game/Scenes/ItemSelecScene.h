@@ -51,9 +51,12 @@ public:
 		SDL_Rect arrowLockRect;
 		uint locked = 0;
 		Item* playerItems[3];
+		Sprite* MiniatureItems[3];
 		bool ready = false;
 
+		
 		void LockedArrow(uint lockedNum);
+		void RemoveLockedArrow(uint lockedNum);
 		void LoadArrows();
 		void DrawOrderedArrow();
 	};
@@ -87,8 +90,10 @@ private:
 	void SetControllerFocus();
 	void ManageDisplacementFocus();
 	void ChooseFocus();
+	void RemoveSelectedItem();
 	void ApplyItemAttributes();
-	bool AllPlayersReady() ;
+	bool AllPlayersReady();
+	void FindFirstFreeItem(uint playerNum);
 	
 	std::vector<Player> players;
 	std::list<Button*> buttonsForController;

@@ -50,6 +50,7 @@ bool ItemSelecScene::Update(float dt)
 	if (controllersNum != 0) {
 		ManageDisplacementFocus();
 		ChooseFocus();
+		RemoveSelectedItem();
 	}
 
 	return true;
@@ -119,7 +120,7 @@ void ItemSelecScene::SetControllerFocus() {
 	}
 
 	for (int i = 1; i <= controllersNum; i++) {
-		Player player;		
+		Player player ;		
 		player.focusedItem = items[0];
 	
 		player.playerNum = i;
@@ -129,9 +130,6 @@ void ItemSelecScene::SetControllerFocus() {
 	}
 }
 
-
-
-
 void ItemSelecScene::ChooseFocus() {
 
 	for (int i = 0; i < controllersNum; i++) {
@@ -139,12 +137,28 @@ void ItemSelecScene::ChooseFocus() {
 			return;
 		}
 		if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::JUMPINPUT) {
-			LOG("");
-
-			players[i].playerItems[players[i].locked] = players[i].focusedItem;
-			players[i].locked++;			
-			players[i].LockedArrow(players[i].locked);
 			
+			Item* item = players[i].focusedItem;
+			players[i].playerItems[players[i].locked] = item;
+			players[i].MiniatureItems[players[i].locked] = App->gui->AddSprite(50 + item->butt->rect.w*players[i].locked + 300 * i, 800, atlas, item->animRect);//need to check values
+			players[i].LockedArrow(players[i].locked);
+			players[i].locked++;
+			FindFirstFreeItem(i);
+		}		
+	}
+}
+void ItemSelecScene::RemoveSelectedItem() {
+	for (int i = 0; i < controllersNum; i++) {
+		Player* player = &players[i];
+		if (App->input->GetButtonFromController(player->playerNum) == CharInput::PARRYINPUT) {
+			if (player->locked > 0) {
+				player->locked--;
+				player->playerItems[player->locked] = nullptr;
+				App->gui->RemoveElement(player->MiniatureItems[player->locked]);
+				player->MiniatureItems[player->locked] = nullptr;				
+				player->RemoveLockedArrow(player->locked);
+
+			}
 		}
 	}
 }
@@ -227,6 +241,25 @@ void ItemSelecScene::Player::DrawOrderedArrow() {
 	arrow->setPosition(x, focusedItem->butt->getPositionY() - focusedItem->butt->rect.h / 2);
 }
 
+void ItemSelecScene::FindFirstFreeItem(uint playerNum) {
+	Player* player = &players[playerNum];
+
+	for (int i = 0; i < 15; i++) {
+		for (int j = 0; j < player->locked; j++) { 
+			if (player->playerItems[j] != items[i]) {			
+				if (j == player->locked-1) {
+					player->focusedItem = items[i];
+					player->DrawOrderedArrow();
+					return;
+				}
+			}
+			else {
+				break;
+			}
+		}
+	}
+}
+
 void ItemSelecScene::ApplyItemAttributes() {
 
 	/*
@@ -265,6 +298,10 @@ void ItemSelecScene::ApplyItemAttributes() {
 void ItemSelecScene::Player::LockedArrow(uint lockedNum) {
 	lockedArrows[lockedNum-1] = App->gui->AddSprite(arrow->getPositionX(), arrow->getPositionY() , nullptr, arrowLockRect);
 
+}
+
+void ItemSelecScene::Player::RemoveLockedArrow(uint lockedNum) {
+	App->gui->RemoveElement(lockedArrows[lockedNum - 1]);
 }
 void ItemSelecScene::Item::SetRelation(Item* item, InterfaceElement::Directions direction, bool assignOther){
 	

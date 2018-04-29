@@ -2,6 +2,7 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "Hero.h"
+#include "../Game/Spells/FireBall.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
 
@@ -68,8 +69,23 @@ bool ModuleEntityManager::Start() {
 bool ModuleEntityManager::PreUpdate() {
 
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
-		(*item)->PreUpdate();
+		(*item)->PreUpdate();				
 	}
+
+	VECTOR(LIST_ITERATOR(Entity*)) ents;
+	for (LIST_ITERATOR(Entity*) ent = entities.begin(); ent != entities.end(); ent++) {
+		if ((*ent)->to_delete) {
+			ents.push_back(ent);
+		
+		}
+	}
+
+	for (size_t c = 0; c < ents.size(); c++) {
+		Utils::Release(*ents[c]);
+		entities.erase(ents[c]);
+		//(*col)->c2->collisions.erase(cols[c]);
+	}
+
 	return true;
 }
 
@@ -91,10 +107,15 @@ bool ModuleEntityManager::Update(float dt) {
 }
 
 bool ModuleEntityManager::PostUpdate() {
-
+	ARRAY(Entity*)toDestroy;
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->PostUpdate();
+		if ((*item)->to_delete)
+			toDestroy.push_back(*item);
+	}
 
+	for (Entity* e : toDestroy) {
+		DestroyEntity(e);
 	}
 	return true;
 }
@@ -149,6 +170,31 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	ret->SetPos(charInfo.pos.x, charInfo.pos.y);
 
 	
+	entities.push_back(ret);
+	ret->Start();
+
+	return ret;
+}
+
+Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
+
+	Entity* ret = nullptr;
+
+	if (spellsInfo.spType == SpellsType::FIREBALL)
+	{
+		ret = new FireBall();
+		
+	}
+	
+	else
+	{		
+		return nullptr;//
+	}
+
+	ret->type = SPELLS;
+	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y);
+
+
 	entities.push_back(ret);
 	ret->Start();
 

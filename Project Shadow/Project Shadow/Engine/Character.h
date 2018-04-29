@@ -257,6 +257,6 @@ protected:
 	LIST(Ability) abilities;
 
 };
-#endif
 
+#endif
 

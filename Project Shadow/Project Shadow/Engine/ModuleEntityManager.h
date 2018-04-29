@@ -9,6 +9,11 @@
 
 #include <list>
 
+enum SpellsType {
+	NOSPELL,
+	FIREBALL
+};
+
 enum CharacterTypes {
 	NONE,
 	ENEMY,
@@ -24,11 +29,15 @@ enum EntityTypes {
 struct CharacterInfo {
 
 	CharacterTypes chType = NONE;
-	Point3D pos{ 0, 0 };
-	
+	Point3D pos{ 0, 0 };	
 };
 
+struct SpellsInfo {
 
+	SpellsType spType = NOSPELL;
+	Point3D pos{ 0,0 };
+
+};
 
 
 class ModuleEntityManager : public Module
@@ -55,6 +64,7 @@ public:
 	bool IsSFXRepeated(std::list<std::string> list, std::string string) const;
 
 	Entity* CreateCharacter(CharacterInfo charInfo);
+	Entity* CreateSpell(SpellsInfo spellsInfo);
 	void DestroyEntity(Entity* entity);
 
 	void CheckMidPos(float& min_x, float& max_x);

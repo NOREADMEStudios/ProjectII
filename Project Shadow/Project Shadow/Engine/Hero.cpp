@@ -27,7 +27,7 @@ bool Hero::Awake(pugi::xml_node&)
 bool Hero::HeroStart()
 {
 	switch (hero_num) {
-	case 1: 
+	case 1:
 		sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
 		break;
 	case 2:
@@ -43,10 +43,10 @@ bool Hero::HeroStart()
 
 
 
-	stats.atk += App->entities->items[hero_num-1].atk;
-	stats.def += App->entities->items[hero_num-1].def;
-	stats.spd += App->entities->items[hero_num-1].spd;
-	stats.life += App->entities->items[hero_num-1].life;
+	stats.atk += App->entities->items[hero_num - 1].atk;
+	stats.def += App->entities->items[hero_num - 1].def;
+	stats.spd += App->entities->items[hero_num - 1].spd;
+	stats.life += App->entities->items[hero_num - 1].life;
 
 
 
@@ -56,7 +56,7 @@ bool Hero::HeroStart()
 	Attack* light_2 = new Attack(4, LIGHT_ATTACK, "attack_knee", 2);
 	Attack* heavy_2 = new Attack(5, HEAVY_ATTACK, "strong_attack", 2);
 	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", 5);
-	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK,"jump_attack", 2, true);
+	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK, "jump_attack", 2, true);
 	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", 5, true);
 	//Attack* ulti = new Attack(9, TAUNTINPUT, "win", 0, 0, true);
 
@@ -81,8 +81,10 @@ bool Hero::HeroStart()
 	Ability* kick = new Ability(heavy_1, 3);
 	AdAbility(*kick);
 
+
 	Ability* Aulti = new Ability(light_2, 3);
 	AdAbility(*Aulti);
+
 	return true;
 }
 
@@ -101,13 +103,13 @@ bool Hero::HeroUpdate(float dt)
 
 	switch (currentState)
 	{
-		case PROTECT:
-		{
-			max_speed = stats.spd * 0.5f;
-			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
-			break;
-		}
 
+	case PROTECT:
+	{
+		max_speed = stats.spd * 0.5f;
+		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		break;
+	}
 	}
 
 
@@ -141,7 +143,7 @@ bool Hero::PostUpdate()
 
 bool Hero::CleanUp(pugi::xml_node&)
 {
-	
+
 	return true;
 }
 

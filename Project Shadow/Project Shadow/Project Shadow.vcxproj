@@ -133,6 +133,7 @@
     <ClCompile Include="Engine\PerfTimer.cpp" />
     <ClCompile Include="Engine\Hero.cpp" />
     <ClCompile Include="Engine\Scene.cpp" />
+    <ClCompile Include="Engine\Spells.cpp" />
     <ClCompile Include="Engine\Timer.cpp" />
     <ClCompile Include="Engine\Log.cpp" />
     <ClCompile Include="Engine\ModuleAudio.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Game\Scenes\IntroScene.cpp" />
     <ClCompile Include="Game\Scenes\ItemSelecScene.cpp" />
     <ClCompile Include="Game\Scenes\MainScene.cpp" />
+    <ClCompile Include="Game\Spells\FireBall.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +176,7 @@
     <ClInclude Include="Engine\ModuleEntityManager.h" />
     <ClInclude Include="Engine\ModuleSceneManager.h" />
     <ClInclude Include="Engine\Scene.h" />
+    <ClInclude Include="Engine\Spells.h" />
     <ClInclude Include="Engine\Timer.h" />
     <ClInclude Include="Engine\Log.h" />
     <ClInclude Include="Engine\ModuleAudio.h" />
@@ -194,6 +197,7 @@
     <ClInclude Include="Game\Scenes\IntroScene.h" />
     <ClInclude Include="Game\Scenes\ItemSelecScene.h" />
     <ClInclude Include="Game\Scenes\MainScene.h" />
+    <ClInclude Include="Game\Spells\FireBall.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
   </ItemGroup>

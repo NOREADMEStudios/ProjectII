@@ -7,10 +7,10 @@
 #include "ModuleMap.h"
 #include "App.h"
 
-#define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
 
 
-Hero::Hero() : Character(CharacterTypes::HERO)
+
+Hero::Hero() : Character(CharacterTypes::FIGHTER)
 {
 }
 
@@ -26,20 +26,20 @@ bool Hero::Awake(pugi::xml_node&)
 
 bool Hero::HeroStart()
 {
-	switch (hero_num) {
-	case 1:
-		sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
-		break;
-	case 2:
-		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
-		break;
-	case 3:
-		sprites = App->textures->Load("Characters/Fighter_sprites_blue.png");
-		break;
-	case 4:
-		sprites = App->textures->Load("Characters/Fighter_sprites_grey.png");
-		break;
-	}
+	//switch (hero_num) {
+	//case 1:
+	//	sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
+	//	break;
+	//case 2:
+	//	sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
+	//	break;
+	//case 3:
+	//	sprites = App->textures->Load("Characters/Fighter_sprites_blue.png");
+	//	break;
+	//case 4:
+	//	sprites = App->textures->Load("Characters/Fighter_sprites_grey.png");
+	//	break;
+	//}
 
 
 
@@ -50,14 +50,14 @@ bool Hero::HeroStart()
 
 
 
-	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", 2);
-	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "kick", 2, false, true);
-	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", 0, true);
-	Attack* light_2 = new Attack(4, LIGHT_ATTACK, "attack_knee", 2);
-	Attack* heavy_2 = new Attack(5, HEAVY_ATTACK, "strong_attack", 2);
-	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", 5);
-	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK, "jump_attack", 2, true);
-	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", 5, true);
+	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack",animations_name, 2);
+	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "kick", animations_name, 2, false, true);
+	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
+	Attack* light_2 = new Attack(4, LIGHT_ATTACK, "attack_knee", animations_name, 2);
+	Attack* heavy_2 = new Attack(5, HEAVY_ATTACK, "strong_attack", animations_name, 2);
+	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", animations_name, 5);
+	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK, "jump_attack", animations_name, 2, true);
+	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", animations_name, 5, true);
 	//Attack* ulti = new Attack(9, TAUNTINPUT, "win", 0, 0, true);
 
 	attacks.push_back(light_1);

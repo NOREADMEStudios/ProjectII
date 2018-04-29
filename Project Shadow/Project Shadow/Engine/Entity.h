@@ -12,6 +12,7 @@
 struct SDL_Texture;
 enum EntityTypes;
 struct Collider;
+enum CharacterTypes;
 
 struct InvBlit
 {
@@ -135,11 +136,13 @@ public:
 
 	virtual void OnCollisionExit(Collider* _this, Collider* _other);
 
+
 	bool PausedUpdate();
 	iPoint PivotPos();
 
 	EntityTypes type;
 	EntityStats stats;
+	CharacterTypes charType;
 
 
 	bool paused = false;
@@ -149,6 +152,7 @@ public:
 	bool active = true;
 
 	bool to_delete = false;
+
 
 protected:
 	

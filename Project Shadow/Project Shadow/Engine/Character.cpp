@@ -27,6 +27,7 @@ bool Character::Awake(pugi::xml_node&)
 
 bool Character::Start()
 { 
+	SetAnimations();
 	LoadBasicStates();
 
 	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
@@ -666,7 +667,7 @@ void Character::LoadState(CharStateEnum _state, std::string animationName)
 	State* st = new State;
 	st->state = _state;
 
-	st->anim.LoadAnimationsfromXML(animationName, HERO_SPRITE_ROOT);
+	st->anim.LoadAnimationsfromXML(animationName, animations_name);
 	states.push_back(st);
 }
 
@@ -737,4 +738,25 @@ void Character::AdBuff(float time, float spd, float atk, float def)
 
 	eventstates.push_back(buff);
 
+}
+
+void Character::SetAnimations()
+{
+	switch (charType)
+	{
+	case FIGHTER:
+		animations_name = HERO_SPRITE_ROOT;
+		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
+		break;
+	case ELF:
+		animations_name = ELF_SPRITE_ROOT;
+		sprites = App->textures->Load("Characters/Elf_sprites.png");
+		break;
+	}
+
+}
+
+void Character::SetCharType(CharacterTypes type)
+{
+	charType = type;
 }

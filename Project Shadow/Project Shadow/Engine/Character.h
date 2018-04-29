@@ -11,6 +11,7 @@
 
 #define COMBO_MARGIN 1
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
+#define ELF_SPRITE_ROOT "Assets/Animations/Characters/Elf_Animations.tmx"
 
 
 enum CharInput
@@ -65,12 +66,12 @@ struct Attack
 	bool air;
 	bool ability;
 
-	Attack(uint _tag, CharInput _input, std::string animationName, int _damage = 0, bool _air = false, bool ab = false)
+	Attack(uint _tag, CharInput _input, std::string animationName, std::string fileName, int _damage = 0, bool _air = false, bool ab = false)
 	{
 		tag = _tag;
 		input = _input;
 		damage = _damage;
-		anim.LoadAnimationsfromXML(animationName, HERO_SPRITE_ROOT);
+		anim.LoadAnimationsfromXML(animationName, fileName);
 		air = _air;
 		ability = ab;
 	}
@@ -201,7 +202,10 @@ public:
 	Timer time_attack;
 
 	void AdBuff(float time = 0, float spd = 0, float atk = 0, float def = 0);
-	
+	void SetAnimations();
+	void SetCharType(CharacterTypes type);
+
+
 protected:
 
 	void RequestState();
@@ -232,7 +236,7 @@ protected:
 				*collParry = nullptr;
 
 
-	CharacterTypes charType;
+
 
 	CharStateEnum currentState;
 	CharStateEnum wantedState;
@@ -252,6 +256,9 @@ protected:
 	bool sound_avaliable = true;
 	uint currentTag = 0;
 	uint wantedTag = 0;
+	std::string animations_name;
+
+
 
 	LIST(Attack*) attacks;
 	LIST(Ability) abilities;

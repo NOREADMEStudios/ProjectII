@@ -383,7 +383,7 @@ void ItemSelecScene::FindFirstFreeItem(uint playerNum) {
 	}
 }
 
-void ItemSelecScene::ApplyItemAttributes() {
+void ItemSelecScene::ApplyItemAttributes() {//NEED TO APPLY TO THE PLAYER
 	for (int i = 0; i < controllersNum; i++) {
 		switch (players[i].focusedItem->type)
 		{

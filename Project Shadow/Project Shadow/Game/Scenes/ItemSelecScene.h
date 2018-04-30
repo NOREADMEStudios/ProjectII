@@ -12,7 +12,7 @@ class Button;
 class Sprite;
 class Label;
 
-enum ItemType { // NEED to change to real names
+enum ItemType { 
 	NO_ITEM,
 	PLATE,
 	SWORD,
@@ -50,7 +50,8 @@ public:
 		std::string name;
 		ItemType type= NO_ITEM;
 		Button* butt = nullptr;
-		Label* label = nullptr;
+		std::vector<Label*> labels;
+		
 		EntityStats stats;
 		SDL_Rect animRect;
 		Item* relations[InterfaceElement::Directions::AMOUNT];

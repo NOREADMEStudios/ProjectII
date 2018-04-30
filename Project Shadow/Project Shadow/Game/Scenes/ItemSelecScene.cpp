@@ -19,6 +19,7 @@
 #include "../../Engine/ModuleFonts.h"
 
 
+
 ItemSelecScene::ItemSelecScene()
 {
 }
@@ -121,7 +122,7 @@ void ItemSelecScene::LoadSceneUI() {
 	items[i]->butt = App->gui->AddButton(300, 500, atlas, items[i]->animRect, true, nullptr);//11
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Earrings of Energy", EARRINGS, { 0,0,120,120 }, { 0,0,0,0,0 });
+	items[++i] = new Item("Earrings of Energy", EARRINGS, { 0,0,120,120 }, { 1,1,1,0,1 });
 	items[i]->butt = App->gui->AddButton(500, 500, atlas, items[i]->animRect, true, nullptr);//12
 	AddLabelToButton(items[i]);
 
@@ -189,26 +190,46 @@ bool ItemSelecScene::AllPlayersReady() {
 
 void ItemSelecScene::AddLabelToButton(Item* item) {
 	int fontSize = 25;
-	item->label = App->gui->AddLabel(item->butt->getPositionX(), item->butt->getPositionY() + item->butt->rect.w / 2, fontSize, DEFAULT_FONT, {255,255,255,255});
-	std::string string = item->name;
+	Label* label1 = App->gui->AddLabel(item->butt->rect.w/2, item->butt->rect.h, fontSize, DEFAULT_FONT, {255,255,255,255});
+	label1->setString(item->name);
+	item->labels.push_back(label1 );
+	int i = 1;
 	
 	if (item->stats.life > 0) {
-		string += "\n + %d life", item->stats.life;		
+		Label* label2 = App->gui->AddLabel(item->butt->rect.w / 2, item->butt->rect.h+ i*fontSize, fontSize, DEFAULT_FONT, { 255,255,255,255 });
+		label2->setString("+" + std::to_string(item->stats.life) + " life");
+		item->labels.push_back(label2);
+		i++;
 	}
 	if (item->stats.atk > 0) {
-		string += "\n + %d atk", item->stats.atk;
+		Label* label3 = App->gui->AddLabel(item->butt->rect.w / 2, item->butt->rect.h + i*fontSize, fontSize, DEFAULT_FONT, { 255,255,255,255 });
+		label3->setString("+" + std::to_string(item->stats.atk) + " atk");
+		item->labels.push_back(label3);
+		i++;
 	}
 	if (item->stats.def > 0) {
-		string += "\n + %d def", item->stats.def;
+		Label* label4 = App->gui->AddLabel(item->butt->rect.w / 2, item->butt->rect.h + i*fontSize, fontSize, DEFAULT_FONT, { 255,255,255,255 });
+		label4->setString("+" + std::to_string(item->stats.def) + " def");
+		item->labels.push_back(label4);
+		i++;
 	}
 	if (item->stats.spd > 0) {
-		string += "\n + %d spd", item->stats.spd;
+		Label* label5 = App->gui->AddLabel(item->butt->rect.w / 2, item->butt->rect.h + i*fontSize, fontSize, DEFAULT_FONT, { 255,255,255,255 });
+		label5->setString("+" + std::to_string(item->stats.spd) + " spd");
+		item->labels.push_back(label5);
+		i++;
 	}
 	if (item->stats.mgk > 0) {
-		string += "\n + %d mgk", item->stats.mgk;
+		Label* label6 = App->gui->AddLabel(item->butt->rect.w / 2, item->butt->rect.h + i*fontSize, fontSize, DEFAULT_FONT, { 255,255,255,255 });
+		label6->setString("+" + std::to_string(item->stats.mgk) + " mgk");
+		item->labels.push_back(label6);
+		i++;
 	}
-	item->label->setString(string);
-	//item->label->SetParent(item->butt);
+	for (std::vector<Label*>::iterator lab = item->labels.begin(); lab != item->labels.end(); lab++) {
+	
+		(*lab)->SetParent(item->butt);
+	}
+	
 }
 
 void ItemSelecScene::SetControllerFocus() {

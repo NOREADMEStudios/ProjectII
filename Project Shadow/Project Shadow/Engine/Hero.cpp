@@ -26,7 +26,7 @@ bool Hero::Awake(pugi::xml_node&)
 
 bool Hero::HeroStart()
 {
-	switch (hero_num) {
+	switch (heroNum) {
 	case 1:
 		sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
 		break;
@@ -43,10 +43,10 @@ bool Hero::HeroStart()
 
 
 
-	stats.atk += App->entities->items[hero_num - 1].atk;
-	stats.def += App->entities->items[hero_num - 1].def;
-	stats.spd += App->entities->items[hero_num - 1].spd;
-	stats.life += App->entities->items[hero_num - 1].life;
+	stats.atk += App->entities->items[heroNum - 1].atk;
+	stats.def += App->entities->items[heroNum - 1].def;
+	stats.spd += App->entities->items[heroNum - 1].spd;
+	stats.life += App->entities->items[heroNum - 1].life;
 
 
 

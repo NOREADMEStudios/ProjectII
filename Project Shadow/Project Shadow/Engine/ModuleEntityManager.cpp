@@ -1,7 +1,7 @@
 #include "ModuleEntityManager.h"
 #include "Character.h"
 #include "Enemy.h"
-#include "Hero.h"
+#include "Warrior.h"
 #include "../Game/Spells/FireBall.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
@@ -156,7 +156,7 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	}
 	else 
 	{
-		ret = new Hero();
+		ret = new Warrior();
 		numofplayers++;
 
 		ret->charType = charInfo.chType;

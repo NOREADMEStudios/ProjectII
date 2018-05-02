@@ -39,11 +39,11 @@
     <Filter Include="Engine\Entities\Character\Enemy">
       <UniqueIdentifier>{22fba009-1503-441a-8db1-1c34ab3b1339}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Entities\Character\Hero">
-      <UniqueIdentifier>{bce3fe1e-a5af-4c7b-9208-3be77bb6a26e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Entities\Spells">
       <UniqueIdentifier>{a126cbc1-329d-4ff8-8822-8304f45abdc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Entities\Character\Heros">
+      <UniqueIdentifier>{bce3fe1e-a5af-4c7b-9208-3be77bb6a26e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -131,9 +131,6 @@
     <ClCompile Include="Engine\Enemy.cpp">
       <Filter>Engine\Entities\Character\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Hero.cpp">
-      <Filter>Engine\Entities\Character\Hero</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Scenes\EndScene.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
@@ -156,10 +153,19 @@
       <Filter>Engine\Entities\Spells</Filter>
     </ClCompile>
     <ClCompile Include="Engine\UI\Menu.cpp">
-      <Filter>Engine\UI</Filter>    
+      <Filter>Engine\UI</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ModuleTransition.cpp">
       <Filter>Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Wizard.cpp">
+      <Filter>Engine\Entities\Character\Heros</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Warrior.cpp">
+      <Filter>Engine\Entities\Character\Heros</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rogue.cpp">
+      <Filter>Engine\Entities\Character\Heros</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,9 +277,6 @@
     <ClInclude Include="Engine\Enemy.h">
       <Filter>Engine\Entities\Character\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Hero.h">
-      <Filter>Engine\Entities\Character\Hero</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Scenes\EndScene.h">
       <Filter>Game\Scenes</Filter>
     </ClInclude>
@@ -300,6 +303,15 @@
     </ClInclude>
     <ClInclude Include="Engine\ModuleTransition.h">
       <Filter>Engine\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Wizard.h">
+      <Filter>Engine\Entities\Character\Heros</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Warrior.h">
+      <Filter>Engine\Entities\Character\Heros</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rogue.h">
+      <Filter>Engine\Entities\Character\Heros</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

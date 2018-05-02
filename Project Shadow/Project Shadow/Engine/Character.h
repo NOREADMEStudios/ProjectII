@@ -7,6 +7,7 @@
 #include "Entity.h"
 #include "ModuleCollision.h"
 
+#include <list>
 
 
 #define COMBO_MARGIN 1
@@ -208,7 +209,12 @@ public:
 
 protected:
 
-	void RequestState();
+
+	std::list<CharInput> GetControllerInputs()const;
+	std::list<CharInput> FirstPlayerConfig();
+
+	std::list<CharInput> RequestInputs()const;
+	void RequestState() ;
 	void UpdateMainStates();
 	void UpdateCurState(float dt);
 	void UpdateAnimation();

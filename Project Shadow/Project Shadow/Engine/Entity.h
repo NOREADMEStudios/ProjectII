@@ -147,7 +147,7 @@ public:
 
 	bool paused = false;
 
-	uint hero_num = 0;
+	uint heroNum = 0;
 	bool breaking = false;
 	bool active = true;
 

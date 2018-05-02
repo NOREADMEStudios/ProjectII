@@ -33,6 +33,7 @@ public:
 
 	void UpdateSpecStates();
 
+
 private:
 	bool buffed = false;
 

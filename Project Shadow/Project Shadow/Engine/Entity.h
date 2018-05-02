@@ -12,6 +12,7 @@
 struct SDL_Texture;
 enum EntityTypes;
 struct Collider;
+enum CharacterTypes;
 
 struct InvBlit
 {
@@ -58,6 +59,29 @@ struct EntityStats
 	int def = 0;
 	int spd = 0;
 	int mgk = 0;
+
+	EntityStats operator -(const EntityStats &v) const {
+	EntityStats r;
+
+	r.life = life - v.life;
+	r.atk = atk - v.atk;
+	r.def = def - v.def;
+	r.spd = spd - v.spd;
+	r.mgk = mgk - v.mgk;
+
+	return(r);
+	}
+
+	EntityStats operator +(const EntityStats &v) const {
+		EntityStats r;
+		r.life = life + v.life;
+		r.atk = atk + v.atk;
+		r.def = def + v.def;
+		r.spd = spd + v.spd;
+		r.mgk = mgk + v.mgk;
+
+		return(r);
+	}
 };
 struct Directions
 {
@@ -101,6 +125,7 @@ public:
 	virtual void Move(float delta_time);
 	virtual void Break(float delta_time);
 	void Accelerate(float x, float y,float z, float delta_time);
+	void Impulsate(float x, float y, float z);
 
 	void CalcRealPos();
 
@@ -111,11 +136,14 @@ public:
 
 	virtual void OnCollisionExit(Collider* _this, Collider* _other);
 
+
 	bool PausedUpdate();
 	iPoint PivotPos();
 
 	EntityTypes type;
 	EntityStats stats;
+	CharacterTypes charType;
+
 
 	bool paused = false;
 
@@ -124,6 +152,7 @@ public:
 	bool active = true;
 
 	bool to_delete = false;
+
 
 protected:
 	

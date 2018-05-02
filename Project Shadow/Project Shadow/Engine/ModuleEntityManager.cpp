@@ -154,17 +154,17 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 		ret = new Enemy();
 		numofplayers++;
 	}
-	else if (charInfo.chType == CharacterTypes::HERO)
+	else 
 	{
 		ret = new Hero();
 		numofplayers++;
+
+		ret->charType = charInfo.chType;
+
 		ret->heroNum = numofplayers;
+
 	}
-	else
-	{
-		//ret = new Entity();
-		return nullptr;//
-	}
+
 
 	ret->type = CHARACTER;
 	ret->SetPos(charInfo.pos.x, charInfo.pos.y);

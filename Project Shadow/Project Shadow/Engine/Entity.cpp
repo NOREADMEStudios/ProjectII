@@ -70,6 +70,12 @@ void Entity::Accelerate(float x, float y, float z, float delta_time) {
 	speedVector.y = CLAMP(speedVector.y, -max_speed, max_speed);
 	zVect = CLAMP(zVect, -max_speed, max_speed);
 }
+void Entity::Impulsate(float x, float y, float z)
+{
+	speedVector.x += x * 10 * stats.spd;
+	speedVector.y += y * 10 * stats.spd;
+	zVect += z * 10 * stats.spd;
+}
 
 bool Entity::PausedUpdate() {
 	Draw(0);

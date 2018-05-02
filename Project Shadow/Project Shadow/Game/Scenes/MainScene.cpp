@@ -34,7 +34,7 @@ bool MainScene::Start()
 	atlas = App->textures->Load("UI/atlas.png");
 
 	e = App->entities->CreateCharacter({FIGHTER,{100,100}});
-	e2 = App->entities->CreateCharacter({ ELF,{ 10000,100 } });
+	e2 = App->entities->CreateCharacter({ FIGHTER,{ 10000,100 } });
 
 	App->gui->AddHealthbar((Hero*)e, 0, true, 10, 10, atlas, true, { 451, 271, 264, 26 });
 	App->gui->AddHealthbar((Hero*)e2, 1, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });

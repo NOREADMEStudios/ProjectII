@@ -351,6 +351,9 @@ void Character::RequestState() {
 		case PARRYINPUT:
 			wantedState = PARRY;
 			break;
+		case AB_3:
+			wantedState = AD_ACTION;
+			wantedTag = 13;
 		default:
 			break;
 		}
@@ -753,6 +756,8 @@ void Character::UpdateAbilities()
 		{
 			item->active = true;
 		}
+		else
+			item->active = false;
 	}
 }
 
@@ -851,6 +856,9 @@ std::list<CharInput> Character::FirstPlayerConfig()
 
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 		ret.push_back(CharInput::TAUNTINPUT);
+
+	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
+		ret.push_back(CharInput::AB_3);
 
 	return ret;
 

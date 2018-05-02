@@ -167,6 +167,9 @@
     <ClCompile Include="Engine\Rogue.cpp">
       <Filter>Engine\Entities\Character\Heros</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Cleric.cpp">
+      <Filter>Engine\Entities\Character\Heros</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -311,6 +314,9 @@
       <Filter>Engine\Entities\Character\Heros</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rogue.h">
+      <Filter>Engine\Entities\Character\Heros</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Cleric.h">
       <Filter>Engine\Entities\Character\Heros</Filter>
     </ClInclude>
   </ItemGroup>

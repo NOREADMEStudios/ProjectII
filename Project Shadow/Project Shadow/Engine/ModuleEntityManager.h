@@ -19,6 +19,7 @@ enum CharacterTypes {
 	WARRIOR,
 	ROGUE,
 	WIZARD,
+	CLERIC,
 	NONE,
 	ENEMY,
 };

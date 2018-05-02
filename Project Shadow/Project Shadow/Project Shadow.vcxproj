@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\App.cpp" />
     <ClCompile Include="Engine\Character.cpp" />
+    <ClCompile Include="Engine\Cleric.cpp" />
     <ClCompile Include="Engine\Defs.cpp" />
     <ClCompile Include="Engine\ModuleCollision.cpp" />
     <ClCompile Include="Engine\Enemy.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Engine\Animation.h" />
     <ClInclude Include="Engine\App.h" />
     <ClInclude Include="Engine\Character.h" />
+    <ClInclude Include="Engine\Cleric.h" />
     <ClInclude Include="Engine\Defs.h" />
     <ClInclude Include="Engine\ModuleCollision.h" />
     <ClInclude Include="Engine\Enemy.h" />

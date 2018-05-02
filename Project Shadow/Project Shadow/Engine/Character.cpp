@@ -9,7 +9,7 @@
 #include "ModuleMap.h"
 
 
-class Hero;
+class Warrior;
 
 
 Character::Character(CharacterTypes charType) : Entity(EntityTypes::CHARACTER)
@@ -794,11 +794,11 @@ void Character::SetAnimations()
 {
 	switch (charType)
 	{
-	case FIGHTER:
+	case WARRIOR:
 		animations_name = HERO_SPRITE_ROOT;
 		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
 		break;
-	case ELF:
+	case ROGUE:
 		animations_name = ELF_SPRITE_ROOT;
 		sprites = App->textures->Load("Characters/Elf_sprites.png");
 		break;

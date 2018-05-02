@@ -1,5 +1,5 @@
-#ifndef __HERO_H__
-#define __HERO_H__
+#ifndef __WIZARD_H__
+#define __WIZARD_H__
 
 #include "Module.h"
 #include "Character.h"
@@ -10,19 +10,19 @@
 
 
 
-class Hero : public Character
+class Wizard : public Character
 {
 public:
-	Hero();
-	~Hero();
+	Wizard();
+	~Wizard();
 
 	bool Awake(pugi::xml_node&) override;
 
-	bool HeroStart();
+	bool WizardStart();
 
 	bool PreUpdate()override;
 
-	bool HeroUpdate(float dt);
+	bool WizardUpdate(float dt);
 
 	bool PostUpdate()override;
 

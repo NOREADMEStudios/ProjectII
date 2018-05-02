@@ -16,8 +16,10 @@ enum SpellsType {
 };
 
 enum CharacterTypes {
-	FIGHTER,
-	ELF,
+	WARRIOR,
+	ROGUE,
+	WIZARD,
+	CLERIC,
 	NONE,
 	ENEMY,
 };

@@ -91,7 +91,7 @@ bool ModuleCollision::PreUpdate() {
 				col->collisionArea = result;
 			}
 		}
-		VECTOR(LIST_ITERATOR(Collision*)) cols;
+
 		for (LIST_ITERATOR(Collision*) col = colliders[i]->collisions.begin(); col != colliders[i]->collisions.end(); col++) {
 			if ((*col)->updated)
 				continue;
@@ -99,15 +99,14 @@ bool ModuleCollision::PreUpdate() {
 			(*col)->updated = true;
 			SDL_Rect result;
 			if (SDL_IntersectRect(&(*col)->c2->collider.toSDL_Rect(), &colliders[i]->collider.toSDL_Rect(), &result) == SDL_FALSE) {
-					(*col)->CallOnExit();
-					cols.push_back(col);
+				Collision* collision = *col;
+				collision->CallOnExit();
+				col = colliders[i]->collisions.erase(col);
+				if (col != colliders[i]->collisions.begin())
+					col--;
+				collision->CleanUp();
+				Utils::Release(collision);
 			}
-		}
-
-		for (size_t c = 0; c < cols.size(); c++) {
-			Collision* col = (*cols[c]);
-			col->CleanUp();
-			Utils::Release(col);
 		}
 	}
 	return true;
@@ -214,12 +213,11 @@ String ModuleCollision::GetTag(const Collider & c)
 }
 
 void Collider::CleanUp() {
-	VECTOR(Collision*) toDestroy;
 	for (LIST_ITERATOR(Collision*) it = collisions.begin(); it != collisions.end(); it++) {
-		toDestroy.push_back(*it);
-	}
-	for (size_t i = 0; i < toDestroy.size(); i++) {
-		Collision* c = toDestroy[i];
+		Collision* c = *it;
+		it = collisions.erase(it);
+		if (it != collisions.begin())
+			it--;
 		c->CallOnExit();
 		c->CleanUp();
 		Utils::Release(c);

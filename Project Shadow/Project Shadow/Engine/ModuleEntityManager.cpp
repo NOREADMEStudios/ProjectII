@@ -1,7 +1,7 @@
 #include "ModuleEntityManager.h"
 #include "Character.h"
 #include "Enemy.h"
-#include "Hero.h"
+#include "Warrior.h"
 #include "../Game/Spells/FireBall.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
@@ -95,7 +95,7 @@ bool ModuleEntityManager::Update(float dt) {
 		if ((*item)->active)
 		{
 			(*item)->Update(dt);
-			winner = (*item)->hero_num;
+			winner = (*item)->heroNum;
 			i++;
 		}
 	}
@@ -154,17 +154,17 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 		ret = new Enemy();
 		numofplayers++;
 	}
-	else if (charInfo.chType == CharacterTypes::HERO)
+	else 
 	{
-		ret = new Hero();
+		ret = new Warrior();
 		numofplayers++;
-		ret->hero_num = numofplayers;
+
+		ret->charType = charInfo.chType;
+
+		ret->heroNum = numofplayers;
+
 	}
-	else
-	{
-		//ret = new Entity();
-		return nullptr;//
-	}
+
 
 	ret->type = CHARACTER;
 	ret->SetPos(charInfo.pos.x, charInfo.pos.y);
@@ -204,7 +204,7 @@ Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 
 void ModuleEntityManager::DestroyEntity(Entity* entity) {
 	pugi::xml_node n;
-	if (entity->hero_num != 0) {
+	if (entity->heroNum != 0) {
 		numofplayers--;	
 	}
 	entity->CleanUp(n);
@@ -292,7 +292,7 @@ Entity* ModuleEntityManager::GetEntity(uint num)
 	Entity* ret = nullptr;
 
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
-		if ((*item)->hero_num == num)
+		if ((*item)->heroNum == num)
 		{
 			ret == (*item);
 		}

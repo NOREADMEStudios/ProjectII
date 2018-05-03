@@ -2,6 +2,7 @@
 #define __ENTITYMANAGER_H__
 
 #include "Entity.h"
+#include "Character.h"
 #include "Module.h"
 
 #include "App.h"
@@ -15,9 +16,12 @@ enum SpellsType {
 };
 
 enum CharacterTypes {
+	WARRIOR,
+	ROGUE,
+	WIZARD,
+	CLERIC,
 	NONE,
 	ENEMY,
-	HERO
 };
 enum EntityTypes {
 	NOTYPE,

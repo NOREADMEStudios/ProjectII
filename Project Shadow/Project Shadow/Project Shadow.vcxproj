@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\App.cpp" />
     <ClCompile Include="Engine\Character.cpp" />
+    <ClCompile Include="Engine\Cleric.cpp" />
     <ClCompile Include="Engine\Defs.cpp" />
     <ClCompile Include="Engine\ModuleCollision.cpp" />
     <ClCompile Include="Engine\Enemy.cpp" />
@@ -131,7 +132,8 @@
     <ClCompile Include="Engine\ModuleSceneManager.cpp" />
     <ClCompile Include="Engine\ModuleTransition.cpp" />
     <ClCompile Include="Engine\PerfTimer.cpp" />
-    <ClCompile Include="Engine\Hero.cpp" />
+    <ClCompile Include="Engine\Rogue.cpp" />
+    <ClCompile Include="Engine\Warrior.cpp" />
     <ClCompile Include="Engine\Scene.cpp" />
     <ClCompile Include="Engine\Spells.cpp" />
     <ClCompile Include="Engine\Timer.cpp" />
@@ -150,6 +152,7 @@
     <ClCompile Include="Engine\UI\Slider.cpp" />
     <ClCompile Include="Engine\UI\Sprite.cpp" />
     <ClCompile Include="Engine\UI\Window.cpp" />
+    <ClCompile Include="Engine\Wizard.cpp" />
     <ClCompile Include="Game\Scenes\EndScene.cpp" />
     <ClCompile Include="Game\Scenes\IntroScene.cpp" />
     <ClCompile Include="Game\Scenes\ItemSelecScene.cpp" />
@@ -161,6 +164,7 @@
     <ClInclude Include="Engine\Animation.h" />
     <ClInclude Include="Engine\App.h" />
     <ClInclude Include="Engine\Character.h" />
+    <ClInclude Include="Engine\Cleric.h" />
     <ClInclude Include="Engine\Defs.h" />
     <ClInclude Include="Engine\ModuleCollision.h" />
     <ClInclude Include="Engine\Enemy.h" />
@@ -169,7 +173,8 @@
     <ClInclude Include="Engine\ModuleMap.h" />
     <ClInclude Include="Engine\ModuleTransition.h" />
     <ClInclude Include="Engine\PerfTimer.h" />
-    <ClInclude Include="Engine\Hero.h" />
+    <ClInclude Include="Engine\Rogue.h" />
+    <ClInclude Include="Engine\Warrior.h" />
     <ClInclude Include="Engine\Point.h" />
     <ClInclude Include="Engine\Rect.h" />
     <ClInclude Include="Engine\Entity.h" />
@@ -193,6 +198,7 @@
     <ClInclude Include="Engine\UI\Slider.h" />
     <ClInclude Include="Engine\UI\Sprite.h" />
     <ClInclude Include="Engine\UI\Window.h" />
+    <ClInclude Include="Engine\Wizard.h" />
     <ClInclude Include="Game\Scenes\EndScene.h" />
     <ClInclude Include="Game\Scenes\IntroScene.h" />
     <ClInclude Include="Game\Scenes\ItemSelecScene.h" />

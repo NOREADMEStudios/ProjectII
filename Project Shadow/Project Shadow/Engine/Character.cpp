@@ -9,7 +9,7 @@
 #include "ModuleMap.h"
 
 
-class Hero;
+class Warrior;
 
 
 Character::Character(CharacterTypes charType) : Entity(EntityTypes::CHARACTER)
@@ -27,6 +27,7 @@ bool Character::Awake(pugi::xml_node&)
 
 bool Character::Start()
 { 
+	SetAnimations();
 	LoadBasicStates();
 
 	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
@@ -66,6 +67,7 @@ bool Character::Start()
 
 	HeroStart();
 
+
 	active = true;
 	return true; 
 }
@@ -90,6 +92,9 @@ bool Character::Update(float dt)
 		RequestState();
 	else
 		currentState = DEATH;
+
+	if (!eventstates.empty())
+		UpdateEventStates();
 
 	Move(dt);
 	Break(dt);
@@ -156,6 +161,7 @@ bool Character::CleanUp(pugi::xml_node&)
 	}
 
 	Utils::ClearList(attacks);
+
 
 	App->collision->RemoveCollider(collHitBox);
 	App->collision->RemoveCollider(collFeet);
@@ -224,20 +230,69 @@ void Character::GetCollidersFromAnimation() {
 	}
 }
 
+std::list<CharInput> Character::RequestInputs() const {
+	
+		std::list<Input> inputs;
+		std::list<CharInput> charInputs;
+		inputs = App->input->GetInputListFromController(heroNum);
+		for (std::list<Input>::iterator item = inputs.begin(); item != inputs.end(); item++) {
+			Input input = *item;
+			switch (input) {
+			case NONEINPUT:
+				break;
+			case UP:
+				charInputs.push_back(CharInput::CH_UP);
+				break;
+			case DOWN:
+				charInputs.push_back(CharInput::CH_DOWN);
+				break;
+			case RIGHT:
+				charInputs.push_back(CharInput::CH_RIGHT);
+				break;
+			case LEFT:
+				charInputs.push_back(CharInput::CH_LEFT);
+				break;
+			case BUTTON_A:
+				charInputs.push_back(CharInput::JUMPINPUT);
+				break;
+			case BUTTON_B:
+				charInputs.push_back(CharInput::PARRYINPUT);
+				break;
+			case BUTTON_X:
+				charInputs.push_back(CharInput::LIGHT_ATTACK);
+				break;
+			case BUTTON_Y:
+				charInputs.push_back(CharInput::HEAVY_ATTACK);
+				break;
+			case L_SHOULDER:
+				charInputs.push_back(CharInput::DEFEND);
+				break;
+			case R_SHOULDER:
+				charInputs.push_back(CharInput::RUNINPUT);
+				break;
+			case BUTTON_SELECT:
+				charInputs.push_back(CharInput::TAUNTINPUT);
+				break;
+			default:
+				break;
+			}
+		}
+		return charInputs;
+	}
 
 void Character::RequestState() {
 	std::list<CharInput> inputs;
 	int NumControllers = App->input->GetNumControllers();
-	if (hero_num <= NumControllers) {
-		inputs = App->input->ControllerPlayerConfig(hero_num);
+	if (heroNum <= NumControllers) {
+		inputs = RequestInputs();
 	}
 	else {
-		if (hero_num - NumControllers == 1) {
-			inputs = App->input->FirstPlayerConfig();
+		if (heroNum - NumControllers == 1) {
+			inputs = FirstPlayerConfig();
 		}
 
-		else if (hero_num - NumControllers == 2)
-			inputs = App->input->SecondPlayerConfig();
+		/*else if (heroNum - NumControllers == 2)
+			inputs = SecondPlayerConfig();*/
 	}
 
 	bool run = false,
@@ -306,6 +361,8 @@ void Character::RequestState() {
 
 void Character::UpdateMainStates()
 {
+
+
 	if (wantedTag != 0 && GetAtk(wantedTag)->ability)
 	{
 		if (!GetAbAtk(wantedTag)->active)
@@ -344,7 +401,7 @@ void Character::UpdateMainStates()
 			currentState = STOP;
 	}
 	
-	if (currentState == JUMP || (currentState == AD_ACTION && GetAtk(currentTag)->air))
+	if (currentState == JUMP || (currentState == AD_ACTION && currentTag != 0 &&  GetAtk(currentTag)->air))
 	{
 		last_attack = 3;
 		if (StateisAtk(wantedState))
@@ -544,15 +601,13 @@ void Character::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 			else
 			{
-				max_speed = 600;
-				_this->entity->Accelerate(hit_dir * 1000, 0, 0, 1);
+				_this->entity->Impulsate(hit_dir * 8000, 0, 0);
 			}
 			App->audio->PlayFx(10);
 		}
 		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_shield")
 		{
-			max_speed = 400;
-			_this->entity->Accelerate(hit_dir * 800, 0, 0, 1);
+			_this->entity->Impulsate(hit_dir * 8000, 0, 0);
 		}
 		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")
 		{
@@ -661,7 +716,7 @@ void Character::LoadState(CharStateEnum _state, std::string animationName)
 	State* st = new State;
 	st->state = _state;
 
-	st->anim.LoadAnimationsfromXML(animationName, HERO_SPRITE_ROOT);
+	st->anim.LoadAnimationsfromXML(animationName, animations_name);
 	states.push_back(st);
 }
 
@@ -704,4 +759,99 @@ void Character::UpdateAbilities()
 void Character::AdAbility(Ability ab)
 {
 	abilities.push_back(ab);
+}
+
+
+void Character::UpdateEventStates()
+{
+	std::list<EventState*>::iterator item = eventstates.begin(); 
+
+	while (item != eventstates.end())
+	{
+		if ((*item)->timer.Count((*item)->time_active))
+		{
+			stats = stats - (*item)->stats;
+			item = eventstates.erase(item);
+		}
+		else
+		{
+			item++;
+		}
+	}
+
+}
+
+void Character::AdBuff(float time, float spd, float atk, float def)
+{
+	EventState* buff = new EventState(time, atk, def, spd);
+	stats =  stats + buff->stats;
+
+	eventstates.push_back(buff);
+
+}
+
+void Character::SetAnimations()
+{
+	switch (charType)
+	{
+	case WARRIOR:
+		animations_name = HERO_SPRITE_ROOT;
+		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
+		break;
+	case ROGUE:
+		animations_name = ELF_SPRITE_ROOT;
+		sprites = App->textures->Load("Characters/Elf_sprites.png");
+		break;
+	}
+
+}
+
+void Character::SetCharType(CharacterTypes type)
+{
+	charType = type;
+}
+
+std::list<CharInput> Character::FirstPlayerConfig()
+{
+
+	std::list<CharInput> ret;
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		App->debug = !App->debug;
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		ret.push_back(CharInput::CH_LEFT);
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		ret.push_back(CharInput::CH_RIGHT);
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		ret.push_back(CharInput::CH_UP);
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		ret.push_back(CharInput::CH_DOWN);
+
+	if (App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
+		ret.push_back(CharInput::RUNINPUT);
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		ret.push_back(CharInput::JUMPINPUT);
+
+	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+		ret.push_back(CharInput::LIGHT_ATTACK);
+
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+		ret.push_back(CharInput::HEAVY_ATTACK);
+
+	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)
+		ret.push_back(CharInput::DEFEND);
+
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
+		ret.push_back(CharInput::PARRYINPUT);
+
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+		ret.push_back(CharInput::TAUNTINPUT);
+
+	return ret;
+
 }

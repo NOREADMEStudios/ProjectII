@@ -165,6 +165,7 @@
     <ClInclude Include="Engine\App.h" />
     <ClInclude Include="Engine\Character.h" />
     <ClInclude Include="Engine\Cleric.h" />
+    <ClInclude Include="Engine\Cube.h" />
     <ClInclude Include="Engine\Defs.h" />
     <ClInclude Include="Engine\ModuleCollision.h" />
     <ClInclude Include="Engine\Enemy.h" />

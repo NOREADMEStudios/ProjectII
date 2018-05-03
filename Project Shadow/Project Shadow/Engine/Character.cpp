@@ -214,11 +214,23 @@ void Character::UpdateCollidersPosition() {
 }
 
 void Character::GetCollidersFromAnimation() {
+	int z = GetGamePos().z;
+	int d = GetCharDepth();
 	collFeet->collider = currentAnimation->GetFeetColliderFromFrame();
+	collFeet->collider.z = z;
+	collFeet->collider.d = d;
 	collHitBox->collider = currentAnimation->GetHitBoxColliderFromFrame();
+	collHitBox->collider.z = z;
+	collHitBox->collider.d = d;
 	collAtk->collider = currentAnimation->GetAtkColliderFromFrame();
+	collAtk->collider.z = z;
+	collAtk->collider.d = d;
 	collDef->collider = currentAnimation->GetDefColliderFromFrame();
+	collDef->collider.z = z;
+	collDef->collider.d = d;
 	collParry->collider = currentAnimation->GetParryColliderFromFrame();
+	collParry->collider.z = z;
+	collParry->collider.d = d;
 
 	if (flip)
 	{
@@ -567,7 +579,7 @@ void Character::OnCollisionEnter(Collider* _this, Collider* _other)
 {
 	if (_this->entity == _other->entity) return;
 
-	int z1 = _this->entity->GetGamePos().z;
+	/*int z1 = _this->entity->GetGamePos().z;
 	int d1 = _this->entity->GetCharDepth();
 
 	int z2 = _other->entity->GetGamePos().z;
@@ -578,7 +590,7 @@ void Character::OnCollisionEnter(Collider* _this, Collider* _other)
 	int p21 = z2 - (d2 / 2);
 	int p22 = z2 + (d2 / 2);
 
-	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))
+	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))*/
 	{
 		if (_this->collider.x - _other->collider.x > 0)
 		{

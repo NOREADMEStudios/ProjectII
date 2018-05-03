@@ -83,10 +83,12 @@ struct EntityStats
 		return(r);
 	}
 };
+
 struct Directions
 {
 	bool left, down, right, up = false;
 };
+
 struct Point3D
 {
 	float x = 0;

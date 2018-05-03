@@ -63,7 +63,7 @@ bool ModuleCollision::PreUpdate() {
 				continue;
 
 			SDL_Rect result;
-			if (SDL_IntersectRect(&colliders[i]->collider.toSDL_Rect(), &colliders[j]->collider.toSDL_Rect(), &result) == SDL_TRUE) {
+			if (colliders[i]->collider.Intersect(colliders[j]->collider)) {
 				Collision* col = nullptr;
 				for (LIST_ITERATOR(Collision*) c = colliders[i]->collisions.begin(); c != colliders[i]->collisions.end(); c++) {
 					if ((*c)->c1 == colliders[j] || (*c)->c2 == colliders[j]) {
@@ -98,7 +98,7 @@ bool ModuleCollision::PreUpdate() {
 
 			(*col)->updated = true;
 			SDL_Rect result;
-			if (SDL_IntersectRect(&(*col)->c2->collider.toSDL_Rect(), &colliders[i]->collider.toSDL_Rect(), &result) == SDL_FALSE) {
+			if ((*col)->c2->collider.Intersect(colliders[i]->collider)) {
 					(*col)->CallOnExit();
 					cols.push_back(col);
 			}
@@ -141,7 +141,7 @@ bool ModuleCollision::Update(float dt) {
 				break;
 			}
 
-			App->render->DrawQuad((*c)->collider.toSDL_Rect(), color.r, color.g, color.b, color.a);
+			App->render->DrawQuad((*c)->collider.GetRectXY().toSDL_Rect(), color.r, color.g, color.b, color.a);
 		}
 	}
 	return true;
@@ -165,7 +165,7 @@ bool ModuleCollision::CleanUp(xmlNode & config) {
 	return true;
 }
 
-Collider * ModuleCollision::CreateCollider(iRect dims, String tag, Collider::Type type)
+Collider * ModuleCollision::CreateCollider(iCube dims, String tag, Collider::Type type)
 {
 	Collider* c = new Collider();
 	c->collider = dims;

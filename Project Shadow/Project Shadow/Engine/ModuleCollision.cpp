@@ -1,6 +1,7 @@
 #include "ModuleCollision.h"
 #include "App.h"
 #include "ModuleRender.h"
+#include "ModuleWindow.h"
 #include <stdlib.h>
 
 ModuleCollision::ModuleCollision() {
@@ -140,8 +141,8 @@ bool ModuleCollision::Update(float dt) {
 				color = { 255,165,0,128 };//Orange
 				break;
 			}
-
-			App->render->DrawQuad((*c)->collider.GetRectXY().toSDL_Rect(), color.r, color.g, color.b, color.a);
+			float scale = App->win->GetScale();
+			App->render->DrawQuad(((*c)->collider.GetRectXY()).toSDL_Rect(), color.r, color.g, color.b, color.a, 1.0f);
 		}
 	}
 	return true;

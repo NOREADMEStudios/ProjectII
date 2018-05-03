@@ -15,7 +15,7 @@ public:
 	Cube(TYPE x, TYPE y, TYPE z, TYPE w, TYPE h, TYPE d) : x(x), y(y), z(z), w(w), h(h), d(d){}
 	~Cube(){}
 
-	bool Intersect(const Cube& other) {
+	bool Intersect(const Cube& other) const {
 		return (((x < other.x && x + w > other.x) || (x > other.x && x < other.x + other.w)) &&
 			((y < other.y && y + h > other.y) || (y > other.y && y < other.y + other.h)) &&
 			((z < other.z && z + d > other.z) || (z > other.z && z < other.z + other.d)));
@@ -25,11 +25,13 @@ public:
 		return { x, y, w, h };
 	}
 
-	const operator = (const Rect<TYPE>& rect) {
+	const Cube& operator = (const Rect<TYPE>& rect) {
 		x = rect.x;
 		y = rect.y;
 		w = rect.w;
 		h = rect.h;
+
+		return *this;
 	}
 
 };

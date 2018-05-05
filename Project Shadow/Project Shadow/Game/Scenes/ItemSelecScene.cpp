@@ -30,7 +30,7 @@ ItemSelecScene::~ItemSelecScene()
 
 bool ItemSelecScene::Start()
 {
-	LoadBackground("UI/BasicMenuScene.png");
+	LoadBackground("UI/BackgroundItems.png");
 
 	LoadSceneUI();
 	SetControllerFocus();
@@ -72,65 +72,68 @@ void ItemSelecScene::LoadSceneUI() {
 	int i = 0;
 
 	items[i] = new Item("Plate Mail", PLATE, { 480,0,120,120 }, { 0,0,5,0,0 });
-	items[i]->butt = App->gui->AddButton(100, 100, atlas, items[i]->animRect, true, nullptr);//0
+	items[i]->butt = App->gui->AddButton(200, 150, atlas, items[i]->animRect, true, nullptr);//0
 	AddLabelToButton(items[i]);
 	App->gui->setFocus(items[i]->butt);
 
 	items[++i] = new Item("Normal Sword", SWORD, { 480,0,120,120 }, { 0,5,0,0,0 });
-	items[i]->butt = App->gui->AddButton(300, 100, atlas, items[i]->animRect, true, nullptr);//1
+	items[i]->butt = App->gui->AddButton(545, 150, atlas, items[i]->animRect, true, nullptr);//1
 	AddLabelToButton(items[i]);
 	
 	items[++i] = new Item("Swift Boots", SWIFT_BOOTS, { 0,0,120,120 }, { 0,0,0,10,0 });
-	items[i]->butt = App->gui->AddButton(500, 100, atlas, items[i]->animRect, true, nullptr);//2
+	items[i]->butt = App->gui->AddButton(880, 150, atlas, items[i]->animRect, true, nullptr);//2
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Magic Robe", ROBE, { 120,0,120,120 }, { 0,10,0,0 });
-	items[i]->butt = App->gui->AddButton(700, 100, atlas, items[i]->animRect, true, nullptr);//3
+	items[i]->butt = App->gui->AddButton(1210, 150, atlas, items[i]->animRect, true, nullptr);//3
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Mage Hat", MAGE_HAT, { 240,0,120,120 }, { 0,0,0,0,0 }); // increases stamina??
-	items[i]->butt = App->gui->AddButton(900, 100, atlas, items[i]->animRect, true, nullptr);//4
+	items[i]->butt = App->gui->AddButton(1545, 150, atlas, items[i]->animRect, true, nullptr);//4
 	AddLabelToButton(items[i]);
-
+	
+	//2nd Row	
 
 	items[++i] = new Item("Thief Hood", HOOD, { 360,0,120,120 }, { 0,0,0,10,0 });
-	items[i]->butt = App->gui->AddButton(100, 300, atlas, items[i]->animRect, true, nullptr);//5
+	items[i]->butt = App->gui->AddButton(200, 410, atlas, items[i]->animRect, true, nullptr);//5
 	AddLabelToButton(items[i]);
 	
 	items[++i] = new Item("Cleric Hat", CLERIC_HAT, { 0,0,120,120 }, { 0,0,0,0,0 });
-	items[i]->butt = App->gui->AddButton(300,300, atlas, items[i]->animRect, true, nullptr);//6
+	items[i]->butt = App->gui->AddButton(545, 410, atlas, items[i]->animRect, true, nullptr);//6
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Ring of Protection", RING, { 360,0,120,120 }, { 0,0,10,0,0 });
-	items[i]->butt = App->gui->AddButton(500, 300, atlas, items[i]->animRect, true, nullptr);//7
+	items[i]->butt = App->gui->AddButton(880, 410, atlas, items[i]->animRect, true, nullptr);//7
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Tiara", TIARA, { 0,0,120,120 }, { 0,20,0,0,0 });
-	items[i]->butt = App->gui->AddButton(700, 300, atlas, items[i]->animRect, true, nullptr);//8
+	items[i]->butt = App->gui->AddButton(1210, 410, atlas, items[i]->animRect, true, nullptr);//8
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Cursed Sword",CURSED_SWORD, { 120,0,120,120 }, { 0,10,0,0 });
-	items[i]->butt = App->gui->AddButton(900, 300, atlas, items[i]->animRect, true, nullptr);//9
+	items[i]->butt = App->gui->AddButton(1545, 410, atlas, items[i]->animRect, true, nullptr);//9
 	AddLabelToButton(items[i]);
 
+	//3rd Row	
+
 	items[++i] = new Item("Boots of Haste", HASTE_BOOTS, { 0,0,120,120 }, { 0,0,0,15,0 });
-	items[i]->butt = App->gui->AddButton(100, 500, atlas, items[i]->animRect, true, nullptr);//10
+	items[i]->butt = App->gui->AddButton(200, 665, atlas, items[i]->animRect, true, nullptr);//10
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Paladin’s Handguards", HANDGUARDS,{ 240,0,120,120 }, { 0,0,15,0,0 });
-	items[i]->butt = App->gui->AddButton(300, 500, atlas, items[i]->animRect, true, nullptr);//11
+	items[i]->butt = App->gui->AddButton(545, 665, atlas, items[i]->animRect, true, nullptr);//11
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Earrings of Energy", EARRINGS, { 0,0,120,120 }, { 1,1,1,0,1 });
-	items[i]->butt = App->gui->AddButton(500, 500, atlas, items[i]->animRect, true, nullptr);//12
+	items[i]->butt = App->gui->AddButton(880, 665, atlas, items[i]->animRect, true, nullptr);//12
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Dragon Slayer",DRAGONSLAYER, { 0,0,120,120 }, { 0,20,0,0,0 });
-	items[i]->butt = App->gui->AddButton(700, 500, atlas, items[i]->animRect, true, nullptr);//13
+	items[i]->butt = App->gui->AddButton(1210, 665, atlas, items[i]->animRect, true, nullptr);//13
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Staff of Thoth", STAFF, { 0,0,120,120 }, { 0,35,0,0,0 });
-	items[i]->butt = App->gui->AddButton(900, 500, atlas, items[i]->animRect, true, nullptr);//14
+	items[i]->butt = App->gui->AddButton(1545, 665, atlas, items[i]->animRect, true, nullptr);//14
 	AddLabelToButton(items[i]);
 
 	items[0]->SetRelation(items[1], InterfaceElement::Directions::RIGHT);
@@ -251,6 +254,10 @@ void ItemSelecScene::SetControllerFocus() {
 
 void ItemSelecScene::ChooseFocus() {
 
+	int initialDisplacement = 130;
+	int marginBetweenItemFrames = 17;
+	int marginBetweenPlayerFrames = 300;
+
 	for (int i = 0; i < controllersNum; i++) {
 		if (players[i].ready) {
 			return;
@@ -259,7 +266,7 @@ void ItemSelecScene::ChooseFocus() {
 			
 			Item* item = players[i].focusedItem;
 			players[i].playerItems[players[i].locked] = item;
-			players[i].MiniatureItems[players[i].locked] = App->gui->AddSprite(50 + item->butt->rect.w*players[i].locked + 300 * i, 800, atlas, item->animRect);//need to check values
+			players[i].MiniatureItems[players[i].locked] = App->gui->AddSprite(initialDisplacement + (item->butt->rect.w+ marginBetweenItemFrames)*players[i].locked + marginBetweenPlayerFrames * i, 1000, atlas, item->animRect);//need to check values
 			players[i].LockedArrow(players[i].locked);
 			players[i].locked++;
 			FindFirstFreeItem(i);

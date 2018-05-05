@@ -385,43 +385,15 @@ void ItemSelecScene::FindFirstFreeItem(uint playerNum) {
 
 void ItemSelecScene::ApplyItemAttributes() {//NEED TO APPLY TO THE PLAYER
 	for (int i = 0; i < controllersNum; i++) {
-		switch (players[i].focusedItem->type)
-		{
-		case ItemType::PLATE:
-		{}
+		EntityStats* item = &App->entities->items[i];
+		for (int itemNum = 0; itemNum < 3; itemNum++) {
+			item->atk += players[i].playerItems[itemNum]->stats.atk;
+			item->def += players[i].playerItems[itemNum]->stats.def;
+			item->life += players[i].playerItems[itemNum]->stats.life;
+			item->mgk += players[i].playerItems[itemNum]->stats.mgk;
+			item->spd += players[i].playerItems[itemNum]->stats.spd;
 		}
 	}
-	/*
-	for (std::list<Selection>::iterator focus = playersSelections.begin(); focus != playersSelections.end(); focus++) {
-		EntityStats* item = &App->entities->items[(*focus).playerNum-1];
-
-		if ((*focus).but == swiftBoots) {
-			//Apply the effect to the player num ( (*focus).playerNum  )
-			item->spd += 5;
-		}
-		else if ((*focus).but == cursedSword) {
-			//Apply the effect to the player num ( (*focus).playerNum  )
-			item->atk += 5;
-		}
-		else if ((*focus).but == paladinsHandguards) {
-			//Apply the effect to the player num ( (*focus).playerNum  )
-			item->def += 5;
-		}
-		else if ((*focus).but == ringProtection) {
-			//Apply the effect to the player num ( (*focus).playerNum  )
-			item->life += 10;
-		}
-		else if ((*focus).but == dragonSlayer) {
-			//Apply the effect to the player num ( (*focus).playerNum  )
-			item->atk += 2;
-			item->def += 2;
-		}
-		else if ((*focus).but == magicRobe) {
-			//Apply the effect to the player num ( (*focus).playerNum  )
-			item->atk += 2;
-			item->spd += 2;
-		}
-	}*/
 }
 
 void ItemSelecScene::Player::LockedArrow(uint lockedNum) {

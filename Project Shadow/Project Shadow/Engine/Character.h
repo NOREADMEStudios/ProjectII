@@ -9,15 +9,15 @@
 
 #include <list>
 
+enum Team {
+	BLUE,
+	RED
+};
 
 #define COMBO_MARGIN 1
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
 #define ELF_SPRITE_ROOT "Assets/Animations/Characters/Elf_Animations.tmx"
 
-enum Team {
-	BLUE,
-	RED
-};
 
 enum CharInput
 {
@@ -170,6 +170,8 @@ struct EventState
 
 class Character : public Entity
 {
+
+	
 public:
 	Character(CharacterTypes charType);
 	~Character();

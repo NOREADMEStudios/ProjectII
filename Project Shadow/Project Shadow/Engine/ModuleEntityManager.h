@@ -10,6 +10,10 @@
 
 #include <list>
 
+enum Team;
+class Character;
+
+
 enum SpellsType {
 	NOSPELL,
 	FIREBALL
@@ -68,7 +72,7 @@ public:
 
 	bool IsSFXRepeated(std::list<std::string> list, std::string string) const;
 
-	Entity* CreateCharacter(CharacterInfo charInfo);
+	Character* CreateCharacter(CharacterInfo charInfo);
 	Entity* CreateSpell(SpellsInfo spellsInfo);
 	void DestroyEntity(Entity* entity);
 

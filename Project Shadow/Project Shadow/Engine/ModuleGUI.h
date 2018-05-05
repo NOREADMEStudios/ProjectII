@@ -12,7 +12,7 @@ class Button;
 class Window;
 class Slider;
 class Healthbar;
-class Hero;
+class Warrior;
 struct Window_Info;
 
 
@@ -53,7 +53,7 @@ public:
 	Window* AddWindow(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled = true);
 	Window* AddWindow(const Window_Info& info);
 	Slider* AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim = { 0, 0, 0, 0 }, SDL_Rect _pressed_anim = { 0, 0, 0, 0 }, bool _axis = 1, InterfaceElement* parent = nullptr);
-	Healthbar* AddHealthbar(Hero* character, int charNum, bool leftSide = true, uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, bool _enabled = false, SDL_Rect _anim = { 0, 0, 0, 0 });
+	Healthbar* AddHealthbar(Warrior* character, int charNum, bool leftSide = true, uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, bool _enabled = false, SDL_Rect _anim = { 0, 0, 0, 0 });
 	const SDL_Texture* GetAtlas() const;
 	std::string atlas_file_name;
 

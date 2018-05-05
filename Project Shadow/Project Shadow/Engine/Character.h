@@ -7,13 +7,17 @@
 #include "Entity.h"
 #include "ModuleCollision.h"
 
+#include <list>
 
 
-#define COMBO_MARGIN 0.5
+#define COMBO_MARGIN 1
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
+#define ELF_SPRITE_ROOT "Assets/Animations/Characters/Elf_Animations.tmx"
 
-
-
+enum Team {
+	BLUE,
+	RED
+};
 
 enum CharInput
 {
@@ -67,12 +71,12 @@ struct Attack
 	bool air;
 	bool ability;
 
-	Attack(uint _tag, CharInput _input, std::string animationName, int _damage = 0, bool _air = false, bool ab = false)
+	Attack(uint _tag, CharInput _input, std::string animationName, std::string fileName, int _damage = 0, bool _air = false, bool ab = false)
 	{
 		tag = _tag;
 		input = _input;
 		damage = _damage;
-		anim.LoadAnimationsfromXML(animationName, HERO_SPRITE_ROOT);
+		anim.LoadAnimationsfromXML(animationName, fileName);
 		air = _air;
 		ability = ab;
 	}
@@ -146,6 +150,22 @@ struct Ability
 
 };
 
+struct EventState
+{
+	bool active = 0;
+	Timer timer;
+	float time_active = 0;
+	EntityStats stats;
+
+	EventState(float time, int atk, int def, int spd)
+	{
+		time_active = time;
+		stats.atk = atk;
+		stats.def = def;
+		stats.spd = spd;
+	}
+};
+
 
 
 class Character : public Entity
@@ -185,11 +205,21 @@ public:
 
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 	Timer time_attack;
+	Team team;
 
-	
+	void AdBuff(float time = 0, float spd = 0, float atk = 0, float def = 0);
+	void SetAnimations();
+	void SetCharType(CharacterTypes type);
+
+
 protected:
 
-	void RequestState();
+
+	std::list<CharInput> GetControllerInputs()const;
+	std::list<CharInput> FirstPlayerConfig();
+
+	std::list<CharInput> RequestInputs()const;
+	void RequestState() ;
 	void UpdateMainStates();
 	void UpdateCurState(float dt);
 	void UpdateAnimation();
@@ -203,6 +233,8 @@ protected:
 	void UpdateTag(uint& t);
 	void UpdateAbilities();
 	void AdAbility(Ability ab);
+	void UpdateEventStates();
+
 
 	virtual bool HeroStart() { return true; };
 	virtual bool HeroUpdate(float dt) { return true; };
@@ -215,13 +247,15 @@ protected:
 				*collParry = nullptr;
 
 
-	CharacterTypes charType;
+
 
 	CharStateEnum currentState;
 	CharStateEnum wantedState;
 	uint last_attack;
 
 	LIST(State*) states;
+	LIST(EventState*) eventstates;
+
 
 	iPoint initialpos;
 	int initialLife = 0;
@@ -233,6 +267,9 @@ protected:
 	bool sound_avaliable = true;
 	uint currentTag = 0;
 	uint wantedTag = 0;
+	std::string animations_name;
+
+
 
 	LIST(Attack*) attacks;
 	LIST(Ability) abilities;

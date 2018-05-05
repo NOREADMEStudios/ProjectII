@@ -113,7 +113,6 @@ void ItemSelecScene::LoadSceneUI() {
 	items[i]->butt = App->gui->AddButton(900, 300, atlas, items[i]->animRect, true, nullptr);//9
 	AddLabelToButton(items[i]);
 
-
 	items[++i] = new Item("Boots of Haste", HASTE_BOOTS, { 0,0,120,120 }, { 0,0,0,15,0 });
 	items[i]->butt = App->gui->AddButton(100, 500, atlas, items[i]->animRect, true, nullptr);//10
 	AddLabelToButton(items[i]);
@@ -256,7 +255,7 @@ void ItemSelecScene::ChooseFocus() {
 		if (players[i].ready) {
 			return;
 		}
-		if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::JUMPINPUT) {
+		if (App->input->GetButtonFromController(players[i].playerNum) == Input::BUTTON_A ) {
 			
 			Item* item = players[i].focusedItem;
 			players[i].playerItems[players[i].locked] = item;
@@ -269,11 +268,10 @@ void ItemSelecScene::ChooseFocus() {
 }
 void ItemSelecScene::RemoveSelectedItem() {
 
-
 	for (int i = 0; i < controllersNum; i++) {
 		Player* player = &players[i];
 		
-		if (App->input->GetButtonFromController(player->playerNum) == CharInput::PARRYINPUT) {			
+		if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_B) {			
 			if (player->locked > 0) {
 				if (player->ready) {
 					player->ready = false;
@@ -294,17 +292,17 @@ void ItemSelecScene::ManageDisplacementFocus() {
 		if (players[i].ready) {
 			return;
 		}
-		if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::CH_DOWN) {
+		if (App->input->GetButtonFromController(players[i].playerNum) == Input::DOWN) {
 
 			FindNextArrowUnlocked(i, InterfaceElement::Directions::DOWN);
 		}
-		else if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::CH_UP) {
+		else if (App->input->GetButtonFromController(players[i].playerNum) == Input::UP) {
 			FindNextArrowUnlocked(i, InterfaceElement::Directions::UP);
 		}
-		else if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::CH_LEFT) {
+		else if (App->input->GetButtonFromController(players[i].playerNum) == Input::LEFT) {
 			FindNextArrowUnlocked(i, InterfaceElement::Directions::LEFT);
 		}
-		else if (App->input->GetButtonFromController(players[i].playerNum) == CharInput::CH_RIGHT) {
+		else if (App->input->GetButtonFromController(players[i].playerNum) == Input::RIGHT) {
 			FindNextArrowUnlocked(i, InterfaceElement::Directions::RIGHT);
 		}
 		
@@ -369,7 +367,7 @@ void ItemSelecScene::FindFirstFreeItem(uint playerNum) {
 
 	for (int i = 0; i < 15; i++) {
 		for (int j = 0; j < player->locked; j++) { 
-			if (player->playerItems[j] != items[i]) {			
+			if (player->playerItems[j] != items[i]) {
 				if (j == player->locked-1) {
 					player->focusedItem = items[i];
 					player->DrawOrderedArrow();
@@ -383,7 +381,7 @@ void ItemSelecScene::FindFirstFreeItem(uint playerNum) {
 	}
 }
 
-void ItemSelecScene::ApplyItemAttributes() {//NEED TO APPLY TO THE PLAYER
+void ItemSelecScene::ApplyItemAttributes() {
 	for (int i = 0; i < controllersNum; i++) {
 		EntityStats* item = &App->entities->items[i];
 		for (int itemNum = 0; itemNum < 3; itemNum++) {

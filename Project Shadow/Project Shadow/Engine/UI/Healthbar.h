@@ -2,7 +2,7 @@
 #define __HEALTHBAR_H__
 
 #include "Sprite.h"
-#include "../Hero.h"
+#include "../Warrior.h"
 #include "../Defs.h"
 
 class Label;
@@ -12,12 +12,12 @@ class Healthbar :
 {
 public:
 
-	Healthbar(Hero* character, int charNum, bool leftSide = true, uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, bool _enabled = false, SDL_Rect* _anim = nullptr);
+	Healthbar(Warrior* character, int charNum, bool leftSide = true, uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, bool _enabled = false, SDL_Rect* _anim = nullptr);
 	~Healthbar();
 
 	bool Update(float dt) override;
 
-	Hero* assignedCharacter = nullptr;
+	Warrior* assignedCharacter = nullptr;
 	Sprite* bar = nullptr;
 	Sprite* characterMugShot = nullptr;
 	VECTOR(Sprite*) lives {};

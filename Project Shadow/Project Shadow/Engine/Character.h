@@ -9,6 +9,10 @@
 
 #include <list>
 
+enum Team {
+	BLUE,
+	RED
+};
 
 #define COMBO_MARGIN 1
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
@@ -166,6 +170,8 @@ struct EventState
 
 class Character : public Entity
 {
+
+	
 public:
 	Character(CharacterTypes charType);
 	~Character();
@@ -201,6 +207,7 @@ public:
 
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 	Timer time_attack;
+	Team team;
 
 	void AdBuff(float time = 0, float spd = 0, float atk = 0, float def = 0);
 	void SetAnimations();

@@ -27,20 +27,20 @@ bool Warrior::Awake(pugi::xml_node&)
 bool Warrior::WarriorStart()
 {
 
-	//switch (hero_num) {
-	//case 1:
-	//	sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
-	//	break;
-	//case 2:
-	//	sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
-	//	break;
-	//case 3:
-	//	sprites = App->textures->Load("Characters/Fighter_sprites_blue.png");
-	//	break;
-	//case 4:
-	//	sprites = App->textures->Load("Characters/Fighter_sprites_grey.png");
-	//	break;
-	//}
+	/*switch (heroNum) {
+	case 1:
+		sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
+		break;
+	case 2:
+		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
+		break;
+	case 3:
+		sprites = App->textures->Load("Characters/Fighter_sprites_blue.png");
+		break;
+	case 4:
+		sprites = App->textures->Load("Characters/Fighter_sprites_grey.png");
+	break;
+	}*/
 
 
 	stats.atk += App->entities->items[heroNum - 1].atk;

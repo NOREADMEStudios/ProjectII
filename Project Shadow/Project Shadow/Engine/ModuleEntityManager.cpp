@@ -145,9 +145,9 @@ bool ModuleEntityManager::Save(pugi::xml_node& n)const {
 	return true;
 }
 
-Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
+Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
-	Entity* ret = nullptr;
+	Character* ret = nullptr;
 
 	if (charInfo.chType == CharacterTypes::ENEMY)
 	{
@@ -160,6 +160,7 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 		numofplayers++;
 
 		ret->charType = charInfo.chType;
+		ret->team = charInfo.chTeam;
 
 		ret->heroNum = numofplayers;
 

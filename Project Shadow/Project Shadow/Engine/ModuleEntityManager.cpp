@@ -1,7 +1,7 @@
 #include "ModuleEntityManager.h"
 #include "Character.h"
 #include "Enemy.h"
-#include "Hero.h"
+#include "Warrior.h"
 #include "../Game/Spells/FireBall.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
@@ -145,9 +145,9 @@ bool ModuleEntityManager::Save(pugi::xml_node& n)const {
 	return true;
 }
 
-Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
+Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
-	Entity* ret = nullptr;
+	Character* ret = nullptr;
 
 	if (charInfo.chType == CharacterTypes::ENEMY)
 	{
@@ -156,10 +156,11 @@ Entity* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	}
 	else 
 	{
-		ret = new Hero();
+		ret = new Warrior();
 		numofplayers++;
 
 		ret->charType = charInfo.chType;
+		ret->team = charInfo.chTeam;
 
 		ret->heroNum = numofplayers;
 

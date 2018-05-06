@@ -1,4 +1,4 @@
-#include "Hero.h"
+#include "Warrior.h"
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
@@ -10,37 +10,37 @@
 
 
 
-Hero::Hero() : Character(CharacterTypes::FIGHTER)
+Warrior::Warrior() : Character(CharacterTypes::WARRIOR)
 {
 }
 
-Hero::~Hero()
+Warrior::~Warrior()
 {
 }
 
 
-bool Hero::Awake(pugi::xml_node&)
+bool Warrior::Awake(pugi::xml_node&)
 {
 	return true;
 }
 
-bool Hero::HeroStart()
+bool Warrior::WarriorStart()
 {
 
-	//switch (hero_num) {
-	//case 1:
-	//	sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
-	//	break;
-	//case 2:
-	//	sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
-	//	break;
-	//case 3:
-	//	sprites = App->textures->Load("Characters/Fighter_sprites_blue.png");
-	//	break;
-	//case 4:
-	//	sprites = App->textures->Load("Characters/Fighter_sprites_grey.png");
-	//	break;
-	//}
+	/*switch (heroNum) {
+	case 1:
+		sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
+		break;
+	case 2:
+		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
+		break;
+	case 3:
+		sprites = App->textures->Load("Characters/Fighter_sprites_blue.png");
+		break;
+	case 4:
+		sprites = App->textures->Load("Characters/Fighter_sprites_grey.png");
+	break;
+	}*/
 
 
 	stats.atk += App->entities->items[heroNum - 1].atk;
@@ -88,14 +88,14 @@ bool Hero::HeroStart()
 	return true;
 }
 
-bool Hero::PreUpdate()
+bool Warrior::PreUpdate()
 {
 	//collider = currentAnimation->CurrentFrame().rect;
 
 	return true;
 }
 
-bool Hero::HeroUpdate(float dt)
+bool Warrior::WarriorUpdate(float dt)
 {
 
 	int z_dir = directions.down - directions.up;
@@ -136,18 +136,18 @@ bool Hero::HeroUpdate(float dt)
 	return true;
 }
 
-bool Hero::PostUpdate()
+bool Warrior::PostUpdate()
 {
 	return true;
 }
 
-bool Hero::CleanUp(pugi::xml_node&)
+bool Warrior::CleanUp(pugi::xml_node&)
 {
 
 	return true;
 }
 
-void Hero::UpdateSpecStates()
+void Warrior::UpdateSpecStates()
 {
 	if (currentState == PARRY)
 	{

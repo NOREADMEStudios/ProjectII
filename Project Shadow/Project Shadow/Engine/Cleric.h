@@ -1,5 +1,5 @@
-#ifndef __HERO_H__
-#define __HERO_H__
+#ifndef __CLERIC_H__
+#define __CLERIC_H__
 
 #include "Module.h"
 #include "Character.h"
@@ -10,11 +10,11 @@
 
 
 
-class Hero : public Character
+class Cleric : public Character
 {
 public:
-	Hero();
-	~Hero();
+	Cleric();
+	~Cleric();
 
 	bool Awake(pugi::xml_node&) override;
 

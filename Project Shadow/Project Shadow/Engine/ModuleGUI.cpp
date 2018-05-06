@@ -260,7 +260,7 @@ Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, 
 	return aux;
 }
 
-Healthbar * ModuleGUI::AddHealthbar(Hero * character, int charNum, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect _anim)
+Healthbar * ModuleGUI::AddHealthbar(Warrior * character, int charNum, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect _anim)
 {
 	if (_tex == nullptr)
 		_tex = atlas_texture;

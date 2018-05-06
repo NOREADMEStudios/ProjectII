@@ -24,7 +24,7 @@ bool Warrior::Awake(pugi::xml_node&)
 	return true;
 }
 
-bool Warrior::WarriorStart()
+bool Warrior::HeroStart()
 {
 
 	/*switch (heroNum) {
@@ -95,7 +95,7 @@ bool Warrior::PreUpdate()
 	return true;
 }
 
-bool Warrior::WarriorUpdate(float dt)
+bool Warrior::HeroUpdate(float dt)
 {
 
 	int z_dir = directions.down - directions.up;

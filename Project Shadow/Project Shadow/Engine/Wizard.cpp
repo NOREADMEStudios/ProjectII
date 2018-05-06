@@ -24,7 +24,7 @@ bool Wizard::Awake(pugi::xml_node&)
 	return true;
 }
 
-bool Wizard::WizardStart()
+bool Wizard::HeroStart()
 {
 
 	
@@ -38,7 +38,7 @@ bool Wizard::PreUpdate()
 	return true;
 }
 
-bool Wizard::WizardUpdate(float dt)
+bool Wizard::HeroUpdate(float dt)
 {
 
 	return true;

@@ -351,6 +351,9 @@ void Character::RequestState() {
 		case PARRYINPUT:
 			wantedState = PARRY;
 			break;
+		case AB_3:
+			wantedState = AD_ACTION;
+			wantedTag = 13;
 		default:
 			break;
 		}
@@ -566,6 +569,7 @@ void Character::GetHP(int& curr, int& max)
 void Character::OnCollisionEnter(Collider* _this, Collider* _other)
 {
 	if (_this->entity == _other->entity) return;
+	
 
 	int z1 = _this->entity->GetGamePos().z;
 	int d1 = _this->entity->GetCharDepth();
@@ -596,8 +600,6 @@ void Character::OnCollisionEnter(Collider* _this, Collider* _other)
 				currentState = HIT;
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
-
-
 			}
 			else
 			{
@@ -753,6 +755,8 @@ void Character::UpdateAbilities()
 		{
 			item->active = true;
 		}
+		else
+			item->active = false;
 	}
 }
 
@@ -851,6 +855,9 @@ std::list<CharInput> Character::FirstPlayerConfig()
 
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 		ret.push_back(CharInput::TAUNTINPUT);
+
+	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
+		ret.push_back(CharInput::AB_3);
 
 	return ret;
 

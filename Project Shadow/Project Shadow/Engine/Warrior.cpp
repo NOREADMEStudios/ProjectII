@@ -24,7 +24,7 @@ bool Warrior::Awake(pugi::xml_node&)
 	return true;
 }
 
-bool Warrior::WarriorStart()
+bool Warrior::HeroStart()
 {
 
 	/*switch (heroNum) {
@@ -58,7 +58,7 @@ bool Warrior::WarriorStart()
 	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", animations_name, 5);
 	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK, "jump_attack", animations_name, 2, true);
 	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", animations_name, 5, true);
-	//Attack* ulti = new Attack(9, TAUNTINPUT, "win", 0, 0, true);
+	Attack* ulti = new Attack(13, AB_3, "intro",animations_name, 0,false, true);
 
 	attacks.push_back(light_1);
 	attacks.push_back(light_2);
@@ -68,7 +68,7 @@ bool Warrior::WarriorStart()
 	attacks.push_back(jump_a);
 	attacks.push_back(jump_a2);
 	attacks.push_back(jump_a3);
-	//attacks.push_back(ulti);
+	attacks.push_back(ulti);
 
 	light_1->AddChild(light_2);
 	light_2->AddChild(light_3);
@@ -82,7 +82,7 @@ bool Warrior::WarriorStart()
 	AdAbility(*kick);
 
 
-	Ability* Aulti = new Ability(light_2, 3);
+	Ability* Aulti = new Ability(ulti, 10);
 	AdAbility(*Aulti);
 
 	return true;
@@ -95,7 +95,7 @@ bool Warrior::PreUpdate()
 	return true;
 }
 
-bool Warrior::WarriorUpdate(float dt)
+bool Warrior::HeroUpdate(float dt)
 {
 
 	int z_dir = directions.down - directions.up;
@@ -124,7 +124,7 @@ bool Warrior::WarriorUpdate(float dt)
 		}
 	}
 
-	if (currentTag == 4 && GetAbAtk(currentTag)->active)
+	if (!GetAbAtk(13)->active)
 	{
 		buffed = true;
 	}
@@ -169,7 +169,7 @@ void Warrior::UpdateSpecStates()
 		currentAnimation->Reset();
 	}
 
-	if (currentTag == 4 && !buffed)
+	if (currentTag == 13 && !buffed)
 	{
 		AdBuff(5, 300);
 		buffed = true;

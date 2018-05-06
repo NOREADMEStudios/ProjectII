@@ -33,6 +33,9 @@ enum CharInput
 	DEFEND,
 	TAUNTINPUT,
 	PARRYINPUT,
+	AB_1,
+	AB_2,
+	AB_3
 };
 
 enum CharStateEnum

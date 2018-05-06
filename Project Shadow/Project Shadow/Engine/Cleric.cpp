@@ -24,7 +24,7 @@ bool Cleric::Awake(pugi::xml_node&)
 	return true;
 }
 
-bool Cleric::ClericStart()
+bool Cleric::HeroStart()
 {
 
 
@@ -38,7 +38,7 @@ bool Cleric::PreUpdate()
 	return true;
 }
 
-bool Cleric::ClericUpdate(float dt)
+bool Cleric::HeroUpdate(float dt)
 {
 
 	return true;

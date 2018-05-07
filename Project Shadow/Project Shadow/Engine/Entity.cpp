@@ -135,7 +135,7 @@ EntityTypes Entity::GetType()
 	return type;
 }
 
-void Entity::SetPos(int x, int z)
+void Entity::SetPos(int x,int y, int z)
 {
 	gamepos.x = x;
 	gamepos.z = z;

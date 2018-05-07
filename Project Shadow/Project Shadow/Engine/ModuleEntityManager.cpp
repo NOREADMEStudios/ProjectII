@@ -156,9 +156,8 @@ Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	{
 		ret = new Warrior();
 		
-
 	}
-	else if (charInfo.chType == CharacterTypes::WARRIOR)
+	else if (charInfo.chType == CharacterTypes::CLERIC)
 	{
 		ret = new Cleric();		
 
@@ -184,7 +183,7 @@ Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
 	ret->heroNum = numofplayers;
 	ret->type = CHARACTER;
-	ret->SetPos(charInfo.pos.x, charInfo.pos.y);
+	ret->SetPos(charInfo.pos.x, charInfo.pos.y, charInfo.pos.z);
 
 	
 	entities.push_back(ret);
@@ -209,7 +208,7 @@ Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	}
 
 	ret->type = SPELLS;
-	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y);
+	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y, spellsInfo.pos.z);
 
 
 	entities.push_back(ret);

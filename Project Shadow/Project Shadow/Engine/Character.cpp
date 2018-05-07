@@ -351,9 +351,18 @@ void Character::RequestState() {
 		case PARRYINPUT:
 			wantedState = PARRY;
 			break;
+		case AB_1:
+			wantedState = AD_ACTION;
+			wantedTag = 11;
+			break;
+		case AB_2:
+			wantedState = AD_ACTION;
+			wantedTag = 12;
+			break;
 		case AB_3:
 			wantedState = AD_ACTION;
 			wantedTag = 13;
+			break;
 		default:
 			break;
 		}
@@ -798,24 +807,30 @@ void Character::SetAnimations()
 {
 	switch (charType)
 	{
-	case WARRIOR:
-	{
-		animations_name = HERO_SPRITE_ROOT;
-		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
-		break;
-	}	
-	case ROGUE:
-	{
-		animations_name = ELF_SPRITE_ROOT;
-		sprites = App->textures->Load("Characters/Elf_sprites.png");
-		break;
-	}
-	case WIZARD:
-	{
-		animations_name = MAGE_SPRITE_ROOT;
-		sprites = App->textures->Load("Characters/Mage_sprites.png");
-		break;
-	}
+		case WARRIOR:
+		{
+			animations_name = HERO_SPRITE_ROOT;
+			sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
+			break;
+		}	
+		case ROGUE:
+		{
+			animations_name = ELF_SPRITE_ROOT;
+			sprites = App->textures->Load("Characters/Elf_sprites.png");
+			break;
+		}
+		case WIZARD:
+		{
+			animations_name = MAGE_SPRITE_ROOT;
+			sprites = App->textures->Load("Characters/Mage_sprites.png");
+			break;
+		}
+		case CLERIC:
+		{
+			animations_name = CLERIC_SPRITE_ROOT;
+			sprites = App->textures->Load("Characters/cleric_sprites.png");
+			break;
+		}
 		
 	}
 	
@@ -870,6 +885,11 @@ std::list<CharInput> Character::FirstPlayerConfig()
 
 	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 		ret.push_back(CharInput::AB_3);
+
+	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
+		ret.push_back(CharInput::AB_1);
+	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+		ret.push_back(CharInput::AB_2);
 
 	return ret;
 

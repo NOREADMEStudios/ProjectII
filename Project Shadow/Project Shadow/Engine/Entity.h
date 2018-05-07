@@ -122,7 +122,7 @@ public:
 	int GetCharDepth();
 
 
-	void SetPos(int x, int z);
+	void SetPos(int x,int y, int z);
 	void SetActive(bool sactive);
 
 	void Draw(float dt);

@@ -35,7 +35,7 @@ public:
 
 
 private:
-	bool buffed = false;
+	bool ab_1_active = false;
 
 };
 #endif

@@ -646,7 +646,13 @@ void Character::OnCollisionEnter(Collider* _this, Collider* _other)
 	}
 }
 
-
+bool Character::IsAbCooldown(uint abNum) const { 
+	if (abilities.size()>abNum && abilities[abNum].active) {
+		return false;
+	}
+	else 
+		return true;
+}
 
 bool Character::StateisAtk(CharStateEnum state)
 {
@@ -670,7 +676,7 @@ Ability* Character::GetAbAtk(uint atk)
 {
 
 	Ability* ret = nullptr;
-	for (std::list<Ability>::iterator item = abilities.begin(); item != abilities.end(); item++) 
+	for (std::vector<Ability>::iterator item = abilities.begin(); item != abilities.end(); item++) 
 	{
 
 		if (item->atk->tag == atk)
@@ -749,7 +755,7 @@ void Character::UpdateTag(uint& t)
 
 void Character::UpdateAbilities()
 {
-	for (std::list<Ability>::iterator item = abilities.begin(); item != abilities.end(); item++)
+	for (std::vector<Ability>::iterator item = abilities.begin(); item != abilities.end(); item++)
 	{
 		if (item->timer.Count(item->cooldown))
 		{

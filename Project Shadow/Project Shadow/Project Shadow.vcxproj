@@ -153,6 +153,7 @@
     <ClCompile Include="Engine\UI\Sprite.cpp" />
     <ClCompile Include="Engine\UI\Window.cpp" />
     <ClCompile Include="Engine\Wizard.cpp" />
+    <ClCompile Include="Game\Scenes\CharacterSelecScene.cpp" />
     <ClCompile Include="Game\Scenes\EndScene.cpp" />
     <ClCompile Include="Game\Scenes\IntroScene.cpp" />
     <ClCompile Include="Game\Scenes\ItemSelecScene.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="Engine\UI\Sprite.h" />
     <ClInclude Include="Engine\UI\Window.h" />
     <ClInclude Include="Engine\Wizard.h" />
+    <ClInclude Include="Game\Scenes\CharacterSelecScene.h" />
     <ClInclude Include="Game\Scenes\EndScene.h" />
     <ClInclude Include="Game\Scenes\IntroScene.h" />
     <ClInclude Include="Game\Scenes\ItemSelecScene.h" />

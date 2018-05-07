@@ -170,6 +170,9 @@
     <ClCompile Include="Engine\Cleric.cpp">
       <Filter>Engine\Entities\Character\Heros</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Scenes\CharacterSelecScene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -318,6 +321,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Cleric.h">
       <Filter>Engine\Entities\Character\Heros</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\CharacterSelecScene.h">
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,9 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "Warrior.h"
+#include "Cleric.h"
+#include "Rogue.h"
+#include "Wizard.h"
 #include "../Game/Spells/FireBall.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
@@ -149,24 +152,37 @@ Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
 	Character* ret = nullptr;
 
-	if (charInfo.chType == CharacterTypes::ENEMY)
-	{
-		ret = new Enemy();
-		numofplayers++;
-	}
-	else 
+	if(charInfo.chType == CharacterTypes::WARRIOR)
 	{
 		ret = new Warrior();
-		numofplayers++;
+		
 
-		ret->charType = charInfo.chType;
-		ret->team = charInfo.chTeam;
+	}
+	else if (charInfo.chType == CharacterTypes::WARRIOR)
+	{
+		ret = new Cleric();		
 
-		ret->heroNum = numofplayers;
+	}
+	else if (charInfo.chType == CharacterTypes::ROGUE)
+	{
+		ret = new Rogue();
+
+	}
+	else if (charInfo.chType == CharacterTypes::WIZARD)
+	{
+		ret = new Wizard();
 
 	}
 
+	else {
+		return ret;
+	}
+	numofplayers++;
 
+	ret->charType = charInfo.chType;
+	ret->team = charInfo.chTeam;
+
+	ret->heroNum = numofplayers;
 	ret->type = CHARACTER;
 	ret->SetPos(charInfo.pos.x, charInfo.pos.y);
 

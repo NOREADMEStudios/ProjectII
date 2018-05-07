@@ -569,7 +569,7 @@ void Character::GetHP(int& curr, int& max)
 void Character::OnCollisionEnter(Collider* _this, Collider* _other)
 {
 	if (_this->entity == _other->entity) return;
-	
+	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
 	int z1 = _this->entity->GetGamePos().z;
 	int d1 = _this->entity->GetCharDepth();

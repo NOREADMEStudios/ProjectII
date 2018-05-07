@@ -14,6 +14,7 @@
 #define COMBO_MARGIN 1
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
 #define ELF_SPRITE_ROOT "Assets/Animations/Characters/Elf_Animations.tmx"
+#define MAGE_SPRITE_ROOT "Assets/Animations/Characters/Mage_Animations.tmx"
 
 
 enum CharInput

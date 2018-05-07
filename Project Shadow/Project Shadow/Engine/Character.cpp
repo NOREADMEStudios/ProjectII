@@ -799,14 +799,26 @@ void Character::SetAnimations()
 	switch (charType)
 	{
 	case WARRIOR:
+	{
 		animations_name = HERO_SPRITE_ROOT;
 		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
 		break;
+	}	
 	case ROGUE:
+	{
 		animations_name = ELF_SPRITE_ROOT;
 		sprites = App->textures->Load("Characters/Elf_sprites.png");
 		break;
 	}
+	case WIZARD:
+	{
+		animations_name = MAGE_SPRITE_ROOT;
+		sprites = App->textures->Load("Characters/Mage_sprites.png");
+		break;
+	}
+		
+	}
+	
 
 }
 

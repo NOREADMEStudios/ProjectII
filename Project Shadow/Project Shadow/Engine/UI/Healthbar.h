@@ -12,12 +12,12 @@ class Healthbar :
 {
 public:
 
-	Healthbar(Warrior* character, int charNum, bool leftSide = true, uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, bool _enabled = false, SDL_Rect* _anim = nullptr);
+	Healthbar(Character* character, int charNum, bool leftSide = true, uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, bool _enabled = false, SDL_Rect* _anim = nullptr);
 	~Healthbar();
 
 	bool Update(float dt) override;
 
-	Warrior* assignedCharacter = nullptr;
+	Character* assignedCharacter = nullptr;
 	Sprite* bar = nullptr;
 	Sprite* characterMugShot = nullptr;
 	VECTOR(Sprite*) lives {};

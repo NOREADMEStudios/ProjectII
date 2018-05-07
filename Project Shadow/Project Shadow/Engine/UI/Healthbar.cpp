@@ -1,6 +1,6 @@
 #include "Healthbar.h"
 
-Healthbar::Healthbar(Warrior * character, int charNum, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect * _anim) : Sprite(_x, _y, _tex, _enabled, _anim)
+Healthbar::Healthbar(Character * character, int charNum, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect * _anim) : Sprite(_x, _y, _tex, _enabled, _anim)
 {
 	assignedCharacter = character;
 	this->leftSide = leftSide;
@@ -29,13 +29,22 @@ bool Healthbar::Update(float dt)
 
 		else
 			SetContentRect(margin, INT_MAX, INT_MAX, INT_MAX);
-
+/*
 		uint _lives = assignedCharacter->GetCurrentLives();
 		for (size_t i = 0; i < lives.size(); i++) {
 			if (i < _lives) continue;
 			lives[i]->Enable(false);
 		}
-
+*/
+		for (int i = 0; i < abilities.size(); i++) {
+			if (assignedCharacter->IsAbCooldown(i)) {
+				grayAbilities[i]->Enable(true);
+			}
+			else if (!(assignedCharacter->IsAbCooldown(i)) && (abilities[i]->isEnabled())) {
+			
+				grayAbilities[i]->Enable(false);
+			}		
+		}
 		ret = true;
 	}
 

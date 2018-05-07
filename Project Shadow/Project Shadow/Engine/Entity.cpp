@@ -78,7 +78,7 @@ void Entity::Impulsate(float x, float y, float z)
 }
 
 bool Entity::PausedUpdate() {
-	Draw(0);
+	App->render->FillQueue(this);
 	return true;
 }
 

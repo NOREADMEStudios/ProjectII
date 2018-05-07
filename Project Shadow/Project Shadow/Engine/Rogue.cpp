@@ -24,7 +24,7 @@ bool Rogue::Awake(pugi::xml_node&)
 	return true;
 }
 
-bool Rogue::RogueStart()
+bool Rogue::HeroStart()
 {
 
 
@@ -38,7 +38,7 @@ bool Rogue::PreUpdate()
 	return true;
 }
 
-bool Rogue::RogueUpdate(float dt)
+bool Rogue::HeroUpdate(float dt)
 {
 
 	return true;

@@ -33,19 +33,21 @@ bool MainScene::Start()
 
 	atlas = App->textures->Load("UI/atlas.png");
 
-	e = App->entities->CreateCharacter({WARRIOR,{100,100}});
-	e2 = App->entities->CreateCharacter({ WARRIOR,{ 10000,100 } });
 
-	App->gui->AddHealthbar((Warrior*)e, 0, true, 10, 10, atlas, true, { 451, 271, 264, 26 });
-	App->gui->AddHealthbar((Warrior*)e2, 1, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
+	e = App->entities->CreateCharacter({WARRIOR,{100,100}, Team::BLUE});
+	e2 = App->entities->CreateCharacter({ WARRIOR,{ 10000,100 }, Team::RED });
 
 
-	if (App->scenes->four_players)
+	App->gui->AddHealthbar((Character*)e, 0, true, 10, 10, atlas, true, { 451, 271, 264, 26 });
+	App->gui->AddHealthbar((Character*)e2, 1, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
+
+
+	if (App->scenes->gameMode==GameMode::TWOvsTWO)
 	{
-		e3 = App->entities->CreateCharacter({ WARRIOR,{ 100,1000 } });
-		e4 = App->entities->CreateCharacter({ WARRIOR,{ 10000,1000 } });
-		App->gui->AddHealthbar((Warrior*)e3, 2, true, 1590, 10, atlas, true, { 451, 271, 264, 26 });
-		App->gui->AddHealthbar((Warrior*)e4, 3, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
+		e3 = App->entities->CreateCharacter({ WARRIOR,{ 100,1000 }, Team::BLUE });
+		e4 = App->entities->CreateCharacter({ WARRIOR,{ 10000,1000 }, Team::RED });
+		App->gui->AddHealthbar((Character*)e3, 2, true, 1590, 10, atlas, true, { 451, 271, 264, 26 });
+		App->gui->AddHealthbar((Character*)e4, 3, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
 	}
 
 
@@ -79,7 +81,7 @@ bool MainScene::CleanUp()
 {
 	xmlNode n;
 	App->win->SetScale(1.0f);
-	if (App->scenes->four_players) {
+	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
 		App->entities->DestroyEntity(e4);
 		App->entities->DestroyEntity(e3);
 	}

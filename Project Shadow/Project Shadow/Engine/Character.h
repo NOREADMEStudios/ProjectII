@@ -10,9 +10,11 @@
 #include <list>
 
 
+
 #define COMBO_MARGIN 1
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
 #define ELF_SPRITE_ROOT "Assets/Animations/Characters/Elf_Animations.tmx"
+#define MAGE_SPRITE_ROOT "Assets/Animations/Characters/Mage_Animations.tmx"
 
 
 enum CharInput
@@ -29,6 +31,9 @@ enum CharInput
 	DEFEND,
 	TAUNTINPUT,
 	PARRYINPUT,
+	AB_1,
+	AB_2,
+	AB_3
 };
 
 enum CharStateEnum
@@ -166,6 +171,8 @@ struct EventState
 
 class Character : public Entity
 {
+
+	
 public:
 	Character(CharacterTypes charType);
 	~Character();
@@ -188,7 +195,8 @@ public:
 
 	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
 
-
+	bool IsAbCooldown(uint abNum) const;
+	uint GetAbilitiesNum() const {	return abilities.size();}
 
 	uint GetMaxLives() const;
 	uint GetCurrentLives() const;
@@ -201,6 +209,7 @@ public:
 
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 	Timer time_attack;
+	
 
 	void AdBuff(float time = 0, float spd = 0, float atk = 0, float def = 0);
 	void SetAnimations();
@@ -267,7 +276,7 @@ protected:
 
 
 	LIST(Attack*) attacks;
-	LIST(Ability) abilities;
+	std::vector<Ability> abilities;
 
 };
 

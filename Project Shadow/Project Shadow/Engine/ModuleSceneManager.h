@@ -11,6 +11,15 @@ class ItemSelecScene;
 class MainScene;
 class EndScene;
 
+
+enum GameMode {
+	NOMODE,
+	ONEvsONE,
+	TWOvsTWO
+
+};
+
+
 class ModuleSceneManager : public Module
 {
 public:
@@ -41,8 +50,8 @@ public:
 	ItemSelecScene* itemSc;
 	MainScene* mainSc;
 	EndScene* endSc;
-
-	bool four_players = false;
+		
+	GameMode gameMode = NOMODE;
 
 private:
 

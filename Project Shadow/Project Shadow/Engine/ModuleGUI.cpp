@@ -260,7 +260,7 @@ Slider* ModuleGUI::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, 
 	return aux;
 }
 
-Healthbar * ModuleGUI::AddHealthbar(Warrior * character, int charNum, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect _anim)
+Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool leftSide, uint _x, uint _y, SDL_Texture * _tex, bool _enabled, SDL_Rect _anim)
 {
 	if (_tex == nullptr)
 		_tex = atlas_texture;
@@ -330,19 +330,28 @@ Healthbar * ModuleGUI::AddHealthbar(Warrior * character, int charNum, bool leftS
 
 	charNumber->setPositionX(charFace->getPositionX() + (charFace->rect.w + screenMargin) * (leftSide ? 1 : -1));
 	charNumber->setPositionY(charFace->getPositionY() + screenMargin * (anchor.y == 0.f ? 1 : -1));
-
-	iRect livesSpriteRect = { 451 + 52 * charNum, 330, 52, 55 };
-	for (size_t i = 0; i < character->GetMaxLives(); i++) {
-		Sprite* spr = App->gui->AddSprite(0, 0, nullptr, livesSpriteRect.toSDL_Rect());
+	
+	iRect AbilitiesSpriteRect = { 451 + 52 * charNum, 330, 52, 55 };
+	iRect GrayAbilitiesSpriteRect = { 451  , 395, 52, 55 };
+	for (size_t i = 0; i < character->GetAbilitiesNum(); i++) {
+		Sprite* sprGray = App->gui->AddSprite(0, 0, nullptr, GrayAbilitiesSpriteRect.toSDL_Rect());
+		Sprite* spr = App->gui->AddSprite(0, 0, nullptr, AbilitiesSpriteRect.toSDL_Rect());
+		
 		spr->SetParent(aux);
 		spr->SetAnchor(anchor.x, anchor.y);
+		sprGray->SetParent(aux);
+		sprGray->SetAnchor(anchor.x, anchor.y);
 		iPoint p = charNumber->getPosition();
 		p.x += ((50 + (60 * (int)i)) * (leftSide ? 1 : -1) );
 		p.y += (5 + screenMargin) * (anchor.y == 0.f ? 1 : -1);
 		spr->setPosition(p.x, p.y);
-		aux->lives.push_back(spr);
+		sprGray->setPosition(p.x, p.y);
+		aux->abilities.push_back(spr);
+		aux->grayAbilities.push_back(sprGray);
 	}
-
+	
+	
+	
 	bar->SetAnchor(0.5f, 0.5f);
 
 	iPoint margins;
@@ -356,6 +365,7 @@ Healthbar * ModuleGUI::AddHealthbar(Warrior * character, int charNum, bool leftS
 	AddElement(aux);
 	return aux;
 }
+
 
 Window* ModuleGUI::AddWindow(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled)
 {

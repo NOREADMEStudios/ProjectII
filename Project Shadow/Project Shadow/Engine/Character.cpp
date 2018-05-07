@@ -351,6 +351,9 @@ void Character::RequestState() {
 		case PARRYINPUT:
 			wantedState = PARRY;
 			break;
+		case AB_3:
+			wantedState = AD_ACTION;
+			wantedTag = 13;
 		default:
 			break;
 		}
@@ -566,6 +569,7 @@ void Character::GetHP(int& curr, int& max)
 void Character::OnCollisionEnter(Collider* _this, Collider* _other)
 {
 	if (_this->entity == _other->entity) return;
+	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
 	int z1 = _this->entity->GetGamePos().z;
 	int d1 = _this->entity->GetCharDepth();
@@ -596,8 +600,6 @@ void Character::OnCollisionEnter(Collider* _this, Collider* _other)
 				currentState = HIT;
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
-
-
 			}
 			else
 			{
@@ -644,7 +646,13 @@ void Character::OnCollisionEnter(Collider* _this, Collider* _other)
 	}
 }
 
-
+bool Character::IsAbCooldown(uint abNum) const { 
+	if (abilities.size()>abNum && abilities[abNum].active) {
+		return false;
+	}
+	else 
+		return true;
+}
 
 bool Character::StateisAtk(CharStateEnum state)
 {
@@ -668,7 +676,7 @@ Ability* Character::GetAbAtk(uint atk)
 {
 
 	Ability* ret = nullptr;
-	for (std::list<Ability>::iterator item = abilities.begin(); item != abilities.end(); item++) 
+	for (std::vector<Ability>::iterator item = abilities.begin(); item != abilities.end(); item++) 
 	{
 
 		if (item->atk->tag == atk)
@@ -747,12 +755,14 @@ void Character::UpdateTag(uint& t)
 
 void Character::UpdateAbilities()
 {
-	for (std::list<Ability>::iterator item = abilities.begin(); item != abilities.end(); item++)
+	for (std::vector<Ability>::iterator item = abilities.begin(); item != abilities.end(); item++)
 	{
 		if (item->timer.Count(item->cooldown))
 		{
 			item->active = true;
 		}
+		else
+			item->active = false;
 	}
 }
 
@@ -795,14 +805,26 @@ void Character::SetAnimations()
 	switch (charType)
 	{
 	case WARRIOR:
+	{
 		animations_name = HERO_SPRITE_ROOT;
 		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
 		break;
+	}	
 	case ROGUE:
+	{
 		animations_name = ELF_SPRITE_ROOT;
 		sprites = App->textures->Load("Characters/Elf_sprites.png");
 		break;
 	}
+	case WIZARD:
+	{
+		animations_name = MAGE_SPRITE_ROOT;
+		sprites = App->textures->Load("Characters/Mage_sprites.png");
+		break;
+	}
+		
+	}
+	
 
 }
 
@@ -851,6 +873,9 @@ std::list<CharInput> Character::FirstPlayerConfig()
 
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 		ret.push_back(CharInput::TAUNTINPUT);
+
+	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
+		ret.push_back(CharInput::AB_3);
 
 	return ret;
 

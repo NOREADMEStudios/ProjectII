@@ -18,11 +18,11 @@ public:
 
 	bool Awake(pugi::xml_node&) override;
 
-	bool WizardStart();
+	bool HeroStart();
 
 	bool PreUpdate()override;
 
-	bool WizardUpdate(float dt);
+	bool HeroUpdate(float dt);
 
 	bool PostUpdate()override;
 

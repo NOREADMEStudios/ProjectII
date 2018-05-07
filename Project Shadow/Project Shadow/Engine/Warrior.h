@@ -18,11 +18,11 @@ public:
 
 	bool Awake(pugi::xml_node&) override;
 
-	bool WarriorStart();
+	bool HeroStart();
 
 	bool PreUpdate()override;
 
-	bool WarriorUpdate(float dt);
+	bool HeroUpdate(float dt);
 
 	bool PostUpdate()override;
 
@@ -32,6 +32,7 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; };
 
 	void UpdateSpecStates();
+
 
 
 private:

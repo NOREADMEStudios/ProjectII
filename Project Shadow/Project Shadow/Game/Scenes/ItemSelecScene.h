@@ -3,56 +3,86 @@
 
 #include "..\..\Engine\Scene.h"
 #include "..\..\Engine\ModuleCollision.h"
+#include "..\..\Engine\UI\InterfaceElement.h"
 
 #include <list>
+
 
 class Button;
 class Sprite;
 class Label;
-class InterfaceElement;
 
-class Selection {
+enum ItemType { 
+	NO_ITEM,
+	PLATE,
+	SWORD,
+	SWIFT_BOOTS,
+	ROBE,
+	MAGE_HAT,
+	HOOD,
+	CLERIC_HAT,
+	RING,
+	TIARA,
+	CURSED_SWORD,
+	HASTE_BOOTS,
+	HANDGUARDS,
+	EARRINGS,
+	DRAGONSLAYER,
+	STAFF
 
-public:
-	Button* but;
-	int playerNum;
-	int totalControllersNum;
-	Sprite* arrow;	
-	SDL_Rect arrowRect;
-	SDL_Rect arrowLockRect;
-	bool locked = false;
-
-	void LoadArrows();
-	void DrawOrderedArrow();
 };
+
 
 class ItemSelecScene:
 	public Scene
 {
 public:
+	
+	class Item {
+	public:
+		Item();
+		Item(std::string _name, ItemType _type, SDL_Rect _animRect, EntityStats _stats) {
+			name = _name;
+			type = _type;
+			animRect = _animRect;
+			stats = _stats;
+		}
+		std::string name;
+		ItemType type= NO_ITEM;
+		Button* butt = nullptr;
+		std::vector<Label*> labels;
+		
+		EntityStats stats;
+		SDL_Rect animRect;
+		Item* relations[InterfaceElement::Directions::AMOUNT];
 
-	Button *	swiftBoots = nullptr;
-	Button *	cursedSword = nullptr;
-	Button *	paladinsHandguards = nullptr;
-	Button *	ringProtection = nullptr;
-	Button *	dragonSlayer = nullptr;
-	Button *	magicRobe = nullptr;
-	Button *	confirmButton = nullptr;
-	Label *		confirmLabel = nullptr;
-	Label *		item1Stats = nullptr;
-	Label *		item2Stats = nullptr;
-	Label *		item3Stats = nullptr;
-	Label *		item4Stats = nullptr;
-	Label *		item5Stats = nullptr;
-	Label *		item6Stats = nullptr;
+		Item* GetRelativeItem(InterfaceElement::Directions dir);
+		void SetRelation(Item* item, InterfaceElement::Directions direction, bool assignOther = true);
+	};
 
-	String swiftBootsStr = "SPEED + 10"; //1
-	String cursedSwordStr = "ATTACK + 10"; //2
-	String paladinsStr = "DEFENSE + 10"; //3
-	String ringStr = "LIFE + 10"; //4
-	String dragonSlayerStr = "ATK.+ 5 DEF.+ 5"; //5
-	String magicRobeStr = "ATK.+ 5 SPD.+ 5"; //6
+	class Player {
 
+	public:
+		Item* focusedItem = nullptr;
+		int playerNum;
+		int totalControllersNum;
+		Sprite* arrow = nullptr;
+		SDL_Rect arrowRect;
+		Sprite* lockedArrows[3];		
+		SDL_Rect arrowLockRect;
+		uint locked = 0;
+		Item* playerItems[3];
+		Sprite* MiniatureItems[3];
+		bool ready = false;
+
+		
+		void LockedArrow(uint lockedNum);
+		void RemoveLockedArrow(uint lockedNum);
+		void LoadArrows();
+		void DrawOrderedArrow();
+	};
+
+	Item* items[15];
 	int controllersNum;
 
 	ItemSelecScene();
@@ -76,15 +106,18 @@ public:
 
 private:
 	void LoadSceneUI();
-
+	void FindNextArrowUnlocked(uint player, InterfaceElement::Directions direction);
 	
 	void SetControllerFocus();
 	void ManageDisplacementFocus();
 	void ChooseFocus();
+	void RemoveSelectedItem();
 	void ApplyItemAttributes();
-	bool AllItemsSelected();
+	bool AllPlayersReady();
+	void FindFirstFreeItem(uint playerNum);
+	void AddLabelToButton(Item* item);
 	
-	std::list<Selection> playersSelections;
+	std::vector<Player> players;
 	std::list<Button*> buttonsForController;
 };
 

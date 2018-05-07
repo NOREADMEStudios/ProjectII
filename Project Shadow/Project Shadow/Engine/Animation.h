@@ -241,7 +241,7 @@ private:
 
 	iPoint LoadFramePivotFromXML(pugi::xml_node objectgroup, std::string name, int &iterator) {
 		std::string pivot = "_pivot";
-		std::string frame = "frame";		
+		std::string frame = "Frame";		
 		pivot = name + pivot;
 		bool ret = false;
 		for (; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup")) {

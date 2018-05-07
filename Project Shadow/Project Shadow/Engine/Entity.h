@@ -14,6 +14,13 @@ enum EntityTypes;
 struct Collider;
 enum CharacterTypes;
 
+
+enum Team {
+	NOTEAM = 0,
+	BLUE,
+	RED
+};
+
 struct InvBlit
 {
 	Timer duration;
@@ -152,7 +159,7 @@ public:
 	bool active = true;
 
 	bool to_delete = false;
-
+	Team team= NOTEAM;
 
 protected:
 	

@@ -5,6 +5,7 @@
 #include "Defs.h"
 #include "Rect.h"
 #include "Entity.h"
+#include "Cube.h"
 
 #define MAX_TAGS 16
 
@@ -27,7 +28,7 @@ public:
 		Amount
 	} type;
 
-	iRect				collider;
+	iCube				collider;
 	Entity*				entity = nullptr;
 	String				sTag;
 	uint				tag;
@@ -100,7 +101,7 @@ public:
 
 	bool CleanUp(xmlNode& config) override;
 
-	Collider* CreateCollider(iRect dims, String tag, Collider::Type type = Collider::TRIGGER);
+	Collider* CreateCollider(iCube dims, String tag, Collider::Type type = Collider::TRIGGER);
 	void AddCollider(Collider*, Entity*);
 	bool RemoveCollider(Collider*);
 

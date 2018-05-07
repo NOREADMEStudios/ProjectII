@@ -28,6 +28,7 @@ struct Rect {
 		w = rect.w;
 		h = rect.h;
 	}
+
 	void ToZero() {
 		x = 0;
 		y =	0;

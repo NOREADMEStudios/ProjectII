@@ -319,5 +319,8 @@
     <ClInclude Include="Engine\Cleric.h">
       <Filter>Engine\Entities\Character\Heros</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Cube.h">
+      <Filter>Engine\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

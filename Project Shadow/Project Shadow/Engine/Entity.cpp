@@ -24,7 +24,7 @@ void Entity::Draw(float dt) {
 
 	iPoint pivot_pos = PivotPos();
 
-	App->render->Blit(sprites, pivot_pos.x, pivot_pos.y, &frame.GetRectSDL(),1.0f, 0.0, flip);
+	App->render->Blit(sprites, pivot_pos.x, pivot_pos.y, &frame.GetRectSDL(), 1.0f, 0.0, flip);
 }
 
 void Entity::Move(float delta_time) {

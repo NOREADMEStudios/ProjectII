@@ -64,6 +64,10 @@ bool ModuleWindow::Awake(pugi::xml_node& config)
 		if(fullscreen_window == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+			SDL_Rect r;
+			SDL_GetDisplayBounds(0, &r);
+			width = r.w;
+			height = r.h;
 		}
 
 		window = SDL_CreateWindow(App->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);

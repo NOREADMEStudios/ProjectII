@@ -1,0 +1,40 @@
+#ifndef __CUBE_H__
+#define __CUBE_H__
+
+#include "Rect.h"
+
+template<class TYPE>
+class Cube {
+
+public:
+	TYPE x, y, z, w, h, d;
+
+	Cube(){
+		x = y = z = w = h = d = 0;
+	}
+	Cube(TYPE x, TYPE y, TYPE z, TYPE w, TYPE h, TYPE d) : x(x), y(y), z(z), w(w), h(h), d(d){}
+	~Cube(){}
+
+	bool Intersect(const Cube& other) const {
+		return (((x < other.x && x + w > other.x) || (x > other.x && x < other.x + other.w)) &&
+			((y < other.y && y + h > other.y) || (y > other.y && y < other.y + other.h)) &&
+			((z < other.z && z + d > other.z) || (z > other.z && z < other.z + other.d)));
+	}
+
+	Rect<TYPE> GetRectXY() {
+		return { x, y, w, h };
+	}
+
+	const Cube& operator = (const Rect<TYPE>& rect) {
+		x = rect.x;
+		y = rect.y;
+		w = rect.w;
+		h = rect.h;
+
+		return *this;
+	}
+
+};
+
+typedef Cube<int> iCube;
+#endif

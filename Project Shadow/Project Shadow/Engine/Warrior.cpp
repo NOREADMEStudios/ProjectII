@@ -124,10 +124,11 @@ bool Warrior::HeroUpdate(float dt)
 		}
 	}
 
-	if (!GetAbAtk(13)->active)
+	if ((!GetAbAtk(13)->active)|| (!GetAbAtk(2)->active))
 	{
 		buffed = true;
 	}
+	
 	else
 	{
 		buffed = false;
@@ -175,4 +176,9 @@ void Warrior::UpdateSpecStates()
 		buffed = true;
 	}
 	
+	if (currentTag ==2  && !buffed)
+	{
+		App->entities->CreateSpell({ LIGHTING, {(float)position.x,(float)position.y},team });
+		buffed = true;
+	}
 }

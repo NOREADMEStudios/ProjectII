@@ -6,6 +6,9 @@
 #include "ModuleCollision.h"
 #include "Timer.h"
 
+
+#define SPELLS_ANIMS_ROOT "Assets/Animations/Spells/Spells.tmx"
+
 enum SpellsType;
 
 class Spells : 	public Entity

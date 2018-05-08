@@ -14,13 +14,13 @@ Lightning::~Lightning()
 
 bool Lightning::Start() {
 	LoadSprites();
-	spellAnim.PushBack({ 0,0,45,65 });
-	spellAnim.PushBack({ 50,0,45,65 });
-	spellAnim.PushBack({ 101,0,45,65 });
+	spellAnim.PushBack({ 25,77,208,54 });
+	spellAnim.PushBack({ 25,151,208,54 });
+	spellAnim.PushBack({ 23,221,208,54 }); 
 	currentAnimation = &spellAnim;
 
 	spellColl = App->collision->CreateCollider({}, "Lightning_Spell", Collider::SPELL);
-	spellColl->collider = { 0,0,45,65 };
+	spellColl->collider = { 0,0,208,54 };
 	App->collision->AddCollider(spellColl, this);
 	//collider = { 0,0,45,65 };
 

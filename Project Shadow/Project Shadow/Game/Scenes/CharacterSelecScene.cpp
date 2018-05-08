@@ -30,7 +30,18 @@ CharacterSelecScene::~CharacterSelecScene()
 
 bool CharacterSelecScene::Start()
 {
-	LoadBackground("UI/BackgroundItems.png");
+	LoadBackground("UI/BackgroundItems.png"); 
+	
+	for (int i = 0; i < controllersNum; i++) {
+		if (i = 0)
+			charactersInfo[i] = { WIZARD,{ 100,100 }, Team::BLUE };
+		else if (i = 1)
+			charactersInfo[i] = { WIZARD,{ 10000,100 }, Team::RED };
+		else if (i = 2)
+			charactersInfo[i] = { WARRIOR,{ 100,1000 }, Team::BLUE };
+		else if (i = 3)
+			charactersInfo[i] = { WARRIOR,{ 10000,1000 }, Team::RED };
+	}
 
 	//LoadSceneUI();
 	//SetControllerFocus();
@@ -178,8 +189,11 @@ void CharacterSelecScene::FindNextPlayer(uint playerNum, InterfaceElement::Direc
 }
 
 void CharacterSelecScene::ApplyCharacterSelection() {
-
+	for (int i = 0; i < controllersNum; i++) {
+		charactersInfo[i].chType = players[i].lockedInfo.chType;
+	}
 }
+
 CharacterSelecScene::CharacterToSelect* CharacterSelecScene::CharacterToSelect::GetRelativeCharacter(InterfaceElement::Directions dir) {
 
 	return relations[dir];

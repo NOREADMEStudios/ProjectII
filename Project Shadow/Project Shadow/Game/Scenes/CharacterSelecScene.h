@@ -55,6 +55,7 @@ public:
 		Sprite* lockedArrows[3];
 		SDL_Rect arrowLockRect;
 		uint locked = 0;
+		CharacterInfo lockedInfo;
 		/*Item* playerItems[3];*/
 		bool ready = false;
 
@@ -66,6 +67,7 @@ public:
 	};
 	CharacterToSelect* characters[4];
 	int controllersNum;
+	CharacterInfo charactersInfo[3];
 
 	CharacterInfo character1Info = { WIZARD,{ 100,100 }, Team::BLUE };
 	CharacterInfo character2Info = { WIZARD,{ 10000,100 }, Team::RED };

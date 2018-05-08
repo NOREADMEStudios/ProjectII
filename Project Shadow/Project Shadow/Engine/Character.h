@@ -17,6 +17,8 @@
 #define MAGE_SPRITE_ROOT "Assets/Animations/Characters/Mage_Animations.tmx"
 #define CLERIC_SPRITE_ROOT "Assets/Animations/Characters/Cleric_Animations.tmx"
 
+#define MAX_CHARACTER_ITEMS 3
+
 
 enum CharInput
 {

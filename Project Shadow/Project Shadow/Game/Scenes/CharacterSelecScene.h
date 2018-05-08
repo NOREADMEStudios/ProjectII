@@ -67,6 +67,11 @@ public:
 
 	int controllersNum;
 
+	CharacterInfo character1Info = { WIZARD,{ 100,100 }, Team::BLUE };
+	CharacterInfo character2Info = { WIZARD,{ 10000,100 }, Team::RED };
+	CharacterInfo character3Info = { WARRIOR,{ 100,1000 }, Team::BLUE };
+	CharacterInfo character4Info = { WARRIOR,{ 10000,1000 }, Team::RED };
+
 	CharacterSelecScene();
 	virtual ~CharacterSelecScene();
 
@@ -100,11 +105,6 @@ private:
 	bool AllPlayersReady();
 	void FindFirstFreeItem(uint playerNum);
 	void AddLabelToButton(Item* item);*/
-
-	CharacterInfo character1 = { WIZARD,{ 100,100 }, Team::BLUE };
-	CharacterInfo character2 = { WIZARD,{ 10000,100 }, Team::RED };
-	CharacterInfo character3 = { WARRIOR,{ 100,1000 }, Team::BLUE };
-	CharacterInfo character4 = { WARRIOR,{ 10000,1000 }, Team::RED };
 
 	std::vector<Player> players;
 	std::list<Button*> buttonsForController;

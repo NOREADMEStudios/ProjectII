@@ -63,8 +63,8 @@ bool ModuleCollision::PreUpdate() {
 			if (!interactionTable[colliders[i]->tag][colliders[j]->tag])
 				continue;
 
-			SDL_Rect result;
-			if (colliders[i]->collider.Intersect(colliders[j]->collider)) {
+			iCube result;
+			if (colliders[i]->collider.Intersect(colliders[j]->collider, &result)) {
 				Collision* col = nullptr;
 				for (LIST_ITERATOR(Collision*) c = colliders[i]->collisions.begin(); c != colliders[i]->collisions.end(); c++) {
 					if ((*c)->c1 == colliders[j] || (*c)->c2 == colliders[j]) {
@@ -93,18 +93,18 @@ bool ModuleCollision::PreUpdate() {
 			}
 		}
 
-		for (LIST_ITERATOR(Collision*) col = colliders[i]->collisions.begin(); col != colliders[i]->collisions.end(); col++) {
-			if ((*col)->updated)
+		for (LIST_ITERATOR(Collision*) col = colliders[i]->collisions.begin(); col != colliders[i]->collisions.end();) {
+			if ((*col)->updated) {
+				col++;
 				continue;
+			}
 
 			(*col)->updated = true;
-			SDL_Rect result;
-			if ((*col)->c2->collider.Intersect(colliders[i]->collider)) {
+			iCube result;
+			if (!(*col)->c2->collider.Intersect(colliders[i]->collider, &result)) {
 				Collision* collision = *col;
 				collision->CallOnExit();
 				col = colliders[i]->collisions.erase(col);
-				if (col != colliders[i]->collisions.begin())
-					col--;
 				collision->CleanUp();
 				Utils::Release(collision);
 			}
@@ -214,11 +214,9 @@ String ModuleCollision::GetTag(const Collider & c)
 }
 
 void Collider::CleanUp() {
-	for (LIST_ITERATOR(Collision*) it = collisions.begin(); it != collisions.end(); it++) {
+	for (LIST_ITERATOR(Collision*) it = collisions.begin(); it != collisions.end();) {
 		Collision* c = *it;
 		it = collisions.erase(it);
-		if (it != collisions.begin())
-			it--;
 		c->CallOnExit();
 		c->CleanUp();
 		Utils::Release(c);

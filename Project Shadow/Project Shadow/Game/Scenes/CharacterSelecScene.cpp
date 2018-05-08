@@ -30,9 +30,9 @@ CharacterSelecScene::~CharacterSelecScene()
 
 bool CharacterSelecScene::Start()
 {
-	LoadBackground("UI/BackgroundItems.png"); 
+	LoadBackground("UI/BasicMenuScene.png"); 
 	
-	for (int i = 0; i < controllersNum; i++) {
+	/*for (int i = 0; i < controllersNum; i++) {
 		if (i = 0)
 			charactersInfo[i] = { WIZARD,{ 100,100 }, Team::BLUE };
 		else if (i = 1)
@@ -41,9 +41,9 @@ bool CharacterSelecScene::Start()
 			charactersInfo[i] = { WARRIOR,{ 100,1000 }, Team::BLUE };
 		else if (i = 3)
 			charactersInfo[i] = { WARRIOR,{ 10000,1000 }, Team::RED };
-	}
+	}*/
 
-	//LoadSceneUI();
+	LoadSceneUI();
 	//SetControllerFocus();
 
 	return true;
@@ -194,6 +194,13 @@ void CharacterSelecScene::ApplyCharacterSelection() {
 	}
 }
 
+void CharacterSelecScene::CharacterToSelect::SetRelation(CharacterToSelect* character, InterfaceElement::Directions direction, bool assignOther) {
+
+	relations[direction] = character;
+	if (assignOther)
+		character->relations[direction < 2 ? direction + 2 : direction - 2] = this;
+}
+
 CharacterSelecScene::CharacterToSelect* CharacterSelecScene::CharacterToSelect::GetRelativeCharacter(InterfaceElement::Directions dir) {
 
 	return relations[dir];
@@ -203,27 +210,43 @@ void CharacterSelecScene::LoadSceneUI() {
 	atlas = App->textures->Load("UI/atlas.png");
 	uiPoint sizeScreen = App->gui->GetGuiSize();
 
+	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
+		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 8, sizeScreen.y / 2, atlas, { 1275, 50, 194, 373 });
+		characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 8 * 3, sizeScreen.y / 2, atlas, { 1275, 50, 194, 373 });
+		characterFrame[2] = App->gui->AddSprite((sizeScreen.x / 8) * 5, sizeScreen.y / 2, atlas, { 1275, 50, 194, 373 });
+		characterFrame[3] = App->gui->AddSprite((sizeScreen.x / 8) * 7, sizeScreen.y / 2, atlas, { 1275, 50, 194, 373 });
+	}
+	else if (App->scenes->gameMode == GameMode::ONEvsONE){
+		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 4, sizeScreen.y / 2, atlas, { 1275, 50, 194, 373 });
+		characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 4 * 3, sizeScreen.y / 2, atlas, { 1275, 50, 194, 373 });
+	}
+
 	int i = 0;
 
-	characters[i] = new CharacterToSelect("Plate Mail", WARRIOR, { 480,0,120,120 }, { 0,0,5,0,0 });
+	characters[i] = new CharacterToSelect("WARRIOR", WARRIOR, { 480,0,120,120 }, { 0,0,5,0,0 });
 	characters[i]->butt = App->gui->AddButton(200, 150, atlas, characters[i]->animRect, true, nullptr);//0
 	AddLabelToButton(characters[i]);
 	App->gui->setFocus(characters[i]->butt);
 
-	characters[i] = new CharacterToSelect("Plate Mail", ROGUE, { 480,0,120,120 }, { 0,0,5,0,0 });
+	characters[++i] = new CharacterToSelect("ROGUE", ROGUE, { 480,0,120,120 }, { 0,0,5,0,0 });
 	characters[i]->butt = App->gui->AddButton(200, 150, atlas, characters[i]->animRect, true, nullptr);//1
 	AddLabelToButton(characters[i]);
 	App->gui->setFocus(characters[i]->butt);
 
-	characters[i] = new CharacterToSelect("Plate Mail", WIZARD, { 480,0,120,120 }, { 0,0,5,0,0 });
+	characters[++i] = new CharacterToSelect("WIZARD", WIZARD, { 480,0,120,120 }, { 0,0,5,0,0 });
 	characters[i]->butt = App->gui->AddButton(200, 150, atlas, characters[i]->animRect, true, nullptr);//2
 	AddLabelToButton(characters[i]);
 	App->gui->setFocus(characters[i]->butt);
 
-	characters[i] = new CharacterToSelect("Plate Mail", CLERIC, { 480,0,120,120 }, { 0,0,5,0,0 });
+	characters[++i] = new CharacterToSelect("CLERIC", CLERIC, { 480,0,120,120 }, { 0,0,5,0,0 });
 	characters[i]->butt = App->gui->AddButton(200, 150, atlas, characters[i]->animRect, true, nullptr);//3
 	AddLabelToButton(characters[i]);
 	App->gui->setFocus(characters[i]->butt);
+
+	characters[0]->SetRelation(characters[1], InterfaceElement::Directions::RIGHT);
+	characters[1]->SetRelation(characters[2], InterfaceElement::Directions::RIGHT);
+	characters[2]->SetRelation(characters[3], InterfaceElement::Directions::RIGHT);
+	characters[3]->SetRelation(characters[0], InterfaceElement::Directions::RIGHT);
 
 
 

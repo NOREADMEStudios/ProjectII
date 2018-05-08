@@ -1,4 +1,5 @@
 #include "ItemSelecScene.h"
+#include "CharacterSelecScene.h"
 #include "EndScene.h"
 #include "IntroScene.h"
 #include "MainScene.h"
@@ -83,7 +84,7 @@ void ExitPressCallb(size_t arg_size...) {
 }
 
 void ChangeSceneCallback(size_t arg_size...) {
-	App->scenes->ChangeScene(App->scenes->itemSc);
+	App->scenes->ChangeScene(App->scenes->characterSc);
 }
 
 void IntroScene::LoadUIButtons() {

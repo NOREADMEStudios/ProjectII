@@ -41,7 +41,7 @@ public:
 		CharacterToSelect* relations[InterfaceElement::Directions::AMOUNT];
 
 		CharacterToSelect* GetRelativeCharacter(InterfaceElement::Directions dir);
-	/*	void SetRelation(Item* item, InterfaceElement::Directions direction, bool assignOther = true);*/
+		void SetRelation(CharacterToSelect* character, InterfaceElement::Directions direction, bool assignOther = true);
 	};
 
 	class Player {
@@ -59,7 +59,6 @@ public:
 		/*Item* playerItems[3];*/
 		bool ready = false;
 
-
 		/*void LockedArrow(uint lockedNum);
 		void RemoveLockedArrow(uint lockedNum);
 		void LoadArrows();
@@ -68,6 +67,7 @@ public:
 	CharacterToSelect* characters[4];
 	int controllersNum;
 	CharacterInfo charactersInfo[3];
+	Sprite* characterFrame[3];
 
 	CharacterInfo character1Info = { WIZARD,{ 100,100 }, Team::BLUE };
 	CharacterInfo character2Info = { WIZARD,{ 10000,100 }, Team::RED };

@@ -194,7 +194,7 @@ public:
 
 	void GetHP(int& curr, int& max);
 
-	virtual void OnCollisionEnter(Collider* _this, Collider* _other) {};
+	//virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 	Timer time_attack;
 	
 

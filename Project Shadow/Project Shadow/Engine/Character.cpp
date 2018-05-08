@@ -585,85 +585,7 @@ void Character::GetHP(int& curr, int& max)
 	max = initialLife;
 }
 
-void Character::OnCollisionEnter(Collider* _this, Collider* _other)
-{
-	if (_this->entity == _other->entity) return;
-	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
-	/*int z1 = _this->entity->GetGamePos().z;
-	int d1 = _this->entity->GetCharDepth();
-
-	int z2 = _other->entity->GetGamePos().z;
-	int d2 = _other->entity->GetCharDepth();
-
-	int p11 = z1 - (d1 / 2);
-	int p12 = z1 + (d1 / 2);
-	int p21 = z2 - (d2 / 2);
-	int p22 = z2 + (d2 / 2);
-
-	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))*/
-	{
-		if (_this->collider.x - _other->collider.x > 0)
-		{
-			hit_dir = 1;
-		}
-		else
-		{
-			hit_dir = -1;
-		}
-
-		if (_this->sTag == "player_shield" && _other->sTag == "enemy_attack")
-		{
-			if (_other->entity->breaking)
-			{
-				currentState = HIT;
-				stats.life -= _other->entity->stats.atk;
-				hit_bool = true;
-			}
-			else
-			{
-				_this->entity->Impulsate(hit_dir * 8000, 0, 0);
-			}
-			App->audio->PlayFx(10);
-		}
-		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_shield")
-		{
-			_this->entity->Impulsate(hit_dir * 8000, 0, 0);
-		}
-		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")
-		{
-			currentState = IDLE;
-			parried = true;
-		}
-		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_parry")
-		{
-			currentState = HIT;
-		}
-		else if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack")
-		{
-			currentState = HIT;
-			hit_bool = true;
-
-
-			if (_this->collider.x - _other->collider.x > 0)
-			{
-				hit_dir = 1 * _other->entity->stats.atk;
-			}
-			else
-			{
-				hit_dir = -1 * _other->entity->stats.atk;
-			}
-
-		}
-		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_hitbox" && StateisAtk(currentState))
-		{
-			Attack * atk = GetAtk(currentState);
-			if (atk != nullptr)
-				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
-		}
-
-	}
-}
 
 bool Character::IsAbCooldown(uint abNum) const { 
 	if (abilities.size()>abNum && abilities[abNum].active) {
@@ -810,14 +732,6 @@ void Character::UpdateEventStates()
 
 }
 
-void Character::AdBuff(float time, float spd, float atk, float def)
-{
-	EventState* buff = new EventState(time, atk, def, spd);
-	stats =  stats + buff->stats;
-
-	eventstates.push_back(buff);
-
-}
 
 void Character::SetAnimations()
 {
@@ -826,7 +740,7 @@ void Character::SetAnimations()
 		case WARRIOR:
 		{
 			animations_name = HERO_SPRITE_ROOT;
-			sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
+			sprites = App->textures->Load("Characters/Fighter sprites original.png");
 			break;
 		}	
 		case ROGUE:

@@ -43,7 +43,7 @@ bool ModuleRender::Awake(pugi::xml_node& config)
 		LOG("Using vsync");
 		vsync = true;
 	}
-		renderer = SDL_CreateRenderer(App->win->window, -1, flags);
+	renderer = SDL_CreateRenderer(App->win->window, -1, flags);
 
 	if(renderer == NULL)
 	{

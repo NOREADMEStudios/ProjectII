@@ -240,7 +240,7 @@ bool ModuleRender::BlitGui(SDL_Texture * texture, int x, int y, const SDL_Rect *
 	return ret;
 }
 
-bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
+bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, float speed, bool filled, bool use_camera) const
 {
 	bool ret = true;
 	float scale = App->win->GetScale();
@@ -251,8 +251,8 @@ bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uin
 	SDL_Rect rec(rect);
 	if(use_camera)
 	{
-		rec.x = (int)(camera.x + (rect.x * scale));
-		rec.y = (int)(camera.y + (rect.y * scale));
+		rec.x = (int)((-camera.x * speed * scale) + (rect.x * scale));
+		rec.y = (int)((-camera.y * speed * scale) + (rect.y * scale));
 		rec.w *= scale;
 		rec.h *= scale;
 	}

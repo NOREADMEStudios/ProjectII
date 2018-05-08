@@ -198,7 +198,8 @@ public:
 
 	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
 
-
+	bool IsAbCooldown(uint abNum) const;
+	uint GetAbilitiesNum() const {	return abilities.size();}
 
 	uint GetMaxLives() const;
 	uint GetCurrentLives() const;
@@ -278,7 +279,7 @@ protected:
 
 
 	LIST(Attack*) attacks;
-	LIST(Ability) abilities;
+	std::vector<Ability> abilities;
 
 };
 

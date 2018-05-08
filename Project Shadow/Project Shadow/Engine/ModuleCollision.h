@@ -79,7 +79,7 @@ struct Collision {
 	Collider			*c1 = nullptr,
 						*c2 = nullptr;
 
-	iRect				collisionArea;
+	iCube				collisionArea;
 
 	bool				updated = false;
 };

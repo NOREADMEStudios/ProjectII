@@ -64,7 +64,7 @@ public:
 		void LoadArrows();
 		void DrawOrderedArrow();*/
 	};
-
+	CharacterToSelect* characters[4];
 	int controllersNum;
 
 	CharacterInfo character1Info = { WIZARD,{ 100,100 }, Team::BLUE };
@@ -92,9 +92,13 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; };
 
 private:
+	void LoadSceneUI();
+
 	void SetControllerFocus();
 	void FindNextPlayer(uint player, InterfaceElement::Directions direction);
 	void ManageDisplacementFocus();
+	void AddLabelToButton(CharacterToSelect* character);
+	bool AllPlayersReady();
 	void ApplyCharacterSelection();
 
 	/*void LoadSceneUI();

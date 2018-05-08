@@ -13,7 +13,7 @@ Icicle::~Icicle()
 }
 
 bool Icicle::Start() {
-	sprites = App->textures->Load("Spells/Fireball.png");
+	LoadSprites();
 	spellAnim.PushBack({ 0,0,45,65 });
 	spellAnim.PushBack({ 50,0,45,65 });
 	spellAnim.PushBack({ 101,0,45,65 });
@@ -35,7 +35,7 @@ bool Icicle::Start() {
 
 bool Icicle::CleanUp(pugi::xml_node&)
 {
-	App->textures->UnLoad(sprites);
+	UnLoadSprites();
 	bool ret = App->collision->RemoveCollider(spellColl);
 
 	return ret;

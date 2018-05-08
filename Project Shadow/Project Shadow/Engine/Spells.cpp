@@ -1,5 +1,5 @@
 #include "Spells.h"
-
+#include "ModuleTextures.h"
 
 
 Spells::Spells(SpellsType spellType): Entity(EntityTypes::SPELLS)
@@ -27,3 +27,13 @@ bool Spells::CheckLifetime() const{
 	return false;
 }
 
+
+void Spells::LoadSprites() {
+
+	sprites = App->textures->Load("Spells/spells.png");
+}
+
+void Spells::UnLoadSprites() {
+
+	App->textures->UnLoad(sprites);
+}

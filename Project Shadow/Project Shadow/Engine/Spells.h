@@ -34,6 +34,8 @@ protected:
 	void UpdateCollidersPosition();
 	bool CheckLifetime() const;
 	void DestroySpell();
+	void LoadSprites();
+	void UnLoadSprites();
 
 	SpellsType spellType;
 	Animation spellAnim;

@@ -1,5 +1,5 @@
 #include "Lightning.h"
-#include "../../Engine/ModuleTextures.h"
+
 
 #define MS_LIFETIME	3000
 
@@ -13,7 +13,7 @@ Lightning::~Lightning()
 }
 
 bool Lightning::Start() {
-	sprites = App->textures->Load("Spells/Fireball.png");
+	LoadSprites();
 	spellAnim.PushBack({ 0,0,45,65 });
 	spellAnim.PushBack({ 50,0,45,65 });
 	spellAnim.PushBack({ 101,0,45,65 });
@@ -36,7 +36,7 @@ bool Lightning::Start() {
 
 bool Lightning::CleanUp(pugi::xml_node&)
 {
-	App->textures->UnLoad(sprites);
+	UnLoadSprites();
 	bool ret = App->collision->RemoveCollider(spellColl);
 
 	return ret;

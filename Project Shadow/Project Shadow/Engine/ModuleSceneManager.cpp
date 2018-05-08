@@ -1,6 +1,7 @@
 #include "ModuleSceneManager.h"
 #include "../Game/Scenes/MainScene.h"
 #include "../Game/Scenes/IntroScene.h"
+#include "../Game/Scenes/CharacterSelecScene.h"
 #include "../Game/Scenes/ItemSelecScene.h"
 #include "../Game/Scenes/EndScene.h"
 #include "ModuleEntityManager.h"
@@ -9,14 +10,16 @@
 
 ModuleSceneManager::ModuleSceneManager()
 {
-	name	=	"scenes";
+	name		=	"scenes";
 
-	introSc	=	new IntroScene();
-	itemSc	=	new ItemSelecScene();
-	mainSc	=	new MainScene();
-	endSc	=	new EndScene();
+	introSc		=	new IntroScene();
+	characterSc =	new CharacterSelecScene();
+	itemSc		=	new ItemSelecScene();
+	mainSc		=	new MainScene();
+	endSc		=	new EndScene();
 
 	AddScene(introSc);
+	AddScene(characterSc);
 	AddScene(itemSc);
 	AddScene(mainSc);
 	AddScene(endSc);

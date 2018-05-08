@@ -1,5 +1,6 @@
 #include "MainScene.h"
 #include "IntroScene.h"
+#include "CharacterSelecScene.h"
 #include "../../Engine/Warrior.h"
 #include "EndScene.h"
 #include "../../Engine/ModuleMap.h"
@@ -34,7 +35,7 @@ bool MainScene::Start()
 	atlas = App->textures->Load("UI/atlas.png");
 
 
-	e = App->entities->CreateCharacter({WIZARD,{100,100}, Team::BLUE});
+	e = App->entities->CreateCharacter({ WIZARD,{ 100,100 }, Team::BLUE });
 	e2 = App->entities->CreateCharacter({ WIZARD,{ 10000,100 }, Team::RED });
 
 

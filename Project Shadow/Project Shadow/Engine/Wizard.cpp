@@ -6,6 +6,7 @@
 
 #include "ModuleMap.h"
 #include "App.h"
+#include "..\Game\Spells\Lightning.h"
 
 
 
@@ -62,7 +63,9 @@ bool Wizard::PreUpdate()
 
 bool Wizard::HeroUpdate(float dt)
 {
-
+	if (!noMove.IsZero() && noMove.Read() > LIGHTNING_MS_LIFETIME) {
+		noMove.SetZero();	
+	}
 	if (directions.right - directions.left == 1)
 	{
 		flip = false;
@@ -81,6 +84,14 @@ bool Wizard::HeroUpdate(float dt)
 		ab_1_active = false;
 	}
 
+	if (!GetAbAtk(12)->active)
+	{
+		ab_2_bool = true;
+	}
+	else
+	{
+		ab_2_bool = false;
+	}
 	return true;
 }
 
@@ -100,8 +111,15 @@ void Wizard::UpdateSpecStates()
 	if (currentTag == 11 && !ab_1_active)
 	{
 
-		App->entities->CreateSpell({ FIREBALL, gamepos });
+		App->entities->CreateSpell({ ICICLE,team, {gamepos.x, gamepos.y+75, gamepos.z} });
 		ab_1_active = true;
+	}
+	if (currentTag == 12 && !ab_2_bool)
+	{
+
+		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x+50, gamepos.y+40, gamepos.z } });
+		ab_2_bool = true;
+		noMove.Start();
 	}
 
 }
@@ -160,7 +178,7 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentState = HIT;
 		}
-		else if (_this->type == Collider::HITBOX && _other->type == Collider::ATK)
+		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentState = HIT;
 			hit_bool = true;

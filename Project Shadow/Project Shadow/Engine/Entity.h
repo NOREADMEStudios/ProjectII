@@ -169,7 +169,7 @@ public:
 	EntityStats stats;
 	CharacterTypes charType;
 
-
+	bool noMove = false;
 	bool paused = false;
 
 	uint heroNum = 0;
@@ -204,7 +204,7 @@ protected:
 	Directions directions;
 	bool flip = 0;
 	InvBlit invencible;
-
+	
 	
 
 

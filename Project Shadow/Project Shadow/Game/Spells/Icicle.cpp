@@ -49,10 +49,10 @@ bool Icicle::Update(float dt) {
 	}
 
 	priority = gamepos.z;
-	GetColliderFromAnimation();
+	
 
 	CalcRealPos();
-
+	GetColliderFromAnimation();
 	//UpdateCollidersPosition();
 
 	App->render->FillQueue(this);//prints the spell

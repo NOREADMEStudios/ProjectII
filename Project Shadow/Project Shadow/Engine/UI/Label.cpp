@@ -58,22 +58,28 @@ bool Label::PreUpdate()
 
 bool Label::Update(float dt)
 {
+	bool ret = InterfaceElement::Update(dt);
+	return ret;
+}
+
+bool Label::PostUpdate()
+{
 	if (font != nullptr) {
 		int d_x = 0, d_y = 0;
 		/*switch (alignment)
 		{
 		case Label::CENTERED:
-			d_x = -rect.w / 2;
-			d_y = -rect.h / 2;
-			break;
+		d_x = -rect.w / 2;
+		d_y = -rect.h / 2;
+		break;
 		case Label::LEFT:
-			break;
+		break;
 		case Label::RIGHT:
-			d_x = -rect.w;
-			d_y = -rect.h;
-			break;
+		d_x = -rect.w;
+		d_y = -rect.h;
+		break;
 		default:
-			break;
+		break;
 		}*/
 
 		int dx = 0, dy = 0, dw = 0, dh = 0;
@@ -100,9 +106,7 @@ bool Label::Update(float dt)
 
 		App->render->BlitGui(tex, result_rect.x + d_x, result_rect.y + d_y, &actual_anim_rect);
 	}
-
-	bool ret = InterfaceElement::Update(dt);
-	return ret;
+	return InterfaceElement::PostUpdate();
 }
 
 bool Label::CleanUp()

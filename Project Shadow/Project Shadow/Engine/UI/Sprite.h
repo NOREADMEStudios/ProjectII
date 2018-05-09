@@ -16,6 +16,7 @@ public:
 	Sprite(uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, bool _enabled = false, SDL_Rect* _anim = nullptr);
 	~Sprite();
 	bool Update(float dt) override;
+	bool PostUpdate() override;
 
 	void ChangeAnimation(SDL_Rect anim);
 

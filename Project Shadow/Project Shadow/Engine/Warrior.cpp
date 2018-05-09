@@ -178,7 +178,7 @@ void Warrior::UpdateSpecStates()
 	
 	if (currentTag ==2  && !buffed)
 	{
-		App->entities->CreateSpell({ ICICLE, {(float)position.x,(float)position.y},team });
+		App->entities->CreateSpell({ LIGHTING, {(float)position.x,(float)position.y},team });
 		buffed = true;
 	}
 }

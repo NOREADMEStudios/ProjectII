@@ -15,9 +15,7 @@ Icicle::~Icicle()
 bool Icicle::Start() {
 	LoadSprites();
 	spellAnim.LoadAnimationsfromXML("Icicle", SPELLS_ANIMS_ROOT);
-	//spellAnim.PushBack({ 0,0,45,65 });
-	//spellAnim.PushBack({ 50,0,45,65 });
-	//spellAnim.PushBack({ 101,0,45,65 });
+
 	currentAnimation = &spellAnim;
 
 	spellColl = App->collision->CreateCollider({}, "Icicle_Spell", Collider::SPELL);
@@ -48,12 +46,10 @@ bool Icicle::Update(float dt) {
 		return PausedUpdate();
 	}
 
-	priority = gamepos.z;
-	
+	priority = gamepos.z;	
 
 	CalcRealPos();
 	GetColliderFromAnimation();
-	//UpdateCollidersPosition();
 
 	App->render->FillQueue(this);//prints the spell
 

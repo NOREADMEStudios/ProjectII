@@ -8,6 +8,7 @@
 #include "../Game/Spells/FireBall.h"
 #include "../Game/Spells/Icicle.h"
 #include "../Game/Spells/Lightning.h"
+#include "../Game/Spells/FireDemon.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
 
@@ -209,7 +210,10 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	{
 		ret = new Lightning();
 	}
-	
+	else if (spellsInfo.spType == SpellsType::FIRE_DEMON)
+	{
+		ret = new FireDemon();
+	}
 	else
 	{		
 		return nullptr;//

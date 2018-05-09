@@ -146,6 +146,7 @@ void Wizard::UpdateSpecStates()
 		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x - 30, gamepos.y , gamepos.z + 30 },{ -1,1 } });
 		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x + 30, gamepos.y , gamepos.z - 30 },{ 1,-1 } });
 		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x - 30, gamepos.y , gamepos.z - 30 },{ -1,-1 } });
+		App->entities->CreateSpell({ FIRE_DEMON,team,{ gamepos.x, gamepos.y + 20 , gamepos.z} });
 		ab_3_bool = true;
 		noMove.Start();
 

@@ -176,6 +176,9 @@
     <ClCompile Include="Game\Spells\Lightning.cpp">
       <Filter>Engine\Entities\Spells</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Spells\FireDemon.cpp">
+      <Filter>Engine\Entities\Spells</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -332,6 +335,9 @@
       <Filter>Engine\Entities\Spells</Filter>
     </ClInclude>
     <ClInclude Include="Game\Spells\Lightning.h">
+      <Filter>Engine\Entities\Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Spells\FireDemon.h">
       <Filter>Engine\Entities\Spells</Filter>
     </ClInclude>
   </ItemGroup>

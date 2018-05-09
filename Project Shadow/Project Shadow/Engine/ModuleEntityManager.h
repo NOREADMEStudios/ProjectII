@@ -19,7 +19,8 @@ enum SpellsType {
 	NOSPELL,
 	FIREBALL,
 	LIGHTING,
-	ICICLE
+	ICICLE,
+	FIRE_DEMON
 };
 
 enum CharacterTypes {

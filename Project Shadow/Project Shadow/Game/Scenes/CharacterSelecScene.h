@@ -25,10 +25,10 @@ public:
 	class CharacterToSelect {
 	public:
 		CharacterToSelect();
-		CharacterToSelect(std::string _name, CharacterTypes _type, SDL_Rect _animRect, EntityStats _stats) {
+		CharacterToSelect(std::string _name, CharacterTypes _type, EntityStats _stats) {
 			name = _name;
 			type = _type;
-			animRect = _animRect;
+			/*animRect = _animRect;*/
 			stats = _stats;
 		}
 		std::string name;
@@ -102,6 +102,9 @@ private:
 	void AddLabelToButton(CharacterToSelect* character);
 	bool AllPlayersReady();
 	void ApplyCharacterSelection();
+
+	SDL_Rect warriorRect, rogueRect, wizardRect;
+	Sprite* characterSprites[3];
 
 	/*void LoadSceneUI();
 	void FindNextArrowUnlocked(uint player, InterfaceElement::Directions direction);

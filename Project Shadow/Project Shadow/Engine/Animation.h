@@ -211,7 +211,7 @@ private:
 
 							prop = prop.next_sibling("property");
 							if (prop.attribute("name").as_string() == colltype) {
-								if (prop.attribute("value").as_int() == 4) {//collider spell
+								if (prop.attribute("value").as_int() == 5) {//collider spell
 									iRect spellColl ;
 									spellColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };									 
 									coll_spell.push_back(spellColl);

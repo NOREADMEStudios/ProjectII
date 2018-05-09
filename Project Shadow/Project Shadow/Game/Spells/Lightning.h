@@ -24,6 +24,8 @@ public:
 
 protected:
 	void Dead();
+
+	void OnCollisionEnter(Collider* _this, Collider* _other) override;
 };
 
 #endif

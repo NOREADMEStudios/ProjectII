@@ -114,7 +114,7 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentState = HIT;
 		}
-		else if (_this->type == Collider::HITBOX && _other->type == Collider::ATK)
+		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentState = HIT;
 			hit_bool = true;

@@ -108,7 +108,7 @@ void Wizard::UpdateSpecStates()
 	if (currentTag == 11 && !ab_1_active)
 	{
 
-		App->entities->CreateSpell({ ICICLE,team, gamepos });
+		App->entities->CreateSpell({ ICICLE,team, {gamepos.x, gamepos.y+75, gamepos.z} });
 		ab_1_active = true;
 	}
 	if (currentTag == 12 && !ab_2_bool)
@@ -174,7 +174,7 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentState = HIT;
 		}
-		else if (_this->type == Collider::HITBOX && _other->type == Collider::ATK)
+		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentState = HIT;
 			hit_bool = true;

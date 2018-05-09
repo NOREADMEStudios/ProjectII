@@ -21,8 +21,12 @@ public:
 	bool Load(pugi::xml_node&)override { return true; }
 	bool Save(pugi::xml_node&) const override { return true; }
 
+
 protected:
 	void Dead();
+	void OnCollisionEnter(Collider* _this, Collider* _other) override;
+
+	std::vector<Entity*> entitiesHitted;
 };
 
 #endif

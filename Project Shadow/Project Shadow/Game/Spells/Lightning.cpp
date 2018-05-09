@@ -66,3 +66,5 @@ bool Lightning::PostUpdate() {
 void Lightning::Dead() {
 	App->entities->DestroyEntity(this);
 }
+
+void Lightning::OnCollisionEnter(Collider* _this, Collider* _other) {}

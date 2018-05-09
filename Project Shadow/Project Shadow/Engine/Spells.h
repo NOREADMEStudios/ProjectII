@@ -46,6 +46,7 @@ protected:
 	Timer lifeTime;
 	uint lifetime;
 
+	
 
 	void GetColliderFromAnimation();
 };

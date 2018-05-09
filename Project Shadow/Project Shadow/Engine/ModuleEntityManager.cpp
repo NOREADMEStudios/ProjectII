@@ -81,7 +81,6 @@ bool ModuleEntityManager::PreUpdate() {
 	for (LIST_ITERATOR(Entity*) ent = entities.begin(); ent != entities.end(); ent++) {
 		if ((*ent)->to_delete) {
 			ents.push_back(ent);
-		
 		}
 	}
 

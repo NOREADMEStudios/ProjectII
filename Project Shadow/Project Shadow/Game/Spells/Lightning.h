@@ -24,8 +24,13 @@ public:
 
 protected:
 	void Dead();
+	Timer ticks;
+	bool dealingDmg = false;
 
 	void OnCollisionEnter(Collider* _this, Collider* _other) override;
+	void OnCollisionStay(Collider* _this, Collider* _other) override;
+	void OnCollisionExit(Collider* _this, Collider* _other) override;
+
 };
 
 #endif

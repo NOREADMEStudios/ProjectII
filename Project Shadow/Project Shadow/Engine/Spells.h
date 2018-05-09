@@ -34,7 +34,7 @@ public:
 
 protected:
 
-	void UpdateCollidersPosition();
+	
 	bool CheckLifetime() const;
 	void DestroySpell();
 	void LoadSprites();

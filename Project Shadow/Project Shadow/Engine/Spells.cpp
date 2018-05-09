@@ -11,12 +11,6 @@ Spells::~Spells()
 {
 }
 
-void Spells::UpdateCollidersPosition() {
-
-	spellColl->collider.x = position.x;
-	spellColl->collider.y = position.y;
-
-}
 
 bool Spells::CheckLifetime() const{
 

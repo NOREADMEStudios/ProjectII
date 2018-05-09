@@ -88,7 +88,7 @@ bool Character::Update(float dt)
 	currentAnimation = &states.front()->anim;
 
 
-	if (stats.life > 0)
+	if (stats.life > 0 && !noMove)
 		RequestState();
 	else
 		currentState = DEATH;
@@ -379,8 +379,6 @@ void Character::RequestState() {
 			break;
 		}
 	}
-
-
 }
 
 void Character::UpdateMainStates()

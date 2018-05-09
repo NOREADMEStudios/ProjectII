@@ -114,7 +114,7 @@ void Wizard::UpdateSpecStates()
 	if (currentTag == 12 && !ab_2_bool)
 	{
 
-		App->entities->CreateSpell({ LIGHTING,team, gamepos });
+		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x+50, gamepos.y+40, gamepos.z } });
 		ab_2_bool = true;
 	}
 

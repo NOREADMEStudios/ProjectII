@@ -1,7 +1,8 @@
 #include "Lightning.h"
 
 
-#define MS_LIFETIME	3000
+#define MS_LIFETIME	1500
+#define TICKS_PER_DMG 100
 
 Lightning::Lightning() : Spells(SpellsType::LIGHTING)
 {
@@ -22,7 +23,7 @@ bool Lightning::Start() {
 	App->collision->AddCollider(spellColl, this);
 	//collider = { 0,0,45,65 };
 
-	stats.atk = 8;
+	stats.atk = 7;
 
 	char_depth = 20;
 
@@ -67,4 +68,38 @@ void Lightning::Dead() {
 	App->entities->DestroyEntity(this);
 }
 
-void Lightning::OnCollisionEnter(Collider* _this, Collider* _other) {}
+void Lightning::OnCollisionEnter(Collider* _this, Collider* _other) {
+
+	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
+	
+	if (_other->type == Collider::HITBOX &&  !dealingDmg)
+	{
+		ticks.Start();
+		dealingDmg = true;
+		_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
+		_this->entity->noMove = true;
+	}
+}
+
+void Lightning::OnCollisionStay(Collider* _this, Collider* _other) {
+	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
+
+	if (_other->type == Collider::HITBOX) {
+		if (ticks.Read() > TICKS_PER_DMG) {
+			ticks.Start();
+			if (stats.atk - _other->entity->stats.def <= 0)
+				_other->entity->stats.life -= 1;
+			else
+				_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
+		}
+	}
+}
+void Lightning::OnCollisionExit(Collider* _this, Collider* _other) {
+
+	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
+
+	if (_other->type == Collider::HITBOX) {
+		dealingDmg = false;
+		_this->entity->noMove = true;
+	}
+}

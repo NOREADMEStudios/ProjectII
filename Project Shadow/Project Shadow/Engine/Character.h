@@ -196,7 +196,7 @@ public:
 
 	//virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 	Timer time_attack;
-	
+	bool noMove = false;
 
 
 	void SetAnimations();
@@ -252,6 +252,7 @@ protected:
 	int initialLife = 0;
 	uint lives = 0, maxLives = 3;
 	int hit_dir = 0;
+	
 	bool hit_bool = 0;
 	bool parried = 0;
 	bool jumping = 0;

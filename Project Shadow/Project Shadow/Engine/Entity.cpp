@@ -138,6 +138,7 @@ EntityTypes Entity::GetType()
 void Entity::SetPos(int x,int y, int z)
 {
 	gamepos.x = x;
+	gamepos.y = y;
 	gamepos.z = z;
 }
 

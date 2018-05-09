@@ -97,14 +97,15 @@ private:
 	void LoadSceneUI();
 
 	void SetControllerFocus();
+	void ChangeCharacter();
 	void FindNextPlayer(uint player, InterfaceElement::Directions direction);
 	void ManageDisplacementFocus();
 	void AddLabelToButton(CharacterToSelect* character);
 	bool AllPlayersReady();
 	void ApplyCharacterSelection();
 
-	SDL_Rect warriorRect, rogueRect, wizardRect;
-	Sprite* characterSprites[3];
+	SDL_Rect characterRects[2];
+	Sprite* characterSprites[2];
 
 	/*void LoadSceneUI();
 	void FindNextArrowUnlocked(uint player, InterfaceElement::Directions direction);

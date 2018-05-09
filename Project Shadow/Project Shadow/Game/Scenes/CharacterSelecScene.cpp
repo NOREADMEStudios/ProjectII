@@ -33,9 +33,9 @@ bool CharacterSelecScene::Start()
 	LoadBackground("UI/BasicMenuScene.png"); 
 	LoadSceneUI();
 
-	wizardRect = { 1676, 156, 188, 275 }; //For changing the sprite directly
-	rogueRect = { 1676, 431, 188, 275 };
-	warriorRect = { 1864, 431, 188, 275 };
+	characterRects[0] = { 1676, 156, 188, 275 }; // WIZARD For changing the sprite directly
+	characterRects[1] = { 1676, 431, 188, 275 }; //ROGUE
+	characterRects[2] = { 1864, 431, 188, 275 }; //WARRIOR
 
 	LoadSceneUI();
 	//SetControllerFocus();
@@ -93,6 +93,15 @@ void CharacterSelecScene::SetControllerFocus() {
 		player.totalControllersNum = controllersNum;
 		/*player.LoadArrows();*/
 		players.push_back(player);
+	}
+}
+void CharacterSelecScene::ChangeCharacter()
+{
+	for (int i = 0; i < controllersNum; i++) {
+		Player* player = &players[i];
+
+		if (App->input->GetButtonFromController(player->playerNum) == Input::RIGHT) {
+		}
 	}
 }
 /*
@@ -208,45 +217,45 @@ void CharacterSelecScene::LoadSceneUI() {
 
 	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
 		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 8, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
-		characterSprites[0] = App->gui->AddSprite(0, 0, atlas, warriorRect);
+		characterSprites[0] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[0]->SetParent(characterFrame[0]);
 		characterSprites[0]->SetAnchor(0,0);
 		characterSprites[0]->setPosition(80, 89);
 
 		characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 8 * 3, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
-		characterSprites[1] = App->gui->AddSprite(0, 0, atlas, warriorRect);
+		characterSprites[1] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[1]->SetParent(characterFrame[1]);
 		characterSprites[1]->SetAnchor(0, 0);
 		characterSprites[1]->setPosition(80, 89);
 
 		characterFrame[2] = App->gui->AddSprite((sizeScreen.x / 8) * 5, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
-		characterSprites[2] = App->gui->AddSprite(0, 0, atlas, warriorRect);
+		characterSprites[2] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[2]->SetParent(characterFrame[2]);
 		characterSprites[2]->SetAnchor(0, 0);
 		characterSprites[2]->setPosition(80, 89);
 
 		characterFrame[3] = App->gui->AddSprite((sizeScreen.x / 8) * 7, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
-		characterSprites[3] = App->gui->AddSprite(0, 0, atlas, warriorRect);
+		characterSprites[3] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[3]->SetParent(characterFrame[3]);
 		characterSprites[3]->SetAnchor(0, 0);
 		characterSprites[3]->setPosition(80, 89);
 	}
 	else if (App->scenes->gameMode == GameMode::ONEvsONE){
 		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 4, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
-		characterSprites[0] = App->gui->AddSprite(0, 0, atlas, warriorRect);
+		characterSprites[0] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[0]->SetParent(characterFrame[0]);
 		characterSprites[0]->SetAnchor(0, 0);
 		characterSprites[0]->setPosition(80, 89);
 
 		characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 4 * 3, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
-		characterSprites[1] = App->gui->AddSprite(0, 0, atlas, warriorRect);
+		characterSprites[1] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[1]->SetParent(characterFrame[1]);
 		characterSprites[1]->SetAnchor(0, 0);
 		characterSprites[1]->setPosition(80, 89);
 
 	}
 
-	int i = 0;
+	//int i = 0;
 
 	/*characters[i] = new CharacterToSelect("WARRIOR", WARRIOR, { 480,0,120,120 }, { 0,0,5,0,0 });
 	characters[++i] = new CharacterToSelect("ROGUE", ROGUE, { 480,0,120,120 }, { 0,0,5,0,0 });

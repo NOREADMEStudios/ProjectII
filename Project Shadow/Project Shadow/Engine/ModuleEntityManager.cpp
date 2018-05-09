@@ -6,6 +6,8 @@
 #include "Rogue.h"
 #include "Wizard.h"
 #include "../Game/Spells/FireBall.h"
+#include "../Game/Spells/Icicle.h"
+#include "../Game/Spells/Lightning.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
 
@@ -198,8 +200,15 @@ Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 
 	if (spellsInfo.spType == SpellsType::FIREBALL)
 	{
-		ret = new FireBall();
-		
+		ret = new FireBall();		
+	}
+	else if (spellsInfo.spType == SpellsType::ICICLE)
+	{
+		ret = new Icicle();
+	}
+	else if (spellsInfo.spType == SpellsType::LIGHTING)
+	{
+		ret = new Lightning();
 	}
 	
 	else
@@ -208,7 +217,10 @@ Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	}
 
 	ret->type = SPELLS;
+
+	ret->team = spellsInfo.chTeam;
 	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y, spellsInfo.pos.z);
+
 
 
 	entities.push_back(ret);

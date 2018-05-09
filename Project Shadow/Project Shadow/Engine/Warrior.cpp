@@ -131,10 +131,11 @@ bool Warrior::HeroUpdate(float dt)
 		}
 	}
 
-	if (!GetAbAtk(13)->active)
+	if ((!GetAbAtk(13)->active))
 	{
 		buffed = true;
 	}
+	
 	else
 	{
 		buffed = false;
@@ -202,6 +203,7 @@ void Warrior::UpdateSpecStates()
 		buffed = true;
 	}
 
+
 	int dir = 0;
 
 	if (flip)
@@ -235,6 +237,7 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 
 	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))*/
 	{
+
 		if (_this->collider.x - _other->collider.x > 0)
 		{
 			hit_dir = 1;
@@ -271,7 +274,7 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentState = HIT;
 		}
-		else if (_this->type == Collider::HITBOX && _other->type == Collider::ATK)
+		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentState = HIT;
 			hit_bool = true;
@@ -298,6 +301,7 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			else if (currentTag == 12)
 				_other->entity->Impulsate(hit_dir, 0, 0);
 		}
+
 
 	}
 }

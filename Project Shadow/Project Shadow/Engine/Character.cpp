@@ -66,7 +66,7 @@ bool Character::Start()
 	currentAnimation = &states.front()->anim;
 
 	HeroStart();
-
+	noMove.SetZero();
 
 	active = true;
 	return true; 
@@ -88,9 +88,9 @@ bool Character::Update(float dt)
 	currentAnimation = &states.front()->anim;
 
 
-	if (stats.life > 0)
+	if (stats.life > 0 && noMove.IsZero())
 		RequestState();
-	else
+	else if (stats.life <= 0)
 		currentState = DEATH;
 
 	if (!eventstates.empty())
@@ -379,8 +379,6 @@ void Character::RequestState() {
 			break;
 		}
 	}
-
-
 }
 
 void Character::UpdateMainStates()

@@ -425,6 +425,34 @@ Input ModuleInput::GetButtonFromController(int controllerNum) const {
 				break;
 			}
 		}
+		for (int i = 0; i < MAX_AXIS; i++)
+		{
+			if (controllers[controllerNum - 1].axis[i] >= 0.5f || controllers[controllerNum - 1].axis[i] <= -0.5f)
+			{
+				switch (i) {
+				case 0:
+					if (controllers[controllerNum - 1].axis[i] > 0.5f)
+					{
+						ret = Input::RIGHT;
+					}
+					else if (controllers[controllerNum - 1].axis[i] < -0.5f)
+					{
+						ret = Input::LEFT;
+					}
+					break;
+				case 1:
+					if (controllers[controllerNum - 1].axis[i] > 0.5f)
+					{
+						ret=Input::DOWN;
+					}
+					else if (controllers[controllerNum - 1].axis[i] < -0.5f)
+					{
+						ret=Input::UP;
+					}
+					break;
+				}
+			}
+		}
 	}
 	return ret;
 }

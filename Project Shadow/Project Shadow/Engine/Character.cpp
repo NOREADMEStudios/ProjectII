@@ -389,7 +389,7 @@ void Character::RequestState() {
 
 void Character::UpdateMainStates()
 {
-	if (wantedTag != 0 && GetAtk(wantedTag)->ability)
+	if (wantedTag != 0 && GetAtk(wantedTag)->ability && currentTag != 11 && currentTag != 12 && currentTag != 13)
 	{
 		if (!GetAbAtk(wantedTag)->active)
 		{

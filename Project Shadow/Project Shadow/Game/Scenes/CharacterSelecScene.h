@@ -66,11 +66,11 @@ public:
 	};
 	CharacterToSelect* characters[4];
 	int controllersNum;
-	CharacterInfo charactersInfo[3];
-	Sprite* characterFrame[3];
-	Label* characterNameLabel[2];
-	String characterNameStrings[2];
-	int indexSprites[3];
+	CharacterInfo charactersInfo[4];
+	Sprite* characterFrame[4];
+	Label* characterNameLabel[4];
+	String characterNameStrings[3];
+	int indexSprites[4];
 
 	CharacterInfo character1Info = { WIZARD,{ 100,100 }, Team::BLUE };
 	CharacterInfo character2Info = { WIZARD,{ 10000,100 }, Team::RED };
@@ -107,8 +107,8 @@ private:
 	bool AllPlayersReady();
 	void ApplyCharacterSelection();
 
-	SDL_Rect characterRects[2];
-	Sprite* characterSprites[2];
+	SDL_Rect characterRects[3];
+	Sprite* characterSprites[3];
 
 	/*void LoadSceneUI();
 	void FindNextArrowUnlocked(uint player, InterfaceElement::Directions direction);

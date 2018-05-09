@@ -41,7 +41,7 @@ bool CharacterSelecScene::Start()
 	characterNameStrings[2] = "WARRIOR";
 
 	LoadSceneUI();
-	//SetControllerFocus();
+	SetControllerFocus();
 
 	return true;
 }
@@ -49,7 +49,7 @@ bool CharacterSelecScene::Start()
 bool CharacterSelecScene::Update(float dt)
 {
 	DrawBackground();
-	//ChangeCharacter();
+	ChangeCharacter();
 
 
 	//App->input->CheckControllers();

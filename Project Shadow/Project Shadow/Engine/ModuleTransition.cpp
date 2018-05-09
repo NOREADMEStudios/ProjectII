@@ -59,7 +59,7 @@ void ModuleTransition::FadeToBlack()
 	case ModuleTransition::FADING_OUT:
 		if (transitionTimeCurrent > transitionTimeTotal) {
 			fadeState = FADING_IN;
-			transitionTimeCurrent = -0.6f;
+			transitionTimeCurrent = 0.0f;
 			if (callback != nullptr) {
 				callback(0);
 				callback = nullptr;
@@ -77,7 +77,7 @@ void ModuleTransition::FadeToBlack()
 	default:
 		break;
 	}
-	App->render->DrawQuad(dstRect.toSDL_Rect(), 0, 0, 0, CLAMP((fadeAlpha * 255.0f), 0, 255), true, false);
+	App->render->DrawQuad(dstRect.toSDL_Rect(), 0, 0, 0, CLAMP((fadeAlpha * 255.0f), 0, 255), 0.0f, true, false);
 }
 
 void ModuleTransition::Scrolling()
@@ -94,6 +94,7 @@ void ModuleTransition::Scrolling()
 		}
 		scrollTexture = App->render->Snapshot();
 		scrollState = SCROLLING;
+		transitionTimeCurrent = 0.0f;
 		break;
 	case ModuleTransition::SCROLLING:
 		if (dstRect.x > App->win->screen_surface->w || dstRect.x < -App->win->screen_surface->w) {

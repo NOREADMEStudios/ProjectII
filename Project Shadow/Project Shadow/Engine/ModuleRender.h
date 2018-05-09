@@ -4,7 +4,7 @@
 #include "../SDL/include/SDL.h"
 #include "Module.h"
 #include "Entity.h"
-
+#include "Rect.h"
 #include <queue>
 
 #define MAX_SCALE 3
@@ -77,6 +77,8 @@ public:
 
 	SDL_Renderer*	renderer = nullptr;
 	SDL_Rect		camera;
+	fRect			innerContainerInterior,
+					innerContainerExterior;
 	SDL_Rect		viewport;
 	SDL_Color		background;
 

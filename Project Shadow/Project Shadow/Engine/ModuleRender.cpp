@@ -43,7 +43,7 @@ bool ModuleRender::Awake(pugi::xml_node& config)
 		LOG("Using vsync");
 		vsync = true;
 	}
-		renderer = SDL_CreateRenderer(App->win->window, -1, flags);
+	renderer = SDL_CreateRenderer(App->win->window, -1, flags);
 
 	if(renderer == NULL)
 	{
@@ -344,20 +344,48 @@ void ModuleRender::CheckCameraPos()
 		float mid_pos = (((max_x - min_x) / 2) + min_x);
 		float mid_pos_y = (((max_y - min_y) / 2) + min_y);
 
-		float diference = MAX((max_x - min_x), (max_y - min_y));
+		innerContainerExterior = { camera.x + (camera.w * 0.05f), camera.y + (camera.h * 0.08f), camera.x + camera.w - (camera.w * 0.1f), camera.y + camera.h - (camera.h * 0.16f) };
+		innerContainerInterior = { camera.x + (camera.w * 0.2f), camera.y + (camera.h * 0.3f), camera.x + camera.w - (camera.w * 0.4f), camera.y + camera.h - (camera.h * 0.6f) };
+		/*DrawQuad(innerContainerExterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
+		DrawQuad(innerContainerInterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);*/
+		innerContainerInterior = innerContainerInterior * (1/scale);
+		innerContainerExterior = innerContainerExterior * (1/scale);
 
-		float min_scale = (float)camera.h / (mapheight - (App->map->GetYTiles()) + 1);
-		float new_scale = MAX_SCALE - ((diference / (mapheight - camera.h / MAX_SCALE)) * (MAX_SCALE - min_scale));
+		fPoint difference = { max_x - min_x, max_y - min_y };
+
+		float min_scale = MAX((float)camera.h / (mapheight - (mapheight / App->map->GetYTiles())), (float)camera.w / (mapwidth - (mapwidth / App->map->GetXTiles())));
+		float new_scale = scale;
+		if (!innerContainerExterior.Intersect(fPoint( min_x, min_y ))) {
+			new_scale -= 0.01f;
+		}
+		else if (innerContainerInterior.Intersect(fPoint(min_x, min_y))) {
+			new_scale += 0.01f;
+		}
+
+		if (!innerContainerExterior.Intersect(fPoint(max_x, max_y))) {
+			new_scale -= 0.01f;
+		}
+		else if (innerContainerInterior.Intersect(fPoint(max_x, max_y))) {
+			new_scale += 0.01f;
+		}
+
+		/*if (difference.x > difference.y) {
+			new_scale = (difference.x / (mapwidth - camera.w / MAX_SCALE)) * (MAX_SCALE - min_scale);
+		}
+		else {
+			new_scale = (difference.y / (mapheight - camera.h / MAX_SCALE)) * (MAX_SCALE - min_scale);
+		}*/
+		//new_scale = MAX_SCALE - ((difference.y / (mapheight - camera.h / MAX_SCALE)) * (MAX_SCALE - min_scale));
 		new_scale = CLAMP(new_scale, min_scale, MAX_SCALE);
 		App->win->SetScale(new_scale);
 
-		camera.x = mid_pos - camera.w / scale;
+		camera.x = mid_pos - (camera.w * 0.5f) / scale;
 		if (camera.x < 0) camera.x = 0;
-		else if (camera.x + camera.w / scale > mapwidth) camera.x = mapwidth - camera.w / scale;
+		else if (camera.x + camera.w / scale > mapwidth - (mapwidth / App->map->GetXTiles())) camera.x = mapwidth - (mapwidth / App->map->GetXTiles()) - camera.w / scale;
 
-		camera.y = mid_pos_y - camera.h / scale;
+		camera.y = mid_pos_y - (camera.h * 0.5f) / scale;
 		if (camera.y < 0) camera.y = 0;
-		else if (camera.y + camera.h / scale > mapheight) camera.y = mapheight - camera.h / scale;
+		else if (camera.y + camera.h / scale > mapheight - (mapheight/App->map->GetYTiles())) camera.y = mapheight - (mapheight / App->map->GetYTiles()) - camera.h / scale;
 	}
 }
 

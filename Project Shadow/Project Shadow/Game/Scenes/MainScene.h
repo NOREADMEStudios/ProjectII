@@ -5,6 +5,8 @@
 #include "..\..\Engine\ModuleCollision.h"
 #include "..\..\PugiXml\src\pugixml.hpp"
 
+class Label;
+
 class MainScene :
 	public Scene
 {
@@ -12,6 +14,9 @@ public:
 
 	
 	Entity* e,* e2, * e3, *e4;
+	int		totalRounds,
+			currentRound;
+	Label*	roundsLabel;
 
 	MainScene();
 	virtual ~MainScene();

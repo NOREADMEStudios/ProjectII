@@ -14,13 +14,11 @@ Lightning::~Lightning()
 
 bool Lightning::Start() {
 	LoadSprites();
-	spellAnim.PushBack({ 25,77,208,54 });
-	spellAnim.PushBack({ 25,151,208,54 });
-	spellAnim.PushBack({ 23,221,208,54 }); 
+	spellAnim.LoadAnimationsfromXML("Lightning", SPELLS_ANIMS_ROOT);
 	currentAnimation = &spellAnim;
 
 	spellColl = App->collision->CreateCollider({}, "Lightning_Spell", Collider::SPELL);
-	spellColl->collider = { 0,0,208,54 };
+	
 	App->collision->AddCollider(spellColl, this);
 	//collider = { 0,0,45,65 };
 
@@ -49,13 +47,10 @@ bool Lightning::Update(float dt) {
 	}
 
 	priority = gamepos.z;
-	spellColl->collider.x = gamepos.x;
-	spellColl->collider.y = gamepos.z;
 
 	CalcRealPos();
-
-	//UpdateCollidersPosition();
-
+	GetColliderFromAnimation();
+	
 	App->render->FillQueue(this);//prints the spell
 
 	return true;

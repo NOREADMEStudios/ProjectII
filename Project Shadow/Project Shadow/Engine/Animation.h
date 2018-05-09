@@ -36,7 +36,7 @@ public:
 	float speed = 1.0f;
 	std::vector<AnimationFrame> frames;
 	std::vector<AnimColls> coll_frames;
-
+	std::vector<iRect> coll_spell;
 
 private:
 	float current_frame = 0.0f;
@@ -114,6 +114,14 @@ public:
 		iRect collider = coll_frames.at(currFrame).parry;
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
+	}
+
+	iRect GetSpellColliderFromFrame() {
+		int currFrame = this->current_frame;
+		iRect collider = coll_spell.at(currFrame);
+		iRect frame = frames.at(currFrame).rect;
+		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
+	
 	}
 
 	void PushBack(const SDL_Rect& rect, const iPoint& pivot = { 0, 0 })
@@ -203,7 +211,12 @@ private:
 
 							prop = prop.next_sibling("property");
 							if (prop.attribute("name").as_string() == colltype) {
-
+								if (prop.attribute("value").as_int() == 4) {//collider spell
+									iRect spellColl ;
+									spellColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };									 
+									coll_spell.push_back(spellColl);
+									i++;
+								}
 								if (prop.attribute("value").as_int() == 0) {//collider def
 									DefColl = { object.attribute("x").as_int(), object.attribute("y").as_int(), object.attribute("width").as_int(), object.attribute("height").as_int() };
 								}

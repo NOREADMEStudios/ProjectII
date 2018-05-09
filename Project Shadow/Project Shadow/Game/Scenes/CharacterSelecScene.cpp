@@ -43,14 +43,13 @@ bool CharacterSelecScene::Start()
 	LoadSceneUI();
 	//SetControllerFocus();
 
-	//SetControllers();
 	return true;
 }
 
 bool CharacterSelecScene::Update(float dt)
 {
 	DrawBackground();
-
+	//ChangeCharacter();
 
 
 	//App->input->CheckControllers();
@@ -91,11 +90,9 @@ void CharacterSelecScene::SetControllerFocus() {
 
 	for (int i = 1; i <= controllersNum; i++) {
 		Player player;
-		player.focusedCharacter = characters[0];
 
 		player.playerNum = i;
 		player.totalControllersNum = controllersNum;
-		/*player.LoadArrows();*/
 		players.push_back(player);
 	}
 }
@@ -231,27 +228,64 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 8, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[0] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[0]->SetParent(characterFrame[0]);
-		characterSprites[0]->SetAnchor(0,0);
+		characterSprites[0]->SetAnchor(0, 0);
 		characterSprites[0]->setPosition(80, 89);
+		characterNameLabel[0] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
+		characterNameLabel[0]->setString(characterNameStrings[0]);
+		characterNameLabel[0]->SetParent(characterFrame[0]);
+		characterNameLabel[0]->SetAnchor(0, 0);
+		characterNameLabel[0]->setPosition(75, 14);
+		Label* stats1Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
+		stats1Label->setString("STATS");
+		stats1Label->SetParent(characterFrame[0]);
+		stats1Label->setPosition(171, 462);
 
 		characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 8 * 3, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[1] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[1]->SetParent(characterFrame[1]);
 		characterSprites[1]->SetAnchor(0, 0);
 		characterSprites[1]->setPosition(80, 89);
+		characterNameLabel[1] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
+		characterNameLabel[1]->setString(characterNameStrings[0]);
+		characterNameLabel[1]->SetParent(characterFrame[1]);
+		characterNameLabel[1]->SetAnchor(0, 0);
+		characterNameLabel[1]->setPosition(75, 14);
+		Label* stats2Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
+		stats2Label->setString("STATS");
+		stats2Label->SetParent(characterFrame[1]);
+		stats2Label->setPosition(171, 462);
 
 		characterFrame[2] = App->gui->AddSprite((sizeScreen.x / 8) * 5, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[2] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[2]->SetParent(characterFrame[2]);
 		characterSprites[2]->SetAnchor(0, 0);
 		characterSprites[2]->setPosition(80, 89);
+		characterNameLabel[2] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
+		characterNameLabel[2]->setString(characterNameStrings[0]);
+		characterNameLabel[2]->SetParent(characterFrame[2]);
+		characterNameLabel[2]->SetAnchor(0, 0);
+		characterNameLabel[2]->setPosition(75, 14);
+		Label* stats3Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
+		stats3Label->setString("STATS");
+		stats3Label->SetParent(characterFrame[2]);
+		stats3Label->setPosition(171, 462);
 
 		characterFrame[3] = App->gui->AddSprite((sizeScreen.x / 8) * 7, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[3] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[3]->SetParent(characterFrame[3]);
 		characterSprites[3]->SetAnchor(0, 0);
 		characterSprites[3]->setPosition(80, 89);
+		characterNameLabel[3] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
+		characterNameLabel[3]->setString(characterNameStrings[0]);
+		characterNameLabel[3]->SetParent(characterFrame[3]);
+		characterNameLabel[3]->SetAnchor(0, 0);
+		characterNameLabel[3]->setPosition(75, 14);
+		Label* stats4Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
+		stats4Label->setString("STATS");
+		stats4Label->SetParent(characterFrame[3]);
+		stats4Label->setPosition(171, 462);
 	}
+
 	else if (App->scenes->gameMode == GameMode::ONEvsONE){
 		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 4, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[0] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);

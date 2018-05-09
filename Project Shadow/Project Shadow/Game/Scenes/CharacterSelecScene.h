@@ -68,6 +68,9 @@ public:
 	int controllersNum;
 	CharacterInfo charactersInfo[3];
 	Sprite* characterFrame[3];
+	Label* characterNameLabel[2];
+	String characterNameStrings[2];
+	int indexSprites[3];
 
 	CharacterInfo character1Info = { WIZARD,{ 100,100 }, Team::BLUE };
 	CharacterInfo character2Info = { WIZARD,{ 10000,100 }, Team::RED };

@@ -30,16 +30,20 @@ CharacterSelecScene::~CharacterSelecScene()
 
 bool CharacterSelecScene::Start()
 {
-	LoadBackground("UI/BasicMenuScene.png"); 
-	LoadSceneUI();
+	LoadBackground("UI/BasicMenuScene.png");
+	indexSprites[0] = indexSprites[1] = indexSprites[2] = indexSprites[3] = 0;
 
 	characterRects[0] = { 1676, 156, 188, 275 }; // WIZARD For changing the sprite directly
 	characterRects[1] = { 1676, 431, 188, 275 }; //ROGUE
 	characterRects[2] = { 1864, 431, 188, 275 }; //WARRIOR
+	characterNameStrings[0] = "WIZARD";
+	characterNameStrings[1] = "ROGUE";
+	characterNameStrings[2] = "WARRIOR";
 
 	LoadSceneUI();
 	//SetControllerFocus();
 
+	//SetControllers();
 	return true;
 }
 
@@ -101,6 +105,14 @@ void CharacterSelecScene::ChangeCharacter()
 		Player* player = &players[i];
 
 		if (App->input->GetButtonFromController(player->playerNum) == Input::RIGHT) {
+			if (indexSprites[i] < 2) {
+				characterSprites[i]->rect = characterRects[i + 1];
+				indexSprites[i]++;
+			}
+			else {
+				characterSprites[i]->rect = characterRects[0];
+				indexSprites[i] = 0;
+			}
 		}
 	}
 }

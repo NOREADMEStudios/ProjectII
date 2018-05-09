@@ -12,6 +12,7 @@
 
 enum Team;
 class Character;
+class Spells;
 
 
 enum SpellsType {
@@ -49,7 +50,7 @@ struct SpellsInfo {
 
 	Team chTeam;
 	Point3D pos{ 0,0,0 };
-
+	iPoint dir{ 0,0 };
 
 };
 
@@ -78,7 +79,7 @@ public:
 	bool IsSFXRepeated(std::list<std::string> list, std::string string) const;
 
 	Character* CreateCharacter(CharacterInfo charInfo);
-	Entity* CreateSpell(SpellsInfo spellsInfo);
+	Spells* CreateSpell(SpellsInfo spellsInfo);
 	void DestroyEntity(Entity* entity);
 
 	void CheckMidPos(float& min_x, float& max_x);

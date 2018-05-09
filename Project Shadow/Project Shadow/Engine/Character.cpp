@@ -421,11 +421,7 @@ void Character::UpdateMainStates()
 			currentTag = 0;
 		}
 	}
-	else if (currentState == RUN)
-	{
-		if (wantedState != RUN)
-			currentState = STOP;
-	}
+	
 	
 	if (currentState == JUMP || (currentState == AD_ACTION && currentTag != 0 &&  GetAtk(currentTag)->air))
 	{
@@ -465,6 +461,7 @@ void Character::UpdateMainStates()
 
 		currentState = wantedState;
 
+		if (noMove.IsZero())
 		currentAnimation->Reset();
 
 		if (wantedTag != 0)
@@ -516,12 +513,6 @@ void Character::UpdateCurState(float dt)
 		{
 			max_speed = stats.spd;
 			Accelerate(x_dir * stats.spd, 0, z_dir * stats.spd, dt);
-			break;
-		}
-		case RUN:
-		{
-			max_speed = stats.spd * 1.5f;
-			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
 			break;
 		}
 		case HIT:
@@ -679,12 +670,10 @@ void Character::LoadBasicStates()
 	LoadState(WALK, "walking");
 	LoadState(JUMP, "jump");
 	LoadState(STOP, "stop");
-	LoadState(RUN, "run");
 	LoadState(HIT, "hit");
 	LoadState(DEATH, "death");
 	LoadState(TAUNT, "win");
-	LoadState(PROTECT, "protect");
-	LoadState(PARRY, "standup");
+
 
 }
 

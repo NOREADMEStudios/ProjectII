@@ -27,21 +27,10 @@ bool Warrior::Awake(pugi::xml_node&)
 bool Warrior::HeroStart()
 {
 
-	/*switch (heroNum) {
-	case 1:
-		sprites = App->textures->Load("Characters/Fighter_sprites_red.png");
-		break;
-	case 2:
-		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
-		break;
-	case 3:
-		sprites = App->textures->Load("Characters/Fighter_sprites_blue.png");
-		break;
-	case 4:
-		sprites = App->textures->Load("Characters/Fighter_sprites_grey.png");
-	break;
-	}*/
 
+	LoadState(PROTECT, "protect");
+	LoadState(PARRY, "standup");
+	LoadState(RUN, "run");
 
 	stats.atk += App->entities->items[heroNum - 1].atk;
 	stats.def += App->entities->items[heroNum - 1].def;
@@ -114,6 +103,12 @@ bool Warrior::HeroUpdate(float dt)
 		case PROTECT:
 		{
 			max_speed = stats.spd * 0.5f;
+			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+			break;
+		}
+		case RUN:
+		{
+			max_speed = stats.spd * 1.5f;
 			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
 			break;
 		}
@@ -195,6 +190,11 @@ void Warrior::UpdateSpecStates()
 	{
 		currentState = wantedState;
 		currentAnimation->Reset();
+	}
+	else if (currentState == RUN)
+	{
+		if (wantedState != RUN)
+			currentState = STOP;
 	}
 
 	if (currentTag == 13 && !buffed)

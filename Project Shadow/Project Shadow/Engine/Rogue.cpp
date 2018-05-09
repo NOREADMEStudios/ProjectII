@@ -26,6 +26,7 @@ bool Rogue::Awake(pugi::xml_node&)
 
 bool Rogue::HeroStart()
 {
+	LoadState(RUN, "run");
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "L_Attack_1", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "H_Punch", animations_name, 5);
@@ -63,6 +64,24 @@ bool Rogue::PreUpdate()
 
 bool Rogue::HeroUpdate(float dt)
 {
+	int z_dir = directions.down - directions.up;
+	int x_dir = directions.right - directions.left;
+	switch (currentState)
+	{
+	case PROTECT:
+	{
+		max_speed = stats.spd * 0.5f;
+		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		break;
+	}
+	case RUN:
+	{
+		max_speed = stats.spd * 1.5f;
+		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		break;
+	}
+	}
+
 
 	if (directions.right - directions.left == 1)
 	{

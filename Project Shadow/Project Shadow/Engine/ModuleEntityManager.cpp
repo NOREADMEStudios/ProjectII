@@ -194,9 +194,9 @@ Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	return ret;
 }
 
-Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
+Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 
-	Entity* ret = nullptr;
+	Spells* ret = nullptr;
 
 	if (spellsInfo.spType == SpellsType::FIREBALL)
 	{
@@ -220,6 +220,7 @@ Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 
 	ret->team = spellsInfo.chTeam;
 	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y, spellsInfo.pos.z);
+	ret->SetDir(spellsInfo.dir.x, spellsInfo.dir.y);
 
 
 

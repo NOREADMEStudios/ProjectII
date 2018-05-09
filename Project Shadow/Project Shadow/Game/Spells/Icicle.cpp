@@ -21,7 +21,7 @@ bool Icicle::Start() {
 	currentAnimation = &spellAnim;
 
 	spellColl = App->collision->CreateCollider({}, "Icicle_Spell", Collider::SPELL);
-	spellColl->collider = { 0,0,70,70 };
+	
 	App->collision->AddCollider(spellColl, this);
 	
 	stats.atk = 8;
@@ -49,8 +49,7 @@ bool Icicle::Update(float dt) {
 	}
 
 	priority = gamepos.z;
-	spellColl->collider.x = gamepos.x;
-	spellColl->collider.y = gamepos.z;
+	GetColliderFromAnimation();
 
 	CalcRealPos();
 

@@ -13,8 +13,8 @@ Spells::~Spells()
 
 void Spells::UpdateCollidersPosition() {
 
-	collider.x = position.x;
-	collider.y = position.y;
+	spellColl->collider.x = position.x;
+	spellColl->collider.y = position.y;
 
 }
 
@@ -36,4 +36,18 @@ void Spells::LoadSprites() {
 void Spells::UnLoadSprites() {
 
 	App->textures->UnLoad(sprites);
+}
+
+void Spells::GetColliderFromAnimation(){
+
+	int z = GetGamePos().z;
+	int d = GetCharDepth();
+	iPoint pivot_pos = PivotPos();
+	spellColl->collider = currentAnimation->GetFeetColliderFromFrame();
+	spellColl->collider.z = z;
+	spellColl->collider.d = d;
+
+	spellColl->collider.x += pivot_pos.x;
+	spellColl->collider.y += pivot_pos.y;
+	
 }

@@ -32,11 +32,13 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; };
 
 	void UpdateSpecStates();
-
+	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 
 
 private:
 	bool buffed = false;
+	bool ab_1_bool = false;
+	bool ab_2_bool = false;
 
 };
 #endif

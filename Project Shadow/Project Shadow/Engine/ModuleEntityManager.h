@@ -46,8 +46,11 @@ struct CharacterInfo {
 struct SpellsInfo {
 
 	SpellsType spType = NOSPELL;
-	Point3D pos{ 0,0 };
+
 	Team chTeam;
+	Point3D pos{ 0,0,0 };
+
+
 };
 
 

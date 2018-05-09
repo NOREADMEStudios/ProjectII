@@ -61,6 +61,16 @@ struct Rect {
 		return r;
 	}
 
+	bool Intersect(const Rect& other) const {
+		return ((x <= other.x && x + w >= other.x) || (x >= other.x && x <= other.x + other.w)) &&
+			((y <= other.y && y + h >= other.y) || (y >= other.y && y <= other.y + other.h));
+	}
+
+	bool Intersect(const Point<TYPE>& other) const {
+		return ((x <= other.x && x + w >= other.x) &&
+			(y <= other.y && y + h >= other.y));
+	}
+
 	Rect(TYPE x, TYPE y, TYPE w, TYPE h) : x(x), y(y), w(w), h(h) {}
 	~Rect() {}
 };

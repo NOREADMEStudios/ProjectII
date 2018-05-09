@@ -131,7 +131,7 @@ bool Warrior::HeroUpdate(float dt)
 		}
 	}
 
-	if ((!GetAbAtk(13)->active)|| (!GetAbAtk(2)->active))
+	if ((!GetAbAtk(13)->active))
 	{
 		buffed = true;
 	}

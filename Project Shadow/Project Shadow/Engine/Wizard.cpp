@@ -81,6 +81,14 @@ bool Wizard::HeroUpdate(float dt)
 		ab_1_active = false;
 	}
 
+	if (!GetAbAtk(12)->active)
+	{
+		ab_2_bool = true;
+	}
+	else
+	{
+		ab_2_bool = false;
+	}
 	return true;
 }
 
@@ -102,6 +110,12 @@ void Wizard::UpdateSpecStates()
 
 		App->entities->CreateSpell({ ICICLE,team, gamepos });
 		ab_1_active = true;
+	}
+	if (currentTag == 12 && !ab_2_bool)
+	{
+
+		App->entities->CreateSpell({ LIGHTING,team, gamepos });
+		ab_2_bool = true;
 	}
 
 }

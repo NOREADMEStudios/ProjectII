@@ -35,7 +35,7 @@ bool MainScene::Start()
 
 
 
-	e = App->entities->CreateCharacter({WARRIOR,{100, 0 ,100}, Team::BLUE});
+	e = App->entities->CreateCharacter({WIZARD,{100, 0 ,100}, Team::BLUE});
 	e2 = App->entities->CreateCharacter({ WARRIOR,{ 10000, 0, 100 }, Team::RED });
 
 	App->gui->AddHealthbar((Character*)e, 0, true, 10, 10, atlas, true, { 451, 271, 264, 26 });

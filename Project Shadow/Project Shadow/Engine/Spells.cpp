@@ -43,7 +43,9 @@ void Spells::GetColliderFromAnimation(){
 	int z = GetGamePos().z;
 	int d = GetCharDepth();
 	iPoint pivot_pos = PivotPos();
+
 	spellColl->collider = currentAnimation->GetSpellColliderFromFrame();
+
 	spellColl->collider.z = z;
 	spellColl->collider.d = d;
 

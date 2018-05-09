@@ -24,9 +24,9 @@ public:
 			result->z = MAX(z, other.z);
 			result->d = MIN(z + d, other.z + other.d) - result->z;
 		}
-		return (((x < other.x && x + w > other.x) || (x > other.x && x < other.x + other.w)) &&
-			((y < other.y && y + h > other.y) || (y > other.y && y < other.y + other.h)) &&
-			((z < other.z && z + d > other.z) || (z > other.z && z < other.z + other.d)));
+		return (((x <= other.x && x + w >= other.x) || (x >= other.x && x <= other.x + other.w)) &&
+			((y <= other.y && y + h >= other.y) || (y >= other.y && y <= other.y + other.h)) &&
+			((z <= other.z && z + d >= other.z) || (z >= other.z && z <= other.z + other.d)));
 	}
 
 	Rect<TYPE> GetRectXY() {

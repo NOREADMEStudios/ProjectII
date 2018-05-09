@@ -30,12 +30,20 @@ bool Character::Start()
 	SetAnimations();
 	LoadBasicStates();
 
+	gamepos.y = 0;
+	CalcRealPos();
+	collider.x = position.x;
+	collider.y = position.y;
+
+	currentState = IDLE;
+	currentAnimation = &states.front()->anim;
+
 	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
 	collHitBox = App->collision->CreateCollider({}, "player_hitbox", Collider::HITBOX);
 	collFeet = App->collision->CreateCollider({}, "player_feet", Collider::FEET);
 	collDef = App->collision->CreateCollider({}, "player_shield", Collider::DEF);
 	collParry = App->collision->CreateCollider({}, "player_parry", Collider::PARRY);
-
+	UpdateCollidersPosition();
 
 	App->collision->AddCollider(collAtk, this);
 	App->collision->AddCollider(collHitBox, this);
@@ -50,7 +58,6 @@ bool Character::Start()
 	stats.atk = 8;
 	stats.def = 1;
 	char_depth = 20;
-	gamepos.y = 0;
 
 
 	initialpos.x = gamepos.x;
@@ -62,11 +69,10 @@ bool Character::Start()
 
 	max_speed = stats.spd;
 
-	currentState = IDLE;
-	currentAnimation = &states.front()->anim;
 
 	HeroStart();
 	noMove.SetZero();
+
 
 	active = true;
 	return true; 
@@ -383,7 +389,7 @@ void Character::RequestState() {
 
 void Character::UpdateMainStates()
 {
-	if (wantedTag != 0 && GetAtk(wantedTag)->ability)
+	if (wantedTag != 0 && GetAtk(wantedTag)->ability && currentTag != 11 && currentTag != 12 && currentTag != 13)
 	{
 		if (!GetAbAtk(wantedTag)->active)
 		{

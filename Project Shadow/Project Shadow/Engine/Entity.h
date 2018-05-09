@@ -175,6 +175,7 @@ public:
 	uint heroNum = 0;
 	bool breaking = false;
 	bool active = true;
+	float max_speed = 0;
 
 	bool to_delete = false;
 	Team team= NOTEAM;
@@ -185,7 +186,7 @@ protected:
 	iPoint position{ 0,0 };
 	fPoint speedVector{ 0,0 };
 	float zVect = 0;
-	float max_speed = 0;
+
 	int char_depth = 0;
 	LIST(EventState*) eventstates;
 

@@ -27,7 +27,30 @@ bool Rogue::Awake(pugi::xml_node&)
 bool Rogue::HeroStart()
 {
 
+	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "L_Attack_1", animations_name, 1);
+	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "H_Punch", animations_name, 5);
+	Attack* crouch = new Attack(4, LIGHT_ATTACK, "L_Attack_2", animations_name, 1);
+	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
+	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, true);
+	Attack* ab_1 = new Attack(11, AB_1, "dagger", animations_name, 0, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "dash", animations_name, 0, false, true);
 
+	attacks.push_back(light_1);
+	attacks.push_back(heavy_1);
+	attacks.push_back(crouch);
+	attacks.push_back(jump_a);
+	attacks.push_back(ab_1);
+	attacks.push_back(ab_2);
+	attacks.push_back(jump_a2);
+
+	light_1->AddChild(crouch);
+	jump_a->AddChild(jump_a2);
+
+	Ability* fire = new Ability(ab_1, 3);
+	Ability* thunder = new Ability(ab_2, 5);
+
+	AdAbility(*fire);
+	AdAbility(*thunder);
 	return true;
 }
 
@@ -40,6 +63,34 @@ bool Rogue::PreUpdate()
 
 bool Rogue::HeroUpdate(float dt)
 {
+
+	if (directions.right - directions.left == 1)
+	{
+		flip = true;
+	}
+	else if (directions.right - directions.left == -1)
+	{
+		flip = false;
+	}
+
+
+	if (!GetAbAtk(11)->active)
+	{
+		ab_1_active = true;
+	}
+	else
+	{
+		ab_1_active = false;
+	}
+
+	if (!GetAbAtk(12)->active)
+	{
+		ab_2_active = true;
+	}
+	else
+	{
+		ab_2_active = false;
+	}
 
 	return true;
 }
@@ -57,7 +108,24 @@ bool Rogue::CleanUp(pugi::xml_node&)
 
 void Rogue::UpdateSpecStates()
 {
+	if (currentTag == 11 && !ab_1_active)
+	{
 
+		//App->entities->CreateSpell({ FIREBALL, };
+		ab_1_active = true;
+	}
+	else if (currentTag == 12 && !ab_2_active)
+	{
+		int dir = 0;
+
+		if (flip)
+			dir = 1;
+		else
+			dir = -1;
+
+		Impulsate(3 * dir, 0, 0);
+		ab_2_active = true;
+	}
 }
 
 void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)

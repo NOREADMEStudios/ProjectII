@@ -222,6 +222,7 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 	if (_this->entity == _other->entity) return;
 	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
+
 	/*int z1 = _this->entity->GetGamePos().z;
 	int d1 = _this->entity->GetCharDepth();
 
@@ -235,7 +236,7 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 
 	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))*/
 	{
-		if (_this->collider.x - _other->collider.x > 0)
+		if (_this->collider.x - _other->collider.x < 0)
 		{
 			hit_dir = 1;
 		}
@@ -254,13 +255,15 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 			else
 			{
-				_this->entity->Impulsate(hit_dir * 8000, 0, 0);
+				_other->entity->max_speed = 400;
+				_other->entity->Accelerate(hit_dir * 400, 0, 0, 1);
 			}
 			//App->audio->PlayFx(10);
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::DEF)
 		{
-			_this->entity->Impulsate(hit_dir * 8000, 0, 0);
+			_other->entity->max_speed = 400;
+			_other->entity->Accelerate(hit_dir * 400, 0, 0, 1);
 		}
 		else if (_this->type == Collider::PARRY && _other->type == Collider::ATK)
 		{
@@ -289,14 +292,20 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{
-			Attack * atk = GetAtk(currentState);
+			Attack * atk = GetAtk(currentTag);
 			if (atk != nullptr)
 				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 
 			if (currentTag == 11)
+			{
 				_other->entity->AdBuff(3, -_other->entity->stats.spd);
+			}
 			else if (currentTag == 12)
-				_other->entity->Impulsate(hit_dir, 0, 0);
+			{
+				_other->entity->max_speed = 800;
+				_other->entity->Accelerate(hit_dir * 800, 0, 0, 1);
+			}
+
 		}
 
 	}

@@ -1,6 +1,10 @@
 #ifndef __LIGHTNING_H__
 #define __LIGHTNING_H__
 #include "../..\Engine\Spells.h"
+
+#define LIGHTNING_MS_LIFETIME	1500
+#define TICKS_PER_DMG 100
+
 class Lightning :
 	public Spells
 {

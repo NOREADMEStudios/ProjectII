@@ -6,6 +6,7 @@
 
 #include "ModuleMap.h"
 #include "App.h"
+#include "..\Game\Spells\Lightning.h"
 
 
 
@@ -62,7 +63,9 @@ bool Wizard::PreUpdate()
 
 bool Wizard::HeroUpdate(float dt)
 {
-
+	if (!noMove.IsZero() && noMove.Read() > LIGHTNING_MS_LIFETIME) {
+		noMove.SetZero();	
+	}
 	if (directions.right - directions.left == 1)
 	{
 		flip = false;
@@ -116,6 +119,7 @@ void Wizard::UpdateSpecStates()
 
 		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x+50, gamepos.y+40, gamepos.z } });
 		ab_2_bool = true;
+		noMove.Start();
 	}
 
 }

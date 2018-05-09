@@ -1,6 +1,11 @@
 #ifndef __ICICLE_H__
 #define __ICICLE_H__
 #include "../../Engine/Spells.h"
+
+#define ICICLE_MS_LIFETIME	1000
+#define COOL_DURATION 4
+#define COOL_EFFECT 0.35 
+
 class Icicle :
 	public Spells
 {

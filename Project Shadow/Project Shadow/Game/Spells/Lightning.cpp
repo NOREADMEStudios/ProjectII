@@ -1,8 +1,7 @@
 #include "Lightning.h"
 
 
-#define MS_LIFETIME	1500
-#define TICKS_PER_DMG 100
+
 
 Lightning::Lightning() : Spells(SpellsType::LIGHTING)
 {
@@ -28,7 +27,7 @@ bool Lightning::Start() {
 	char_depth = 20;
 
 	lifeTime.Start();
-	lifetime = MS_LIFETIME;
+	lifetime = LIGHTNING_MS_LIFETIME;
 
 	return true;
 }
@@ -77,7 +76,7 @@ void Lightning::OnCollisionEnter(Collider* _this, Collider* _other) {
 		ticks.Start();
 		dealingDmg = true;
 		_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
-		_this->entity->noMove = true;
+		
 	}
 }
 
@@ -100,6 +99,6 @@ void Lightning::OnCollisionExit(Collider* _this, Collider* _other) {
 
 	if (_other->type == Collider::HITBOX) {
 		dealingDmg = false;
-		_this->entity->noMove = true;
+		
 	}
 }

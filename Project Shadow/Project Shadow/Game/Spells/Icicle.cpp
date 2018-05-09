@@ -1,9 +1,7 @@
 #include "Icicle.h"
 #include "../../Engine/ModuleTextures.h"
 
-#define MS_LIFETIME	1000
-#define COOL_DURATION 4
-#define COOL_EFFECT 0.35 
+
 
 Icicle::Icicle() : Spells(SpellsType::ICICLE)
 {
@@ -29,7 +27,7 @@ bool Icicle::Start() {
 	char_depth = 20;
 
 	lifeTime.Start();
-	lifetime = MS_LIFETIME;
+	lifetime = ICICLE_MS_LIFETIME;
 
 	return true;
 }

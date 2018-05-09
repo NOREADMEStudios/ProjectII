@@ -196,7 +196,7 @@ public:
 
 	//virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 	Timer time_attack;
-	bool noMove = false;
+	Timer noMove;
 
 
 	void SetAnimations();

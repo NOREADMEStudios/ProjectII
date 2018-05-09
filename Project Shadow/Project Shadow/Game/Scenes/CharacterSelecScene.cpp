@@ -111,6 +111,16 @@ void CharacterSelecScene::ChangeCharacter()
 				indexSprites[i] = 0;
 			}
 		}
+		else if (App->input->GetButtonFromController(player->playerNum) == Input::LEFT) {
+			if (indexSprites[i] > 0) {
+				characterSprites[i]->rect = characterRects[i - 1];
+				indexSprites[i]--;
+			}
+			else {
+				characterSprites[i]->rect = characterRects[2];
+				indexSprites[i] = 2;
+			}
+		}
 	}
 }
 /*

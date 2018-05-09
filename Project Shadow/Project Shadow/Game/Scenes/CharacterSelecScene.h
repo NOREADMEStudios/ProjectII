@@ -67,7 +67,11 @@ public:
 	CharacterToSelect* characters[4];
 	int controllersNum;
 	CharacterInfo charactersInfo[4];
+	CharacterTypes charactersType[3];
+	CharacterTypes playerCharacterType[4];
 	Sprite* characterFrame[4];
+	Sprite* characterSprites[4];
+	SDL_Rect characterRects[3];
 	Label* characterNameLabel[4];
 	String characterNameStrings[3];
 	int indexSprites[4];
@@ -106,9 +110,6 @@ private:
 	void AddLabelToButton(CharacterToSelect* character);
 	bool AllPlayersReady();
 	void ApplyCharacterSelection();
-
-	SDL_Rect characterRects[3];
-	Sprite* characterSprites[3];
 
 	/*void LoadSceneUI();
 	void FindNextArrowUnlocked(uint player, InterfaceElement::Directions direction);

@@ -39,6 +39,9 @@ bool CharacterSelecScene::Start()
 	characterNameStrings[0] = "WIZARD";
 	characterNameStrings[1] = "ROGUE";
 	characterNameStrings[2] = "WARRIOR";
+	charactersType[0] = WIZARD;
+	charactersType[1] = ROGUE;
+	charactersType[2] = WARRIOR;
 
 	LoadSceneUI();
 	SetControllerFocus();
@@ -48,6 +51,11 @@ bool CharacterSelecScene::Start()
 
 bool CharacterSelecScene::Update(float dt)
 {
+	if (AllPlayersReady())
+	{
+		App->scenes->ChangeScene(App->scenes->itemSc);
+	}
+
 	DrawBackground();
 	ChangeCharacter();
 
@@ -68,15 +76,16 @@ bool CharacterSelecScene::CleanUp()
 bool CharacterSelecScene::AllPlayersReady() {
 
 	bool ret = true;
+	int index = controllersNum;
 	for (int i = 0; i < controllersNum; i++) {
-		if (players[i].locked == 1) {
-			players[i].ready = true;
+		if (players[i].ready == true) {
+			controllersNum--;
 		}
 	}
-	for (int i = 0; i < controllersNum; i++) {
-		bool ret2 = players[i].ready;
-		ret &= ret2;
-	}
+	if (controllersNum = 0)
+		return true;
+	else
+		return false;
 
 	return ret;//
 }
@@ -101,25 +110,32 @@ void CharacterSelecScene::ChangeCharacter()
 	for (int i = 0; i < controllersNum; i++) {
 		Player* player = &players[i];
 
-		if (App->input->GetButtonFromController(player->playerNum) == Input::RIGHT) {
+		if (App->input->GetButtonFromController(player->playerNum) == Input::RIGHT && !player->ready) {
 			if (indexSprites[i] < 2) {
-				characterSprites[i]->rect = characterRects[i + 1];
+				characterSprites[i]->idle_anim = characterRects[indexSprites[i] + 1];
 				indexSprites[i]++;
 			}
 			else {
-				characterSprites[i]->rect = characterRects[0];
+				characterSprites[i]->idle_anim = characterRects[0];
 				indexSprites[i] = 0;
 			}
 		}
-		else if (App->input->GetButtonFromController(player->playerNum) == Input::LEFT) {
+		else if (App->input->GetButtonFromController(player->playerNum) == Input::LEFT && !player->ready) {
 			if (indexSprites[i] > 0) {
-				characterSprites[i]->rect = characterRects[i - 1];
+				characterSprites[i]->idle_anim = characterRects[indexSprites[i] - 1];
 				indexSprites[i]--;
 			}
 			else {
-				characterSprites[i]->rect = characterRects[2];
+				characterSprites[i]->idle_anim = characterRects[2];
 				indexSprites[i] = 2;
 			}
+		}
+		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_A && !player->ready ) {
+			player->ready = true;
+			playerCharacterType[i] = charactersType[indexSprites[i]];
+		}
+		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_B && player->ready) {
+			player->ready = false;
 		}
 	}
 }

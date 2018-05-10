@@ -199,7 +199,7 @@ void Warrior::UpdateSpecStates()
 
 	if (currentTag == 13 && !buffed)
 	{
-		AdBuff(5, 300);
+		AdBuff(5, 300, 10, 10);
 		buffed = true;
 	}
 
@@ -297,8 +297,13 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 		else if (_this->type == Collider::ATK && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{
 			Attack * atk = GetAtk(currentTag);
+			int dmg = _this->entity->stats.atk + atk->damage < _other->entity->stats.def;
+			if (dmg <= 0)
+			{
+				dmg = 1;
+			}
 			if (atk != nullptr)
-				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
+				_other->entity->stats.life -= dmg;
 
 			if (currentTag == 11)
 			{

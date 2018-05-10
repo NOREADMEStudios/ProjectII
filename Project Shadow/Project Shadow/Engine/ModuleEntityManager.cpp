@@ -212,7 +212,7 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	{
 		ret = new Lightning();
 	}
-<<<<<<< HEAD
+
 	else if (spellsInfo.spType == SpellsType::FIRE_DEMON)
 	{
 		ret = new FireDemon();
@@ -225,8 +225,6 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	{
 		ret = new DeathMark();
 	}
-=======
->>>>>>> develop2
 	else
 	{
 		return nullptr;

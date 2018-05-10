@@ -274,7 +274,7 @@ std::list<CharInput> Character::RequestInputs() const {
 				charInputs.push_back(CharInput::JUMPINPUT);
 				break;
 			case BUTTON_B:
-				charInputs.push_back(CharInput::PARRYINPUT);
+				charInputs.push_back(CharInput::AB_1);
 				break;
 			case BUTTON_X:
 				charInputs.push_back(CharInput::LIGHT_ATTACK);
@@ -291,10 +291,17 @@ std::list<CharInput> Character::RequestInputs() const {
 			case BUTTON_SELECT:
 				charInputs.push_back(CharInput::TAUNTINPUT);
 				break;
+			case R2:
+				charInputs.push_back(CharInput::AB_2);
+				break;
+			case L2:
+				charInputs.push_back(CharInput::AB_1);
+				break;
 			default:
 				break;
 			}
 		}
+
 		return charInputs;
 	}
 

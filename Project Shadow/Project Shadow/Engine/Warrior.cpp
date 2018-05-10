@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
+#include "ModuleAudio.h"
 
 #include "ModuleMap.h"
 #include "App.h"
@@ -262,7 +263,12 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 				_other->entity->max_speed = 400;
 				_other->entity->Accelerate(hit_dir * 400, 0, 0, 1);
 			}
-			//App->audio->PlayFx(10);
+			
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(9);
+				!sound_avaliable;
+			}
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::DEF)
 		{
@@ -273,6 +279,12 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentState = IDLE;
 			parried = true;
+
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(13);
+				!sound_avaliable;
+			}
 		}
 		else if (_this->type  == Collider::ATK && _other->type == Collider::PARRY)
 		{

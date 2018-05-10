@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
+#include "ModuleAudio.h"
 #include "Spells.h"
 
 #include "ModuleMap.h"
@@ -159,12 +160,15 @@ void Rogue::UpdateSpecStates()
 		dag->SetParent(this);
 
 		ab_1_active = true;
+		
 	}
 	else if (currentTag == 12 && !ab_2_active)
 	{
 
 		Impulsate(dir, 0, 0);
 		ab_2_active = true;
+
+		App->audio->PlayFx(13);
 	}
 	else if (currentTag == 13 && !ab_3_active)
 	{
@@ -219,7 +223,12 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 			{
 				_this->entity->Impulsate(hit_dir * 8000, 0, 0);
 			}
-			//App->audio->PlayFx(10);
+			
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(9);
+				!sound_avaliable;
+			}
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::DEF)
 		{
@@ -229,6 +238,12 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentState = IDLE;
 			parried = true;
+
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(13);
+				!sound_avaliable;
+			}
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::PARRY)
 		{

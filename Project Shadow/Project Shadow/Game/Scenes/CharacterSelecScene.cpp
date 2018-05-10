@@ -53,12 +53,12 @@ bool CharacterSelecScene::Update(float dt)
 {
 	if (AllPlayersReady())
 	{
+		ApplyCharacterSelection();
 		App->scenes->ChangeScene(App->scenes->itemSc);
 	}
 
 	DrawBackground();
 	ChangeCharacter();
-
 
 	//App->input->CheckControllers();
 	return true;
@@ -79,10 +79,10 @@ bool CharacterSelecScene::AllPlayersReady() {
 	int index = controllersNum;
 	for (int i = 0; i < controllersNum; i++) {
 		if (players[i].ready == true) {
-			controllersNum--;
+			index--;
 		}
 	}
-	if (controllersNum = 0)
+	if (index == 0)
 		return true;
 	else
 		return false;
@@ -113,137 +113,40 @@ void CharacterSelecScene::ChangeCharacter()
 		if (App->input->GetButtonFromController(player->playerNum) == Input::RIGHT && !player->ready) {
 			if (indexSprites[i] < 2) {
 				characterSprites[i]->idle_anim = characterRects[indexSprites[i] + 1];
+				characterNameLabel[i]->setString(characterNameStrings[indexSprites[i] + 1]);
 				indexSprites[i]++;
 			}
 			else {
 				characterSprites[i]->idle_anim = characterRects[0];
+				characterNameLabel[i]->setString(characterNameStrings[0]);
 				indexSprites[i] = 0;
 			}
 		}
 		else if (App->input->GetButtonFromController(player->playerNum) == Input::LEFT && !player->ready) {
 			if (indexSprites[i] > 0) {
 				characterSprites[i]->idle_anim = characterRects[indexSprites[i] - 1];
+				characterNameLabel[i]->setString(characterNameStrings[indexSprites[i] - 1]);
 				indexSprites[i]--;
 			}
 			else {
 				characterSprites[i]->idle_anim = characterRects[2];
+				characterNameLabel[i]->setString(characterNameStrings[2]);
 				indexSprites[i] = 2;
 			}
 		}
 		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_A && !player->ready ) {
 			player->ready = true;
-			playerCharacterType[i] = charactersType[indexSprites[i]];
 		}
 		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_B && player->ready) {
 			player->ready = false;
 		}
 	}
 }
-/*
-void ItemSelecScene::RemoveSelectedItem() {
-
-	for (int i = 0; i < controllersNum; i++) {
-		Player* player = &players[i];
-
-		if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_B) {
-			if (player->locked > 0) {
-				if (player->ready) {
-					player->ready = false;
-				}
-				player->locked--;
-				player->playerItems[player->locked] = nullptr;
-				App->gui->RemoveElement(player->MiniatureItems[player->locked]);
-				player->MiniatureItems[player->locked] = nullptr;
-				player->RemoveLockedArrow(player->locked);
-
-			}
-		}
-	}
-}*/
-
-void CharacterSelecScene::AddLabelToButton(CharacterToSelect* character) {
-	int fontSize = 25;
-	Label* label1 = App->gui->AddLabel(character->butt->rect.w / 2, character->butt->rect.h, fontSize, DEFAULT_FONT, { 255,255,255,255 });
-	label1->setString(character->name);
-	character->labels.push_back(label1);
-	int i = 1;
-
-	if (character->stats.life > 0) {
-		Label* label2 = App->gui->AddLabel(character->butt->rect.w / 2, character->butt->rect.h + i * fontSize, fontSize, DEFAULT_FONT, { 255,255,255,255 });
-		label2->setString("+" + std::to_string(character->stats.life) + " life");
-		character->labels.push_back(label2);
-		i++;
-	}
-	if (character->stats.atk > 0) {
-		Label* label3 = App->gui->AddLabel(character->butt->rect.w / 2, character->butt->rect.h + i * fontSize, fontSize, DEFAULT_FONT, { 255,255,255,255 });
-		label3->setString("+" + std::to_string(character->stats.atk) + " atk");
-		character->labels.push_back(label3);
-		i++;
-	}
-	if (character->stats.def > 0) {
-		Label* label4 = App->gui->AddLabel(character->butt->rect.w / 2, character->butt->rect.h + i * fontSize, fontSize, DEFAULT_FONT, { 255,255,255,255 });
-		label4->setString("+" + std::to_string(character->stats.def) + " def");
-		character->labels.push_back(label4);
-		i++;
-	}
-	if (character->stats.spd > 0) {
-		Label* label5 = App->gui->AddLabel(character->butt->rect.w / 2, character->butt->rect.h + i * fontSize, fontSize, DEFAULT_FONT, { 255,255,255,255 });
-		label5->setString("+" + std::to_string(character->stats.spd) + " spd");
-		character->labels.push_back(label5);
-		i++;
-	}
-	if (character->stats.mgk > 0) {
-		Label* label6 = App->gui->AddLabel(character->butt->rect.w / 2, character->butt->rect.h + i * fontSize, fontSize, DEFAULT_FONT, { 255,255,255,255 });
-		label6->setString("+" + std::to_string(character->stats.mgk) + " mgk");
-		character->labels.push_back(label6);
-		i++;
-	}
-	for (std::vector<Label*>::iterator lab = character->labels.begin(); lab != character->labels.end(); lab++) {
-
-		(*lab)->SetParent(character->butt);
-	}
-
-}
-
-void CharacterSelecScene::ManageDisplacementFocus() {
-	for (int i = 0; i < controllersNum; i++) {
-		if (players[i].ready) {
-			return;
-		}
-		if (App->input->GetButtonFromController(players[i].playerNum) == Input::LEFT) {
-			FindNextPlayer(i, InterfaceElement::Directions::LEFT);
-		}
-		else if (App->input->GetButtonFromController(players[i].playerNum) == Input::RIGHT) {
-			FindNextPlayer(i, InterfaceElement::Directions::RIGHT);
-		}
-
-	}
-}
-
-void CharacterSelecScene::FindNextPlayer(uint playerNum, InterfaceElement::Directions direction) {
-	CharacterToSelect* nextCharacterToSelect = players[playerNum].focusedCharacter->GetRelativeCharacter(direction);
-
-	if (nextCharacterToSelect != nullptr) {
-		players[playerNum].focusedCharacter = nextCharacterToSelect;
-	}
-}
-
 void CharacterSelecScene::ApplyCharacterSelection() {
 	for (int i = 0; i < controllersNum; i++) {
-		charactersInfo[i].chType = players[i].lockedInfo.chType;
+		Player* player = &players[i];
+		player->lockedInfo.chType = charactersType[indexSprites[i]];
 	}
-}
-
-void CharacterSelecScene::CharacterToSelect::SetRelation(CharacterToSelect* character, InterfaceElement::Directions direction, bool assignOther) {
-
-	relations[direction] = character;
-	if (assignOther)
-		character->relations[direction < 2 ? direction + 2 : direction - 2] = this;
-}
-
-CharacterSelecScene::CharacterToSelect* CharacterSelecScene::CharacterToSelect::GetRelativeCharacter(InterfaceElement::Directions dir) {
-
-	return relations[dir];
 }
 
 void CharacterSelecScene::LoadSceneUI() {
@@ -251,7 +154,8 @@ void CharacterSelecScene::LoadSceneUI() {
 	uiPoint sizeScreen = App->gui->GetGuiSize();
 
 	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
-		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 8, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
+		Sprite* crossedSwordsSprite = App->gui->AddSprite(sizeScreen.x / 2 , sizeScreen.y / 5 * 3 + 20, atlas, { 1700, 782,187,175 });
+		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 8 - 30, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[0] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[0]->SetParent(characterFrame[0]);
 		characterSprites[0]->SetAnchor(0, 0);
@@ -260,13 +164,16 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[0]->setString(characterNameStrings[0]);
 		characterNameLabel[0]->SetParent(characterFrame[0]);
 		characterNameLabel[0]->SetAnchor(0, 0);
-		characterNameLabel[0]->setPosition(75, 14);
+		characterNameLabel[0]->setPosition(65, 14);
 		Label* stats1Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats1Label->setString("STATS");
 		stats1Label->SetParent(characterFrame[0]);
 		stats1Label->setPosition(171, 462);
+		Sprite* blueTeam1Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 741, 412,53,53 });
+		blueTeam1Sprite->SetParent(characterFrame[0]);
+		blueTeam1Sprite->setPosition(172, 416);
 
-		characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 8 * 3, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
+		characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 8 * 3 - 60, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[1] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[1]->SetParent(characterFrame[1]);
 		characterSprites[1]->SetAnchor(0, 0);
@@ -275,13 +182,16 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[1]->setString(characterNameStrings[0]);
 		characterNameLabel[1]->SetParent(characterFrame[1]);
 		characterNameLabel[1]->SetAnchor(0, 0);
-		characterNameLabel[1]->setPosition(75, 14);
+		characterNameLabel[1]->setPosition(65, 14);
 		Label* stats2Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats2Label->setString("STATS");
 		stats2Label->SetParent(characterFrame[1]);
 		stats2Label->setPosition(171, 462);
+		Sprite* blueTeam2Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 741, 412,53,53 });
+		blueTeam2Sprite->SetParent(characterFrame[1]);
+		blueTeam2Sprite->setPosition(172, 416);
 
-		characterFrame[2] = App->gui->AddSprite((sizeScreen.x / 8) * 5, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
+		characterFrame[2] = App->gui->AddSprite((sizeScreen.x / 8) * 5 + 60, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[2] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[2]->SetParent(characterFrame[2]);
 		characterSprites[2]->SetAnchor(0, 0);
@@ -290,13 +200,16 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[2]->setString(characterNameStrings[0]);
 		characterNameLabel[2]->SetParent(characterFrame[2]);
 		characterNameLabel[2]->SetAnchor(0, 0);
-		characterNameLabel[2]->setPosition(75, 14);
+		characterNameLabel[2]->setPosition(65, 14);
 		Label* stats3Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats3Label->setString("STATS");
 		stats3Label->SetParent(characterFrame[2]);
 		stats3Label->setPosition(171, 462);
+		Sprite* redlueTeam1Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 676, 412,53,53 });
+		redlueTeam1Sprite->SetParent(characterFrame[2]);
+		redlueTeam1Sprite->setPosition(172, 416);
 
-		characterFrame[3] = App->gui->AddSprite((sizeScreen.x / 8) * 7, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
+		characterFrame[3] = App->gui->AddSprite((sizeScreen.x / 8) * 7 + 30, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[3] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[3]->SetParent(characterFrame[3]);
 		characterSprites[3]->SetAnchor(0, 0);
@@ -305,14 +218,18 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[3]->setString(characterNameStrings[0]);
 		characterNameLabel[3]->SetParent(characterFrame[3]);
 		characterNameLabel[3]->SetAnchor(0, 0);
-		characterNameLabel[3]->setPosition(75, 14);
+		characterNameLabel[3]->setPosition(65, 14);
 		Label* stats4Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats4Label->setString("STATS");
 		stats4Label->SetParent(characterFrame[3]);
 		stats4Label->setPosition(171, 462);
+		Sprite* redTeam2Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 676, 412,53,53 });
+		redTeam2Sprite->SetParent(characterFrame[3]);
+		redTeam2Sprite->setPosition(172, 416);
 	}
 
 	else if (App->scenes->gameMode == GameMode::ONEvsONE){
+		Sprite* crossedSwordsSprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 1700, 782,187,175 });
 		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 4, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[0] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[0]->SetParent(characterFrame[0]);
@@ -322,11 +239,14 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[0]->setString(characterNameStrings[0]);
 		characterNameLabel[0]->SetParent(characterFrame[0]);
 		characterNameLabel[0]->SetAnchor(0, 0);
-		characterNameLabel[0]->setPosition(75, 14);
+		characterNameLabel[0]->setPosition(65, 14);
 		Label* stats1Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats1Label->setString("STATS");
 		stats1Label->SetParent(characterFrame[0]);
 		stats1Label->setPosition(171, 462);
+		Sprite* blueTeam1Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 741, 412,53,53 });
+		blueTeam1Sprite->SetParent(characterFrame[0]);
+		blueTeam1Sprite->setPosition(172, 416);
 
 		characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 4 * 3, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[1] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
@@ -337,11 +257,14 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[1]->setString(characterNameStrings[0]);
 		characterNameLabel[1]->SetParent(characterFrame[1]);
 		characterNameLabel[1]->SetAnchor(0, 0);
-		characterNameLabel[1]->setPosition(75, 14);
+		characterNameLabel[1]->setPosition(65, 14);
 		Label* stats2Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats2Label->setString("STATS");
 		stats2Label->SetParent(characterFrame[1]);
 		stats2Label->setPosition(171, 462);
+		Sprite* redlueTeam1Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 676, 412,53,53 });
+		redlueTeam1Sprite->SetParent(characterFrame[1]);
+		redlueTeam1Sprite->setPosition(172, 416);
 
 	}
 

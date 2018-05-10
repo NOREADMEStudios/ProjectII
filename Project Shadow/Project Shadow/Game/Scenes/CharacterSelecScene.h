@@ -40,8 +40,6 @@ public:
 		SDL_Rect animRect;
 		CharacterToSelect* relations[InterfaceElement::Directions::AMOUNT];
 
-		CharacterToSelect* GetRelativeCharacter(InterfaceElement::Directions dir);
-		void SetRelation(CharacterToSelect* character, InterfaceElement::Directions direction, bool assignOther = true);
 	};
 
 	class Player {
@@ -54,9 +52,7 @@ public:
 		SDL_Rect arrowRect;
 		Sprite* lockedArrows[3];
 		SDL_Rect arrowLockRect;
-		uint locked = 0;
 		CharacterInfo lockedInfo;
-		/*Item* playerItems[3];*/
 		bool ready = false;
 
 		/*void LockedArrow(uint lockedNum);
@@ -64,11 +60,9 @@ public:
 		void LoadArrows();
 		void DrawOrderedArrow();*/
 	};
-	CharacterToSelect* characters[4];
 	int controllersNum;
 	CharacterInfo charactersInfo[4];
 	CharacterTypes charactersType[3];
-	CharacterTypes playerCharacterType[4];
 	Sprite* characterFrame[4];
 	Sprite* characterSprites[4];
 	SDL_Rect characterRects[3];
@@ -77,8 +71,8 @@ public:
 	int indexSprites[4];
 
 	CharacterInfo character1Info = { WIZARD,{ 100,100 }, Team::BLUE };
-	CharacterInfo character2Info = { WIZARD,{ 10000,100 }, Team::RED };
-	CharacterInfo character3Info = { WARRIOR,{ 100,1000 }, Team::BLUE };
+	CharacterInfo character2Info = { WARRIOR,{ 100,1000 }, Team::BLUE };
+	CharacterInfo character3Info = { WIZARD, { 10000,100 }, Team::RED };
 	CharacterInfo character4Info = { WARRIOR,{ 10000,1000 }, Team::RED };
 
 	CharacterSelecScene();
@@ -105,9 +99,7 @@ private:
 
 	void SetControllerFocus();
 	void ChangeCharacter();
-	void FindNextPlayer(uint player, InterfaceElement::Directions direction);
 	void ManageDisplacementFocus();
-	void AddLabelToButton(CharacterToSelect* character);
 	bool AllPlayersReady();
 	void ApplyCharacterSelection();
 

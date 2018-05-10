@@ -22,44 +22,22 @@ class CharacterSelecScene :
 {
 public:
 
-	class CharacterToSelect {
-	public:
-		CharacterToSelect();
-		CharacterToSelect(std::string _name, CharacterTypes _type, EntityStats _stats) {
-			name = _name;
-			type = _type;
-			/*animRect = _animRect;*/
-			stats = _stats;
-		}
-		std::string name;
-		CharacterTypes type = NONE;
-		Button* butt = nullptr;
-		std::vector<Label*> labels;
-
-		EntityStats stats;
-		SDL_Rect animRect;
-		CharacterToSelect* relations[InterfaceElement::Directions::AMOUNT];
-
-	};
-
 	class Player {
 
 	public:
-		CharacterToSelect * focusedCharacter = nullptr;
-		int playerNum;
-		int totalControllersNum;
-		Sprite* arrow = nullptr;
-		SDL_Rect arrowRect;
-		Sprite* lockedArrows[3];
-		SDL_Rect arrowLockRect;
-		CharacterInfo lockedInfo;
-		bool ready = false;
+		int			playerNum;
+		int			totalControllersNum;
+		Sprite*		lockedArrows[2],
+			  *		lockedLightSprite;
+		SDL_Rect	arrowLockLeftRect,
+					arrowLockRightRect,
+					lockedLightRect;
+		bool		ready = false;
 
-		/*void LockedArrow(uint lockedNum);
+		void LockedArrow(uint lockedNum);
 		void RemoveLockedArrow(uint lockedNum);
-		void LoadArrows();
-		void DrawOrderedArrow();*/
 	};
+
 	int controllersNum;
 	CharacterInfo charactersInfo[4];
 	CharacterTypes charactersType[3];
@@ -69,11 +47,6 @@ public:
 	Label* characterNameLabel[4];
 	String characterNameStrings[3];
 	int indexSprites[4];
-
-	CharacterInfo character1Info = { WIZARD,{ 100,100 }, Team::BLUE };
-	CharacterInfo character2Info = { WARRIOR,{ 100,1000 }, Team::BLUE };
-	CharacterInfo character3Info = { WIZARD, { 10000,100 }, Team::RED };
-	CharacterInfo character4Info = { WARRIOR,{ 10000,1000 }, Team::RED };
 
 	CharacterSelecScene();
 	virtual ~CharacterSelecScene();
@@ -98,22 +71,12 @@ private:
 	void LoadSceneUI();
 
 	void SetControllerFocus();
+	void SetCharactersInfo();
 	void ChangeCharacter();
-	void ManageDisplacementFocus();
 	bool AllPlayersReady();
 	void ApplyCharacterSelection();
 
-	/*void LoadSceneUI();
-	void FindNextArrowUnlocked(uint player, InterfaceElement::Directions direction);
-	void ChooseFocus();
-	void RemoveSelectedItem();
-	void ApplyItemAttributes();
-	bool AllPlayersReady();
-	void FindFirstFreeItem(uint playerNum);
-	void AddLabelToButton(Item* item);*/
-
 	std::vector<Player> players;
-	std::list<Button*> buttonsForController;
 };
 
 #endif //__CHARACTERSELECSCENE_H__

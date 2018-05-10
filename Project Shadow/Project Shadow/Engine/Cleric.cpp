@@ -70,6 +70,45 @@ bool Cleric::PreUpdate()
 bool Cleric::HeroUpdate(float dt)
 {
 
+
+	if (currentState != PROTECT && !StateisAtk(currentState)) {
+		if (directions.right - directions.left == 1)
+		{
+			flip = true;
+		}
+		else if (directions.right - directions.left == -1)
+		{
+			flip = false;
+		}
+	}
+
+	if (!GetAbAtk(11)->active)
+	{
+		ab_1_active = true;
+	}
+	else
+	{
+		ab_1_active = false;
+	}
+
+	if (!GetAbAtk(12)->active)
+	{
+		ab_2_active = true;
+	}
+	else
+	{
+		ab_2_active = false;
+	}
+
+	if (!GetAbAtk(13)->active)
+	{
+		ab_3_active = true;
+	}
+	else
+	{
+		ab_3_active = false;
+	}
+
 	return true;
 }
 
@@ -86,7 +125,18 @@ bool Cleric::CleanUp(pugi::xml_node&)
 
 void Cleric::UpdateSpecStates()
 {
+	if (currentTag == 11 && !ab_1_active)
+	{
 
+	}
+	if (currentTag == 12 && !ab_2_active)
+	{
+
+	}
+	if (currentTag == 13 && !ab_3_active)
+	{
+
+	}
 }
 
 void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)

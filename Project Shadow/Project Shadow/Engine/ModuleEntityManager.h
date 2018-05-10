@@ -20,7 +20,9 @@ enum SpellsType {
 	FIREBALL,
 	LIGHTING,
 	ICICLE,
-	FIRE_DEMON
+	FIRE_DEMON,
+	DAGGER,
+	DEATH_MARK
 };
 
 enum CharacterTypes {

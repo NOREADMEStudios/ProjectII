@@ -32,6 +32,7 @@ public:
 	bool Load(pugi::xml_node&) override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
 	void SetDir(int x, int z) { dir.x = x; dir.y = z; };
+	void SetParent(Character* p) { parent = p; };
 
 protected:
 
@@ -47,6 +48,7 @@ protected:
 	Timer lifeTime;
 	uint lifetime;
 	iPoint dir;
+	Character* parent;
 	
 
 	void GetColliderFromAnimation();

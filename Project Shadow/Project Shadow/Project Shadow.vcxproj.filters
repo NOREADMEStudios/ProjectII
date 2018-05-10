@@ -179,6 +179,12 @@
     <ClCompile Include="Game\Spells\FireDemon.cpp">
       <Filter>Engine\Entities\Spells</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Spells\Dagger.cpp">
+      <Filter>Engine\Entities\Spells</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Spells\DeathMark.cpp">
+      <Filter>Engine\Entities\Spells</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -338,6 +344,12 @@
       <Filter>Engine\Entities\Spells</Filter>
     </ClInclude>
     <ClInclude Include="Game\Spells\FireDemon.h">
+      <Filter>Engine\Entities\Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Spells\Dagger.h">
+      <Filter>Engine\Entities\Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Spells\DeathMark.h">
       <Filter>Engine\Entities\Spells</Filter>
     </ClInclude>
   </ItemGroup>

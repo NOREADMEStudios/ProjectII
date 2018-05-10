@@ -42,7 +42,7 @@ bool MainScene::Start()
 
 	atlas = App->textures->Load("UI/atlas.png");
 
-	e = App->entities->CreateCharacter({ WIZARD,{100, 0 ,100}, Team::BLUE});
+	e = App->entities->CreateCharacter({ ROGUE,{100, 0 ,100}, Team::BLUE});
 	e2 = App->entities->CreateCharacter({ WIZARD,{ 500, 0, 100 }, Team::RED });
 
 

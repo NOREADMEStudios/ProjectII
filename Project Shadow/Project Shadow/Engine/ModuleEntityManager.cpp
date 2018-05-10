@@ -9,6 +9,8 @@
 #include "../Game/Spells/Icicle.h"
 #include "../Game/Spells/Lightning.h"
 #include "../Game/Spells/FireDemon.h"
+#include "../Game/Spells/Dagger.h"
+#include "../Game/Spells/DeathMark.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
 
@@ -213,6 +215,14 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	else if (spellsInfo.spType == SpellsType::FIRE_DEMON)
 	{
 		ret = new FireDemon();
+	}
+	else if (spellsInfo.spType == SpellsType::DAGGER)
+	{
+		ret = new Dagger();
+	}
+	else if (spellsInfo.spType == SpellsType::DEATH_MARK)
+	{
+		ret = new DeathMark();
 	}
 	else
 	{		

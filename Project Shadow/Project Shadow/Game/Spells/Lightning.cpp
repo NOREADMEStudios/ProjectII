@@ -13,12 +13,17 @@ Lightning::~Lightning()
 }
 
 bool Lightning::Start() {
-	LoadSprites();
-	spellAnim.LoadAnimationsfromXML("Lightning", SPELLS_ANIMS_ROOT);
-	currentAnimation = &spellAnim;
 
-	spellColl = App->collision->CreateCollider({}, "Lightning_Spell", Collider::SPELL);
+	App->entities->CreateSpell({ SpellsType::LIGHTNING_AURA, team, gamepos, dir });
+
+	LoadSprites();
+
+	spellAnim.LoadAnimationsfromXML("Lightning", SPELLS_ANIMS_ROOT);
 	
+	currentAnimation = &spellAnim;
+	
+
+	spellColl = App->collision->CreateCollider({}, "Lightning_Spell", Collider::SPELL);	
 	App->collision->AddCollider(spellColl, this);
 	//collider = { 0,0,45,65 };
 
@@ -101,4 +106,64 @@ void Lightning::OnCollisionExit(Collider* _this, Collider* _other) {
 		dealingDmg = false;
 		
 	}
+}
+
+bool Aura::Start() {
+
+	
+	LoadSprites();
+
+	spellAnim.LoadAnimationsfromXML("Aura", SPELLS_ANIMS_ROOT);
+	currentAnimation = &spellAnim;
+
+
+	
+
+	spellColl = App->collision->CreateCollider({}, "Aura_Spell", Collider::SPELL);
+	App->collision->AddCollider(spellColl, this);
+	
+
+	stats.atk = 0;
+
+	char_depth = 20;
+
+	lifeTime.Start();
+	lifetime = LIGHTNING_MS_LIFETIME;
+
+	return true;
+}
+
+bool Aura::CleanUp(pugi::xml_node&)
+{
+	UnLoadSprites();
+	bool ret = App->collision->RemoveCollider(spellColl);
+
+	return ret;
+}
+
+bool Aura::Update(float dt) {
+
+	if (paused) {
+		return PausedUpdate();
+	}
+
+	priority = gamepos.z;
+
+	CalcRealPos();
+	GetColliderFromAnimation();
+
+	App->render->FillQueue(this);//prints the spell
+
+	return true;
+}
+
+bool Aura::PostUpdate() {
+	if (CheckLifetime()) {
+		to_delete = true;
+	}
+	return true;
+}
+
+void Aura::Dead() {
+	App->entities->DestroyEntity(this);
 }

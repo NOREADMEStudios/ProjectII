@@ -7,6 +7,7 @@
 #include <list>
 
 class IntroScene;
+class CharacterSelecScene;
 class ItemSelecScene;
 class MainScene;
 class EndScene;
@@ -47,6 +48,7 @@ public:
 	void UnloadScene(Scene* scene);
 
 	IntroScene* introSc;
+	CharacterSelecScene* characterSc;
 	ItemSelecScene* itemSc;
 	MainScene* mainSc;
 	EndScene* endSc;

@@ -158,6 +158,8 @@
     <ClCompile Include="Game\Scenes\ItemSelecScene.cpp" />
     <ClCompile Include="Game\Scenes\MainScene.cpp" />
     <ClCompile Include="Game\Spells\FireBall.cpp" />
+    <ClCompile Include="Game\Spells\Icicle.cpp" />
+    <ClCompile Include="Game\Spells\Lightning.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +207,8 @@
     <ClInclude Include="Game\Scenes\ItemSelecScene.h" />
     <ClInclude Include="Game\Scenes\MainScene.h" />
     <ClInclude Include="Game\Spells\FireBall.h" />
+    <ClInclude Include="Game\Spells\Icicle.h" />
+    <ClInclude Include="Game\Spells\Lightning.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
   </ItemGroup>

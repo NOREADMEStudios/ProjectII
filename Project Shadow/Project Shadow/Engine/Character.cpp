@@ -30,12 +30,20 @@ bool Character::Start()
 	SetAnimations();
 	LoadBasicStates();
 
+	gamepos.y = 0;
+	CalcRealPos();
+	collider.x = position.x;
+	collider.y = position.y;
+
+	currentState = IDLE;
+	currentAnimation = &states.front()->anim;
+
 	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
 	collHitBox = App->collision->CreateCollider({}, "player_hitbox", Collider::HITBOX);
 	collFeet = App->collision->CreateCollider({}, "player_feet", Collider::FEET);
 	collDef = App->collision->CreateCollider({}, "player_shield", Collider::DEF);
 	collParry = App->collision->CreateCollider({}, "player_parry", Collider::PARRY);
-
+	UpdateCollidersPosition();
 
 	App->collision->AddCollider(collAtk, this);
 	App->collision->AddCollider(collHitBox, this);
@@ -50,7 +58,6 @@ bool Character::Start()
 	stats.atk = 8;
 	stats.def = 1;
 	char_depth = 20;
-	gamepos.y = 0;
 
 
 	initialpos.x = gamepos.x;
@@ -62,10 +69,9 @@ bool Character::Start()
 
 	max_speed = stats.spd;
 
-	currentState = IDLE;
-	currentAnimation = &states.front()->anim;
 
 	HeroStart();
+	noMove.SetZero();
 
 
 	active = true;
@@ -88,9 +94,9 @@ bool Character::Update(float dt)
 	currentAnimation = &states.front()->anim;
 
 
-	if (stats.life > 0)
+	if (stats.life > 0 && noMove.IsZero())
 		RequestState();
-	else
+	else if (stats.life <= 0)
 		currentState = DEATH;
 
 	if (!eventstates.empty())
@@ -363,20 +369,27 @@ void Character::RequestState() {
 		case PARRYINPUT:
 			wantedState = PARRY;
 			break;
+		case AB_1:
+			wantedState = AD_ACTION;
+			wantedTag = 11;
+			break;
+		case AB_2:
+			wantedState = AD_ACTION;
+			wantedTag = 12;
+			break;
 		case AB_3:
 			wantedState = AD_ACTION;
 			wantedTag = 13;
+			break;
 		default:
 			break;
 		}
 	}
-
-
 }
 
 void Character::UpdateMainStates()
 {
-	if (wantedTag != 0 && GetAtk(wantedTag)->ability)
+	if (wantedTag != 0 && GetAtk(wantedTag)->ability && currentTag != 11 && currentTag != 12 && currentTag != 13)
 	{
 		if (!GetAbAtk(wantedTag)->active)
 		{
@@ -576,85 +589,7 @@ void Character::GetHP(int& curr, int& max)
 	max = initialLife;
 }
 
-void Character::OnCollisionEnter(Collider* _this, Collider* _other)
-{
-	if (_this->entity == _other->entity) return;
-	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
-	/*int z1 = _this->entity->GetGamePos().z;
-	int d1 = _this->entity->GetCharDepth();
-
-	int z2 = _other->entity->GetGamePos().z;
-	int d2 = _other->entity->GetCharDepth();
-
-	int p11 = z1 - (d1 / 2);
-	int p12 = z1 + (d1 / 2);
-	int p21 = z2 - (d2 / 2);
-	int p22 = z2 + (d2 / 2);
-
-	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))*/
-	{
-		if (_this->collider.x - _other->collider.x > 0)
-		{
-			hit_dir = 1;
-		}
-		else
-		{
-			hit_dir = -1;
-		}
-
-		if (_this->sTag == "player_shield" && _other->sTag == "enemy_attack")
-		{
-			if (_other->entity->breaking)
-			{
-				currentState = HIT;
-				stats.life -= _other->entity->stats.atk;
-				hit_bool = true;
-			}
-			else
-			{
-				_this->entity->Impulsate(hit_dir * 8000, 0, 0);
-			}
-			App->audio->PlayFx(10);
-		}
-		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_shield")
-		{
-			_this->entity->Impulsate(hit_dir * 8000, 0, 0);
-		}
-		else if (_this->sTag == "player_parry" && _other->sTag == "enemy_attack")
-		{
-			currentState = IDLE;
-			parried = true;
-		}
-		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_parry")
-		{
-			currentState = HIT;
-		}
-		else if (_this->sTag == "player_hitbox" && _other->sTag == "enemy_attack")
-		{
-			currentState = HIT;
-			hit_bool = true;
-
-
-			if (_this->collider.x - _other->collider.x > 0)
-			{
-				hit_dir = 1 * _other->entity->stats.atk;
-			}
-			else
-			{
-				hit_dir = -1 * _other->entity->stats.atk;
-			}
-
-		}
-		else if (_this->sTag == "enemy_attack" && _other->sTag == "player_hitbox" && StateisAtk(currentState))
-		{
-			Attack * atk = GetAtk(currentState);
-			if (atk != nullptr)
-				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
-		}
-
-	}
-}
 
 bool Character::IsAbCooldown(uint abNum) const { 
 	if (abilities.size()>abNum && abilities[abNum].active) {
@@ -801,37 +736,35 @@ void Character::UpdateEventStates()
 
 }
 
-void Character::AdBuff(float time, float spd, float atk, float def)
-{
-	EventState* buff = new EventState(time, atk, def, spd);
-	stats =  stats + buff->stats;
-
-	eventstates.push_back(buff);
-
-}
 
 void Character::SetAnimations()
 {
 	switch (charType)
 	{
-	case WARRIOR:
-	{
-		animations_name = HERO_SPRITE_ROOT;
-		sprites = App->textures->Load("Characters/Fighter_sprites_green.png");
-		break;
-	}	
-	case ROGUE:
-	{
-		animations_name = ELF_SPRITE_ROOT;
-		sprites = App->textures->Load("Characters/Elf_sprites.png");
-		break;
-	}
-	case WIZARD:
-	{
-		animations_name = MAGE_SPRITE_ROOT;
-		sprites = App->textures->Load("Characters/Mage_sprites.png");
-		break;
-	}
+		case WARRIOR:
+		{
+			animations_name = HERO_SPRITE_ROOT;
+			sprites = App->textures->Load("Characters/Fighter sprites original.png");
+			break;
+		}	
+		case ROGUE:
+		{
+			animations_name = ELF_SPRITE_ROOT;
+			sprites = App->textures->Load("Characters/Elf_sprites.png");
+			break;
+		}
+		case WIZARD:
+		{
+			animations_name = MAGE_SPRITE_ROOT;
+			sprites = App->textures->Load("Characters/Mage_sprites.png");
+			break;
+		}
+		case CLERIC:
+		{
+			animations_name = CLERIC_SPRITE_ROOT;
+			sprites = App->textures->Load("Characters/cleric_sprites.png");
+			break;
+		}
 		
 	}
 	
@@ -886,6 +819,11 @@ std::list<CharInput> Character::FirstPlayerConfig()
 
 	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 		ret.push_back(CharInput::AB_3);
+
+	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
+		ret.push_back(CharInput::AB_1);
+	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+		ret.push_back(CharInput::AB_2);
 
 	return ret;
 

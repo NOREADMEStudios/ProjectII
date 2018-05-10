@@ -4,6 +4,7 @@
 #include "ModuleTextures.h"
 #include "App.h"
 #include "ModuleGUI.h"
+#include "ModuleWindow.h"
 
 #define BACKGROUND_RECT { 0,0,1750,1080 }
 
@@ -45,8 +46,19 @@ bool Scene::LoadBackground(std::string path) {
 
 bool Scene::DrawBackground() {
 	
-	iRect rect = BACKGROUND_RECT;
-	bool ret = App->render->Blit(background, 0,0, &rect.toSDL_Rect());
+
+	int w, h;
+	SDL_QueryTexture(background, NULL, NULL, &w, &h);
+	iRect rect;
+	rect.x = 0;
+	rect.y = 0;
+	rect.w = w;
+	rect.h = h;
+
+	uint s_w;
+	uint s_h;
+	App->win->GetWindowSize(s_w, s_h);
+	bool ret = App->render->Blit(background,  s_w - w, s_h - h, &rect.toSDL_Rect());
 
 	return ret;
 }

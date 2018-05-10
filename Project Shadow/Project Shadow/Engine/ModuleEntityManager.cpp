@@ -6,6 +6,8 @@
 #include "Rogue.h"
 #include "Wizard.h"
 #include "../Game/Spells/FireBall.h"
+#include "../Game/Spells/Icicle.h"
+#include "../Game/Spells/Lightning.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
 
@@ -71,7 +73,7 @@ bool ModuleEntityManager::Start() {
 bool ModuleEntityManager::PreUpdate() {
 
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
-		(*item)->PreUpdate();				
+		(*item)->PreUpdate();
 	}
 
 	VECTOR(LIST_ITERATOR(Entity*)) ents;
@@ -154,18 +156,22 @@ Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	if(charInfo.chType == CharacterTypes::WARRIOR)
 	{
 		ret = new Warrior();
+		
 	}
-	else if (charInfo.chType == CharacterTypes::WARRIOR)
+	else if (charInfo.chType == CharacterTypes::CLERIC)
 	{
-		ret = new Cleric();
+		ret = new Cleric();		
+
 	}
 	else if (charInfo.chType == CharacterTypes::ROGUE)
 	{
 		ret = new Rogue();
+
 	}
 	else if (charInfo.chType == CharacterTypes::WIZARD)
 	{
 		ret = new Wizard();
+
 	}
 
 	else {
@@ -178,9 +184,9 @@ Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
 	ret->heroNum = numofplayers;
 	ret->type = CHARACTER;
-	ret->SetPos(charInfo.pos.x, charInfo.pos.y);
+	ret->SetPos(charInfo.pos.x, charInfo.pos.y, charInfo.pos.z);
 
-	
+
 	entities.push_back(ret);
 	ret->Start();
 
@@ -193,17 +199,25 @@ Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 
 	if (spellsInfo.spType == SpellsType::FIREBALL)
 	{
-		ret = new FireBall();
+		ret = new FireBall();		
 	}
-	
+	else if (spellsInfo.spType == SpellsType::ICICLE)
+	{
+		ret = new Icicle();
+	}
+	else if (spellsInfo.spType == SpellsType::LIGHTING)
+	{
+		ret = new Lightning();
+	}
 	else
 	{
-		return nullptr;//
+		return nullptr;
 	}
 
 	ret->type = SPELLS;
-	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y);
 
+	ret->team = spellsInfo.chTeam;
+	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y, spellsInfo.pos.z);
 
 	entities.push_back(ret);
 	ret->Start();

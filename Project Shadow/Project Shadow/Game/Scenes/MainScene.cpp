@@ -44,8 +44,8 @@ bool MainScene::Start()
 
 	atlas = App->textures->Load("UI/atlas.png");
 
-	e = App->entities->CreateCharacter({WARRIOR,{100,100}, Team::BLUE});
-	e2 = App->entities->CreateCharacter({ WARRIOR,{ 10000,100 }, Team::RED });
+	e = App->entities->CreateCharacter({ WIZARD,{100, 0 ,100}, Team::BLUE});
+	e2 = App->entities->CreateCharacter({ WIZARD,{ 500, 0, 100 }, Team::RED });
 
 
 	App->gui->AddHealthbar((Character*)e, 0, true, 10, 10, atlas, true, { 451, 271, 264, 26 });
@@ -58,8 +58,8 @@ bool MainScene::Start()
 
 	if (App->scenes->gameMode==GameMode::TWOvsTWO)
 	{
-		e3 = App->entities->CreateCharacter({ WARRIOR,{ 100,1000 }, Team::BLUE });
-		e4 = App->entities->CreateCharacter({ WARRIOR,{ 10000,1000 }, Team::RED });
+		e3 = App->entities->CreateCharacter({ WARRIOR,{ 150,0,100 }, Team::BLUE });
+		e4 = App->entities->CreateCharacter({ WARRIOR,{ 1500,1000 }, Team::RED });
 		App->gui->AddHealthbar((Character*)e3, 2, true, 1590, 10, atlas, true, { 451, 271, 264, 26 });
 		App->gui->AddHealthbar((Character*)e4, 3, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
 	}

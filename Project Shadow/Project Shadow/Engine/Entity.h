@@ -103,6 +103,21 @@ struct Point3D
 	float z = 0;
 };
 
+struct EventState
+{
+	bool active = 0;
+	Timer timer;
+	float time_active = 0;
+	EntityStats stats;
+
+	EventState(float time, int atk, int def, int spd)
+	{
+		time_active = time;
+		stats.atk = atk;
+		stats.def = def;
+		stats.spd = spd;
+	}
+};
 
 class Entity : public Module
 {
@@ -124,7 +139,7 @@ public:
 	int GetCharDepth();
 
 
-	void SetPos(int x, int z);
+	void SetPos(int x,int y, int z);
 	void SetActive(bool sactive);
 
 	void Draw(float dt);
@@ -135,6 +150,7 @@ public:
 	virtual void Break(float delta_time);
 	void Accelerate(float x, float y,float z, float delta_time);
 	void Impulsate(float x, float y, float z);
+	void AdBuff(float time = 0, float spd = 0, float atk = 0, float def = 0);
 
 	void CalcRealPos();
 
@@ -153,12 +169,13 @@ public:
 	EntityStats stats;
 	CharacterTypes charType;
 
-
+	bool noMove = false;
 	bool paused = false;
 
 	uint heroNum = 0;
 	bool breaking = false;
 	bool active = true;
+	float max_speed = 0;
 
 	bool to_delete = false;
 	Team team= NOTEAM;
@@ -169,9 +186,9 @@ protected:
 	iPoint position{ 0,0 };
 	fPoint speedVector{ 0,0 };
 	float zVect = 0;
-	float max_speed = 0;
+
 	int char_depth = 0;
-	
+	LIST(EventState*) eventstates;
 
 	// Collider has to be a struct Collider instead of an iRect
 	iRect collider{ 0,0,0,0 };
@@ -187,7 +204,7 @@ protected:
 	Directions directions;
 	bool flip = 0;
 	InvBlit invencible;
-
+	
 	
 
 

@@ -102,6 +102,9 @@ void CharacterSelecScene::SetControllerFocus() {
 
 		player.playerNum = i;
 		player.totalControllersNum = controllersNum;
+		player.arrowLockLeftRect = { 1718,74,29,38 };
+		player.arrowLockRightRect = { 1792,74,29,38 };
+		player.lockedLightRect = { 50,1200,290,348 };
 		players.push_back(player);
 	}
 }
@@ -136,12 +139,36 @@ void CharacterSelecScene::ChangeCharacter()
 		}
 		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_A && !player->ready ) {
 			player->ready = true;
+			
+			player->lockedArrows[0] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockLeftRect);
+			player->lockedArrows[0]->SetParent(characterFrame[i]);
+			player->lockedArrows[0]->SetAnchor(0, 0);
+			player->lockedArrows[0]->setPosition(39, 213);
+
+			player->lockedArrows[1] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockRightRect);
+			player->lockedArrows[1]->SetParent(characterFrame[i]);
+			player->lockedArrows[1]->SetAnchor(0, 0);
+			player->lockedArrows[1]->setPosition(275, 214);
+
+			player->lockedLightSprite = App->gui->AddSprite(-500, 0, atlas, player->lockedLightRect);
+			player->lockedLightSprite->SetParent(characterFrame[i]);
+			player->lockedLightSprite->SetAnchor(0, 0);
+			player->lockedLightSprite->setPosition(24, 72);
 		}
 		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_B && player->ready) {
 			player->ready = false;
+			player->lockedArrows[0]->Enable(false);
+			player->lockedArrows[1]->Enable(false);
+			player->lockedLightSprite->Enable(false);
 		}
 	}
 }
+//
+//void CharacterSelecScene::Player::LockedArrow(uint lockedNum) {
+//	lockedArrows[0] = App->gui->AddSprite(0,0, nullptr, arrowLockLeftRect);
+//	lockedArrows[1] = App->gui->AddSprite(0, 0, nullptr, arrowLockRightRect);
+//}
+
 void CharacterSelecScene::ApplyCharacterSelection() {
 	for (int i = 0; i < controllersNum; i++) {
 		Player* player = &players[i];
@@ -267,19 +294,4 @@ void CharacterSelecScene::LoadSceneUI() {
 		redTeam1Sprite->setPosition(172, 416);
 
 	}
-
-	//int i = 0;
-
-	/*characters[i] = new CharacterToSelect("WARRIOR", WARRIOR, { 480,0,120,120 }, { 0,0,5,0,0 });
-	characters[++i] = new CharacterToSelect("ROGUE", ROGUE, { 480,0,120,120 }, { 0,0,5,0,0 });
-	characters[++i] = new CharacterToSelect("WIZARD", WIZARD, { 480,0,120,120 }, { 0,0,5,0,0 });
-	characters[++i] = new CharacterToSelect("CLERIC", CLERIC, { 480,0,120,120 }, { 0,0,5,0,0 });*/
-	
-	/*characters[0]->SetRelation(characters[1], InterfaceElement::Directions::RIGHT);
-	characters[1]->SetRelation(characters[2], InterfaceElement::Directions::RIGHT);
-	characters[2]->SetRelation(characters[3], InterfaceElement::Directions::RIGHT);
-	characters[3]->SetRelation(characters[0], InterfaceElement::Directions::RIGHT);*/
-
-
-
 }

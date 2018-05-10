@@ -48,18 +48,15 @@ public:
 		CharacterToSelect * focusedCharacter = nullptr;
 		int playerNum;
 		int totalControllersNum;
-		Sprite* arrow = nullptr;
-		SDL_Rect arrowRect;
-		Sprite* lockedArrows[3];
-		SDL_Rect arrowLockRect;
+		Sprite* lockedArrows[2],* lockedLightSprite;
+		SDL_Rect arrowLockLeftRect, arrowLockRightRect, lockedLightRect;
 		CharacterInfo lockedInfo;
 		bool ready = false;
 
-		/*void LockedArrow(uint lockedNum);
+		void LockedArrow(uint lockedNum);
 		void RemoveLockedArrow(uint lockedNum);
-		void LoadArrows();
-		void DrawOrderedArrow();*/
 	};
+
 	int controllersNum;
 	CharacterInfo charactersInfo[4];
 	CharacterTypes charactersType[3];
@@ -99,18 +96,8 @@ private:
 
 	void SetControllerFocus();
 	void ChangeCharacter();
-	void ManageDisplacementFocus();
 	bool AllPlayersReady();
 	void ApplyCharacterSelection();
-
-	/*void LoadSceneUI();
-	void FindNextArrowUnlocked(uint player, InterfaceElement::Directions direction);
-	void ChooseFocus();
-	void RemoveSelectedItem();
-	void ApplyItemAttributes();
-	bool AllPlayersReady();
-	void FindFirstFreeItem(uint playerNum);
-	void AddLabelToButton(Item* item);*/
 
 	std::vector<Player> players;
 	std::list<Button*> buttonsForController;

@@ -170,6 +170,9 @@
     <ClCompile Include="Engine\Cleric.cpp">
       <Filter>Engine\Entities\Character\Heros</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Scenes\CharacterSelecScene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="Game\Spells\Icicle.cpp">
       <Filter>Engine\Entities\Spells</Filter>
     </ClCompile>
@@ -334,6 +337,9 @@
     <ClInclude Include="Engine\Cleric.h">
       <Filter>Engine\Entities\Character\Heros</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Scenes\CharacterSelecScene.h">
+      <Filter>Game\Scenes</Filter>
+     </ClInclude>
     <ClInclude Include="Engine\Cube.h">
       <Filter>Engine\Tools</Filter>
     </ClInclude>

@@ -8,6 +8,9 @@
 #include "../Game/Spells/FireBall.h"
 #include "../Game/Spells/Icicle.h"
 #include "../Game/Spells/Lightning.h"
+#include "../Game/Spells/FireDemon.h"
+#include "../Game/Spells/Dagger.h"
+#include "../Game/Spells/DeathMark.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
 
@@ -193,9 +196,9 @@ Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	return ret;
 }
 
-Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
+Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 
-	Entity* ret = nullptr;
+	Spells* ret = nullptr;
 
 	if (spellsInfo.spType == SpellsType::FIREBALL)
 	{
@@ -209,6 +212,19 @@ Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	{
 		ret = new Lightning();
 	}
+
+	else if (spellsInfo.spType == SpellsType::FIRE_DEMON)
+	{
+		ret = new FireDemon();
+	}
+	else if (spellsInfo.spType == SpellsType::DAGGER)
+	{
+		ret = new Dagger();
+	}
+	else if (spellsInfo.spType == SpellsType::DEATH_MARK)
+	{
+		ret = new DeathMark();
+	}
 	else
 	{
 		return nullptr;
@@ -218,6 +234,7 @@ Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 
 	ret->team = spellsInfo.chTeam;
 	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y, spellsInfo.pos.z);
+	ret->SetDir(spellsInfo.dir.x, spellsInfo.dir.y);
 
 	entities.push_back(ret);
 	ret->Start();

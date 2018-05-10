@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
+#include "Spells.h"
 
 #include "ModuleMap.h"
 #include "App.h"
@@ -26,14 +27,17 @@ bool Rogue::Awake(pugi::xml_node&)
 
 bool Rogue::HeroStart()
 {
+	LoadState(RUN, "run");
+	LoadState(PROTECT, "protect");
 
-	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "L_Attack_1", animations_name, 1);
-	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "H_Punch", animations_name, 5);
-	Attack* crouch = new Attack(4, LIGHT_ATTACK, "L_Attack_2", animations_name, 1);
+	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "L_Attack_2", animations_name, 1);
+	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "H_Attack", animations_name, 5);
+	Attack* crouch = new Attack(4, LIGHT_ATTACK, "L_Attack_3", animations_name, 1);
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
-	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, true);
+	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "jump_attack", animations_name, 0, true);
 	Attack* ab_1 = new Attack(11, AB_1, "dagger", animations_name, 0, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "dash", animations_name, 0, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "L_Attack_1", animations_name, 0, false, true);
+	Attack* ab_3 = new Attack(13, AB_3, "dash", animations_name, 0, false, true);
 
 	attacks.push_back(light_1);
 	attacks.push_back(heavy_1);
@@ -41,16 +45,19 @@ bool Rogue::HeroStart()
 	attacks.push_back(jump_a);
 	attacks.push_back(ab_1);
 	attacks.push_back(ab_2);
+	attacks.push_back(ab_3);
 	attacks.push_back(jump_a2);
 
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
 	Ability* fire = new Ability(ab_1, 3);
-	Ability* thunder = new Ability(ab_2, 5);
+	Ability* thunder = new Ability(ab_2, 4);
+	Ability* ulti = new Ability(ab_3, 8);
 
 	AdAbility(*fire);
 	AdAbility(*thunder);
+	AdAbility(*ulti);
 	return true;
 }
 
@@ -63,14 +70,29 @@ bool Rogue::PreUpdate()
 
 bool Rogue::HeroUpdate(float dt)
 {
-
-	if (directions.right - directions.left == 1)
+	int z_dir = directions.down - directions.up;
+	int x_dir = directions.right - directions.left;
+	switch (currentState)
 	{
-		flip = true;
+	case RUN:
+	{
+		max_speed = stats.spd * 1.5f;
+		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		break;
 	}
-	else if (directions.right - directions.left == -1)
-	{
-		flip = false;
+	}
+
+
+
+	if (currentState != PROTECT && !StateisAtk(currentState)) {
+		if (directions.right - directions.left == 1)
+		{
+			flip = true;
+		}
+		else if (directions.right - directions.left == -1)
+		{
+			flip = false;
+		}
 	}
 
 
@@ -92,6 +114,14 @@ bool Rogue::HeroUpdate(float dt)
 		ab_2_active = false;
 	}
 
+	if (!GetAbAtk(13)->active)
+	{
+		ab_3_active = true;
+	}
+	else
+	{
+		ab_3_active = false;
+	}
 	return true;
 }
 
@@ -108,23 +138,45 @@ bool Rogue::CleanUp(pugi::xml_node&)
 
 void Rogue::UpdateSpecStates()
 {
+	int dir = 0;
+
+	if (flip)
+		dir = 1;
+	else
+		dir = -1;
+
+	if (currentState == PROTECT && wantedState != PROTECT)
+	{
+		currentState = wantedState;
+		currentAnimation->Reset();
+	}
+
 	if (currentTag == 11 && !ab_1_active)
 	{
 
-		//App->entities->CreateSpell({ FIREBALL, };
+		Spells* dag = nullptr;
+		dag = App->entities->CreateSpell({ DAGGER,team , {gamepos.x, gamepos.y + 50, gamepos.z},{dir,0} });
+		dag->SetParent(this);
+
 		ab_1_active = true;
 	}
 	else if (currentTag == 12 && !ab_2_active)
 	{
-		int dir = 0;
 
-		if (flip)
-			dir = 1;
-		else
-			dir = -1;
-
-		Impulsate(3 * dir, 0, 0);
+		Impulsate(dir, 0, 0);
 		ab_2_active = true;
+	}
+	else if (currentTag == 13 && !ab_3_active)
+	{
+
+		Impulsate(3.5f * dir, 0, 0);
+		ab_3_active = true;
+	}
+
+	else if (currentState == RUN)
+	{
+		if (wantedState != RUN)
+			currentState = IDLE;
 	}
 }
 
@@ -201,13 +253,26 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 		else if (_this->type == Collider::ATK && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{
 			Attack * atk = GetAtk(currentState);
+			int dmg = _this->entity->stats.atk + atk->damage < _other->entity->stats.def;
+			if (dmg <= 0)
+			{
+				dmg = 1;
+			}
+
 			if (atk != nullptr)
-				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
+				_other->entity->stats.life -= dmg;
 
 			if (currentTag == 11)
 				_other->entity->AdBuff(3, -_other->entity->stats.spd);
 			else if (currentTag == 12)
 				_other->entity->Impulsate(hit_dir, 0, 0);
+			else if (currentTag == 13)
+			{
+				Spells* dm = App->entities->CreateSpell({ DEATH_MARK , RED, {0,0,0} });
+				dm->SetParent((Character*)_other->entity);
+				_other->entity->AdBuff(10, 0, -10, -10);
+			}
+
 		}
 
 	}

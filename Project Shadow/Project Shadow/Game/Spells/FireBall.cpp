@@ -1,7 +1,8 @@
 #include "FireBall.h"
 #include "../../Engine/ModuleTextures.h"
+#include "../../Engine/ModuleMap.h"
 
-#define MS_LIFETIME	3000
+#define MS_LIFETIME	500
 
 
 FireBall::FireBall() : Spells(SpellsType::FIREBALL)
@@ -15,13 +16,12 @@ FireBall::~FireBall()
 
 bool FireBall::Start() {
 	LoadSprites();
-	spellAnim.PushBack({0,0,45,65});
-	spellAnim.PushBack({ 50,0,45,65 });
-	spellAnim.PushBack({ 101,0,45,65 });
+
+	spellAnim.LoadAnimationsfromXML("fireball", SPELLS_ANIMS_ROOT);
 	currentAnimation = &spellAnim;
+	spellAnim.speed = 20;
 
 	spellColl = App->collision->CreateCollider({}, "FireBall_Spell", Collider::SPELL);
-	spellColl->collider = { 0,0,45,65 };
 	App->collision->AddCollider(spellColl, this);
 	//collider = { 0,0,45,65 };
 
@@ -49,11 +49,15 @@ bool FireBall::Update(float dt) {
 		return PausedUpdate();
 	}
 
-	priority = gamepos.z;
-	spellColl->collider.x = gamepos.x;
-	spellColl->collider.y= gamepos.z;
+	priority = gamepos.z;	
 
 	CalcRealPos();
+	GetColliderFromAnimation();
+
+
+
+	if (gamepos.x < App->map->GetMapBorders_X() || gamepos.z < App->map->GetMapBorders_Z() || gamepos.x > App->map->GetMapBorders_X() + App->map->GetMapBorders_W() || gamepos.z > App->map->GetMapBorders_Z() + App->map->GetMapBorders_H())
+		stop = true;
 
 	//UpdateCollidersPosition();
 
@@ -64,11 +68,32 @@ bool FireBall::Update(float dt) {
 
 bool FireBall::PostUpdate() {
 	if (CheckLifetime()) {
+		if (!stop)
+		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x + (50 * dir.x), gamepos.y, gamepos.z + (30 * dir.y) }, dir });
+
 		to_delete = true;
 	}
 	return true;
 }
 
 void FireBall::Dead() {
+
 	App->entities->DestroyEntity(this);
+}
+
+void FireBall::OnCollisionEnter(Collider* _this, Collider* _other) {
+
+	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
+
+	if (_other->type == Collider::HITBOX)
+	{
+		to_delete = true;
+		_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
+
+	}
+
+	if (_other->type == Collider::PARRY)
+	{
+		to_delete;
+	}
 }

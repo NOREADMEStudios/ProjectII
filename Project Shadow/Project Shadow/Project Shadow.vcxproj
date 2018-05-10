@@ -158,7 +158,10 @@
     <ClCompile Include="Game\Scenes\IntroScene.cpp" />
     <ClCompile Include="Game\Scenes\ItemSelecScene.cpp" />
     <ClCompile Include="Game\Scenes\MainScene.cpp" />
+    <ClCompile Include="Game\Spells\Dagger.cpp" />
+    <ClCompile Include="Game\Spells\DeathMark.cpp" />
     <ClCompile Include="Game\Spells\FireBall.cpp" />
+    <ClCompile Include="Game\Spells\FireDemon.cpp" />
     <ClCompile Include="Game\Spells\Icicle.cpp" />
     <ClCompile Include="Game\Spells\Lightning.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
@@ -208,7 +211,10 @@
     <ClInclude Include="Game\Scenes\IntroScene.h" />
     <ClInclude Include="Game\Scenes\ItemSelecScene.h" />
     <ClInclude Include="Game\Scenes\MainScene.h" />
+    <ClInclude Include="Game\Spells\Dagger.h" />
+    <ClInclude Include="Game\Spells\DeathMark.h" />
     <ClInclude Include="Game\Spells\FireBall.h" />
+    <ClInclude Include="Game\Spells\FireDemon.h" />
     <ClInclude Include="Game\Spells\Icicle.h" />
     <ClInclude Include="Game\Spells\Lightning.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />

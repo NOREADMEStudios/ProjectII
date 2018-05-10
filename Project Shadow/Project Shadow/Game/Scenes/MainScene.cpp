@@ -28,6 +28,8 @@ MainScene::MainScene()
 {
 	totalRounds = 3;
 	currentRound = 1;
+	wonRounds[0] = 0;
+	wonRounds[1] = 0;
 }
 
 MainScene::~MainScene()
@@ -67,13 +69,21 @@ bool MainScene::Start()
 bool MainScene::Update(float dt)
 {
 	if (App->entities->finish || App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
-		if (currentRound < totalRounds) {
+		uint winner = App->entities->GetWinnerTeam();
+		wonRounds[winner - 1]++;
+		uiPoint dims = App->gui->GetGuiSize();
+		winnerLabel = App->gui->AddLabel(dims.x * 0.5f, dims.y * 0.5f, 150, "Assets/Textures/UI/TTF/Vecna Bold.ttf",
+			{ 255, 255, 255, 255 }, Label::BLENDED, "Winner team %d!", winner);
+
+		if (wonRounds[winner - 1] <= totalRounds / 2) {
 			currentRound++;
-			App->transition->MakeTransition(Reload, ModuleTransition::Transition::FADE_TO_BLACK, 0.8f);
+			App->transition->MakeTransition(Reload, ModuleTransition::Transition::FADE_TO_BLACK, 1.5f);
 		}
 		else {
 			totalRounds = 3;
 			currentRound = 1;
+			wonRounds[0] = 0;
+			wonRounds[1] = 0;
 			App->scenes->ChangeScene(App->scenes->endSc);
 		}
 		App->entities->finish = false;

@@ -36,6 +36,12 @@ Sprite::~Sprite()
 
 bool Sprite::Update(float dt)
 {
+	bool ret = InterfaceElement::Update(dt);
+	return ret;
+}
+
+bool Sprite::PostUpdate()
+{
 	if (currentAnim == nullptr)
 		return false;
 
@@ -51,8 +57,7 @@ bool Sprite::Update(float dt)
 	}
 	else App->render->BlitGui(tex, rect.x, rect.y, currentAnim, false);
 
-	bool ret = InterfaceElement::Update(dt);
-	return ret;
+	return InterfaceElement::PostUpdate();
 }
 
 void Sprite::ChangeAnimation(SDL_Rect anim){

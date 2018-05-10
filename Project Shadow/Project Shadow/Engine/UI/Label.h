@@ -46,6 +46,7 @@ public:
 	bool Start() override;
 	bool PreUpdate() override;
 	bool Update(float dt) override;
+	bool PostUpdate() override;
 	bool CleanUp() override;
 
 	bool RenderFont();

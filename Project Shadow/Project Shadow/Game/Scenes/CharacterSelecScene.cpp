@@ -45,6 +45,7 @@ bool CharacterSelecScene::Start()
 
 	LoadSceneUI();
 	SetControllerFocus();
+	SetCharactersInfo();
 
 	return true;
 }
@@ -82,12 +83,10 @@ bool CharacterSelecScene::AllPlayersReady() {
 			index--;
 		}
 	}
-	if (index == 0)
-		return true;
-	else
-		return false;
+	if (index != 0)
+		ret = false;
 
-	return ret;//
+	return ret;
 }
 
 void CharacterSelecScene::SetControllerFocus() {
@@ -105,8 +104,22 @@ void CharacterSelecScene::SetControllerFocus() {
 		player.arrowLockLeftRect = { 1718,74,29,38 };
 		player.arrowLockRightRect = { 1792,74,29,38 };
 		player.lockedLightRect = { 50,1200,290,348 };
+
 		players.push_back(player);
 	}
+}
+void CharacterSelecScene::SetCharactersInfo(){
+	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
+		charactersInfo[0] = { WIZARD,{ 100,100 }, Team::BLUE };
+		charactersInfo[1] = { WARRIOR,{ 100,1000 }, Team::BLUE };
+		charactersInfo[2] = { WIZARD,{ 10000,100 }, Team::RED };
+		charactersInfo[3] = { WARRIOR,{ 10000,1000 }, Team::RED };
+	}
+	else if (App->scenes->gameMode == GameMode::ONEvsONE) {
+		charactersInfo[0] = { WIZARD,{ 100,100 }, Team::BLUE };
+		charactersInfo[1] = { WARRIOR,{ 10000,100 }, Team::RED };
+	}
+
 }
 void CharacterSelecScene::ChangeCharacter()
 {
@@ -163,16 +176,10 @@ void CharacterSelecScene::ChangeCharacter()
 		}
 	}
 }
-//
-//void CharacterSelecScene::Player::LockedArrow(uint lockedNum) {
-//	lockedArrows[0] = App->gui->AddSprite(0,0, nullptr, arrowLockLeftRect);
-//	lockedArrows[1] = App->gui->AddSprite(0, 0, nullptr, arrowLockRightRect);
-//}
 
 void CharacterSelecScene::ApplyCharacterSelection() {
 	for (int i = 0; i < controllersNum; i++) {
-		Player* player = &players[i];
-		player->lockedInfo.chType = charactersType[indexSprites[i]];
+		charactersInfo[i].chType = charactersType[indexSprites[i]];
 	}
 }
 
@@ -184,6 +191,7 @@ void CharacterSelecScene::LoadSceneUI() {
 		Sprite* crossedSwordsSprite = App->gui->AddSprite(sizeScreen.x / 2 , sizeScreen.y / 5 * 3 + 20, atlas, { 1700, 782,187,175 });
 		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 8 - 30, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[0] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
+		characterSprites[0]->idle_anim = characterRects[0];
 		characterSprites[0]->SetParent(characterFrame[0]);
 		characterSprites[0]->SetAnchor(0, 0);
 		characterSprites[0]->setPosition(80, 89);

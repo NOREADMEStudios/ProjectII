@@ -360,6 +360,18 @@ std::list<Input> ModuleInput::GetInputListFromController(int playerNum)const{
 						ret.push_back(Input::UP);
 					}
 					break;
+				case 2:
+					if (controllers[playerNum - 1].axis[i] > 0.2f)
+					{
+						ret.push_back(Input::R2);
+					}
+					break;
+				case 3:
+					if (controllers[playerNum - 1].axis[i] > 0.2f)
+					{
+						ret.push_back(Input::L2);
+					}
+					break;
 				}
 			}
 		}

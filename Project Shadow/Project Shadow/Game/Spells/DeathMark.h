@@ -1,11 +1,14 @@
-#ifndef __FIREBALL_H__
-#define __FIREBALL_H__
-#include "../../Engine/Spells.h"
-class FireBall : public Spells
+#ifndef __DEATHMARK_H__
+#define __DEATHMARK_H__
+
+#include "..\..\Engine\Spells.h"
+class DeathMark :
+	public Spells
 {
 public:
-	FireBall();
-	~FireBall();
+	DeathMark();
+	~DeathMark();
+
 
 	bool Start()override;
 
@@ -21,11 +24,10 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; }
 
 
-	protected:
+protected:
 	void Dead();
 	bool stop = false;
 
-	void OnCollisionEnter(Collider* _this, Collider* _other) override;
 
 };
 

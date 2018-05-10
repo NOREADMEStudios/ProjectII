@@ -37,6 +37,7 @@ public:
 private:
 	bool ab_1_active = false;
 	bool ab_2_bool = false;
+	bool ab_3_bool = false;
 	
 };
 #endif

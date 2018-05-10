@@ -29,6 +29,8 @@ enum Input
 	BUTTON_Y,
 	L_SHOULDER,
 	R_SHOULDER,
+	L2,
+	R2,
 	BUTTON_START,
 	BUTTON_SELECT,
 };

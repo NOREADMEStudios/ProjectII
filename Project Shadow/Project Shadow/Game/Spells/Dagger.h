@@ -1,11 +1,11 @@
-#ifndef __FIREBALL_H__
-#define __FIREBALL_H__
+#ifndef __DAGGER_H__
+#define __DAGGER_H__
 #include "../../Engine/Spells.h"
-class FireBall : public Spells
+class Dagger : public Spells
 {
 public:
-	FireBall();
-	~FireBall();
+	Dagger();
+	~Dagger();
 
 	bool Start()override;
 
@@ -21,7 +21,7 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; }
 
 
-	protected:
+protected:
 	void Dead();
 	bool stop = false;
 

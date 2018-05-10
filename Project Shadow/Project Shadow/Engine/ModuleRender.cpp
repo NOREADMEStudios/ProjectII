@@ -344,14 +344,21 @@ void ModuleRender::CheckCameraPos()
 		float mid_pos = (((max_x - min_x) / 2) + min_x);
 		float mid_pos_y = (((max_y - min_y) / 2) + min_y);
 
-		innerContainerExterior = { camera.x + (camera.w * 0.05f), camera.y + (camera.h * 0.08f), camera.x + camera.w - (camera.w * 0.1f), camera.y + camera.h - (camera.h * 0.16f) };
-		innerContainerInterior = { camera.x + (camera.w * 0.2f), camera.y + (camera.h * 0.3f), camera.x + camera.w - (camera.w * 0.4f), camera.y + camera.h - (camera.h * 0.6f) };
+		float cameraMarginExt = 0.03f,
+			cameraMarginInt = 0.18f;
+
+		innerContainerExterior = {
+			camera.x + (camera.w * cameraMarginExt), camera.y + (camera.h * cameraMarginExt * 1.5f),
+			camera.x + camera.w - (camera.w * cameraMarginExt * 2), camera.y + camera.h - (camera.h * cameraMarginExt * 2 * 1.5f)
+		};
+		innerContainerInterior = {
+			camera.x + (camera.w * cameraMarginInt), camera.y + (camera.h * cameraMarginInt * 1.5f),
+			camera.x + camera.w - (camera.w * cameraMarginInt * 2), camera.y + camera.h - (camera.h * cameraMarginInt * 2 * 1.5f)
+		};
 		/*DrawQuad(innerContainerExterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
 		DrawQuad(innerContainerInterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);*/
-		innerContainerInterior = innerContainerInterior * (1/scale);
-		innerContainerExterior = innerContainerExterior * (1/scale);
-
-		fPoint difference = { max_x - min_x, max_y - min_y };
+		innerContainerInterior = innerContainerInterior * (1 / scale);
+		innerContainerExterior = innerContainerExterior * (1 / scale);
 
 		float min_scale = MAX((float)camera.h / (mapheight - (mapheight / App->map->GetYTiles())), (float)camera.w / (mapwidth - (mapwidth / App->map->GetXTiles())));
 		float new_scale = scale;
@@ -369,13 +376,6 @@ void ModuleRender::CheckCameraPos()
 			new_scale += 0.01f;
 		}
 
-		/*if (difference.x > difference.y) {
-			new_scale = (difference.x / (mapwidth - camera.w / MAX_SCALE)) * (MAX_SCALE - min_scale);
-		}
-		else {
-			new_scale = (difference.y / (mapheight - camera.h / MAX_SCALE)) * (MAX_SCALE - min_scale);
-		}*/
-		//new_scale = MAX_SCALE - ((difference.y / (mapheight - camera.h / MAX_SCALE)) * (MAX_SCALE - min_scale));
 		new_scale = CLAMP(new_scale, min_scale, MAX_SCALE);
 		App->win->SetScale(new_scale);
 
@@ -402,8 +402,7 @@ SDL_Point ModuleRender::ScreenToWorld(int x, int y) const
 
 void ModuleRender::FillQueue(Entity* entity)
 {
-		SpriteOrderer.push(entity);
-	
+	SpriteOrderer.push(entity);
 }
 
 void ModuleRender::PrintFromQueue(std::priority_queue<Entity*, std::vector<Entity*>, OrderCrit>& Queue, float dt)
@@ -412,9 +411,8 @@ void ModuleRender::PrintFromQueue(std::priority_queue<Entity*, std::vector<Entit
 	{
 		Entity* first = Queue.top();
 
-		first->Draw(dt);		
+		first->Draw(dt);
 		Queue.pop();
-
 	}
 }
 

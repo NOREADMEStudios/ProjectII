@@ -13,10 +13,12 @@ class MainScene :
 public:
 
 	
-	Entity* e,* e2, * e3, *e4;
+	Entity* e = nullptr,* e2 = nullptr, * e3 = nullptr, *e4 = nullptr;
 	int		totalRounds,
-			currentRound;
-	Label*	roundsLabel;
+			currentRound,
+			wonRounds[2];
+	Label	*roundsLabel = nullptr,
+			*winnerLabel = nullptr;
 
 	MainScene();
 	virtual ~MainScene();

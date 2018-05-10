@@ -59,7 +59,6 @@ bool ModuleEntityManager::Awake(pugi::xml_node& n) {
 		}
 	}
 	sounds_list.clear();
-	
 
 	return true;
 }
@@ -77,7 +76,7 @@ bool ModuleEntityManager::Start() {
 bool ModuleEntityManager::PreUpdate() {
 
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
-		(*item)->PreUpdate();				
+		(*item)->PreUpdate();
 	}
 
 	VECTOR(LIST_ITERATOR(Entity*)) ents;
@@ -103,6 +102,7 @@ bool ModuleEntityManager::Update(float dt) {
 		{
 			(*item)->Update(dt);
 			winner = (*item)->heroNum;
+			winnerTeam = (*item)->team;
 			i++;
 		}
 	}
@@ -144,7 +144,7 @@ bool ModuleEntityManager::Load(pugi::xml_node& n) {
 	return true;
 }
 
-bool ModuleEntityManager::Save(pugi::xml_node& n)const {
+bool ModuleEntityManager::Save(pugi::xml_node& n) const {
 
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->Save(n);
@@ -189,7 +189,7 @@ Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	ret->type = CHARACTER;
 	ret->SetPos(charInfo.pos.x, charInfo.pos.y, charInfo.pos.z);
 
-	
+
 	entities.push_back(ret);
 	ret->Start();
 
@@ -212,6 +212,7 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	{
 		ret = new Lightning();
 	}
+<<<<<<< HEAD
 	else if (spellsInfo.spType == SpellsType::FIRE_DEMON)
 	{
 		ret = new FireDemon();
@@ -224,9 +225,11 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	{
 		ret = new DeathMark();
 	}
+=======
+>>>>>>> develop2
 	else
-	{		
-		return nullptr;//
+	{
+		return nullptr;
 	}
 
 	ret->type = SPELLS;
@@ -234,8 +237,6 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	ret->team = spellsInfo.chTeam;
 	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y, spellsInfo.pos.z);
 	ret->SetDir(spellsInfo.dir.x, spellsInfo.dir.y);
-
-
 
 	entities.push_back(ret);
 	ret->Start();
@@ -247,7 +248,7 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 void ModuleEntityManager::DestroyEntity(Entity* entity) {
 	pugi::xml_node n;
 	if (entity->heroNum != 0) {
-		numofplayers--;	
+		numofplayers--;
 	}
 	entity->CleanUp(n);
 	entities.remove(entity);
@@ -269,9 +270,10 @@ void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
 				{
 					min_x = (*item)->GetPosX();
 				}
-				else if ((*item)->GetPosX() + (*item)->GetCollider().w > max_x)
+				
+				if ((*item)->GetPosX() + (*item)->GetCollider().w/2 > max_x)
 				{
-					max_x = (*item)->GetPosX() + (*item)->GetCollider().w;
+					max_x = (*item)->GetPosX() + (*item)->GetCollider().w/2;
 				}
 			}
 
@@ -294,20 +296,17 @@ void ModuleEntityManager::CheckMidPosY(float &min_y, float &max_y)
 			if ((*item)->GetType() == CHARACTER)
 			{
 				current_players++;
-				if ((*item)->GetPosX() < min_y)
+				float posL = (*item)->GetPosY(), posR = (*item)->GetCollider().h;
+				if (posL < min_y)
 				{
-					min_y = (*item)->GetPosY();
+					min_y = posL;
 				}
-				else if ((*item)->GetPosY() + (*item)->GetCollider().h > max_y)
+
+				if (posR > max_y)
 				{
-					max_y = (*item)->GetPosY() + (*item)->GetCollider().h;
+					max_y = posL + posR;
 				}
 			}
-
-			/*if (current_players == numofplayers)
-			{
-				break;
-			}*/
 		}
 	}
 }
@@ -336,10 +335,15 @@ Entity* ModuleEntityManager::GetEntity(uint num)
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
 		if ((*item)->heroNum == num)
 		{
-			ret == (*item);
+			ret = (*item);
 		}
 	}
 	return ret;
+}
+
+uint ModuleEntityManager::GetWinnerTeam()
+{
+	return winnerTeam;
 }
 
 void ModuleEntityManager::StartItems()

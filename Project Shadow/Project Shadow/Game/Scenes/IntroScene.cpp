@@ -101,7 +101,7 @@ void IntroScene::LoadUIButtons() {
 	//pvpLabel->culled = false;
 
 	uiPoint win_size = App->gui->GetGuiSize();
-	pvpButton = App->gui->AddButton((win_size.x / 2) - (win_size.x / 6), win_size.y / 2, atlas, { 50,50,384,195 }, true, PvPPressCallb, { 50,270,384,195 }, { 50,491,384,195 });
+	pvpButton = App->gui->AddButton((win_size.x / 2) , (win_size.y / 4) * 2.1f, atlas, { 1282,883,400,98 }, true, PvPPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
 
 	pvpLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string PvPStr = "4vs4";
@@ -109,7 +109,7 @@ void IntroScene::LoadUIButtons() {
 	pvpLabel->SetParent(pvpButton);
 	pvpLabel->culled = false;
 
-	onevsoneButton = App->gui->AddButton((win_size.x / 6) + (win_size.x / 2), win_size.y / 2, atlas, { 50,50,384,195 }, true, OnevsPressCallb, { 50,270,384,195 }, { 50,491,384,195 });
+	onevsoneButton = App->gui->AddButton( (win_size.x / 2), (win_size.y / 4) * 2.7, atlas, { 1282,883,400,98 }, true, OnevsPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
 
 	onevsLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string oneStr = "1vs1";
@@ -118,7 +118,7 @@ void IntroScene::LoadUIButtons() {
 	onevsLabel->culled = false;
 
 
-	exitButton = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3, atlas, { 50,50,384,195 }, true, ExitPressCallb, { 50,270,384,195 }, { 50,491,384,195 });
+	exitButton = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3.3f, atlas, { 1282,883,400,98 }, true, ExitPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
 
 	Label* exitLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string ExitStr = "EXIT";
@@ -142,22 +142,22 @@ void IntroScene::SetControllerFocus() {
 }
 
 void IntroScene::ManageDisplacement() {
-	if (App->input->GetButtonFromController(1) == CharInput::CH_DOWN) {
+	if (App->input->GetButtonFromController(1) == Input::DOWN) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::DOWN);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
 	}
-	if (App->input->GetButtonFromController(1) == CharInput::CH_UP) {
+	if (App->input->GetButtonFromController(1) == Input::UP) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::UP);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
 	}
-	if (App->input->GetButtonFromController(1) == CharInput::CH_LEFT) {
+	if (App->input->GetButtonFromController(1) == Input::LEFT) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::LEFT);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
 	}
-	if (App->input->GetButtonFromController(1) == CharInput::CH_RIGHT) {
+	if (App->input->GetButtonFromController(1) == Input::RIGHT) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::RIGHT);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);

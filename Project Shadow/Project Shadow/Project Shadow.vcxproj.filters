@@ -173,6 +173,12 @@
     <ClCompile Include="Game\Scenes\CharacterSelecScene.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Spells\Icicle.cpp">
+      <Filter>Engine\Entities\Spells</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Spells\Lightning.cpp">
+      <Filter>Engine\Entities\Spells</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -324,6 +330,15 @@
     </ClInclude>
     <ClInclude Include="Game\Scenes\CharacterSelecScene.h">
       <Filter>Game\Scenes</Filter>
+     </ClInclude>
+    <ClInclude Include="Engine\Cube.h">
+      <Filter>Engine\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Spells\Icicle.h">
+      <Filter>Engine\Entities\Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Spells\Lightning.h">
+      <Filter>Engine\Entities\Spells</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

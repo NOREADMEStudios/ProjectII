@@ -20,7 +20,8 @@ public:
 	Character* assignedCharacter = nullptr;
 	Sprite* bar = nullptr;
 	Sprite* characterMugShot = nullptr;
-	VECTOR(Sprite*) lives {};
+	VECTOR(Sprite*) abilities {};
+	VECTOR(Sprite*) grayAbilities {};
 	Label* characterText = nullptr;
 	int characterNum = 0; //0 = player 1 (up left), 1 = player 2 (up right), 2 = player 3 (down left), 3 = player 4 (down right)
 	bool leftSide = false;

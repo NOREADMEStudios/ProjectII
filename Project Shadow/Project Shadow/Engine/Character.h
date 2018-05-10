@@ -15,6 +15,9 @@
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
 #define ELF_SPRITE_ROOT "Assets/Animations/Characters/Elf_Animations.tmx"
 #define MAGE_SPRITE_ROOT "Assets/Animations/Characters/Mage_Animations.tmx"
+#define CLERIC_SPRITE_ROOT "Assets/Animations/Characters/Cleric_Animations.tmx"
+
+#define MAX_CHARACTER_ITEMS 3
 
 
 enum CharInput
@@ -151,22 +154,6 @@ struct Ability
 
 };
 
-struct EventState
-{
-	bool active = 0;
-	Timer timer;
-	float time_active = 0;
-	EntityStats stats;
-
-	EventState(float time, int atk, int def, int spd)
-	{
-		time_active = time;
-		stats.atk = atk;
-		stats.def = def;
-		stats.spd = spd;
-	}
-};
-
 
 
 class Character : public Entity
@@ -195,7 +182,8 @@ public:
 
 	void ModifyStats(int attack, int defense = 0, int speed = 0, int magic = 0);
 
-
+	bool IsAbCooldown(uint abNum) const;
+	uint GetAbilitiesNum() const {	return abilities.size();}
 
 	uint GetMaxLives() const;
 	uint GetCurrentLives() const;
@@ -206,11 +194,11 @@ public:
 
 	void GetHP(int& curr, int& max);
 
-	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
+	//virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 	Timer time_attack;
-	
+	Timer noMove;
 
-	void AdBuff(float time = 0, float spd = 0, float atk = 0, float def = 0);
+
 	void SetAnimations();
 	void SetCharType(CharacterTypes type);
 
@@ -257,13 +245,14 @@ protected:
 	uint last_attack;
 
 	LIST(State*) states;
-	LIST(EventState*) eventstates;
+
 
 
 	iPoint initialpos;
 	int initialLife = 0;
 	uint lives = 0, maxLives = 3;
 	int hit_dir = 0;
+	
 	bool hit_bool = 0;
 	bool parried = 0;
 	bool jumping = 0;
@@ -275,7 +264,7 @@ protected:
 
 
 	LIST(Attack*) attacks;
-	LIST(Ability) abilities;
+	std::vector<Ability> abilities;
 
 };
 

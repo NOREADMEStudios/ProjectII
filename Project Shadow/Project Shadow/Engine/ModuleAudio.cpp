@@ -54,6 +54,9 @@ bool ModuleAudio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
+	SetFxVolume(config.attribute("volumeFX").as_float());
+	SetMusicVolume(config.attribute("volumeBGM").as_float());
+
 	return ret;
 }
 

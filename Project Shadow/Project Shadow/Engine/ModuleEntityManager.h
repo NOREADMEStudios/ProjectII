@@ -16,7 +16,9 @@ class Character;
 
 enum SpellsType {
 	NOSPELL,
-	FIREBALL
+	FIREBALL,
+	LIGHTING,
+	ICICLE
 };
 
 enum CharacterTypes {
@@ -44,7 +46,10 @@ struct CharacterInfo {
 struct SpellsInfo {
 
 	SpellsType spType = NOSPELL;
-	Point3D pos{ 0,0 };
+
+	Team chTeam;
+	Point3D pos{ 0,0,0 };
+
 
 };
 
@@ -85,9 +90,10 @@ public:
 	void PauseEntities(bool pause);
 
 	Entity* GetEntity(uint num);
+	uint GetWinnerTeam();
 	EntityStats items[4];
 	bool finish = false;
-	uint winner;
+	uint winner, winnerTeam;
 
 private:
 

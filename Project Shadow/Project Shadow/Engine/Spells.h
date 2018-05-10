@@ -6,6 +6,9 @@
 #include "ModuleCollision.h"
 #include "Timer.h"
 
+
+#define SPELLS_ANIMS_ROOT "Assets/Animations/Spells/Spells.tmx"
+
 enum SpellsType;
 
 class Spells : 	public Entity
@@ -31,9 +34,11 @@ public:
 
 protected:
 
-	void UpdateCollidersPosition();
+	
 	bool CheckLifetime() const;
 	void DestroySpell();
+	void LoadSprites();
+	void UnLoadSprites();
 
 	SpellsType spellType;
 	Animation spellAnim;
@@ -41,6 +46,9 @@ protected:
 	Timer lifeTime;
 	uint lifetime;
 
+	
+
+	void GetColliderFromAnimation();
 };
 
 #endif

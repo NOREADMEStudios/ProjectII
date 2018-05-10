@@ -74,6 +74,7 @@ private:
 	uiPoint gui_size;
 	float scale;
 
+
 	InterfaceElement* focused_item = nullptr;
 };
 

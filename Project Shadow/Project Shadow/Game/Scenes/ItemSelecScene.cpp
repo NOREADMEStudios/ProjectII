@@ -256,11 +256,11 @@ void ItemSelecScene::ChooseFocus() {
 
 	int initialDisplacement = 130;
 	int marginBetweenItemFrames = 17;
-	int marginBetweenPlayerFrames = 300;
+	int marginBetweenPlayerFrames = 410;
 
 	for (int i = 0; i < controllersNum; i++) {
 		if (players[i].ready) {
-			return;
+			continue;
 		}
 		if (App->input->GetButtonFromController(players[i].playerNum) == Input::BUTTON_A ) {
 			
@@ -297,7 +297,7 @@ void ItemSelecScene::RemoveSelectedItem() {
 void ItemSelecScene::ManageDisplacementFocus() {
 	for (int i = 0; i < controllersNum; i++) {
 		if (players[i].ready) {
-			return;
+			continue;
 		}
 		if (App->input->GetButtonFromController(players[i].playerNum) == Input::DOWN) {
 
@@ -371,7 +371,9 @@ void ItemSelecScene::Player::DrawOrderedArrow() {
 
 void ItemSelecScene::FindFirstFreeItem(uint playerNum) {
 	Player* player = &players[playerNum];
-
+	if (player->locked == MAX_CHARACTER_ITEMS) {
+		return;
+	}
 	for (int i = 0; i < 15; i++) {
 		for (int j = 0; j < player->locked; j++) { 
 			if (player->playerItems[j] != items[i]) {

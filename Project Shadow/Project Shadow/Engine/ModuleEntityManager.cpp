@@ -6,6 +6,8 @@
 #include "Rogue.h"
 #include "Wizard.h"
 #include "../Game/Spells/FireBall.h"
+#include "../Game/Spells/Icicle.h"
+#include "../Game/Spells/Lightning.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
 
@@ -54,7 +56,6 @@ bool ModuleEntityManager::Awake(pugi::xml_node& n) {
 		}
 	}
 	sounds_list.clear();
-	
 
 	return true;
 }
@@ -72,14 +73,13 @@ bool ModuleEntityManager::Start() {
 bool ModuleEntityManager::PreUpdate() {
 
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
-		(*item)->PreUpdate();				
+		(*item)->PreUpdate();
 	}
 
 	VECTOR(LIST_ITERATOR(Entity*)) ents;
 	for (LIST_ITERATOR(Entity*) ent = entities.begin(); ent != entities.end(); ent++) {
 		if ((*ent)->to_delete) {
 			ents.push_back(ent);
-		
 		}
 	}
 
@@ -99,6 +99,7 @@ bool ModuleEntityManager::Update(float dt) {
 		{
 			(*item)->Update(dt);
 			winner = (*item)->heroNum;
+			winnerTeam = (*item)->team;
 			i++;
 		}
 	}
@@ -140,7 +141,7 @@ bool ModuleEntityManager::Load(pugi::xml_node& n) {
 	return true;
 }
 
-bool ModuleEntityManager::Save(pugi::xml_node& n)const {
+bool ModuleEntityManager::Save(pugi::xml_node& n) const {
 
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->Save(n);
@@ -156,9 +157,8 @@ Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	{
 		ret = new Warrior();
 		
-
 	}
-	else if (charInfo.chType == CharacterTypes::WARRIOR)
+	else if (charInfo.chType == CharacterTypes::CLERIC)
 	{
 		ret = new Cleric();		
 
@@ -184,9 +184,9 @@ Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 
 	ret->heroNum = numofplayers;
 	ret->type = CHARACTER;
-	ret->SetPos(charInfo.pos.x, charInfo.pos.y);
+	ret->SetPos(charInfo.pos.x, charInfo.pos.y, charInfo.pos.z);
 
-	
+
 	entities.push_back(ret);
 	ret->Start();
 
@@ -199,18 +199,25 @@ Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 
 	if (spellsInfo.spType == SpellsType::FIREBALL)
 	{
-		ret = new FireBall();
-		
+		ret = new FireBall();		
 	}
-	
+	else if (spellsInfo.spType == SpellsType::ICICLE)
+	{
+		ret = new Icicle();
+	}
+	else if (spellsInfo.spType == SpellsType::LIGHTING)
+	{
+		ret = new Lightning();
+	}
 	else
-	{		
-		return nullptr;//
+	{
+		return nullptr;
 	}
 
 	ret->type = SPELLS;
-	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y);
 
+	ret->team = spellsInfo.chTeam;
+	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y, spellsInfo.pos.z);
 
 	entities.push_back(ret);
 	ret->Start();
@@ -222,7 +229,7 @@ Entity* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 void ModuleEntityManager::DestroyEntity(Entity* entity) {
 	pugi::xml_node n;
 	if (entity->heroNum != 0) {
-		numofplayers--;	
+		numofplayers--;
 	}
 	entity->CleanUp(n);
 	entities.remove(entity);
@@ -244,9 +251,10 @@ void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
 				{
 					min_x = (*item)->GetPosX();
 				}
-				else if ((*item)->GetPosX() + (*item)->GetCollider().w > max_x)
+				
+				if ((*item)->GetPosX() + (*item)->GetCollider().w/2 > max_x)
 				{
-					max_x = (*item)->GetPosX() + (*item)->GetCollider().w;
+					max_x = (*item)->GetPosX() + (*item)->GetCollider().w/2;
 				}
 			}
 
@@ -269,20 +277,17 @@ void ModuleEntityManager::CheckMidPosY(float &min_y, float &max_y)
 			if ((*item)->GetType() == CHARACTER)
 			{
 				current_players++;
-				if ((*item)->GetPosX() < min_y)
+				float posL = (*item)->GetPosY(), posR = (*item)->GetCollider().h;
+				if (posL < min_y)
 				{
-					min_y = (*item)->GetPosY();
+					min_y = posL;
 				}
-				else if ((*item)->GetPosY() + (*item)->GetCollider().h > max_y)
+
+				if (posR > max_y)
 				{
-					max_y = (*item)->GetPosY() + (*item)->GetCollider().h;
+					max_y = posL + posR;
 				}
 			}
-
-			/*if (current_players == numofplayers)
-			{
-				break;
-			}*/
 		}
 	}
 }
@@ -311,10 +316,15 @@ Entity* ModuleEntityManager::GetEntity(uint num)
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
 		if ((*item)->heroNum == num)
 		{
-			ret == (*item);
+			ret = (*item);
 		}
 	}
 	return ret;
+}
+
+uint ModuleEntityManager::GetWinnerTeam()
+{
+	return winnerTeam;
 }
 
 void ModuleEntityManager::StartItems()

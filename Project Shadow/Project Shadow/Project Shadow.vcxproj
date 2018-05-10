@@ -159,6 +159,8 @@
     <ClCompile Include="Game\Scenes\ItemSelecScene.cpp" />
     <ClCompile Include="Game\Scenes\MainScene.cpp" />
     <ClCompile Include="Game\Spells\FireBall.cpp" />
+    <ClCompile Include="Game\Spells\Icicle.cpp" />
+    <ClCompile Include="Game\Spells\Lightning.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +168,7 @@
     <ClInclude Include="Engine\App.h" />
     <ClInclude Include="Engine\Character.h" />
     <ClInclude Include="Engine\Cleric.h" />
+    <ClInclude Include="Engine\Cube.h" />
     <ClInclude Include="Engine\Defs.h" />
     <ClInclude Include="Engine\ModuleCollision.h" />
     <ClInclude Include="Engine\Enemy.h" />
@@ -206,6 +209,8 @@
     <ClInclude Include="Game\Scenes\ItemSelecScene.h" />
     <ClInclude Include="Game\Scenes\MainScene.h" />
     <ClInclude Include="Game\Spells\FireBall.h" />
+    <ClInclude Include="Game\Spells\Icicle.h" />
+    <ClInclude Include="Game\Spells\Lightning.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
   </ItemGroup>

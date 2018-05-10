@@ -70,10 +70,6 @@ bool InterfaceElement::Update(float dt) {
 			ret = (*current_element)->Update(dt);
 	}
 
-	if (App->debug) {
-		DebugDraw();
-	}
-
 	return ret;
 }
 
@@ -81,9 +77,15 @@ bool InterfaceElement::PostUpdate() {
 	bool ret = true;
 
 	for (LIST_ITERATOR(InterfaceElement*) current_element = children.begin();
-		current_element != children.end() && ret; current_element++) {
+		current_element != children.end() && ret;
+		current_element++)
+	{
 		if ((*current_element)->isEnabled())
 			ret = (*current_element)->PostUpdate();
+	}
+
+	if (App->debug) {
+		DebugDraw();
 	}
 
 	return ret;

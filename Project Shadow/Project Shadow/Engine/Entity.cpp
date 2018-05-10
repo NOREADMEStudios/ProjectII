@@ -24,7 +24,7 @@ void Entity::Draw(float dt) {
 
 	iPoint pivot_pos = PivotPos();
 
-	App->render->Blit(sprites, pivot_pos.x, pivot_pos.y, &frame.GetRectSDL(),1.0f, 0.0, flip);
+	App->render->Blit(sprites, pivot_pos.x, pivot_pos.y, &frame.GetRectSDL(), 1.0f, 0.0, flip);
 }
 
 void Entity::Move(float delta_time) {
@@ -72,7 +72,7 @@ void Entity::Accelerate(float x, float y, float z, float delta_time) {
 }
 void Entity::Impulsate(float x, float y, float z)
 {
-	speedVector.x += x * 10 * stats.spd;
+	speedVector.x += x * stats.spd;
 	speedVector.y += y * 10 * stats.spd;
 	zVect += z * 10 * stats.spd;
 }
@@ -135,9 +135,10 @@ EntityTypes Entity::GetType()
 	return type;
 }
 
-void Entity::SetPos(int x, int z)
+void Entity::SetPos(int x,int y, int z)
 {
 	gamepos.x = x;
+	gamepos.y = y;
 	gamepos.z = z;
 }
 
@@ -188,3 +189,12 @@ iPoint Entity::PivotPos()
 	return pos;
 }
 
+
+void Entity::AdBuff(float time, float spd, float atk, float def)
+{
+	EventState* buff = new EventState(time, atk, def, spd);
+	stats = stats + buff->stats;
+
+	eventstates.push_back(buff);
+
+}

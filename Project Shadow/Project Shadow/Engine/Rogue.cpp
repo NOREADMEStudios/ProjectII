@@ -28,6 +28,7 @@ bool Rogue::Awake(pugi::xml_node&)
 bool Rogue::HeroStart()
 {
 	LoadState(RUN, "run");
+	LoadState(PROTECT, "protect");
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "L_Attack_2", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "H_Attack", animations_name, 5);
@@ -35,7 +36,7 @@ bool Rogue::HeroStart()
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
 	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "jump_attack", animations_name, 0, true);
 	Attack* ab_1 = new Attack(11, AB_1, "dagger", animations_name, 0, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "dash", animations_name, 0, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "L_Attack_1", animations_name, 0, false, true);
 	Attack* ab_3 = new Attack(13, AB_3, "dash", animations_name, 0, false, true);
 
 	attacks.push_back(light_1);
@@ -51,8 +52,8 @@ bool Rogue::HeroStart()
 	jump_a->AddChild(jump_a2);
 
 	Ability* fire = new Ability(ab_1, 3);
-	Ability* thunder = new Ability(ab_2, 5);
-	Ability* ulti = new Ability(ab_3, 10);
+	Ability* thunder = new Ability(ab_2, 4);
+	Ability* ulti = new Ability(ab_3, 8);
 
 	AdAbility(*fire);
 	AdAbility(*thunder);
@@ -73,12 +74,6 @@ bool Rogue::HeroUpdate(float dt)
 	int x_dir = directions.right - directions.left;
 	switch (currentState)
 	{
-	case PROTECT:
-	{
-		max_speed = stats.spd * 0.5f;
-		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
-		break;
-	}
 	case RUN:
 	{
 		max_speed = stats.spd * 1.5f;
@@ -88,13 +83,16 @@ bool Rogue::HeroUpdate(float dt)
 	}
 
 
-	if (directions.right - directions.left == 1)
-	{
-		flip = true;
-	}
-	else if (directions.right - directions.left == -1)
-	{
-		flip = false;
+
+	if (currentState != PROTECT && !StateisAtk(currentState)) {
+		if (directions.right - directions.left == 1)
+		{
+			flip = true;
+		}
+		else if (directions.right - directions.left == -1)
+		{
+			flip = false;
+		}
 	}
 
 
@@ -147,6 +145,12 @@ void Rogue::UpdateSpecStates()
 	else
 		dir = -1;
 
+	if (currentState == PROTECT && wantedState != PROTECT)
+	{
+		currentState = wantedState;
+		currentAnimation->Reset();
+	}
+
 	if (currentTag == 11 && !ab_1_active)
 	{
 
@@ -159,13 +163,13 @@ void Rogue::UpdateSpecStates()
 	else if (currentTag == 12 && !ab_2_active)
 	{
 
-		Impulsate(3 * dir, 0, 0);
+		Impulsate(dir, 0, 0);
 		ab_2_active = true;
 	}
 	else if (currentTag == 13 && !ab_3_active)
 	{
 
-		Impulsate(3 * dir, 0, 0);
+		Impulsate(3.5f * dir, 0, 0);
 		ab_3_active = true;
 	}
 

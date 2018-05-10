@@ -81,4 +81,8 @@ void Icicle::OnCollisionEnter(Collider* _this, Collider* _other) {
 		_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
 		entitiesHitted.push_back(_other->entity);
 	}
+	if (_other->type == Collider::PARRY)
+	{
+		to_delete;
+	}
 }

@@ -91,4 +91,9 @@ void FireBall::OnCollisionEnter(Collider* _this, Collider* _other) {
 		_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
 
 	}
+
+	if (_other->type == Collider::PARRY)
+	{
+		to_delete;
+	}
 }

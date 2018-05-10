@@ -226,7 +226,7 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 		else if (_this->type == Collider::ATK && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{
 
-			Attack * atk = GetAtk(currentState);
+			Attack * atk = GetAtk(currentTag);
 
 			int dmg = _this->entity->stats.atk + atk->damage < _other->entity->stats.def;
 			if (dmg <= 0)

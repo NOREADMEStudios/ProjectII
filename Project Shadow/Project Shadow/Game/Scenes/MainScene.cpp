@@ -1,5 +1,7 @@
 #include "MainScene.h"
 #include "IntroScene.h"
+#include "CharacterSelecScene.h"
+#include "../../Engine/Warrior.h"
 #include "EndScene.h"
 #include "../../Engine/Warrior.h"
 #include "../../Engine/ModuleMap.h"
@@ -44,9 +46,8 @@ bool MainScene::Start()
 
 	atlas = App->textures->Load("UI/atlas.png");
 
-	e = App->entities->CreateCharacter({ ROGUE,{100, 0 ,100}, Team::BLUE});
-	e2 = App->entities->CreateCharacter({ WIZARD,{ 500, 0, 100 }, Team::RED });
-
+	e = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[0]);
+	e2 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[1]);
 
 	App->gui->AddHealthbar((Character*)e, 0, true, 10, 10, atlas, true, { 451, 271, 264, 26 });
 	App->gui->AddHealthbar((Character*)e2, 1, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
@@ -58,8 +59,8 @@ bool MainScene::Start()
 
 	if (App->scenes->gameMode==GameMode::TWOvsTWO)
 	{
-		e3 = App->entities->CreateCharacter({ WARRIOR,{ 150,0,100 }, Team::BLUE });
-		e4 = App->entities->CreateCharacter({ WARRIOR,{ 1500,1000 }, Team::RED });
+		e3 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[2]);
+		e4 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[3]);
 		App->gui->AddHealthbar((Character*)e3, 2, true, 1590, 10, atlas, true, { 451, 271, 264, 26 });
 		App->gui->AddHealthbar((Character*)e4, 3, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
 	}

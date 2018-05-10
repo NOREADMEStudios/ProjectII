@@ -205,9 +205,9 @@ void CharacterSelecScene::LoadSceneUI() {
 		stats3Label->setString("STATS");
 		stats3Label->SetParent(characterFrame[2]);
 		stats3Label->setPosition(171, 462);
-		Sprite* redlueTeam1Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 676, 412,53,53 });
-		redlueTeam1Sprite->SetParent(characterFrame[2]);
-		redlueTeam1Sprite->setPosition(172, 416);
+		Sprite* redTeam1Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 676, 412,53,53 });
+		redTeam1Sprite->SetParent(characterFrame[2]);
+		redTeam1Sprite->setPosition(172, 416);
 
 		characterFrame[3] = App->gui->AddSprite((sizeScreen.x / 8) * 7 + 30, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
 		characterSprites[3] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
@@ -262,9 +262,9 @@ void CharacterSelecScene::LoadSceneUI() {
 		stats2Label->setString("STATS");
 		stats2Label->SetParent(characterFrame[1]);
 		stats2Label->setPosition(171, 462);
-		Sprite* redlueTeam1Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 676, 412,53,53 });
-		redlueTeam1Sprite->SetParent(characterFrame[1]);
-		redlueTeam1Sprite->setPosition(172, 416);
+		Sprite* redTeam1Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 676, 412,53,53 });
+		redTeam1Sprite->SetParent(characterFrame[1]);
+		redTeam1Sprite->setPosition(172, 416);
 
 	}
 

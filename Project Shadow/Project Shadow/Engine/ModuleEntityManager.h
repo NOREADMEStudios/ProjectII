@@ -85,9 +85,10 @@ public:
 	void PauseEntities(bool pause);
 
 	Entity* GetEntity(uint num);
+	uint GetWinnerTeam();
 	EntityStats items[4];
 	bool finish = false;
-	uint winner;
+	uint winner, winnerTeam;
 
 private:
 

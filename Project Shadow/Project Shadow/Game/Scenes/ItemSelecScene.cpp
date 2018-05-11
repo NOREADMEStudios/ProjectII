@@ -299,17 +299,17 @@ void ItemSelecScene::ManageDisplacementFocus() {
 		if (players[i].ready) {
 			continue;
 		}
-		if (App->input->GetButtonFromController(players[i].playerNum) == Input::DOWN) {
+		if (App->input->GetButtonFromController(players[i].playerNum, false) == Input::DOWN) {
 
 			FindNextArrowUnlocked(i, InterfaceElement::Directions::DOWN);
 		}
-		else if (App->input->GetButtonFromController(players[i].playerNum) == Input::UP) {
+		else if (App->input->GetButtonFromController(players[i].playerNum, false) == Input::UP) {
 			FindNextArrowUnlocked(i, InterfaceElement::Directions::UP);
 		}
-		else if (App->input->GetButtonFromController(players[i].playerNum) == Input::LEFT) {
+		else if (App->input->GetButtonFromController(players[i].playerNum, false) == Input::LEFT) {
 			FindNextArrowUnlocked(i, InterfaceElement::Directions::LEFT);
 		}
-		else if (App->input->GetButtonFromController(players[i].playerNum) == Input::RIGHT) {
+		else if (App->input->GetButtonFromController(players[i].playerNum, false) == Input::RIGHT) {
 			FindNextArrowUnlocked(i, InterfaceElement::Directions::RIGHT);
 		}
 		

@@ -126,7 +126,7 @@ void CharacterSelecScene::ChangeCharacter()
 	for (int i = 0; i < controllersNum; i++) {
 		Player* player = &players[i];
 
-		if (App->input->GetButtonFromController(player->playerNum) == Input::RIGHT && !player->ready) {
+		if (App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT && !player->ready) {
 			if (indexSprites[i] < 2) {
 				characterSprites[i]->idle_anim = characterRects[indexSprites[i] + 1];
 				characterNameLabel[i]->setString(characterNameStrings[indexSprites[i] + 1]);
@@ -138,7 +138,7 @@ void CharacterSelecScene::ChangeCharacter()
 				indexSprites[i] = 0;
 			}
 		}
-		else if (App->input->GetButtonFromController(player->playerNum) == Input::LEFT && !player->ready) {
+		else if (App->input->GetButtonFromController(player->playerNum, false) == Input::LEFT && !player->ready) {
 			if (indexSprites[i] > 0) {
 				characterSprites[i]->idle_anim = characterRects[indexSprites[i] - 1];
 				characterNameLabel[i]->setString(characterNameStrings[indexSprites[i] - 1]);

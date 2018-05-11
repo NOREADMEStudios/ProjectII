@@ -138,7 +138,7 @@ public:
 	//std::list<CharInput> FirstPlayerConfig();
 	//std::list<CharInput> SecondPlayerConfig();
 
-	Input GetButtonFromController(int controllerNum) const;
+	Input GetButtonFromController(int controllerNum, bool joystick = true ) const;
 	bool GetButtonDown(int controller, int input) const;
 	std::list<Input> GetInputListFromController(int controllerNum) const;
 

@@ -103,7 +103,7 @@ void IntroScene::LoadUIButtons() {
 	pvpButton = App->gui->AddButton((win_size.x / 2) , (win_size.y / 4) * 2.1f, atlas, { 1282,883,400,98 }, true, PvPPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
 
 	pvpLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
-	std::string PvPStr = "4vs4";
+	std::string PvPStr = "2vs2";
 	pvpLabel->setString(PvPStr);
 	pvpLabel->SetParent(pvpButton);
 	pvpLabel->culled = false;
@@ -126,10 +126,10 @@ void IntroScene::LoadUIButtons() {
 	exitLabel->culled = false;
 
 
-	pvpButton->SetRelation(onevsoneButton, InterfaceElement::Directions::RIGHT);
-	pvpButton->SetRelation(exitButton, InterfaceElement::Directions::DOWN);
-	exitButton->SetRelation(onevsoneButton, InterfaceElement::Directions::DOWN);
-	exitButton->SetRelation(exitButton, InterfaceElement::Directions::DOWN, false);
+	pvpButton->SetRelation(onevsoneButton, InterfaceElement::Directions::DOWN);
+	onevsoneButton->SetRelation(exitButton, InterfaceElement::Directions::DOWN);
+	exitButton->SetRelation(pvpButton, InterfaceElement::Directions::DOWN);
+	
 }
 
 void IntroScene::SetControllerFocus() {
@@ -141,22 +141,22 @@ void IntroScene::SetControllerFocus() {
 }
 
 void IntroScene::ManageDisplacement() {
-	if (App->input->GetButtonFromController(1) == Input::DOWN) {
+	if (App->input->GetButtonFromController(1, false) == Input::DOWN) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::DOWN);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
 	}
-	if (App->input->GetButtonFromController(1) == Input::UP) {
+	if (App->input->GetButtonFromController(1, false) == Input::UP) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::UP);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
 	}
-	if (App->input->GetButtonFromController(1) == Input::LEFT) {
+	if (App->input->GetButtonFromController(1, false) == Input::LEFT) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::LEFT);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
 	}
-	if (App->input->GetButtonFromController(1) == Input::RIGHT) {
+	if (App->input->GetButtonFromController(1, false) == Input::RIGHT) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::RIGHT);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);

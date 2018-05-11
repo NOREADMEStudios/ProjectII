@@ -78,6 +78,7 @@ void Entity::Impulsate(float x, float y, float z)
 }
 
 bool Entity::PausedUpdate() {
+	currentAnimation->GetPausedFrame();
 	App->render->FillQueue(this);
 	return true;
 }

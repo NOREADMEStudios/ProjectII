@@ -243,7 +243,7 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 
 			Attack * atk = GetAtk(currentTag);
 
-			int dmg = _this->entity->stats.atk + atk->damage < _other->entity->stats.def;
+			int dmg = _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 			if (dmg <= 0)
 			{
 				dmg = 1;

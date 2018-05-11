@@ -37,6 +37,8 @@ bool Character::Start()
 
 	currentState = IDLE;
 	currentAnimation = &states.front()->anim;
+	currentTag = 0;
+	wantedTag = 0;
 
 	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
 	collHitBox = App->collision->CreateCollider({}, "player_hitbox", Collider::HITBOX);

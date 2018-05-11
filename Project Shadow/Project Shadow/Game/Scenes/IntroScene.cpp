@@ -41,7 +41,6 @@ bool IntroScene::Start()
 	LoadBackground("UI/MainMenu.png");
 	//App->gui->AddSprite(820, 540, bakc_menu, { 0,0,1750,1080 }, true);
  
-	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
 	LoadUIButtons();
 	SetControllerFocus();
 	return true;

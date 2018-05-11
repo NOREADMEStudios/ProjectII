@@ -35,8 +35,12 @@ bool Character::Start()
 	collider.x = position.x;
 	collider.y = position.y;
 
-	currentState = IDLE;
-	currentAnimation = &states.front()->anim;
+
+	currentState = TAUNT;
+	UpdateAnimation();
+	currentTag = 0;
+	wantedTag = 0;
+	cleric_ab = false;
 
 	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
 	collHitBox = App->collision->CreateCollider({}, "player_hitbox", Collider::HITBOX);
@@ -53,10 +57,6 @@ bool Character::Start()
 
 	invencible.dur = 3;
 	invencible.fr = 0.2f;
-	stats.spd = 180;
-	stats.life = 100;
-	stats.atk = 8;
-	stats.def = 1;
 	char_depth = 20;
 
 
@@ -299,10 +299,10 @@ std::list<CharInput> Character::RequestInputs() const {
 				charInputs.push_back(CharInput::TAUNTINPUT);
 				break;
 			case R2:
-				charInputs.push_back(CharInput::AB_2);
+				charInputs.push_back(CharInput::AB_3);
 				break;
 			case L2:
-				charInputs.push_back(CharInput::AB_1);
+				charInputs.push_back(CharInput::AB_2);
 				break;
 			default:
 				break;
@@ -344,19 +344,15 @@ void Character::RequestState() {
 		case NONECHARINPUT:
 			break;
 		case CH_UP:
-			wantedState = WALK;
 			directions.up = true;
 			break;
 		case CH_DOWN:
-			wantedState = WALK;
 			directions.down = true;
 			break;
 		case CH_RIGHT:
-			wantedState = WALK;
 			directions.right = true;
 			break;
 		case CH_LEFT:
-			wantedState = WALK;
 			directions.left = true;
 			break;
 		case LIGHT_ATTACK:
@@ -372,7 +368,7 @@ void Character::RequestState() {
 			wantedTag = 3;
 			break;
 		case RUNINPUT:
-			wantedState = RUN;
+			run = true;
 			break;
 		case DEFEND:
 			wantedState = PROTECT;
@@ -399,6 +395,14 @@ void Character::RequestState() {
 			break;
 		}
 	}
+
+	if (wantedState == IDLE && (directions.down == true || directions.up == true || directions.left == true || directions.right == true))
+	{
+		wantedState = WALK;
+		if (run)
+			wantedState = RUN;
+	}
+
 }
 
 void Character::UpdateMainStates()
@@ -408,7 +412,7 @@ void Character::UpdateMainStates()
 		if (!GetAbAtk(wantedTag)->active)
 		{
 			wantedTag = 0;
-			wantedState = IDLE;
+			wantedState = currentState;
 		}
 		else
 			GetAbAtk(wantedTag)->Activate();

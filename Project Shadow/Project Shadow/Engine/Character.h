@@ -11,7 +11,7 @@
 
 
 
-#define COMBO_MARGIN 1
+#define COMBO_MARGIN 0.5
 #define HERO_SPRITE_ROOT "Assets/Animations/Characters/Fighter_Animations.tmx"
 #define ELF_SPRITE_ROOT "Assets/Animations/Characters/Elf_Animations.tmx"
 #define MAGE_SPRITE_ROOT "Assets/Animations/Characters/Mage_Animations.tmx"
@@ -208,6 +208,7 @@ public:
 	void SetCharType(CharacterTypes type);
 	void SetState(CharStateEnum st) { currentState = st; };
 	Point3D GetGamePos() { return gamepos; };
+
 
 
 protected:

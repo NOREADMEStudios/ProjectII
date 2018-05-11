@@ -4,6 +4,7 @@
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
 #include "Spells.h"
+#include "../Game/Spells/DeathMark.h"
 
 #include "ModuleMap.h"
 #include "App.h"
@@ -30,8 +31,15 @@ bool Rogue::HeroStart()
 	LoadState(RUN, "run");
 	LoadState(PROTECT, "protect");
 
+	stats.spd = 180;
+	stats.life = 100;
+	stats.atk = 8;
+	stats.def = 1;
+
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "L_Attack_2", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "H_Attack", animations_name, 5);
+	Attack* heavy_2 = new Attack(7, HEAVY_ATTACK, "H_Attack2", animations_name, 5);
+	Attack* heavy_3 = new Attack(6, HEAVY_ATTACK, "H_Attack3", animations_name, 5);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "L_Attack_3", animations_name, 1);
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
 	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "jump_attack", animations_name, 0, true);
@@ -41,6 +49,8 @@ bool Rogue::HeroStart()
 
 	attacks.push_back(light_1);
 	attacks.push_back(heavy_1);
+	attacks.push_back(heavy_2);
+	attacks.push_back(heavy_3);
 	attacks.push_back(crouch);
 	attacks.push_back(jump_a);
 	attacks.push_back(ab_1);
@@ -49,6 +59,9 @@ bool Rogue::HeroStart()
 	attacks.push_back(jump_a2);
 
 	light_1->AddChild(crouch);
+	heavy_1->AddChild(heavy_2);
+	heavy_2->AddChild(heavy_3);
+	crouch->AddChild(heavy_2);
 	jump_a->AddChild(jump_a2);
 
 	Ability* parry = new Ability(ab_1, 3);
@@ -81,6 +94,35 @@ bool Rogue::HeroUpdate(float dt)
 	{
 		max_speed = stats.spd * 1.5f;
 		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		break;
+	}
+	case AD_ACTION:
+	case ATTACK_LIGHT:
+	case ATTACK_HEAVY:
+	{
+		int dir = 0;
+
+		if (flip)
+			dir = 1;
+		else
+			dir = -1;
+
+		if (currentTag == 1 ||  currentTag == 2 || currentTag == 4)
+		{
+			max_speed = stats.spd * 0.3f;
+			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		}
+		else if (currentTag == 7 && currentAnimation->getFrameIndex() == 4)
+		{
+			max_speed = stats.spd;
+			Accelerate((dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		}
+		else if (currentTag == 6 && currentAnimation->getFrameIndex() == 3)
+		{
+			max_speed = stats.spd * 1.5f;
+			Accelerate((dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		}
+
 		break;
 	}
 	}
@@ -166,20 +208,20 @@ void Rogue::UpdateSpecStates()
 	else if (currentTag == 12 && !ab_2_active)
 	{
 
-		Impulsate(dir, 0, 0);
+		Impulsate(2 * dir, 0, 0);
 		ab_2_active = true;
 	}
 	else if (currentTag == 13 && !ab_3_active)
 	{
 
-		Impulsate(3.5f * dir, 0, 0);
+		Impulsate(4 * dir, 0, 0);
 		ab_3_active = true;
 	}
 
 	else if (currentState == RUN)
 	{
 		if (wantedState != RUN)
-			currentState = IDLE;
+			currentState = wantedState;
 	}
 }
 
@@ -255,8 +297,8 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{
-			Attack * atk = GetAtk(currentState);
-			int dmg = _this->entity->stats.atk + atk->damage < _other->entity->stats.def;
+			Attack * atk = GetAtk(currentTag);
+			int dmg = _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 			if (dmg <= 0)
 			{
 				dmg = 1;
@@ -273,6 +315,7 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 			{
 				Spells* dm = App->entities->CreateSpell({ DEATH_MARK , RED, {0,0,0} });
 				dm->SetParent((Character*)_other->entity);
+				((DeathMark*)dm)->SetPath("dagger");
 				_other->entity->AdBuff(10, 0, -10, -10);
 			}
 

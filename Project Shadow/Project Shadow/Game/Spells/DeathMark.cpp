@@ -14,12 +14,12 @@ DeathMark::~DeathMark()
 bool DeathMark::Start() {
 	LoadSprites();
 
-	spellAnim.LoadAnimationsfromXML("death_mark", SPELLS_ANIMS_ROOT);
+
 	currentAnimation = &spellAnim;
 	spellAnim.speed = 10;
 
-	spellColl = App->collision->CreateCollider({}, "DeathMark_Spell", Collider::SPELL);
-	App->collision->AddCollider(spellColl, this);
+	//spellColl = App->collision->CreateCollider({}, "DeathMark_Spell", Collider::SPELL);
+	//App->collision->AddCollider(spellColl, this);
 	//collider = { 0,0,45,65 };
 
 	stats.atk = 8;
@@ -35,9 +35,9 @@ bool DeathMark::Start() {
 bool DeathMark::CleanUp(pugi::xml_node&)
 {
 	UnLoadSprites();
-	bool ret = App->collision->RemoveCollider(spellColl);
 
-	return ret;
+
+	return true;
 }
 
 bool DeathMark::Update(float dt) {
@@ -49,7 +49,7 @@ bool DeathMark::Update(float dt) {
 	priority = gamepos.z;
 
 	CalcRealPos();
-	GetColliderFromAnimation();
+	//GetColliderFromAnimation();
 	Point3D gp = parent->GetGamePos();
 	gamepos.x = gp.x;
 	gamepos.y = gp.y + 100;
@@ -72,4 +72,10 @@ bool DeathMark::PostUpdate() {
 void DeathMark::Dead() {
 
 	App->entities->DestroyEntity(this);
+}
+
+void DeathMark::SetPath(std::string _name)
+{
+	spellAnim.LoadAnimationsfromXML(_name, SPELLS_ANIMS_ROOT);
+	currentAnimation = &spellAnim;
 }

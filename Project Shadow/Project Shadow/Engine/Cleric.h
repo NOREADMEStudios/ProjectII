@@ -36,7 +36,12 @@ public:
 
 
 private:
-	bool buffed = false;
+	bool ab_3_active = false;
+	bool ab_1_active = false;
+	bool ab_2_active = false;
+	Character* partner;
+	Timer ab_timer;
+	float ab_duration;
 
 };
 #endif

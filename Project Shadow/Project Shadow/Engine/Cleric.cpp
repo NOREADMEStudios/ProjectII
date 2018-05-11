@@ -21,12 +21,54 @@ Cleric::~Cleric()
 
 bool Cleric::Awake(pugi::xml_node&)
 {
+
+
 	return true;
 }
 
 bool Cleric::HeroStart()
 {
+	partner = (Character*)App->entities->GetSameTeam(this);
 
+	stats.spd = 180;
+	stats.life = 100;
+	stats.atk = 5;
+	stats.def = 3;
+
+	ab_duration = 5;
+
+	LoadState(PROTECT, "protect");
+	LoadState(PARRY, "standup");
+	LoadState(RUN, "run");
+
+	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", animations_name, 1);
+	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_2", animations_name, 5);
+	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_3", animations_name, 1);
+	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
+	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, true);
+	Attack* ab_1 = new Attack(11, AB_1, "attack_m1", animations_name, 0, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "attack_m2", animations_name, 0, false, true);
+	Attack* ab_3 = new Attack(13, AB_3, "win", animations_name, 0, false, true);
+
+	attacks.push_back(light_1);
+	attacks.push_back(heavy_1);
+	attacks.push_back(crouch);
+	attacks.push_back(jump_a);
+	attacks.push_back(ab_1);
+	attacks.push_back(ab_2);
+	attacks.push_back(jump_a2);
+	attacks.push_back(ab_3);
+
+	light_1->AddChild(crouch);
+	jump_a->AddChild(jump_a2);
+
+	Ability* fire = new Ability(ab_1, 3);
+	Ability* thunder = new Ability(ab_2, 5);
+	Ability* ulti = new Ability(ab_3, 10);
+
+	AdAbility(*fire);
+	AdAbility(*thunder);
+	AdAbility(*ulti);
 
 	return true;
 }
@@ -40,6 +82,71 @@ bool Cleric::PreUpdate()
 
 bool Cleric::HeroUpdate(float dt)
 {
+	int z_dir = directions.down - directions.up;
+	int x_dir = directions.right - directions.left;
+
+	if (!ab_timer.Count(ab_duration))
+	{
+		partner->cleric_ab = true;
+	}
+	else
+	{
+		partner->cleric_ab = false;
+	}
+
+	switch (currentState)
+	{
+	case PROTECT:
+	{
+		max_speed = stats.spd * 0.5f;
+		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		break;
+	}
+	case RUN:
+	{
+		max_speed = stats.spd * 1.5f;
+		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		break;
+	}
+	}
+
+	if (currentState != PROTECT && !StateisAtk(currentState)) {
+		if (directions.right - directions.left == 1)
+		{
+			flip = true;
+		}
+		else if (directions.right - directions.left == -1)
+		{
+			flip = false;
+		}
+	}
+
+	if (!GetAbAtk(11)->active)
+	{
+		ab_1_active = true;
+	}
+	else
+	{
+		ab_1_active = false;
+	}
+
+	if (!GetAbAtk(12)->active)
+	{
+		ab_2_active = true;
+	}
+	else
+	{
+		ab_2_active = false;
+	}
+
+	if (!GetAbAtk(13)->active)
+	{
+		ab_3_active = true;
+	}
+	else
+	{
+		ab_3_active = false;
+	}
 
 	return true;
 }
@@ -57,6 +164,24 @@ bool Cleric::CleanUp(pugi::xml_node&)
 
 void Cleric::UpdateSpecStates()
 {
+	if (currentTag == 11 && !ab_1_active)
+	{
+		ab_timer.Start();
+	}
+	if (currentTag == 12 && !ab_2_active)
+	{
+
+	}
+	if (currentTag == 13 && !ab_3_active)
+	{
+
+	}
+
+	if (currentState == PROTECT && wantedState != PROTECT)
+	{
+		currentState = wantedState;
+		currentAnimation->Reset();
+	}
 
 }
 
@@ -132,15 +257,16 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{
-			Attack * atk = GetAtk(currentState);
+			Attack * atk = GetAtk(currentTag);
 			if (atk != nullptr)
 				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 
-			if (currentTag == 11)
-				_other->entity->AdBuff(3, -_other->entity->stats.spd);
-			else if (currentTag == 12)
-				_other->entity->Impulsate(hit_dir, 0, 0);
+			//if (currentTag == 11)
+			//	_other->entity->AdBuff(3, -_other->entity->stats.spd);
+			//else if (currentTag == 12)
+			//	_other->entity->Impulsate(hit_dir, 0, 0);
 		}
 
 	}
 }
+

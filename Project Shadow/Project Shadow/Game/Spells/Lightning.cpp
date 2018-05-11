@@ -14,7 +14,7 @@ Lightning::~Lightning()
 
 bool Lightning::Start() {
 
-	App->entities->CreateSpell({ SpellsType::LIGHTNING_AURA, team, gamepos, dir });
+	App->entities->CreateSpell({ SpellsType::LIGHTNING_AURA, team, {gamepos.x, gamepos.y, gamepos.z}, dir });
 
 	LoadSprites();
 
@@ -108,9 +108,19 @@ void Lightning::OnCollisionExit(Collider* _this, Collider* _other) {
 	}
 }
 
+Aura::Aura() : Spells(SpellsType::LIGHTNING_AURA)
+{
+}
+
+
+Aura::~Aura()
+{
+}
+
 bool Aura::Start() {
 
 	
+
 	LoadSprites();
 
 	spellAnim.LoadAnimationsfromXML("Aura", SPELLS_ANIMS_ROOT);

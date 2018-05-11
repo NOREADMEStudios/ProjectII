@@ -32,10 +32,6 @@ bool Warrior::HeroStart()
 	LoadState(PARRY, "standup");
 	LoadState(RUN, "run");
 
-	stats.atk += App->entities->items[heroNum - 1].atk;
-	stats.def += App->entities->items[heroNum - 1].def;
-	stats.spd += App->entities->items[heroNum - 1].spd;
-	stats.life += App->entities->items[heroNum - 1].life;
 
 
 

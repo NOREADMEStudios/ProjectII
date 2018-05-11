@@ -30,6 +30,7 @@ bool Rogue::HeroStart()
 	LoadState(RUN, "run");
 	LoadState(PROTECT, "protect");
 
+
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "L_Attack_2", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "H_Attack", animations_name, 5);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "L_Attack_3", animations_name, 1);

@@ -28,6 +28,8 @@ bool Cleric::Awake(pugi::xml_node&)
 
 bool Cleric::HeroStart()
 {
+
+
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_2", animations_name, 5);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_3", animations_name, 1);

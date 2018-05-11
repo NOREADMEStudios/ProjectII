@@ -27,6 +27,8 @@ bool Wizard::Awake(pugi::xml_node&)
 
 bool Wizard::HeroStart()
 {
+
+
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_dagger", animations_name, 5);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_crouch", animations_name, 1);
@@ -130,7 +132,7 @@ void Wizard::UpdateSpecStates()
 	if (currentTag == 12 && !ab_2_bool )
 	{
 	
-		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x + 50, gamepos.y + 40, gamepos.z },{1,0} });
+		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x + 50, gamepos.y + 40, gamepos.z },{flip,0} });
 		ab_2_bool = true;
 		noMove.Start();
 			

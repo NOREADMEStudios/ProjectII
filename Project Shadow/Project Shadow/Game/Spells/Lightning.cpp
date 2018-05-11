@@ -48,6 +48,15 @@ bool Lightning::Update(float dt) {
 
 	priority = gamepos.z;
 
+	if (dir.x == 0)
+	{
+		flip = true;
+	}
+	else
+	{
+		flip = false;
+	}
+
 	CalcRealPos();
 	GetColliderFromAnimation();
 	

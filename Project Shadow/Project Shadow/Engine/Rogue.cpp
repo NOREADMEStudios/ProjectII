@@ -82,6 +82,18 @@ bool Rogue::HeroUpdate(float dt)
 		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
 		break;
 	}
+	case AD_ACTION:
+	case ATTACK_LIGHT:
+	case ATTACK_HEAVY:
+	{
+		if (currentTag == 1 ||  currentTag == 2)
+		{
+			max_speed = stats.spd * 0.30f;
+			Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		}
+
+		break;
+	}
 	}
 
 
@@ -171,14 +183,14 @@ void Rogue::UpdateSpecStates()
 	else if (currentTag == 13 && !ab_3_active)
 	{
 
-		Impulsate(3.5f * dir, 0, 0);
+		Impulsate(5 * dir, 0, 0);
 		ab_3_active = true;
 	}
 
 	else if (currentState == RUN)
 	{
 		if (wantedState != RUN)
-			currentState = IDLE;
+			currentState = wantedState;
 	}
 }
 

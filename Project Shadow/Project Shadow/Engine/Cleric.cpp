@@ -217,10 +217,10 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (atk != nullptr)
 				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 
-			if (currentTag == 11)
-				_other->entity->AdBuff(3, -_other->entity->stats.spd);
-			else if (currentTag == 12)
-				_other->entity->Impulsate(hit_dir, 0, 0);
+			//if (currentTag == 11)
+			//	_other->entity->AdBuff(3, -_other->entity->stats.spd);
+			//else if (currentTag == 12)
+			//	_other->entity->Impulsate(hit_dir, 0, 0);
 		}
 
 	}

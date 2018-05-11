@@ -361,7 +361,7 @@ void Character::RequestState() {
 			wantedTag = 3;
 			break;
 		case RUNINPUT:
-			wantedState = RUN;
+			run = true;
 			break;
 		case DEFEND:
 			wantedState = PROTECT;
@@ -392,7 +392,10 @@ void Character::RequestState() {
 	if (wantedState == IDLE && (directions.down == true || directions.up == true || directions.left == true || directions.right == true))
 	{
 		wantedState = WALK;
+		if (run)
+			wantedState = RUN;
 	}
+
 }
 
 void Character::UpdateMainStates()

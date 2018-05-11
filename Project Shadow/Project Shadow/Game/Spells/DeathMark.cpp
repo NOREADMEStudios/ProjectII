@@ -14,7 +14,7 @@ DeathMark::~DeathMark()
 bool DeathMark::Start() {
 	LoadSprites();
 
-	spellAnim.LoadAnimationsfromXML("death_mark", SPELLS_ANIMS_ROOT);
+
 	currentAnimation = &spellAnim;
 	spellAnim.speed = 10;
 

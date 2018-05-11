@@ -89,8 +89,15 @@ bool Character::Update(float dt)
 { 
 
 	if (paused) {
+		resume = true;
 		return PausedUpdate();
 	}
+	if (resume) {
+		currentAnimation->ResumeFrame();
+		resume = false;
+	}
+
+
 	currentAnimation = &states.front()->anim;
 
 

@@ -130,7 +130,7 @@ void Wizard::UpdateSpecStates()
 	if (currentTag == 12 && !ab_2_bool )
 	{
 	
-		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x + 50, gamepos.y + 40, gamepos.z },{1,0} });
+		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x + 50, gamepos.y + 45, gamepos.z },{1,0} });
 		ab_2_bool = true;
 		noMove.Start();
 			

@@ -51,12 +51,15 @@ bool Rogue::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
-	Ability* fire = new Ability(ab_1, 3);
-	Ability* thunder = new Ability(ab_2, 4);
+	Ability* parry = new Ability(ab_1, 3);
+	parry->ab_sprite = { 152,165, 50,50 };
+	Ability* behindU = new Ability(ab_2, 4);
+	behindU->ab_sprite = { 202,165, 50,50 };
 	Ability* ulti = new Ability(ab_3, 8);
+	ulti->ab_sprite = { 253, 165, 50,50 };
 
-	AdAbility(*fire);
-	AdAbility(*thunder);
+	AdAbility(*parry);
+	AdAbility(*behindU);
 	AdAbility(*ulti);
 	return true;
 }

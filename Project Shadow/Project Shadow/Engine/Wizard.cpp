@@ -48,11 +48,14 @@ bool Wizard::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
-	Ability* fire = new Ability(ab_1, 3);
+	Ability* icicle = new Ability(ab_1, 3);
+	icicle->ab_sprite = {152,65, 50,50 };
 	Ability* thunder = new Ability(ab_2, 5);
+	thunder->ab_sprite = { 202, 65,50,50 };
 	Ability* ulti = new Ability(ab_3, 10);
+	ulti->ab_sprite = { 102, 115, 50,50 };
 
-	AdAbility(*fire);
+	AdAbility(*icicle);
 	AdAbility(*thunder);
 	AdAbility(*ulti);
 	return true;

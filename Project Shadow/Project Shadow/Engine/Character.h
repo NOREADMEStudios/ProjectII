@@ -136,6 +136,7 @@ struct Ability
 {
 	Attack* atk = nullptr;
 	Timer timer;
+	iRect ab_sprite = {0,0,0,0};
 	float cooldown = 0;
 	bool active = false;
 
@@ -150,6 +151,9 @@ struct Ability
 	{
 		timer.Start();
 		active = false;
+	}
+	iRect GetAbSprites() const {
+		return ab_sprite;
 	}
 
 };
@@ -184,6 +188,7 @@ public:
 
 	bool IsAbCooldown(uint abNum) const;
 	uint GetAbilitiesNum() const {	return abilities.size();}
+	Ability GetAbilityAt(uint abNum) const { return abilities[abNum]; }
 
 	uint GetMaxLives() const;
 	uint GetCurrentLives() const;

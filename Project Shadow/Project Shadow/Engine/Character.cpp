@@ -405,7 +405,7 @@ void Character::UpdateMainStates()
 		if (!GetAbAtk(wantedTag)->active)
 		{
 			wantedTag = 0;
-			wantedState = IDLE;
+			wantedState = currentState;
 		}
 		else
 			GetAbAtk(wantedTag)->Activate();

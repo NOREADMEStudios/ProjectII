@@ -183,7 +183,7 @@ void Rogue::UpdateSpecStates()
 	else if (currentTag == 13 && !ab_3_active)
 	{
 
-		Impulsate(5 * dir, 0, 0);
+		Impulsate(4 * dir, 0, 0);
 		ab_3_active = true;
 	}
 

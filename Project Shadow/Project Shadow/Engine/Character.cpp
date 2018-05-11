@@ -35,8 +35,8 @@ bool Character::Start()
 	collider.x = position.x;
 	collider.y = position.y;
 
-	currentState = IDLE;
-	currentAnimation = &states.front()->anim;
+	currentState = TAUNT;
+	UpdateAnimation();
 	currentTag = 0;
 	wantedTag = 0;
 

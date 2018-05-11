@@ -28,11 +28,18 @@ bool Cleric::Awake(pugi::xml_node&)
 
 bool Cleric::HeroStart()
 {
+	partner = (Character*)App->entities->GetSameTeam(this);
 
 	stats.spd = 180;
 	stats.life = 100;
 	stats.atk = 5;
 	stats.def = 3;
+
+	ab_duration = 5;
+
+	LoadState(PROTECT, "protect");
+	LoadState(PARRY, "standup");
+	LoadState(RUN, "run");
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_2", animations_name, 5);
@@ -75,7 +82,33 @@ bool Cleric::PreUpdate()
 
 bool Cleric::HeroUpdate(float dt)
 {
+	int z_dir = directions.down - directions.up;
+	int x_dir = directions.right - directions.left;
 
+	if (!ab_timer.Count(ab_duration))
+	{
+		partner->cleric_ab = true;
+	}
+	else
+	{
+		partner->cleric_ab = false;
+	}
+
+	switch (currentState)
+	{
+	case PROTECT:
+	{
+		max_speed = stats.spd * 0.5f;
+		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		break;
+	}
+	case RUN:
+	{
+		max_speed = stats.spd * 1.5f;
+		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
+		break;
+	}
+	}
 
 	if (currentState != PROTECT && !StateisAtk(currentState)) {
 		if (directions.right - directions.left == 1)
@@ -133,7 +166,7 @@ void Cleric::UpdateSpecStates()
 {
 	if (currentTag == 11 && !ab_1_active)
 	{
-
+		ab_timer.Start();
 	}
 	if (currentTag == 12 && !ab_2_active)
 	{
@@ -143,6 +176,13 @@ void Cleric::UpdateSpecStates()
 	{
 
 	}
+
+	if (currentState == PROTECT && wantedState != PROTECT)
+	{
+		currentState = wantedState;
+		currentAnimation->Reset();
+	}
+
 }
 
 void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
@@ -229,3 +269,4 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 
 	}
 }
+

@@ -31,6 +31,7 @@ bool Lightning::Start() {
 
 	char_depth = 20;
 
+	ticks.Start();
 	lifeTime.Start();
 	lifetime = LIGHTNING_MS_LIFETIME;
 
@@ -49,6 +50,14 @@ bool Lightning::Update(float dt) {
 
 	if (paused) {
 		return PausedUpdate();
+	}
+
+	if (ticks.Read() > TICKS_PER_DMG) {
+		ticks.Start();
+		dealingDmg = true;
+	}
+	else {
+		dealingDmg = false;
 	}
 
 	priority = gamepos.z;
@@ -74,38 +83,23 @@ void Lightning::Dead() {
 
 void Lightning::OnCollisionEnter(Collider* _this, Collider* _other) {
 
-	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 	
-	if (_other->type == Collider::HITBOX &&  !dealingDmg)
-	{
-		ticks.Start();
-		dealingDmg = true;
-		_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
-		
-	}
 }
 
 void Lightning::OnCollisionStay(Collider* _this, Collider* _other) {
 	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
 	if (_other->type == Collider::HITBOX) {
-		if (ticks.Read() > TICKS_PER_DMG) {
-			ticks.Start();
-			if (stats.atk - _other->entity->stats.def <= 0)
-				_other->entity->stats.life -= 1;
-			else
+		
+			if (dealingDmg){
+			
 				_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
 		}
 	}
 }
 void Lightning::OnCollisionExit(Collider* _this, Collider* _other) {
 
-	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
-
-	if (_other->type == Collider::HITBOX) {
-		dealingDmg = false;
-		
-	}
+	
 }
 
 Aura::Aura() : Spells(SpellsType::LIGHTNING_AURA)

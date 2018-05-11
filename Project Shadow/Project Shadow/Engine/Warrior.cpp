@@ -28,6 +28,8 @@ bool Warrior::Awake(pugi::xml_node&)
 
 bool Warrior::HeroStart()
 {
+	partner = (Character*)App->entities->GetSameTeam(this);
+
 	stats.spd = 180;
 	stats.life = 100;
 	stats.atk = 6;
@@ -36,8 +38,6 @@ bool Warrior::HeroStart()
 	LoadState(PROTECT, "protect");
 	LoadState(PARRY, "standup");
 	LoadState(RUN, "run");
-
-
 
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack",animations_name, 2);
@@ -204,7 +204,8 @@ void Warrior::UpdateSpecStates()
 
 	if (currentTag == 13 && !buffed)
 	{
-		AdBuff(5, 300, 10, 10);
+		AdBuff(10, 100, 10, 10);
+		partner->AdBuff(10, 100, 10, 10);
 		buffed = true;
 	}
 

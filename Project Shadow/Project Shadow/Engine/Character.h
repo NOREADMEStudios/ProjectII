@@ -210,6 +210,7 @@ public:
 	Point3D GetGamePos() { return gamepos; };
 
 
+
 protected:
 
 

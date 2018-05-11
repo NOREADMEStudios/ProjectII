@@ -93,6 +93,7 @@ public:
 	uint numofplayers = 0;
 
 	void PauseEntities(bool pause);
+	Entity* GetSameTeam(Entity* c);
 
 	Entity* GetEntity(uint num);
 	uint GetWinnerTeam();

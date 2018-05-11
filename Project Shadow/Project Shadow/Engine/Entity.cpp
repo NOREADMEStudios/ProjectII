@@ -193,6 +193,8 @@ iPoint Entity::PivotPos()
 
 void Entity::AdBuff(float time, float spd, float atk, float def)
 {
+	if (cleric_ab && (atk < 0 || spd < 0 || def < 0)) return;
+
 	EventState* buff = new EventState(time, atk, def, spd);
 	stats = stats + buff->stats;
 

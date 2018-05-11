@@ -35,10 +35,12 @@ bool Character::Start()
 	collider.x = position.x;
 	collider.y = position.y;
 
+
 	currentState = TAUNT;
 	UpdateAnimation();
 	currentTag = 0;
 	wantedTag = 0;
+	cleric_ab = false;
 
 	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
 	collHitBox = App->collision->CreateCollider({}, "player_hitbox", Collider::HITBOX);

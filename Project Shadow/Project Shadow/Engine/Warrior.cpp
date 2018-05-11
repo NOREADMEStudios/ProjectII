@@ -221,20 +221,6 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
 
-	/*int z1 = _this->entity->GetGamePos().z;
-	int d1 = _this->entity->GetCharDepth();
-
-	int z2 = _other->entity->GetGamePos().z;
-	int d2 = _other->entity->GetCharDepth();
-
-	int p11 = z1 - (d1 / 2);
-	int p12 = z1 + (d1 / 2);
-	int p21 = z2 - (d2 / 2);
-	int p22 = z2 + (d2 / 2);
-
-	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))*/
-	{
-
 		if (_this->collider.x - _other->collider.x > 0)
 
 		{
@@ -314,5 +300,5 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 
 
-	}
+	
 }

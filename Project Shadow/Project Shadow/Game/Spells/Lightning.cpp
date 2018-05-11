@@ -50,11 +50,11 @@ bool Lightning::Update(float dt) {
 
 	if (dir.x == 0)
 	{
-		flip = true;
+		flip = false;
 	}
 	else
 	{
-		flip = false;
+		flip = true;
 	}
 
 	CalcRealPos();

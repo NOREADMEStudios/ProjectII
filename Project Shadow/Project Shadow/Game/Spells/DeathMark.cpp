@@ -73,3 +73,9 @@ void DeathMark::Dead() {
 
 	App->entities->DestroyEntity(this);
 }
+
+void DeathMark::SetPath(std::string _name)
+{
+	spellAnim.LoadAnimationsfromXML(_name, SPELLS_ANIMS_ROOT);
+	currentAnimation = &spellAnim;
+}

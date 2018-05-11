@@ -4,6 +4,7 @@
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
 #include "Spells.h"
+#include "../Game/Spells/DeathMark.h"
 
 #include "ModuleMap.h"
 #include "App.h"
@@ -164,7 +165,7 @@ void Rogue::UpdateSpecStates()
 	else if (currentTag == 12 && !ab_2_active)
 	{
 
-		Impulsate(dir, 0, 0);
+		Impulsate(2 * dir, 0, 0);
 		ab_2_active = true;
 	}
 	else if (currentTag == 13 && !ab_3_active)
@@ -271,6 +272,7 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 			{
 				Spells* dm = App->entities->CreateSpell({ DEATH_MARK , RED, {0,0,0} });
 				dm->SetParent((Character*)_other->entity);
+				((DeathMark*)dm)->SetPath("dagger");
 				_other->entity->AdBuff(10, 0, -10, -10);
 			}
 

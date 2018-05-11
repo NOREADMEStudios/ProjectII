@@ -122,6 +122,12 @@ bool Wizard::CleanUp(pugi::xml_node&)
 
 void Wizard::UpdateSpecStates()
 {
+	int dir = 0;
+
+	if (flip)
+		dir = 1;
+	else
+		dir = -1;
 
 	if (currentTag == 11 && !ab_1_active)
 	{
@@ -132,7 +138,7 @@ void Wizard::UpdateSpecStates()
 	if (currentTag == 12 && !ab_2_bool )
 	{
 	
-		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x + 50, gamepos.y + 40, gamepos.z },{flip,0} });
+		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x + (50 * -dir), gamepos.y + 40, gamepos.z },{flip,0} });
 		ab_2_bool = true;
 		noMove.Start();
 			

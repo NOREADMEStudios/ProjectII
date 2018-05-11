@@ -28,7 +28,10 @@ bool Warrior::Awake(pugi::xml_node&)
 
 bool Warrior::HeroStart()
 {
-
+	stats.spd = 180;
+	stats.life = 100;
+	stats.atk = 6;
+	stats.def = 2;
 
 	LoadState(PROTECT, "protect");
 	LoadState(PARRY, "standup");
@@ -70,12 +73,16 @@ bool Warrior::HeroStart()
 	jump_a->AddChild(jump_a3);
 
 	Ability* kick = new Ability(ab_1, 3);
+	kick->ab_sprite = {202, 115, 50,50};
 	AdAbility(*kick);
 
 	Ability* stunt = new Ability(ab_2, 5);
+	stunt->ab_sprite = { 252, 115, 50,50 };
 	AdAbility(*stunt);
 
+
 	Ability* Aulti = new Ability(ulti, 10);
+	Aulti->ab_sprite = { 102, 165, 50,50 };
 	AdAbility(*Aulti);
 
 	return true;

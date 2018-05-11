@@ -331,11 +331,12 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 	charNumber->setPositionX(charFace->getPositionX() + (charFace->rect.w + screenMargin) * (leftSide ? 1 : -1));
 	charNumber->setPositionY(charFace->getPositionY() + screenMargin * (anchor.y == 0.f ? 1 : -1));
 	
-	iRect AbilitiesSpriteRect = { 451 + 52 * charNum, 330, 52, 55 };
-	iRect GrayAbilitiesSpriteRect = { 451  , 395, 52, 55 };
+	//-----Abilities & cooldown
+	
+	iRect GrayAbilitiesSpriteRect = { 451  , 395, 50, 50 };
 	for (size_t i = 0; i < character->GetAbilitiesNum(); i++) {
 		Sprite* sprGray = App->gui->AddSprite(0, 0, nullptr, GrayAbilitiesSpriteRect.toSDL_Rect());
-		Sprite* spr = App->gui->AddSprite(0, 0, nullptr, AbilitiesSpriteRect.toSDL_Rect());
+		Sprite* spr = App->gui->AddSprite(0, 0, nullptr,character->GetAbilityAt(i).GetAbSprites().toSDL_Rect());
 		
 		spr->SetParent(aux);
 		spr->SetAnchor(anchor.x, anchor.y);

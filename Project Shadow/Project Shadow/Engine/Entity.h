@@ -171,6 +171,7 @@ public:
 
 	bool noMove = false;
 	bool paused = false;
+	bool resume = false;
 
 	uint heroNum = 0;
 	bool breaking = false;

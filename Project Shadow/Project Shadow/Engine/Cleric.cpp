@@ -29,6 +29,10 @@ bool Cleric::Awake(pugi::xml_node&)
 bool Cleric::HeroStart()
 {
 
+	stats.spd = 180;
+	stats.life = 100;
+	stats.atk = 5;
+	stats.def = 3;
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_2", animations_name, 5);

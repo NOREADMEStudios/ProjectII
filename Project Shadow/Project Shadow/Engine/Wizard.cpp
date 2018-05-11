@@ -28,6 +28,10 @@ bool Wizard::Awake(pugi::xml_node&)
 bool Wizard::HeroStart()
 {
 
+	stats.spd = 180;
+	stats.life = 100;
+	stats.atk = 8;
+	stats.def = 0;
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_dagger", animations_name, 5);
@@ -50,11 +54,14 @@ bool Wizard::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
-	Ability* fire = new Ability(ab_1, 3);
+	Ability* icicle = new Ability(ab_1, 3);
+	icicle->ab_sprite = {152,65, 50,50 };
 	Ability* thunder = new Ability(ab_2, 5);
+	thunder->ab_sprite = { 202, 65,50,50 };
 	Ability* ulti = new Ability(ab_3, 10);
+	ulti->ab_sprite = { 102, 115, 50,50 };
 
-	AdAbility(*fire);
+	AdAbility(*icicle);
 	AdAbility(*thunder);
 	AdAbility(*ulti);
 	return true;

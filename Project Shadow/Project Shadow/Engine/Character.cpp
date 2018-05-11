@@ -53,10 +53,6 @@ bool Character::Start()
 
 	invencible.dur = 3;
 	invencible.fr = 0.2f;
-	stats.spd = 180;
-	stats.life = 100;
-	stats.atk = 8;
-	stats.def = 1;
 	char_depth = 20;
 
 
@@ -89,8 +85,15 @@ bool Character::Update(float dt)
 { 
 
 	if (paused) {
+		resume = true;
 		return PausedUpdate();
 	}
+	if (resume) {
+		currentAnimation->ResumeFrame();
+		resume = false;
+	}
+
+
 	currentAnimation = &states.front()->anim;
 
 

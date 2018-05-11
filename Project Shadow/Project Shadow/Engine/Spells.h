@@ -35,7 +35,6 @@ public:
 	void SetParent(Character* p) { parent = p; };
 
 protected:
-
 	
 	bool CheckLifetime() const;
 	void DestroySpell();

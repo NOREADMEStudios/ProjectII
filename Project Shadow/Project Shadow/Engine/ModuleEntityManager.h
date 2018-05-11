@@ -18,6 +18,7 @@ class Spells;
 enum SpellsType {
 	NOSPELL,
 	FIREBALL,
+	LIGHTNING_AURA,
 	LIGHTING,
 	ICICLE,
 	FIRE_DEMON,

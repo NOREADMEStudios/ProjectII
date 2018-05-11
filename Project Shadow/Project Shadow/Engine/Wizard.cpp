@@ -231,7 +231,7 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 
 		}
-		else if (_this->type == Collider::ATK && _other->type == Collider::HITBOX && StateisAtk(currentState))
+		else if ((_this->type == Collider::ATK || _this->type == Collider::PARRY) && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{
 
 			Attack * atk = GetAtk(currentTag);

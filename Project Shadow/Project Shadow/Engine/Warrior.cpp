@@ -4,6 +4,8 @@
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
 
+#include "../Game/Spells/DeathMark.h"
+
 #include "ModuleMap.h"
 #include "App.h"
 
@@ -276,7 +278,7 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 
 		}
-		else if (_this->type == Collider::ATK && _other->type == Collider::HITBOX && StateisAtk(currentState))
+		else if ((_this->type == Collider::ATK || _this->type == Collider::PARRY) && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{
 			Attack * atk = GetAtk(currentTag);
 			int dmg = _this->entity->stats.atk + atk->damage < _other->entity->stats.def;
@@ -290,6 +292,9 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (currentTag == 11)
 			{
 				_other->entity->AdBuff(3, -_other->entity->stats.spd);
+				Spells* dm = App->entities->CreateSpell({ DEATH_MARK , NOTEAM,{ 0,0,0 } });
+				dm->SetParent((Character*)_other->entity);
+				((DeathMark*)dm)->SetPath("stun");
 			}
 			else if (currentTag == 12)
 			{

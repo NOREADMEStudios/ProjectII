@@ -177,6 +177,7 @@ public:
 	bool breaking = false;
 	bool active = true;
 	float max_speed = 0;
+	float max_speed_y = 0;
 	bool cleric_ab = 0;
 
 	bool to_delete = false;

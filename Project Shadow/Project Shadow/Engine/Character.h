@@ -207,6 +207,7 @@ public:
 	void SetAnimations();
 	void SetCharType(CharacterTypes type);
 	void SetState(CharStateEnum st) { currentState = st; };
+	void AdHp(int hp);
 	Point3D GetGamePos() { return gamepos; };
 
 

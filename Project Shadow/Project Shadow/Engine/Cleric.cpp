@@ -46,9 +46,9 @@ bool Cleric::HeroStart()
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_3", animations_name, 1);
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
 	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, true);
-	Attack* ab_1 = new Attack(11, AB_1, "attack_m1", animations_name, 0, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "attack_m2", animations_name, 0, false, true);
-	Attack* ab_3 = new Attack(13, AB_3, "win", animations_name, 0, false, true);
+	Attack* ab_1 = new Attack(11, AB_1, "ab_1", animations_name, 0, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "ab_2", animations_name, 0, false, true);
+	Attack* ab_3 = new Attack(13, AB_3, "ab_3", animations_name, 0, false, true);
 
 	attacks.push_back(light_1);
 	attacks.push_back(heavy_1);
@@ -63,8 +63,11 @@ bool Cleric::HeroStart()
 	jump_a->AddChild(jump_a2);
 
 	Ability* fire = new Ability(ab_1, 3);
+	fire->ab_sprite = { 303,65, 50,50 };
 	Ability* thunder = new Ability(ab_2, 5);
-	Ability* ulti = new Ability(ab_3, 10);
+	thunder->ab_sprite = { 303,115, 50,50 };
+	Ability* ulti = new Ability(ab_3, 15);
+	ulti->ab_sprite = { 303,165, 50,50 };
 
 	AdAbility(*fire);
 	AdAbility(*thunder);
@@ -170,11 +173,13 @@ void Cleric::UpdateSpecStates()
 	}
 	if (currentTag == 12 && !ab_2_active)
 	{
-
+		AdBuff(5, 0, 0, 10);
 	}
 	if (currentTag == 13 && !ab_3_active)
 	{
-
+		partner->AdHp(35);
+		AdHp(35);
+		AdBuff(10, 50, 0, 0);
 	}
 
 	if (currentState == PROTECT && wantedState != PROTECT)

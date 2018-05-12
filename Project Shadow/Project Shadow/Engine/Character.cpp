@@ -36,7 +36,7 @@ bool Character::Start()
 	collider.y = position.y;
 
 
-	currentState = TAUNT;
+	currentState = IDLE;
 	UpdateAnimation();
 	currentTag = 0;
 	wantedTag = 0;
@@ -62,17 +62,18 @@ bool Character::Start()
 
 	initialpos.x = gamepos.x;
 	initialpos.y = gamepos.z;
-	initialLife = stats.life;
 	lives = maxLives;
 
 	LoadShadow();
-
-	max_speed = stats.spd;
 
 
 	HeroStart();
 	noMove.SetZero();
 
+
+	max_speed = stats.spd;
+	max_speed_y = stats.spd;
+	initialLife = stats.life;
 
 	active = true;
 	return true; 
@@ -547,7 +548,7 @@ void Character::UpdateCurState(float dt)
 			if (!jumping)
 			{
 				jumping = true;
-				max_speed = 1000;
+				max_speed_y = 800;
 				Accelerate(x_dir, 500, z_dir, dt);
 			}
 			break;
@@ -834,4 +835,14 @@ std::list<CharInput> Character::FirstPlayerConfig()
 
 	return ret;
 
+}
+
+void Character::AdHp(int hp)
+{
+	stats.life += hp;
+
+	if (stats.life > initialLife)
+	{
+		stats.life = initialLife;
+	}
 }

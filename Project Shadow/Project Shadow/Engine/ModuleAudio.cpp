@@ -202,6 +202,13 @@ void ModuleAudio::SetMusicVolume(float volume) {
 	Mix_VolumeMusic(volume);
 	currentmusicvolume = volume;
 }
+void ModuleAudio::SetMusicVolumePercentage(float volume) {
+
+	if (volume > 100) { volume = 100; }
+	float realVol = volume * MIX_MAX_VOLUME / 100;
+	Mix_VolumeMusic(realVol);
+	currentmusicvolume = realVol;
+}
 
 void ModuleAudio::SetFxVolume(float volume) {
 
@@ -214,14 +221,36 @@ void ModuleAudio::SetFxVolume(float volume) {
 	currentfxvolume = volume;
 }
 
+void ModuleAudio::SetFxVolumePercentage(float volume) {
+
+	if (volume > 100) { volume = 100; }
+	float realVol = volume * MIX_MAX_VOLUME / 100;
+	for (int i = 0; i < fx.size(); i++) {
+		Mix_VolumeChunk(fx[i], realVol);
+	}
+	currentfxvolume = realVol;
+}
+
 float ModuleAudio::GetFxVolume() const {
 
 	return currentfxvolume;
 }
 
+uint ModuleAudio::GetFxVolumePercentage() const {
+
+	float vol = currentfxvolume;
+	return vol * 100 / MIX_MAX_VOLUME;
+}
+
 float ModuleAudio::GetMusicVolume() const {
 
 	return Mix_VolumeMusic(-1);
+}
+
+uint ModuleAudio::GetMusicVolumePercentage() const {
+
+	float vol=  Mix_VolumeMusic(-1);
+	return vol * 100 / MIX_MAX_VOLUME;
 }
 
 bool ModuleAudio::Load(pugi::xml_node& data) {

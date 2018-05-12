@@ -36,7 +36,7 @@
 	<map folder="Maps/" />
 	<entities folder="Entities/" />
 	<textures folder="Textures/" />
-	<audio folder="Audio/" volumeFX="1" volumeBGM="1" />
+	<audio folder="Audio/" volumeFX="64" volumeBGM="64" />
 	<input folder="Input/" />
 	<collision>
 		<colliderTags>

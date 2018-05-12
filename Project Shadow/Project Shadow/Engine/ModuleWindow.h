@@ -45,6 +45,8 @@ public:
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
 
+	bool fullscreen;
+
 private:
 	std::string	title;
 	uint		width;

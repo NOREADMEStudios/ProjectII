@@ -30,7 +30,7 @@ bool Wizard::HeroStart()
 
 	stats.spd = 180;
 	stats.life = 100;
-	stats.atk = 8;
+	stats.atk = 2;
 	stats.def = 0;
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 1);

@@ -5,8 +5,9 @@
 #include "..\..\Engine\ModuleCollision.h"
 
 class Button;
-class Label;
-
+class Label; 
+class Slider;
+class Sprite;
 
 class IntroScene:
 	public Scene
@@ -14,11 +15,15 @@ class IntroScene:
 public:
 	Button * pvpButton;
 	Button * onevsoneButton;
+	Button * settingButton;
 	Button * exitButton;
 
-	Label * onevsLabel;
-	Label * pvpLabel;
-	Label * exitLabel;
+	Slider* music_sl;
+	Sprite* music_sp;
+	Slider* fx_sl;
+	Sprite* fx_sp;
+	Button* fullscrenBut ;
+	Button* settBack;
 
 
 	IntroScene();
@@ -41,16 +46,18 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; };
 
 	void LoadUIButtons();
-
+	void ManageSettings(bool settingActive);
 
 	//-------CONTROLLER MANAGEMENT
-	
+private:
 	void ChooseFocus();
 	void SetControllerFocus();
 	void ManageDisplacement();
+	void CreateSettingsWindow();
+
 
 	int controllersNum;
-
+	
 };
 
 #endif

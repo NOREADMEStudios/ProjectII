@@ -67,7 +67,7 @@ void Entity::Accelerate(float x, float y, float z, float delta_time) {
 	zVect += z * 10 * stats.spd * delta_time;
 
 	speedVector.x = CLAMP(speedVector.x, -max_speed, max_speed);
-	speedVector.y = CLAMP(speedVector.y, -initial_speed, initial_speed);
+	speedVector.y = CLAMP(speedVector.y, -max_speed_y, max_speed_y);
 	zVect = CLAMP(zVect, -max_speed, max_speed);
 }
 void Entity::Impulsate(float x, float y, float z)

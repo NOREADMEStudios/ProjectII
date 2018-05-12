@@ -72,7 +72,7 @@ bool Character::Start()
 
 
 	max_speed = stats.spd;
-	initial_speed = stats.spd;
+	max_speed_y = stats.spd;
 	initialLife = stats.life;
 
 	active = true;
@@ -548,7 +548,7 @@ void Character::UpdateCurState(float dt)
 			if (!jumping)
 			{
 				jumping = true;
-				max_speed = 1000;
+				max_speed_y = 800;
 				Accelerate(x_dir, 500, z_dir, dt);
 			}
 			break;

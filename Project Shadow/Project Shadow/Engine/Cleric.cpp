@@ -63,8 +63,11 @@ bool Cleric::HeroStart()
 	jump_a->AddChild(jump_a2);
 
 	Ability* fire = new Ability(ab_1, 3);
+	fire->ab_sprite = { 303,65, 50,50 };
 	Ability* thunder = new Ability(ab_2, 5);
+	thunder->ab_sprite = { 303,115, 50,50 };
 	Ability* ulti = new Ability(ab_3, 15);
+	ulti->ab_sprite = { 303,165, 50,50 };
 
 	AdAbility(*fire);
 	AdAbility(*thunder);

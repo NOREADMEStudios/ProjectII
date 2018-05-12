@@ -27,7 +27,7 @@ bool Lightning::Start() {
 	App->collision->AddCollider(spellColl, this);
 	//collider = { 0,0,45,65 };
 
-	stats.atk = 7;
+	stats.atk = 4;
 
 	char_depth = 20;
 

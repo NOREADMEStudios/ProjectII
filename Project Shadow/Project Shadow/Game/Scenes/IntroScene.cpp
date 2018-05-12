@@ -267,7 +267,7 @@ void IntroScene::CreateSettingsWindow() {
 
 	// FULLSCREEN BUTTON
 	fullscrenBut = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 2.7f, atlas,{ 1282,883,400,98 }, false, FullscreenPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
-	Label* FSLabel = App->gui->AddLabel((fullscrenBut->rect.w / 2) + 15, fullscrenBut->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
+	Label* FSLabel = App->gui->AddLabel((fullscrenBut->rect.w / 2) + 20, fullscrenBut->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string FSStr = "FULLSCREEN";
 	FSLabel->setString(FSStr);
 	FSLabel->SetParent(fullscrenBut);
@@ -284,9 +284,9 @@ void IntroScene::CreateSettingsWindow() {
 
 	
 
-	music_sl->SetRelation(fullscrenBut, InterfaceElement::Directions::DOWN);
+	
 	fullscrenBut->SetRelation(settBack, InterfaceElement::Directions::DOWN);
-	settBack->SetRelation(music_sl, InterfaceElement::Directions::DOWN);
+	settBack->SetRelation(fullscrenBut, InterfaceElement::Directions::DOWN);
 }
 
 void IntroScene::ManageSettings(bool settingActive) {
@@ -303,6 +303,6 @@ void IntroScene::ManageSettings(bool settingActive) {
 	fx_sl->Enable(settingActive);
 	fx_sp->Enable(settingActive);
 
-	App->gui->setFocus(settingActive ? music_sl : pvpButton);
+	App->gui->setFocus(settingActive ? fullscrenBut : pvpButton);
 }
 

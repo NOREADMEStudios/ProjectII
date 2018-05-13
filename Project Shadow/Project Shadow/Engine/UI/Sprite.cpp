@@ -53,9 +53,9 @@ bool Sprite::PostUpdate()
 		actual_anim_rect.w += result_rect.w - rect.w;
 		actual_anim_rect.h += result_rect.h - rect.h;
 
-		App->render->BlitGui(tex, result_rect.x, result_rect.y, &actual_anim_rect, false);
+		App->render->BlitGui(tex, result_rect.x, result_rect.y, &actual_anim_rect, false, 1.0f, 0.0, false, { 255,255,255,255 }, INT_MAX, INT_MAX, scale);
 	}
-	else App->render->BlitGui(tex, rect.x, rect.y, currentAnim, false);
+	else App->render->BlitGui(tex, rect.x, rect.y, currentAnim, false, 1.0f, 0.0, false, { 255,255,255,255 }, INT_MAX, INT_MAX, scale);
 
 	return InterfaceElement::PostUpdate();
 }

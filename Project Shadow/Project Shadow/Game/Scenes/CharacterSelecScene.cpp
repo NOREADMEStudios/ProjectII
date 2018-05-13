@@ -30,7 +30,19 @@ CharacterSelecScene::~CharacterSelecScene()
 
 bool CharacterSelecScene::Start()
 {
+	uiPoint screenSize = App->gui->GetGuiSize();
 	LoadBackground("UI/BasicMenuScene.png");
+
+	Sprite* bg = App->gui->AddSprite(0, 0, background, {0,0,1920,1080});
+	bg->setPosition(screenSize.x * 0.5f, screenSize.y * 0.5f);
+	bg->ComputeRects();
+	if (screenSize.y < bg->rect.h) {
+		bg->scale = MAX((float)screenSize.y / (float)bg->rect.h, (float)screenSize.x / (float)bg->rect.w);
+	}
+	else {
+		bg->scale = MIN((float)screenSize.y / (float)bg->rect.h, (float)screenSize.x / (float)bg->rect.w);
+	}
+
 	indexSprites[0] = indexSprites[1] = indexSprites[2] = indexSprites[3] = 0;
 
 	characterRects[0] = { 1676, 156, 188, 275 }; // WIZARD For changing the sprite directly
@@ -58,7 +70,7 @@ bool CharacterSelecScene::Update(float dt)
 		App->scenes->ChangeScene(App->scenes->itemSc);
 	}
 
-	DrawBackground();
+	//DrawBackground();
 	ChangeCharacter();
 
 	//App->input->CheckControllers();
@@ -198,8 +210,8 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[0] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
 		characterNameLabel[0]->setString(characterNameStrings[0]);
 		characterNameLabel[0]->SetParent(characterFrame[0]);
-		characterNameLabel[0]->SetAnchor(0, 0);
-		characterNameLabel[0]->setPosition(65, 14);
+		characterNameLabel[0]->SetAnchor(0.5f, 0.0f);
+		characterNameLabel[0]->setPosition(characterFrame[0]->getRect().w * 0.5f, 14);
 		Label* stats1Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats1Label->setString("STATS");
 		stats1Label->SetParent(characterFrame[0]);
@@ -216,8 +228,8 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[1] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
 		characterNameLabel[1]->setString(characterNameStrings[0]);
 		characterNameLabel[1]->SetParent(characterFrame[1]);
-		characterNameLabel[1]->SetAnchor(0, 0);
-		characterNameLabel[1]->setPosition(65, 14);
+		characterNameLabel[1]->SetAnchor(0.5f, 0.0f);
+		characterNameLabel[1]->setPosition(characterFrame[1]->getRect().w * 0.5f, 14);
 		Label* stats2Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats2Label->setString("STATS");
 		stats2Label->SetParent(characterFrame[1]);
@@ -234,8 +246,8 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[2] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
 		characterNameLabel[2]->setString(characterNameStrings[0]);
 		characterNameLabel[2]->SetParent(characterFrame[2]);
-		characterNameLabel[2]->SetAnchor(0, 0);
-		characterNameLabel[2]->setPosition(65, 14);
+		characterNameLabel[2]->SetAnchor(0.5f, 0.0f);
+		characterNameLabel[2]->setPosition(characterFrame[2]->getRect().w * 0.5f, 14);
 		Label* stats3Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats3Label->setString("STATS");
 		stats3Label->SetParent(characterFrame[2]);
@@ -252,8 +264,8 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[3] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
 		characterNameLabel[3]->setString(characterNameStrings[0]);
 		characterNameLabel[3]->SetParent(characterFrame[3]);
-		characterNameLabel[3]->SetAnchor(0, 0);
-		characterNameLabel[3]->setPosition(65, 14);
+		characterNameLabel[3]->SetAnchor(0.5f, 0.0f);
+		characterNameLabel[3]->setPosition(characterFrame[3]->getRect().w * 0.5f, 14);
 		Label* stats4Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats4Label->setString("STATS");
 		stats4Label->SetParent(characterFrame[3]);
@@ -273,8 +285,8 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[0] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
 		characterNameLabel[0]->setString(characterNameStrings[0]);
 		characterNameLabel[0]->SetParent(characterFrame[0]);
-		characterNameLabel[0]->SetAnchor(0, 0);
-		characterNameLabel[0]->setPosition(65, 14);
+		characterNameLabel[0]->SetAnchor(0.5f, 0.0f);
+		characterNameLabel[0]->setPosition(characterFrame[0]->getRect().w * 0.5f, 14);
 		Label* stats1Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats1Label->setString("STATS");
 		stats1Label->SetParent(characterFrame[0]);
@@ -291,8 +303,8 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[1] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
 		characterNameLabel[1]->setString(characterNameStrings[0]);
 		characterNameLabel[1]->SetParent(characterFrame[1]);
-		characterNameLabel[1]->SetAnchor(0, 0);
-		characterNameLabel[1]->setPosition(65, 14);
+		characterNameLabel[1]->SetAnchor(0.5f, 0.0f);
+		characterNameLabel[1]->setPosition(characterFrame[1]->getRect().w * 0.5f, 14);
 		Label* stats2Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats2Label->setString("STATS");
 		stats2Label->SetParent(characterFrame[1]);

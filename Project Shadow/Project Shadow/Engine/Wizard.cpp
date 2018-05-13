@@ -147,7 +147,7 @@ void Wizard::UpdateSpecStates()
 	
 		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x + (50 * -dir), gamepos.y + 40, gamepos.z },{flip,0} });
 		ab_2_bool = true;
-		noMove.Start();
+		//noMove.Start();
 			
 	}
 	if (currentTag == 13 && !ab_3_bool)
@@ -163,7 +163,7 @@ void Wizard::UpdateSpecStates()
 		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x - 30, gamepos.y , gamepos.z - 30 },{ -1,-1 } });
 		App->entities->CreateSpell({ FIRE_DEMON,team,{ gamepos.x, gamepos.y + 50 , gamepos.z} });
 		ab_3_bool = true;
-		noMove.Start();
+		//noMove.Start();
 
 	}
 }

@@ -408,11 +408,12 @@ void Character::RequestState() {
 
 void Character::UpdateMainStates()
 {
-	if (wantedTag != 0 && GetAtk(wantedTag)->ability && currentTag != 11 && currentTag != 12 && currentTag != 13)
+	if (wantedTag != 0 && GetAtk(wantedTag)->ability)
 	{
 		if (!GetAbAtk(wantedTag)->active)
 		{
 			wantedTag = 0;
+			if (!StateisAtk(currentState))
 			wantedState = currentState;
 		}
 		else

@@ -477,12 +477,7 @@ void Character::UpdateMainStates()
 	{
 		if (currentState == DEATH)
 		{
-			lives--;
-			if (lives > 0)
-				Respawn();
-
-			else
-				active = false;
+			active = false;
 		}
 		
 		if (StateisAtk(currentState))

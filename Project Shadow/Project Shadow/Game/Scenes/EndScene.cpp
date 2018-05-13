@@ -79,13 +79,19 @@ void EndScene::SetControllerFocus() {
 
 }
 void EndScene::LoadUIButtons() {
+	uiPoint screenSize = App->gui->GetGuiSize();
+	SDL_Texture* back_end = App->textures->Load("UI/YouWin.png");
+	Sprite* background = App->gui->AddSprite(820, 540, back_end, { 0,0,1750,1080 }, true);
+	background->setPosition(screenSize.x * 0.5f, screenSize.y * 0.5f);
+	background->ComputeRects();
+	if (screenSize.y < background->rect.h) {
+		background->scale = MAX((float)screenSize.y / (float)background->rect.h, (float)screenSize.x / (float)background->rect.w);
+	}
+	else {
+		background->scale = MIN((float)screenSize.y / (float)background->rect.h, (float)screenSize.x / (float)background->rect.w);
+	}
 
-	SDL_Texture* back_end = App->textures->Load("UI/BackgroundItems.png");
-	uiPoint win_size = App->gui->GetGuiSize();
-	App->gui->AddSprite(820, 540, back_end, { 0,0,1750,1080 }, true);
-
-
-	mainMenuButton = App->gui->AddButton((win_size.x / 2), (win_size.y / 10) * 7, nullptr, { 1282,883,400,98 }, true, MainButtonPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	mainMenuButton = App->gui->AddButton((screenSize.x / 2) + ((400/1080) * screenSize.x), (screenSize.y / 4) * 3, nullptr, { 50,50,384,195 }, true, MainButtonPressCallb, { 50,270,384,195 }, { 50,491,384,195 });
 	mainMenuButton->OnHoverEnter = MainButtonHoverEnCallb;
 	mainMenuButton->OnHoverExit = MainButtonHoverExCallb;
 	mainLabel = App->gui->AddLabel(mainMenuButton->rect.w / 2, mainMenuButton->rect.h / 2, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
@@ -94,14 +100,13 @@ void EndScene::LoadUIButtons() {
 	mainLabel->SetParent(mainMenuButton);
 	mainLabel->culled = false;
 
-	winnerLabel = App->gui->AddLabel(win_size.x / 2, (win_size.y / 10) * 3, 80, DEFAULT_FONT, { 255, 255, 255, 255 });
+	winnerLabel = App->gui->AddLabel(screenSize.x / 2, (screenSize.y / 4) * 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
 
-	winnerLabel->setString("WINNER TEAM %d!", App->entities->GetWinnerTeam());
+	winnerLabel->setString("WINNER: TEAM %d", App->entities->GetWinnerTeam());
 
 }
 void EndScene::ChooseFocus() {
 	if (App->input->GetButtonDown(1, SDL_CONTROLLER_BUTTON_A)) {
 		((Button*)App->gui->getFocusedItem())->OnClick(0);
 	}
-
 }

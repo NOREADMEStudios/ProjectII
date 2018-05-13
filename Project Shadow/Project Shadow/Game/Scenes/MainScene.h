@@ -19,6 +19,7 @@ public:
 			wonRounds[2];
 	Label	*roundsLabel = nullptr,
 			*winnerLabel = nullptr;
+	bool	combatEndControlBool = false;
 
 	MainScene();
 	virtual ~MainScene();

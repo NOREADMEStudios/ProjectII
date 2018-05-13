@@ -206,7 +206,6 @@ void Warrior::UpdateSpecStates()
 	if (currentTag == 13 && !buffed)
 	{
 		AdBuff(10, 100, 10, 10);
-		partner->AdBuff(10, 100, 10, 10);
 		buffed = true;
 
 		Spells* hw = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
@@ -217,7 +216,7 @@ void Warrior::UpdateSpecStates()
 
 		if (partner != nullptr)
 		{
-
+			partner->AdBuff(10, 100, 10, 10);
 			Spells* hw2 = App->entities->CreateSpell({ DEATH_MARK ,team,  partner->GetGamePos() });
 			hw2->SetParent(partner);
 			((DeathMark*)hw2)->SetPath("battle_cry");

@@ -46,12 +46,15 @@ bool ModuleSceneManager::Update(float dt) {
 }
 
 bool ModuleSceneManager::PostUpdate() {
+	bool ret = true;
+	if (currentScene != nullptr)
+		ret = currentScene->PostUpdate();
 	if (nextScene != nullptr) {
 		UnloadScene(currentScene);
 		LoadScene(nextScene);
 	}
 	nextScene = nullptr;
-	return true;
+	return ret;
 }
 
 
@@ -79,5 +82,4 @@ void ModuleSceneManager::ChangeScene(Scene* scene_to_change) {
 void ModuleSceneManager::UnloadScene(Scene* scene) {
 	scene->active = false;
 	scene->CleanUp();
-	scene = nullptr;
 }

@@ -69,6 +69,7 @@ bool ModuleEntityManager::Start() {
 		(*item)->Start();
 	}
 
+	justIn = true;
 	StartItems();
 	return true;
 }
@@ -96,20 +97,22 @@ bool ModuleEntityManager::PreUpdate() {
 }
 
 bool ModuleEntityManager::Update(float dt) {
-	uint i = 0;
+	uint aliveCharacters = 0;
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		if ((*item)->active)
 		{
 			(*item)->Update(dt);
 			winner = (*item)->heroNum;
 			winnerTeam = (*item)->team;
-			i++;
+			aliveCharacters++;
 		}
 	}
-	if (i == 1)
+
+	if (aliveCharacters == 1 && !justIn)
 	{
 		finish = true;
 	}
+	justIn = false;
 	return true;
 }
 
@@ -128,7 +131,7 @@ bool ModuleEntityManager::PostUpdate() {
 }
 
 bool ModuleEntityManager::CleanUp(pugi::xml_node& n) {
-
+	justIn = true;
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->CleanUp(n);
 	}

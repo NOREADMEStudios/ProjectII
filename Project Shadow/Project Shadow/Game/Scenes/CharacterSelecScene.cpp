@@ -81,6 +81,7 @@ bool CharacterSelecScene::CleanUp()
 {
 	App->gui->CleanUp();
 	App->textures->UnLoad(atlas);
+	players.clear();
 	//UnLoadBackground();
 	return true;
 }
@@ -112,6 +113,7 @@ void CharacterSelecScene::SetControllerFocus() {
 		Player player;
 
 		player.playerNum = i;
+		player.ready = false;
 		player.totalControllersNum = controllersNum;
 		player.arrowLockLeftRect = { 1718,74,29,38 };
 		player.arrowLockRightRect = { 1792,74,29,38 };

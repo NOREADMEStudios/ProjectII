@@ -73,6 +73,7 @@ bool ItemSelecScene::CleanUp()
 	App->gui->CleanUp();
 	App->textures->UnLoad(atlas);
 	UnLoadBackground();
+	players.clear();
 	return true;
 }
 

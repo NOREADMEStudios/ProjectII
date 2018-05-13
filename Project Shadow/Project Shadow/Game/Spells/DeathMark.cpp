@@ -18,9 +18,14 @@ bool DeathMark::Start() {
 	currentAnimation = &spellAnim;
 	spellAnim.speed = 10;
 
+	if (cl)
+		spellAnim.speed = 15;
+
 	//spellColl = App->collision->CreateCollider({}, "DeathMark_Spell", Collider::SPELL);
 	//App->collision->AddCollider(spellColl, this);
 	//collider = { 0,0,45,65 };
+
+
 
 	stats.atk = 8;
 
@@ -52,9 +57,14 @@ bool DeathMark::Update(float dt) {
 	//GetColliderFromAnimation();
 	Point3D gp = parent->GetGamePos();
 	gamepos.x = gp.x;
+	if (cl)
+		gamepos.y = gp.y;
+	else
 	gamepos.y = gp.y + 100;
-	gamepos.z = gp.z;
 
+	gamepos.z = gp.z;
+	if (cl && currentAnimation->Finished())
+		to_delete = true;
 
 	App->render->FillQueue(this);//prints the spell
 

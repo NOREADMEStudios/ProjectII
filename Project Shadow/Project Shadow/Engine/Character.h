@@ -259,7 +259,7 @@ protected:
 
 	iPoint initialpos;
 	int initialLife = 0;
-	uint lives = 0, maxLives = 3;
+	uint lives = 0, maxLives = 1;
 	int hit_dir = 0;
 	
 	bool hit_bool = 0;

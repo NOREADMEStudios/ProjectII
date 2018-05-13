@@ -24,7 +24,7 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; }
 	void SetPath(std::string _name);
 
-
+	bool cl;
 protected:
 	void Dead();
 	bool stop = false;

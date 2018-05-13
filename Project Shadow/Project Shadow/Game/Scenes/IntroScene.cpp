@@ -37,6 +37,18 @@ IntroScene::~IntroScene()
 bool IntroScene::Start()
 {
 	bool test= LoadBackground("UI/MainMenu.png");
+	uiPoint screenSize = App->gui->GetGuiSize();
+
+	Sprite* bg = App->gui->AddSprite(0, 0, background, { 0,0,1920,1080 });
+	bg->setPosition(screenSize.x * 0.5f, screenSize.y * 0.5f);
+	bg->ComputeRects();
+	if (screenSize.y < bg->rect.h) {
+		bg->scale = MAX((float)screenSize.y / (float)bg->rect.h, (float)screenSize.x / (float)bg->rect.w);
+	}
+	else {
+		bg->scale = MIN((float)screenSize.y / (float)bg->rect.h, (float)screenSize.x / (float)bg->rect.w);
+	}
+
 	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
 	atlas = App->textures->Load("UI/atlas.png");	
 	LoadBackground("UI/MainMenu.png");
@@ -50,7 +62,7 @@ bool IntroScene::Start()
 
 bool IntroScene::Update(float dt)
 {
-	DrawBackground();
+	//DrawBackground();
 
 	//App->input->CheckControllers();
 
@@ -167,7 +179,7 @@ void IntroScene::LoadUIButtons() {
 
 	exitButton = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3.3f, atlas, { 1282,883,400,98 }, true, ExitPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
 
-	Label* exitLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
+	Label* exitLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string ExitStr = "EXIT";
 	exitLabel->setString(ExitStr);
 	exitLabel->SetParent(exitButton);

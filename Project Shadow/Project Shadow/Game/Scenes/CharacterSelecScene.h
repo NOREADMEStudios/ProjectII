@@ -43,6 +43,8 @@ public:
 	CharacterTypes charactersType[4];
 	Sprite* characterFrame[4];
 	Sprite* characterSprites[4];
+	Sprite* statsSprites[16];
+	SDL_Rect statsRects[5];
 	SDL_Rect characterRects[4];
 	Label* characterNameLabel[4];
 	String characterNameStrings[4];
@@ -73,6 +75,7 @@ private:
 	void SetControllerFocus();
 	void SetCharactersInfo();
 	void ChangeCharacter();
+	void ChangeStats(int playerNum, int index);
 	bool AllPlayersReady();
 	void ApplyCharacterSelection();
 

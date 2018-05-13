@@ -37,6 +37,11 @@ bool CharacterSelecScene::Start()
 	characterRects[1] = { 1676, 431, 188, 275 }; //ROGUE
 	characterRects[2] = { 1864, 431, 188, 275 }; //WARRIOR
 	characterRects[3] = { 1864, 156, 188, 275 }; //CLERIC
+	statsRects[0] = { 1298, 1126, 255, 15 }; // 1/5
+	statsRects[1] = { 1298, 1147, 255, 15 }; // 2/5
+	statsRects[2] = { 1298, 1170, 255, 15 }; // 3/5
+	statsRects[3] = { 1298, 1191, 255, 15 }; // 4/5
+	statsRects[4] = { 1298, 1210, 255, 15 }; // 5/5
 	characterNameStrings[0] = "WIZARD";
 	characterNameStrings[1] = "ROGUE";
 	characterNameStrings[2] = "WARRIOR";
@@ -134,11 +139,13 @@ void CharacterSelecScene::ChangeCharacter()
 				characterSprites[i]->idle_anim = characterRects[indexSprites[i] + 1];
 				characterNameLabel[i]->setString(characterNameStrings[indexSprites[i] + 1]);
 				indexSprites[i]++;
+				ChangeStats(i, indexSprites[i]);
 			}
 			else {
 				characterSprites[i]->idle_anim = characterRects[0];
 				characterNameLabel[i]->setString(characterNameStrings[0]);
 				indexSprites[i] = 0;
+				ChangeStats(i, indexSprites[i]);
 			}
 		}
 		else if (App->input->GetButtonFromController(player->playerNum, false) == Input::LEFT && !player->ready) {
@@ -146,11 +153,13 @@ void CharacterSelecScene::ChangeCharacter()
 				characterSprites[i]->idle_anim = characterRects[indexSprites[i] - 1];
 				characterNameLabel[i]->setString(characterNameStrings[indexSprites[i] - 1]);
 				indexSprites[i]--;
+				ChangeStats(i, indexSprites[i]);
 			}
 			else {
 				characterSprites[i]->idle_anim = characterRects[3];
 				characterNameLabel[i]->setString(characterNameStrings[3]);
 				indexSprites[i] = 3;
+				ChangeStats(i, indexSprites[i]);
 			}
 		}
 		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_A && !player->ready ) {
@@ -180,6 +189,116 @@ void CharacterSelecScene::ChangeCharacter()
 	}
 }
 
+void CharacterSelecScene::ChangeStats(int playerNum, int index){
+	if (playerNum == 0) {
+		if (index == 0) {
+			statsSprites[0]->idle_anim = statsRects[4];
+			statsSprites[1]->idle_anim = statsRects[0];
+			statsSprites[2]->idle_anim = statsRects[1];
+			statsSprites[3]->idle_anim = statsRects[3];
+		}
+		else if (index == 1) {
+			statsSprites[0]->idle_anim = statsRects[3];
+			statsSprites[1]->idle_anim = statsRects[4];
+			statsSprites[2]->idle_anim = statsRects[0];
+			statsSprites[3]->idle_anim = statsRects[1];
+		}
+		else if (index == 2) {
+			statsSprites[0]->idle_anim = statsRects[2];
+			statsSprites[1]->idle_anim = statsRects[3];
+			statsSprites[2]->idle_anim = statsRects[4];
+			statsSprites[3]->idle_anim = statsRects[2];
+		}
+		else if (index == 3) {
+			statsSprites[0]->idle_anim = statsRects[1];
+			statsSprites[1]->idle_anim = statsRects[4];
+			statsSprites[2]->idle_anim = statsRects[4];
+			statsSprites[3]->idle_anim = statsRects[1];
+		}
+	}
+
+	else if (playerNum == 1) {
+		if (index == 0) {
+			statsSprites[4]->idle_anim = statsRects[4];
+			statsSprites[5]->idle_anim = statsRects[0];
+			statsSprites[6]->idle_anim = statsRects[1];
+			statsSprites[7]->idle_anim = statsRects[3];
+		}
+		else if (index == 1) {
+			statsSprites[4]->idle_anim = statsRects[3];
+			statsSprites[5]->idle_anim = statsRects[4];
+			statsSprites[6]->idle_anim = statsRects[0];
+			statsSprites[7]->idle_anim = statsRects[1];
+		}
+		else if (index == 2) {
+			statsSprites[4]->idle_anim = statsRects[2];
+			statsSprites[5]->idle_anim = statsRects[3];
+			statsSprites[6]->idle_anim = statsRects[4];
+			statsSprites[7]->idle_anim = statsRects[2];
+		}
+		else if (index == 3) {
+			statsSprites[4]->idle_anim = statsRects[1];
+			statsSprites[5]->idle_anim = statsRects[4];
+			statsSprites[6]->idle_anim = statsRects[4];
+			statsSprites[7]->idle_anim = statsRects[1];
+		}
+	}
+
+	else if (playerNum == 2) {
+		if (index == 0) {
+			statsSprites[8]->idle_anim = statsRects[4];
+			statsSprites[9]->idle_anim = statsRects[0];
+			statsSprites[10]->idle_anim = statsRects[1];
+			statsSprites[11]->idle_anim = statsRects[3];
+		}
+		else if (index == 1) {
+			statsSprites[8]->idle_anim = statsRects[3];
+			statsSprites[9]->idle_anim = statsRects[4];
+			statsSprites[10]->idle_anim = statsRects[0];
+			statsSprites[11]->idle_anim = statsRects[1];
+		}
+		else if (index == 2) {
+			statsSprites[8]->idle_anim = statsRects[2];
+			statsSprites[9]->idle_anim = statsRects[3];
+			statsSprites[10]->idle_anim = statsRects[4];
+			statsSprites[11]->idle_anim = statsRects[2];
+		}
+		else if (index == 3) {
+			statsSprites[8]->idle_anim = statsRects[1];
+			statsSprites[9]->idle_anim = statsRects[4];
+			statsSprites[10]->idle_anim = statsRects[4];
+			statsSprites[11]->idle_anim = statsRects[1];
+		}
+	}
+
+	else if (playerNum == 3) {
+		if (index == 0) {
+			statsSprites[12]->idle_anim = statsRects[4];
+			statsSprites[13]->idle_anim = statsRects[0];
+			statsSprites[14]->idle_anim = statsRects[1];
+			statsSprites[15]->idle_anim = statsRects[3];
+		}
+		else if (index == 1) {
+			statsSprites[12]->idle_anim = statsRects[3];
+			statsSprites[13]->idle_anim = statsRects[4];
+			statsSprites[14]->idle_anim = statsRects[0];
+			statsSprites[15]->idle_anim = statsRects[1];
+		}
+		else if (index == 2) {
+			statsSprites[12]->idle_anim = statsRects[2];
+			statsSprites[13]->idle_anim = statsRects[3];
+			statsSprites[14]->idle_anim = statsRects[4];
+			statsSprites[15]->idle_anim = statsRects[2];
+		}
+		else if (index == 3) {
+			statsSprites[12]->idle_anim = statsRects[1];
+			statsSprites[13]->idle_anim = statsRects[4];
+			statsSprites[14]->idle_anim = statsRects[4];
+			statsSprites[15]->idle_anim = statsRects[1];
+		}
+	}
+}
+
 void CharacterSelecScene::ApplyCharacterSelection() {
 	for (int i = 0; i < controllersNum; i++) {
 		charactersInfo[i].chType = charactersType[indexSprites[i]];
@@ -192,7 +311,7 @@ void CharacterSelecScene::LoadSceneUI() {
 
 	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
 		Sprite* crossedSwordsSprite = App->gui->AddSprite(sizeScreen.x / 2 , sizeScreen.y / 5 * 3 + 20, atlas, { 1700, 782,187,175 });
-		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 8 - 30, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
+		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 8 - 30, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
 		characterSprites[0] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[0]->idle_anim = characterRects[0];
 		characterSprites[0]->SetParent(characterFrame[0]);
@@ -209,8 +328,25 @@ void CharacterSelecScene::LoadSceneUI() {
 		Sprite* blueTeam1Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 741, 412,53,53 });
 		blueTeam1Sprite->SetParent(characterFrame[0]);
 		blueTeam1Sprite->setPosition(172, 416);
+		statsSprites[0] = App->gui->AddSprite(0, 0, atlas, statsRects[4]);
+		statsSprites[0]->SetParent(characterFrame[0]);
+		statsSprites[0]->SetAnchor(0, 0);
+		statsSprites[0]->setPosition(45, 530);
+		statsSprites[1] = App->gui->AddSprite(0, 0, atlas, statsRects[0]);
+		statsSprites[1]->SetParent(characterFrame[0]);
+		statsSprites[1]->SetAnchor(0, 0);
+		statsSprites[1]->setPosition(45, 562);
+		statsSprites[2] = App->gui->AddSprite(0, 0, atlas, statsRects[1]);
+		statsSprites[2]->SetParent(characterFrame[0]);
+		statsSprites[2]->SetAnchor(0, 0);
+		statsSprites[2]->setPosition(45, 594);
+		statsSprites[3] = App->gui->AddSprite(0, 0, atlas, statsRects[3]);
+		statsSprites[3]->SetParent(characterFrame[0]);
+		statsSprites[3]->SetAnchor(0, 0);
+		statsSprites[3]->setPosition(45, 626);
 
-		characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 8 * 3 - 60, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
+
+		characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 8 * 3 - 60, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
 		characterSprites[1] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[1]->SetParent(characterFrame[1]);
 		characterSprites[1]->SetAnchor(0, 0);
@@ -226,8 +362,24 @@ void CharacterSelecScene::LoadSceneUI() {
 		Sprite* blueTeam2Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 741, 412,53,53 });
 		blueTeam2Sprite->SetParent(characterFrame[1]);
 		blueTeam2Sprite->setPosition(172, 416);
+		statsSprites[4] = App->gui->AddSprite(0, 0, atlas, statsRects[4]);
+		statsSprites[4]->SetParent(characterFrame[1]);
+		statsSprites[4]->SetAnchor(0, 0);
+		statsSprites[4]->setPosition(45, 530);
+		statsSprites[5] = App->gui->AddSprite(0, 0, atlas, statsRects[0]);
+		statsSprites[5]->SetParent(characterFrame[1]);
+		statsSprites[5]->SetAnchor(0, 0);
+		statsSprites[5]->setPosition(45, 562);
+		statsSprites[6] = App->gui->AddSprite(0, 0, atlas, statsRects[1]);
+		statsSprites[6]->SetParent(characterFrame[1]);
+		statsSprites[6]->SetAnchor(0, 0);
+		statsSprites[6]->setPosition(45, 594);
+		statsSprites[7] = App->gui->AddSprite(0, 0, atlas, statsRects[3]);
+		statsSprites[7]->SetParent(characterFrame[1]);
+		statsSprites[7]->SetAnchor(0, 0);
+		statsSprites[7]->setPosition(45, 626);
 
-		characterFrame[2] = App->gui->AddSprite((sizeScreen.x / 8) * 5 + 60, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
+		characterFrame[2] = App->gui->AddSprite((sizeScreen.x / 8) * 5 + 60, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
 		characterSprites[2] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[2]->SetParent(characterFrame[2]);
 		characterSprites[2]->SetAnchor(0, 0);
@@ -243,8 +395,24 @@ void CharacterSelecScene::LoadSceneUI() {
 		Sprite* redTeam1Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 676, 412,53,53 });
 		redTeam1Sprite->SetParent(characterFrame[2]);
 		redTeam1Sprite->setPosition(172, 416);
+		statsSprites[8] = App->gui->AddSprite(0, 0, atlas, statsRects[4]);
+		statsSprites[8]->SetParent(characterFrame[2]);
+		statsSprites[8]->SetAnchor(0, 0);
+		statsSprites[8]->setPosition(45, 530);
+		statsSprites[9] = App->gui->AddSprite(0, 0, atlas, statsRects[0]);
+		statsSprites[9]->SetParent(characterFrame[2]);
+		statsSprites[9]->SetAnchor(0, 0);
+		statsSprites[9]->setPosition(45, 562);
+		statsSprites[10] = App->gui->AddSprite(0, 0, atlas, statsRects[1]);
+		statsSprites[10]->SetParent(characterFrame[2]);
+		statsSprites[10]->SetAnchor(0, 0);
+		statsSprites[10]->setPosition(45, 594);
+		statsSprites[11] = App->gui->AddSprite(0, 0, atlas, statsRects[3]);
+		statsSprites[11]->SetParent(characterFrame[2]);
+		statsSprites[11]->SetAnchor(0, 0);
+		statsSprites[11]->setPosition(45, 626);
 
-		characterFrame[3] = App->gui->AddSprite((sizeScreen.x / 8) * 7 + 30, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
+		characterFrame[3] = App->gui->AddSprite((sizeScreen.x / 8) * 7 + 30, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
 		characterSprites[3] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[3]->SetParent(characterFrame[3]);
 		characterSprites[3]->SetAnchor(0, 0);
@@ -260,11 +428,27 @@ void CharacterSelecScene::LoadSceneUI() {
 		Sprite* redTeam2Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 676, 412,53,53 });
 		redTeam2Sprite->SetParent(characterFrame[3]);
 		redTeam2Sprite->setPosition(172, 416);
+		statsSprites[12] = App->gui->AddSprite(0, 0, atlas, statsRects[4]);
+		statsSprites[12]->SetParent(characterFrame[3]);
+		statsSprites[12]->SetAnchor(0, 0);
+		statsSprites[12]->setPosition(45, 530);
+		statsSprites[13] = App->gui->AddSprite(0, 0, atlas, statsRects[0]);
+		statsSprites[13]->SetParent(characterFrame[3]);
+		statsSprites[13]->SetAnchor(0, 0);
+		statsSprites[13]->setPosition(45, 562);
+		statsSprites[14] = App->gui->AddSprite(0, 0, atlas, statsRects[1]);
+		statsSprites[14]->SetParent(characterFrame[3]);
+		statsSprites[14]->SetAnchor(0, 0);
+		statsSprites[14]->setPosition(45, 594);
+		statsSprites[15] = App->gui->AddSprite(0, 0, atlas, statsRects[3]);
+		statsSprites[15]->SetParent(characterFrame[3]);
+		statsSprites[15]->SetAnchor(0, 0);
+		statsSprites[15]->setPosition(45, 626);
 	}
 
 	else if (App->scenes->gameMode == GameMode::ONEvsONE){
 		Sprite* crossedSwordsSprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 1700, 782,187,175 });
-		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 4, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
+		characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 4, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
 		characterSprites[0] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[0]->SetParent(characterFrame[0]);
 		characterSprites[0]->SetAnchor(0, 0);
@@ -281,8 +465,24 @@ void CharacterSelecScene::LoadSceneUI() {
 		Sprite* blueTeam1Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 741, 412,53,53 });
 		blueTeam1Sprite->SetParent(characterFrame[0]);
 		blueTeam1Sprite->setPosition(172, 416);
+		statsSprites[0] = App->gui->AddSprite(0, 0, atlas, statsRects[4]);
+		statsSprites[0]->SetParent(characterFrame[0]);
+		statsSprites[0]->SetAnchor(0, 0);
+		statsSprites[0]->setPosition(45, 530);
+		statsSprites[1] = App->gui->AddSprite(0, 0, atlas, statsRects[0]);
+		statsSprites[1]->SetParent(characterFrame[0]);
+		statsSprites[1]->SetAnchor(0, 0);
+		statsSprites[1]->setPosition(45, 562);
+		statsSprites[2] = App->gui->AddSprite(0, 0, atlas, statsRects[1]);
+		statsSprites[2]->SetParent(characterFrame[0]);
+		statsSprites[2]->SetAnchor(0, 0);
+		statsSprites[2]->setPosition(45, 594);
+		statsSprites[3] = App->gui->AddSprite(0, 0, atlas, statsRects[3]);
+		statsSprites[3]->SetParent(characterFrame[0]);
+		statsSprites[3]->SetAnchor(0, 0);
+		statsSprites[3]->setPosition(45, 626);
 
-		characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 4 * 3, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 50, 343, 659 });
+		characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 4 * 3, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
 		characterSprites[1] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[1]->SetParent(characterFrame[1]);
 		characterSprites[1]->SetAnchor(0, 0);
@@ -299,6 +499,22 @@ void CharacterSelecScene::LoadSceneUI() {
 		Sprite* redTeam1Sprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 676, 412,53,53 });
 		redTeam1Sprite->SetParent(characterFrame[1]);
 		redTeam1Sprite->setPosition(172, 416);
+		statsSprites[4] = App->gui->AddSprite(0, 0, atlas, statsRects[4]);
+		statsSprites[4]->SetParent(characterFrame[1]);
+		statsSprites[4]->SetAnchor(0, 0);
+		statsSprites[4]->setPosition(45, 530);
+		statsSprites[5] = App->gui->AddSprite(0, 0, atlas, statsRects[0]);
+		statsSprites[5]->SetParent(characterFrame[1]);
+		statsSprites[5]->SetAnchor(0, 0);
+		statsSprites[5]->setPosition(45, 562);
+		statsSprites[6] = App->gui->AddSprite(0, 0, atlas, statsRects[1]);
+		statsSprites[6]->SetParent(characterFrame[1]);
+		statsSprites[6]->SetAnchor(0, 0);
+		statsSprites[6]->setPosition(45, 594);
+		statsSprites[7] = App->gui->AddSprite(0, 0, atlas, statsRects[3]);
+		statsSprites[7]->SetParent(characterFrame[1]);
+		statsSprites[7]->SetAnchor(0, 0);
+		statsSprites[7]->setPosition(45, 626);
 
 	}
 }

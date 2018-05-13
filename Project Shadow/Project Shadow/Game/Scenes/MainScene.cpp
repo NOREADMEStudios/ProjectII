@@ -46,22 +46,26 @@ bool MainScene::Start()
 
 	atlas = App->textures->Load("UI/atlas.png");
 
-	e = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[0]);
-	e2 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[1]);
-
-	App->gui->AddHealthbar((Character*)e, 0, true, 10, 10, atlas, true, { 451, 271, 264, 26 });
-	App->gui->AddHealthbar((Character*)e2, 1, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
-
 	uiPoint dims = App->gui->GetGuiSize();
 	roundsLabel = App->gui->AddLabel(0.5f * dims.x, 0.1f * dims.y, 70, "Assets/Textures/UI/TTF/Vecna Bold.ttf",
 										{ 255, 255, 255, 255 }, Label::BLENDED, "Round %d", currentRound);
 
-
-	if (App->scenes->gameMode==GameMode::TWOvsTWO)
+	if (App->scenes->gameMode == GameMode::ONEvsONE) {
+		e = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[0]);
+		e2 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[1]);
+		App->gui->AddHealthbar((Character*)e, 0, true, 10, 10, atlas, true, { 451, 271, 264, 26 });
+		App->gui->AddHealthbar((Character*)e2, 2, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
+	}
+	else if (App->scenes->gameMode==GameMode::TWOvsTWO)
 	{
+		e = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[0]);
+		e2 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[1]);
+		App->gui->AddHealthbar((Character*)e, 0, true, 10, 10, atlas, true, { 451, 271, 264, 26 });
+		App->gui->AddHealthbar((Character*)e2, 1, true, 1590, 10, atlas, true, { 451, 271, 264, 26 });
+
 		e3 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[2]);
 		e4 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[3]);
-		App->gui->AddHealthbar((Character*)e3, 2, true, 1590, 10, atlas, true, { 451, 271, 264, 26 });
+		App->gui->AddHealthbar((Character*)e3, 2, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
 		App->gui->AddHealthbar((Character*)e4, 3, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
 	}
 	return false;

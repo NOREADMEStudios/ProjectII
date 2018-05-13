@@ -341,11 +341,11 @@ std::list<Input> ModuleInput::GetInputListFromController(int playerNum)const{
 			{
 				switch (i) {
 				case 0:
-					if (controllers[playerNum - 1].axis[i] > 0.5f)
+					if (controllers[playerNum - 1].axis[i] > 0.7f)
 					{
 						ret.push_back(Input::RIGHT);
 					}
-					else if (controllers[playerNum - 1].axis[i] < -0.5f)
+					else if (controllers[playerNum - 1].axis[i] < -0.7f)
 					{
 						ret.push_back(Input::LEFT);
 					}
@@ -360,17 +360,11 @@ std::list<Input> ModuleInput::GetInputListFromController(int playerNum)const{
 						ret.push_back(Input::UP);
 					}
 					break;
-				case 2:
-					if (controllers[playerNum - 1].axis[i] > 0.2f)
-					{
-						ret.push_back(Input::R2);
-					}
+				case 4:	
+						ret.push_back(Input::R2);				
 					break;
-				case 3:
-					if (controllers[playerNum - 1].axis[i] > 0.2f)
-					{
-						ret.push_back(Input::L2);
-					}
+				case 5:				
+						ret.push_back(Input::L2);				
 					break;
 				}
 			}
@@ -384,7 +378,7 @@ bool ModuleInput::GetButtonDown(int controller, int input) const
 	return controllers[controller - 1].buttons[input] == ButtonState::B_DOWN;
 }
 
-Input ModuleInput::GetButtonFromController(int controllerNum) const {
+Input ModuleInput::GetButtonFromController(int controllerNum, bool joystick ) const {
 	Input ret = (Input)SDL_CONTROLLER_BUTTON_INVALID;
 	for (int i = 0; i < MAX_BUTTONS; ++i)
 	{
@@ -437,31 +431,33 @@ Input ModuleInput::GetButtonFromController(int controllerNum) const {
 				break;
 			}
 		}
-		for (int i = 0; i < MAX_AXIS; i++)
-		{
-			if (controllers[controllerNum - 1].axis[i] >= 0.5f || controllers[controllerNum - 1].axis[i] <= -0.5f)
+		if (joystick) {
+			for (int i = 0; i < MAX_AXIS; i++)
 			{
-				switch (i) {
-				case 0:
-					if (controllers[controllerNum - 1].axis[i] > 0.5f)
-					{
-						ret = Input::RIGHT;
+				if (controllers[controllerNum - 1].axis[i] >= 0.5f || controllers[controllerNum - 1].axis[i] <= -0.5f)
+				{
+					switch (i) {
+					case 0:
+						if (controllers[controllerNum - 1].axis[i] > 0.5f)
+						{
+							ret = Input::RIGHT;
+						}
+						else if (controllers[controllerNum - 1].axis[i] < -0.5f)
+						{
+							ret = Input::LEFT;
+						}
+						break;
+					case 1:
+						if (controllers[controllerNum - 1].axis[i] > 0.5f)
+						{
+							ret = Input::DOWN;
+						}
+						else if (controllers[controllerNum - 1].axis[i] < -0.5f)
+						{
+							ret = Input::UP;
+						}
+						break;
 					}
-					else if (controllers[controllerNum - 1].axis[i] < -0.5f)
-					{
-						ret = Input::LEFT;
-					}
-					break;
-				case 1:
-					if (controllers[controllerNum - 1].axis[i] > 0.5f)
-					{
-						ret=Input::DOWN;
-					}
-					else if (controllers[controllerNum - 1].axis[i] < -0.5f)
-					{
-						ret=Input::UP;
-					}
-					break;
 				}
 			}
 		}

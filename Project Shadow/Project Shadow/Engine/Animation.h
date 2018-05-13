@@ -8,6 +8,7 @@
 #include "Log.h"
 
 
+
 struct AnimationFrame {
 	iRect rect;
 	iPoint pivot;
@@ -34,6 +35,7 @@ class Animation
 public:
 	bool loop = true;
 	float speed = 1.0f;
+	float realSpeed;
 	std::vector<AnimationFrame> frames;
 	std::vector<AnimColls> coll_frames;
 	std::vector<iRect> coll_spell;
@@ -68,6 +70,7 @@ public:
 						}
 						else if (strcmp(propert.attribute("name").as_string(), spd.data()) == 0) {
 							speed = propert.attribute("value").as_float();
+							realSpeed = speed;
 						}
 					}
 					for (pugi::xml_node object = anim.child("object"); object; object = object.next_sibling("object")) {
@@ -86,6 +89,9 @@ public:
 	iRect GetFeetColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_frames.at(currFrame).feet;
+		if (collider.IsZero()) {
+			return collider;
+		}
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
@@ -93,6 +99,9 @@ public:
 	iRect GetHitBoxColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_frames.at(currFrame).hitbox;
+		if (collider.IsZero()) {
+			return collider;
+		}
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
@@ -100,18 +109,27 @@ public:
 	iRect GetAtkColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_frames.at(currFrame).attack;
+		if (collider.IsZero()) {
+			return collider;
+		}
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
 	iRect GetDefColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_frames.at(currFrame).defense;
+		if (collider.IsZero()) {
+			return collider;
+		}
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
 	iRect GetParryColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_frames.at(currFrame).parry;
+		if (collider.IsZero()) {
+			return collider;
+		}
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
@@ -119,6 +137,9 @@ public:
 	iRect GetSpellColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_spell.at(currFrame);
+		if (collider.IsZero()) {
+			return collider;
+		}
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	
@@ -145,8 +166,18 @@ public:
 			current_frame = (loop) ? 0.0f : last_frame - 1;
 			loops++;
 		}
-
 		return frames[(int)current_frame];
+	}
+
+	AnimationFrame& GetPausedFrame() {
+		int i = getFrameIndex();
+		speed = 0;
+		return frames[i];
+	}
+
+	void ResumeFrame() {
+	
+		speed = realSpeed;
 	}
 
 	bool Finished() const

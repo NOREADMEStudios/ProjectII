@@ -35,8 +35,12 @@ bool Character::Start()
 	collider.x = position.x;
 	collider.y = position.y;
 
+
 	currentState = IDLE;
-	currentAnimation = &states.front()->anim;
+	UpdateAnimation();
+	currentTag = 0;
+	wantedTag = 0;
+	cleric_ab = false;
 
 	collAtk = App->collision->CreateCollider({}, "enemy_attack", Collider::ATK);
 	collHitBox = App->collision->CreateCollider({}, "player_hitbox", Collider::HITBOX);
@@ -53,26 +57,23 @@ bool Character::Start()
 
 	invencible.dur = 3;
 	invencible.fr = 0.2f;
-	stats.spd = 180;
-	stats.life = 100;
-	stats.atk = 8;
-	stats.def = 1;
 	char_depth = 20;
 
 
 	initialpos.x = gamepos.x;
 	initialpos.y = gamepos.z;
-	initialLife = stats.life;
 	lives = maxLives;
 
 	LoadShadow();
-
-	max_speed = stats.spd;
 
 
 	HeroStart();
 	noMove.SetZero();
 
+
+	max_speed = stats.spd;
+	max_speed_y = stats.spd;
+	initialLife = stats.life;
 
 	active = true;
 	return true; 
@@ -89,8 +90,15 @@ bool Character::Update(float dt)
 { 
 
 	if (paused) {
+		resume = true;
 		return PausedUpdate();
 	}
+	if (resume) {
+		currentAnimation->ResumeFrame();
+		resume = false;
+	}
+
+
 	currentAnimation = &states.front()->anim;
 
 
@@ -211,12 +219,18 @@ void Character::UpdateCollidersPosition() {
 	collFeet->collider.y += pivot_pos.y;//pivot
 	collHitBox->collider.x += pivot_pos.x;
 	collHitBox->collider.y += pivot_pos.y;
-	collAtk->collider.x += pivot_pos.x;
-	collAtk->collider.y += pivot_pos.y;
-	collDef->collider.y += pivot_pos.y;
-	collDef->collider.x += pivot_pos.x;
-	collParry->collider.y += pivot_pos.y;
-	collParry->collider.x += pivot_pos.x;
+	if (!(collAtk->collider.w == 0)) {
+		collAtk->collider.x += pivot_pos.x;
+		collAtk->collider.y += pivot_pos.y;
+	}
+	if (!(collDef->collider.w == 0)) {
+		collDef->collider.y += pivot_pos.y;
+		collDef->collider.x += pivot_pos.x;
+	}
+	if (!(collParry->collider.w == 0)) {
+		collParry->collider.y += pivot_pos.y;
+		collParry->collider.x += pivot_pos.x;
+	}
 }
 
 void Character::GetCollidersFromAnimation() {
@@ -242,8 +256,11 @@ void Character::GetCollidersFromAnimation() {
 	{
 		collFeet->collider.x = currentAnimation->CurrentFrame().rect.w - (collFeet->collider.x + collFeet->collider.w);
 		collHitBox->collider.x = currentAnimation->CurrentFrame().rect.w - (collHitBox->collider.x + collHitBox->collider.w);
+		if (!(collAtk->collider.w==0))
 		collAtk->collider.x = currentAnimation->CurrentFrame().rect.w - (collAtk->collider.x + collAtk->collider.w);
+		if (!(collDef->collider.w == 0))
 		collDef->collider.x = currentAnimation->CurrentFrame().rect.w - (collDef->collider.x + collDef->collider.w);
+		if (!(collParry->collider.w == 0))
 		collParry->collider.x = currentAnimation->CurrentFrame().rect.w - (collParry->collider.x + collParry->collider.w);
 	}
 }
@@ -292,10 +309,10 @@ std::list<CharInput> Character::RequestInputs() const {
 				charInputs.push_back(CharInput::TAUNTINPUT);
 				break;
 			case R2:
-				charInputs.push_back(CharInput::AB_2);
+				charInputs.push_back(CharInput::AB_3);
 				break;
 			case L2:
-				charInputs.push_back(CharInput::AB_1);
+				charInputs.push_back(CharInput::AB_2);
 				break;
 			default:
 				break;
@@ -337,19 +354,15 @@ void Character::RequestState() {
 		case NONECHARINPUT:
 			break;
 		case CH_UP:
-			wantedState = WALK;
 			directions.up = true;
 			break;
 		case CH_DOWN:
-			wantedState = WALK;
 			directions.down = true;
 			break;
 		case CH_RIGHT:
-			wantedState = WALK;
 			directions.right = true;
 			break;
 		case CH_LEFT:
-			wantedState = WALK;
 			directions.left = true;
 			break;
 		case LIGHT_ATTACK:
@@ -365,7 +378,7 @@ void Character::RequestState() {
 			wantedTag = 3;
 			break;
 		case RUNINPUT:
-			wantedState = RUN;
+			run = true;
 			break;
 		case DEFEND:
 			wantedState = PROTECT;
@@ -392,16 +405,25 @@ void Character::RequestState() {
 			break;
 		}
 	}
+
+	if (wantedState == IDLE && (directions.down == true || directions.up == true || directions.left == true || directions.right == true))
+	{
+		wantedState = WALK;
+		if (run)
+			wantedState = RUN;
+	}
+
 }
 
 void Character::UpdateMainStates()
 {
-	if (wantedTag != 0 && GetAtk(wantedTag)->ability && currentTag != 11 && currentTag != 12 && currentTag != 13)
+	if (wantedTag != 0 && GetAtk(wantedTag)->ability)
 	{
 		if (!GetAbAtk(wantedTag)->active)
 		{
 			wantedTag = 0;
-			wantedState = IDLE;
+			if (!StateisAtk(currentState))
+			wantedState = currentState;
 		}
 		else
 			GetAbAtk(wantedTag)->Activate();
@@ -536,7 +558,7 @@ void Character::UpdateCurState(float dt)
 			if (!jumping)
 			{
 				jumping = true;
-				max_speed = 1000;
+				max_speed_y = 1000;
 				Accelerate(x_dir, 500, z_dir, dt);
 			}
 			break;
@@ -823,4 +845,14 @@ std::list<CharInput> Character::FirstPlayerConfig()
 
 	return ret;
 
+}
+
+void Character::AdHp(int hp)
+{
+	stats.life += hp;
+
+	if (stats.life > initialLife)
+	{
+		stats.life = initialLife;
+	}
 }

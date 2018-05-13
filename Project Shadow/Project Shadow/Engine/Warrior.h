@@ -39,6 +39,7 @@ private:
 	bool buffed = false;
 	bool ab_1_bool = false;
 	bool ab_2_bool = false;
+	Character* partner;
 
 };
 #endif

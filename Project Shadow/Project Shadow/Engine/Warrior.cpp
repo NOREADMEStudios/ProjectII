@@ -4,6 +4,10 @@
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
 #include "ModuleAudio.h"
+#include "Entity.h"
+
+#include "../Game/Spells/DeathMark.h"
+
 
 #include "ModuleMap.h"
 #include "App.h"
@@ -27,17 +31,16 @@ bool Warrior::Awake(pugi::xml_node&)
 
 bool Warrior::HeroStart()
 {
+	partner = (Character*)App->entities->GetSameTeam(this);
 
+	stats.spd = 180;
+	stats.life = 100;
+	stats.atk = 6;
+	stats.def = 2;
 
 	LoadState(PROTECT, "protect");
 	LoadState(PARRY, "standup");
 	LoadState(RUN, "run");
-
-	stats.atk += App->entities->items[heroNum - 1].atk;
-	stats.def += App->entities->items[heroNum - 1].def;
-	stats.spd += App->entities->items[heroNum - 1].spd;
-	stats.life += App->entities->items[heroNum - 1].life;
-
 
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack",animations_name, 2);
@@ -72,13 +75,17 @@ bool Warrior::HeroStart()
 	jump_a->AddChild(jump_a2);
 	jump_a->AddChild(jump_a3);
 
-	Ability* kick = new Ability(ab_1, 3);
+	Ability* kick = new Ability(ab_1, 5);
+	kick->ab_sprite = {202, 115, 50,50};
 	AdAbility(*kick);
 
-	Ability* stunt = new Ability(ab_2, 5);
+	Ability* stunt = new Ability(ab_2, 7);
+	stunt->ab_sprite = { 252, 115, 50,50 };
 	AdAbility(*stunt);
 
-	Ability* Aulti = new Ability(ulti, 10);
+
+	Ability* Aulti = new Ability(ulti, 20);
+	Aulti->ab_sprite = { 102, 165, 50,50 };
 	AdAbility(*Aulti);
 
 	return true;
@@ -97,7 +104,7 @@ bool Warrior::HeroUpdate(float dt)
 	int z_dir = directions.down - directions.up;
 	int x_dir = directions.right - directions.left;
 
-
+	partner = (Character*)App->entities->GetSameTeam(this);
 
 	switch (currentState)
 	{
@@ -200,8 +207,25 @@ void Warrior::UpdateSpecStates()
 
 	if (currentTag == 13 && !buffed)
 	{
-		AdBuff(5, 300, 10, 10);
+		AdBuff(10, 100, 10, 10);
+		partner->AdBuff(10, 100, 10, 10);
 		buffed = true;
+
+		Spells* hw = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
+		hw->SetParent(this);
+		((DeathMark*)hw)->SetPath("battle_cry");
+		((DeathMark*)hw)->cl = true;
+
+		App->audio->PlayFx(16);
+
+		if (partner != nullptr)
+		{
+
+			Spells* hw2 = App->entities->CreateSpell({ DEATH_MARK ,team,  partner->GetGamePos() });
+			hw2->SetParent(partner);
+			((DeathMark*)hw2)->SetPath("battle_cry");
+			((DeathMark*)hw2)->cl = true;
+		}
 	}
 
 
@@ -213,10 +237,16 @@ void Warrior::UpdateSpecStates()
 		dir = 1;
 
 	if (currentTag == 11 && !ab_1_bool)
-	Impulsate( 2 * dir, 0, 0);
+	{
+		Impulsate(2 * dir, 0, 0);
+		App->audio->PlayFx(14);
+	}
 
 	else if (currentTag == 12 && !ab_2_bool)
+	{
 		Impulsate(3 * dir, 0, 0);
+		App->audio->PlayFx(15);
+	}
 
 }
 
@@ -225,20 +255,6 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 	if (_this->entity == _other->entity) return;
 	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
-
-	/*int z1 = _this->entity->GetGamePos().z;
-	int d1 = _this->entity->GetCharDepth();
-
-	int z2 = _other->entity->GetGamePos().z;
-	int d2 = _other->entity->GetCharDepth();
-
-	int p11 = z1 - (d1 / 2);
-	int p12 = z1 + (d1 / 2);
-	int p21 = z2 - (d2 / 2);
-	int p22 = z2 + (d2 / 2);
-
-	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))*/
-	{
 
 		if (_this->collider.x - _other->collider.x > 0)
 
@@ -306,10 +322,10 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 
 		}
-		else if (_this->type == Collider::ATK && _other->type == Collider::HITBOX && StateisAtk(currentState))
+		else if ((_this->type == Collider::ATK || _this->type == Collider::PARRY) && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{
 			Attack * atk = GetAtk(currentTag);
-			int dmg = _this->entity->stats.atk + atk->damage < _other->entity->stats.def;
+			int dmg = _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 			if (dmg <= 0)
 			{
 				dmg = 1;
@@ -320,6 +336,9 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (currentTag == 11)
 			{
 				_other->entity->AdBuff(3, -_other->entity->stats.spd);
+				Spells* dm = App->entities->CreateSpell({ DEATH_MARK , NOTEAM,{ 0,0,0 } });
+				dm->SetParent((Character*)_other->entity);
+				((DeathMark*)dm)->SetPath("stun");
 			}
 			else if (currentTag == 12)
 			{
@@ -330,5 +349,5 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 
 
-	}
+	
 }

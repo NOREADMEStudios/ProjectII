@@ -44,10 +44,14 @@ public:
 	bool Save(pugi::xml_node&) const override;
 
 	void SetMusicVolume(float volume);
+	void SetMusicVolumePercentage(float volume);
 	float GetMusicVolume() const;
+	uint GetMusicVolumePercentage() const;
 
 	void SetFxVolume(float volume);
+	void SetFxVolumePercentage(float volume);
 	float GetFxVolume() const;
+	uint GetFxVolumePercentage() const;
 
 	void fadingIn();
 	void fadingOut();

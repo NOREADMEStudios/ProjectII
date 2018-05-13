@@ -18,6 +18,7 @@ class Spells;
 enum SpellsType {
 	NOSPELL,
 	FIREBALL,
+	LIGHTNING_AURA,
 	LIGHTING,
 	ICICLE,
 	FIRE_DEMON,
@@ -92,6 +93,7 @@ public:
 	uint numofplayers = 0;
 
 	void PauseEntities(bool pause);
+	Entity* GetSameTeam(Entity* c);
 
 	Entity* GetEntity(uint num);
 	uint GetWinnerTeam();

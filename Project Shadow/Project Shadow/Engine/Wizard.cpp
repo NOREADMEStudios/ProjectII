@@ -27,7 +27,13 @@ bool Wizard::Awake(pugi::xml_node&)
 
 bool Wizard::HeroStart()
 {
-	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 1);
+
+	stats.spd = 180;
+	stats.life = 100;
+	stats.atk = 2;
+	stats.def = 0;
+
+	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 3);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_dagger", animations_name, 5);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_crouch", animations_name, 1);
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
@@ -48,11 +54,14 @@ bool Wizard::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
-	Ability* fire = new Ability(ab_1, 3);
+	Ability* icicle = new Ability(ab_1, 3);
+	icicle->ab_sprite = {152,65, 50,50 };
 	Ability* thunder = new Ability(ab_2, 5);
+	thunder->ab_sprite = { 202, 65,50,50 };
 	Ability* ulti = new Ability(ab_3, 10);
+	ulti->ab_sprite = { 102, 115, 50,50 };
 
-	AdAbility(*fire);
+	AdAbility(*icicle);
 	AdAbility(*thunder);
 	AdAbility(*ulti);
 	return true;
@@ -120,6 +129,12 @@ bool Wizard::CleanUp(pugi::xml_node&)
 
 void Wizard::UpdateSpecStates()
 {
+	int dir = 0;
+
+	if (flip)
+		dir = 1;
+	else
+		dir = -1;
 
 	if (currentTag == 11 && !ab_1_active)
 	{
@@ -130,9 +145,9 @@ void Wizard::UpdateSpecStates()
 	if (currentTag == 12 && !ab_2_bool )
 	{
 	
-		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x + 50, gamepos.y + 40, gamepos.z },{1,0} });
+		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x + (50 * -dir), gamepos.y + 40, gamepos.z },{flip,0} });
 		ab_2_bool = true;
-		noMove.Start();
+		//noMove.Start();
 			
 	}
 	if (currentTag == 13 && !ab_3_bool)
@@ -146,9 +161,9 @@ void Wizard::UpdateSpecStates()
 		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x - 30, gamepos.y , gamepos.z + 30 },{ -1,1 } });
 		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x + 30, gamepos.y , gamepos.z - 30 },{ 1,-1 } });
 		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x - 30, gamepos.y , gamepos.z - 30 },{ -1,-1 } });
-		App->entities->CreateSpell({ FIRE_DEMON,team,{ gamepos.x, gamepos.y + 20 , gamepos.z} });
+		App->entities->CreateSpell({ FIRE_DEMON,team,{ gamepos.x, gamepos.y + 50 , gamepos.z} });
 		ab_3_bool = true;
-		noMove.Start();
+		//noMove.Start();
 
 	}
 }
@@ -223,12 +238,12 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 
 		}
-		else if (_this->type == Collider::ATK && _other->type == Collider::HITBOX && StateisAtk(currentState))
+		else if ((_this->type == Collider::ATK || _this->type == Collider::PARRY) && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{
 
 			Attack * atk = GetAtk(currentTag);
 
-			int dmg = _this->entity->stats.atk + atk->damage < _other->entity->stats.def;
+			int dmg = _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 			if (dmg <= 0)
 			{
 				dmg = 1;

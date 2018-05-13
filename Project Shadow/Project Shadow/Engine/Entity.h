@@ -155,6 +155,7 @@ public:
 	void CalcRealPos();
 
 
+
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 
 	virtual void OnCollisionStay(Collider* _this, Collider* _other);
@@ -171,11 +172,14 @@ public:
 
 	bool noMove = false;
 	bool paused = false;
+	bool resume = false;
 
 	uint heroNum = 0;
 	bool breaking = false;
 	bool active = true;
 	float max_speed = 0;
+	float max_speed_y = 0;
+	bool cleric_ab = 0;
 
 	bool to_delete = false;
 	Team team= NOTEAM;

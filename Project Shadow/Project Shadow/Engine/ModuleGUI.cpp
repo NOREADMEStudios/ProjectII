@@ -271,7 +271,7 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 
 	aux->characterText = charNumber;
 	charNumber->SetParent(aux);
-	charNumber->setString("%d", charNum+1);
+	charNumber->setString("%d", charNum + 1);
 
 	aux->bar = bar;
 	bar->SetParent(aux);
@@ -282,7 +282,7 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 	fPoint anchor;
 	uint screenMargin = 10;
 
-	switch(charNum)
+	switch (charNum)
 	{
 	case 0:
 		anchor.x = 0;
@@ -330,28 +330,28 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 
 	charNumber->setPositionX(charFace->getPositionX() + (charFace->rect.w + screenMargin) * (leftSide ? 1 : -1));
 	charNumber->setPositionY(charFace->getPositionY() + screenMargin * (anchor.y == 0.f ? 1 : -1));
+
+	//-----Abilities & cooldown
+
+	iRect GrayAbilitiesSpriteRect = { 451  , 395, 50, 50 };
 	
-	iRect AbilitiesSpriteRect = { 451 + 52 * charNum, 330, 52, 55 };
-	iRect GrayAbilitiesSpriteRect = { 451  , 395, 52, 55 };
-	for (size_t i = 0; i < character->GetAbilitiesNum(); i++) {
-		Sprite* sprGray = App->gui->AddSprite(0, 0, nullptr, GrayAbilitiesSpriteRect.toSDL_Rect());
-		Sprite* spr = App->gui->AddSprite(0, 0, nullptr, AbilitiesSpriteRect.toSDL_Rect());
+		for (size_t i = 0; i < character->GetAbilitiesNum(); i++) {
+			Sprite* sprGray = App->gui->AddSprite(0, 0, nullptr, GrayAbilitiesSpriteRect.toSDL_Rect());
+			Sprite* spr = App->gui->AddSprite(0, 0, nullptr, character->GetAbilityAt(i).GetAbSprites().toSDL_Rect());
+
+			spr->SetParent(aux);
+			spr->SetAnchor(anchor.x, anchor.y);
+			sprGray->SetParent(aux);
+			sprGray->SetAnchor(anchor.x, anchor.y);
+			iPoint p = charNumber->getPosition();
+			p.x += ((50 + (60 * (int)i)) * (leftSide ? 1 : -1));
+			p.y += (5 + screenMargin) * (anchor.y == 0.f ? 1 : -1);
+			spr->setPosition(p.x, p.y);
+			sprGray->setPosition(p.x, p.y);
+			aux->abilities.push_back(spr);
+			aux->grayAbilities.push_back(sprGray);
+		}
 		
-		spr->SetParent(aux);
-		spr->SetAnchor(anchor.x, anchor.y);
-		sprGray->SetParent(aux);
-		sprGray->SetAnchor(anchor.x, anchor.y);
-		iPoint p = charNumber->getPosition();
-		p.x += ((50 + (60 * (int)i)) * (leftSide ? 1 : -1) );
-		p.y += (5 + screenMargin) * (anchor.y == 0.f ? 1 : -1);
-		spr->setPosition(p.x, p.y);
-		sprGray->setPosition(p.x, p.y);
-		aux->abilities.push_back(spr);
-		aux->grayAbilities.push_back(sprGray);
-	}
-	
-	
-	
 	bar->SetAnchor(0.5f, 0.5f);
 
 	iPoint margins;

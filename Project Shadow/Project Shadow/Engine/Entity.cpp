@@ -67,7 +67,7 @@ void Entity::Accelerate(float x, float y, float z, float delta_time) {
 	zVect += z * 10 * stats.spd * delta_time;
 
 	speedVector.x = CLAMP(speedVector.x, -max_speed, max_speed);
-	speedVector.y = CLAMP(speedVector.y, -max_speed, max_speed);
+	speedVector.y = CLAMP(speedVector.y, -max_speed_y, max_speed_y);
 	zVect = CLAMP(zVect, -max_speed, max_speed);
 }
 void Entity::Impulsate(float x, float y, float z)
@@ -78,6 +78,7 @@ void Entity::Impulsate(float x, float y, float z)
 }
 
 bool Entity::PausedUpdate() {
+	currentAnimation->GetPausedFrame();
 	App->render->FillQueue(this);
 	return true;
 }
@@ -192,6 +193,8 @@ iPoint Entity::PivotPos()
 
 void Entity::AdBuff(float time, float spd, float atk, float def)
 {
+	if (cleric_ab && (atk < 0 || spd < 0 || def < 0)) return;
+
 	EventState* buff = new EventState(time, atk, def, spd);
 	stats = stats + buff->stats;
 

@@ -110,13 +110,13 @@ void CharacterSelecScene::SetControllerFocus() {
 }
 void CharacterSelecScene::SetCharactersInfo(){
 	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
-		charactersInfo[0] = { WIZARD,{ 100,100 }, Team::BLUE };
-		charactersInfo[1] = { WARRIOR,{ 100,1000 }, Team::BLUE };
+		charactersInfo[0] = { ROGUE,{ 100,100 }, Team::BLUE };
+		charactersInfo[1] = { CLERIC,{ 100,1000 }, Team::BLUE };
 		charactersInfo[2] = { WIZARD,{ 10000,100 }, Team::RED };
 		charactersInfo[3] = { WARRIOR,{ 10000,1000 }, Team::RED };
 	}
 	else if (App->scenes->gameMode == GameMode::ONEvsONE) {
-		charactersInfo[0] = { CLERIC,{ 100,100 }, Team::BLUE };
+		charactersInfo[0] = { WARRIOR,{ 100,100 }, Team::BLUE };
 		charactersInfo[1] = { WARRIOR,{ 10000,100 }, Team::RED };
 	}
 
@@ -126,7 +126,7 @@ void CharacterSelecScene::ChangeCharacter()
 	for (int i = 0; i < controllersNum; i++) {
 		Player* player = &players[i];
 
-		if (App->input->GetButtonFromController(player->playerNum) == Input::RIGHT && !player->ready) {
+		if (App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT && !player->ready) {
 			if (indexSprites[i] < 2) {
 				characterSprites[i]->idle_anim = characterRects[indexSprites[i] + 1];
 				characterNameLabel[i]->setString(characterNameStrings[indexSprites[i] + 1]);
@@ -138,7 +138,7 @@ void CharacterSelecScene::ChangeCharacter()
 				indexSprites[i] = 0;
 			}
 		}
-		else if (App->input->GetButtonFromController(player->playerNum) == Input::LEFT && !player->ready) {
+		else if (App->input->GetButtonFromController(player->playerNum, false) == Input::LEFT && !player->ready) {
 			if (indexSprites[i] > 0) {
 				characterSprites[i]->idle_anim = characterRects[indexSprites[i] - 1];
 				characterNameLabel[i]->setString(characterNameStrings[indexSprites[i] - 1]);

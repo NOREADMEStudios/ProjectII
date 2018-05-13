@@ -15,6 +15,7 @@
 #include "../../Engine/UI/Window.h"
 #include "../../Engine/UI/Button.h"
 #include "../../Engine/UI/Label.h"
+#include "../../Engine/UI/Slider.h"
 #include "../../Engine/ModuleCollision.h"
 #include "../../Engine/ModuleAudio.h"
 #include "../../Engine/ModuleFonts.h"
@@ -42,6 +43,7 @@ bool IntroScene::Start()
 	//App->gui->AddSprite(820, 540, bakc_menu, { 0,0,1750,1080 }, true);
  
 	LoadUIButtons();
+	CreateSettingsWindow();
 	SetControllerFocus();
 	return true;
 }
@@ -78,6 +80,44 @@ void OnevsPressCallb(size_t arg_size...) {
 	App->transition->MakeTransition(ChangeSceneCallback, ModuleTransition::Transition::FADE_TO_BLACK, 1.0f);
 }
 
+void SliderMPressCallb(size_t arg_size...) {
+	
+	Slider* sl = App->scenes->introSc->music_sl;
+	float currVol = (sl->GetValue() * 100);
+	App->audio->SetMusicVolumePercentage(currVol);
+	std::string vol = std::to_string((int)currVol);
+	sl->getLabel()->setString(vol);
+}
+void SliderFPressCallb(size_t arg_size...) {
+	Slider* sl = App->scenes->introSc->fx_sl;
+	float currVol = (sl->GetValue() * 100);
+	App->audio->SetFxVolumePercentage(currVol);
+	std::string vol = std::to_string((int)currVol);
+	sl->getLabel()->setString(vol);
+	App->audio->PlayFx(1);
+}
+
+void SettingPressCallb(size_t arg_size...) {
+	App->scenes->introSc->ManageSettings(true);
+}
+void BackPressCallb(size_t arg_size...) {
+	App->scenes->introSc->ManageSettings(false);
+}
+void FullscreenPressCallb(size_t arg_size...) {
+	Uint32 winfullscr;
+	if (App->win->fullscreen) {
+		winfullscr = SDL_WINDOW_MINIMIZED;
+		App->win->fullscreen = false;
+	}
+	else {
+		winfullscr = SDL_WINDOW_FULLSCREEN;	
+		App->win->fullscreen = true;
+	}
+
+	SDL_SetWindowFullscreen(App->win->window, winfullscr);
+}
+
+
 void ExitPressCallb(size_t arg_size...) {
 	App->Quit();
 }
@@ -100,21 +140,29 @@ void IntroScene::LoadUIButtons() {
 	//pvpLabel->culled = false;
 
 	uiPoint win_size = App->gui->GetGuiSize();
-	pvpButton = App->gui->AddButton((win_size.x / 2) , (win_size.y / 4) * 2.1f, atlas, { 1282,883,400,98 }, true, PvPPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	pvpButton = App->gui->AddButton((win_size.x / 2) , (win_size.y / 4) * 1.5f, atlas, { 1282,883,400,98 }, true, PvPPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
 
-	pvpLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
-	std::string PvPStr = "4vs4";
+	Label* pvpLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string PvPStr = "2vs2";
 	pvpLabel->setString(PvPStr);
 	pvpLabel->SetParent(pvpButton);
 	pvpLabel->culled = false;
 
-	onevsoneButton = App->gui->AddButton( (win_size.x / 2), (win_size.y / 4) * 2.7, atlas, { 1282,883,400,98 }, true, OnevsPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	onevsoneButton = App->gui->AddButton( (win_size.x / 2), (win_size.y / 4) * 2.1, atlas, { 1282,883,400,98 }, true, OnevsPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
 
-	onevsLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
+	Label* onevsLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string oneStr = "1vs1";
 	onevsLabel->setString(oneStr);
 	onevsLabel->SetParent(onevsoneButton);
 	onevsLabel->culled = false;
+
+
+	settingButton = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 2.7, atlas, { 1282,883,400,98 }, true, SettingPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	Label* settingLabel = App->gui->AddLabel((settingButton->rect.w / 2)+10, settingButton->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string SettingStr = "SETTINGS";
+	settingLabel->setString(SettingStr);
+	settingLabel->SetParent(settingButton);
+	settingLabel->culled = false;
 
 
 	exitButton = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3.3f, atlas, { 1282,883,400,98 }, true, ExitPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
@@ -126,10 +174,11 @@ void IntroScene::LoadUIButtons() {
 	exitLabel->culled = false;
 
 
-	pvpButton->SetRelation(onevsoneButton, InterfaceElement::Directions::RIGHT);
-	pvpButton->SetRelation(exitButton, InterfaceElement::Directions::DOWN);
-	exitButton->SetRelation(onevsoneButton, InterfaceElement::Directions::DOWN);
-	exitButton->SetRelation(exitButton, InterfaceElement::Directions::DOWN, false);
+	pvpButton->SetRelation(onevsoneButton, InterfaceElement::Directions::DOWN);
+	onevsoneButton->SetRelation(settingButton, InterfaceElement::Directions::DOWN);
+	settingButton->SetRelation(exitButton, InterfaceElement::Directions::DOWN);
+	exitButton->SetRelation(pvpButton, InterfaceElement::Directions::DOWN);
+	
 }
 
 void IntroScene::SetControllerFocus() {
@@ -141,22 +190,22 @@ void IntroScene::SetControllerFocus() {
 }
 
 void IntroScene::ManageDisplacement() {
-	if (App->input->GetButtonFromController(1) == Input::DOWN) {
+	if (App->input->GetButtonFromController(1, false) == Input::DOWN) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::DOWN);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
 	}
-	if (App->input->GetButtonFromController(1) == Input::UP) {
+	if (App->input->GetButtonFromController(1, false) == Input::UP) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::UP);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
 	}
-	if (App->input->GetButtonFromController(1) == Input::LEFT) {
+	if (App->input->GetButtonFromController(1, false) == Input::LEFT) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::LEFT);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
 	}
-	if (App->input->GetButtonFromController(1) == Input::RIGHT) {
+	if (App->input->GetButtonFromController(1, false) == Input::RIGHT) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::RIGHT);
 		if (elem != nullptr)
 			App->gui->setFocus(elem);
@@ -167,3 +216,93 @@ void IntroScene::ChooseFocus() {
 		((Button*)App->gui->getFocusedItem())->OnClick(0);
 	}
 }
+
+void IntroScene::CreateSettingsWindow() {
+	uiPoint win_size = App->gui->GetGuiSize();
+	//MUSIC SLIDER
+	music_sp = App->gui->AddSprite((win_size.x / 2), (win_size.y / 4)*1.5f, atlas, { 455, 268, 427, 27 }, false);
+
+	float musicVol = App->audio->GetMusicVolumePercentage();
+	float step = music_sp->rect.w / 100;
+	float displacement = musicVol - 50;
+	music_sl = App->gui->AddSlider((music_sp->rect.w / 2) + displacement*step , music_sp->rect.h / 2 + 2, atlas, { 456, 298, 28,15 }, false, SliderMPressCallb, {}, {}, true, music_sp);
+	
+	Label* MusNumLabel = App->gui->AddLabel((music_sl->rect.w / 2), (music_sl->rect.h / 2)+20, 20, DEFAULT_FONT, { 255, 255, 255, 255 });
+	
+	std::string MusNumStr = std::to_string((uint)musicVol);
+	MusNumLabel->setString(MusNumStr);
+	MusNumLabel->SetParent(music_sl);
+	MusNumLabel->culled = false;
+	
+	Label* MusNameLabel = App->gui->AddLabel((music_sp->rect.w / 2), (music_sp->rect.h / 2) - 30, 40, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string MSLStr = "MUSIC";
+	MusNameLabel->setString(MSLStr);
+	MusNameLabel->SetParent(music_sp);
+	MusNameLabel->culled = false;
+	music_sl->setLabel(MusNumLabel);
+
+	//FX SLIDER
+
+	fx_sp = App->gui->AddSprite((win_size.x / 2), (win_size.y / 4)*2.1f, atlas, { 455, 268, 427, 27 }, false);
+
+	float FxVol = App->audio->GetFxVolumePercentage();
+	float step2 = fx_sp->rect.w / 100;
+	float displacement2 = FxVol - 50;
+	fx_sl = App->gui->AddSlider((fx_sp->rect.w / 2) + displacement2*step2, fx_sp->rect.h / 2 + 2, atlas, { 456, 298, 28,15 }, false, SliderFPressCallb, {}, {}, true, fx_sp);
+
+	Label* FxNumLabel = App->gui->AddLabel((fx_sl->rect.w / 2), (fx_sl->rect.h / 2) + 20, 20, DEFAULT_FONT, { 255, 255, 255, 255 });
+
+	std::string FxNumStr = std::to_string((uint)FxVol);
+	FxNumLabel->setString(FxNumStr);
+	FxNumLabel->SetParent(fx_sl);
+	FxNumLabel->culled = false;
+
+	Label* FxNameLabel = App->gui->AddLabel((fx_sp->rect.w / 2), (fx_sp->rect.h / 2) - 30, 40, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string FXLStr = "FX";
+	FxNameLabel->setString(FXLStr);
+	FxNameLabel->SetParent(fx_sp);
+	FxNameLabel->culled = false;
+	fx_sl->setLabel(FxNumLabel);
+
+
+	// FULLSCREEN BUTTON
+	fullscrenBut = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 2.7f, atlas,{ 1282,883,400,98 }, false, FullscreenPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	Label* FSLabel = App->gui->AddLabel((fullscrenBut->rect.w / 2) + 20, fullscrenBut->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string FSStr = "FULLSCREEN";
+	FSLabel->setString(FSStr);
+	FSLabel->SetParent(fullscrenBut);
+	FSLabel->culled = false;	
+	
+
+	// BACK BUTTON
+	settBack = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3.3f, atlas, { 1282,883,400,98 }, false, BackPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	Label* BckLabel = App->gui->AddLabel((fullscrenBut->rect.w / 2) + 14, fullscrenBut->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string BckStr = "BACK";
+	BckLabel->setString(BckStr);
+	BckLabel->SetParent(settBack);
+	BckLabel->culled = false;
+
+	
+
+	
+	fullscrenBut->SetRelation(settBack, InterfaceElement::Directions::DOWN);
+	settBack->SetRelation(fullscrenBut, InterfaceElement::Directions::DOWN);
+}
+
+void IntroScene::ManageSettings(bool settingActive) {
+
+	pvpButton->Enable(!settingActive);
+	onevsoneButton->Enable(!settingActive);
+	settingButton->Enable(!settingActive);
+	exitButton->Enable(!settingActive);
+
+	fullscrenBut->Enable(settingActive);
+	settBack->Enable(settingActive); 
+	music_sl->Enable(settingActive);
+	music_sp->Enable(settingActive);
+	fx_sl->Enable(settingActive);
+	fx_sp->Enable(settingActive);
+
+	App->gui->setFocus(settingActive ? fullscrenBut : pvpButton);
+}
+

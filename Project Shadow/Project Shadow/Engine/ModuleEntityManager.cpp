@@ -212,6 +212,10 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	{
 		ret = new Lightning();
 	}
+	else if (spellsInfo.spType == SpellsType::LIGHTNING_AURA)
+	{
+		ret = new Aura();
+	}
 
 	else if (spellsInfo.spType == SpellsType::FIRE_DEMON)
 	{
@@ -225,6 +229,7 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	{
 		ret = new DeathMark();
 	}
+
 	else
 	{
 		return nullptr;
@@ -354,4 +359,17 @@ void ModuleEntityManager::StartItems()
 		items[i].life = 0;
 		items[i].mgk = 0;
 	}
+}
+
+Entity* ModuleEntityManager::GetSameTeam(Entity* c)
+{
+	Entity* ret = nullptr;
+
+	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
+		if ((*item)->team == c->team && (*item) != c)
+		{
+			ret = (*item);
+		}
+	}
+	return ret;
 }

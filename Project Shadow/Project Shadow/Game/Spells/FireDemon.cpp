@@ -22,7 +22,7 @@ bool FireDemon::Start() {
 	App->collision->AddCollider(spellColl, this);
 	//collider = { 0,0,45,65 };
 
-	stats.atk = 8;
+	stats.atk = 10;
 
 	char_depth = 20;
 

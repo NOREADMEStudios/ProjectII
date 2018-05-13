@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
+#include "ModuleAudio.h"
 #include "Spells.h"
 #include "../Game/Spells/DeathMark.h"
 
@@ -167,6 +168,9 @@ bool Rogue::HeroUpdate(float dt)
 	{
 		ab_3_active = false;
 	}
+
+	CreateSounds();
+
 	return true;
 }
 
@@ -204,6 +208,7 @@ void Rogue::UpdateSpecStates()
 		dag->SetParent(this);
 
 		ab_1_active = true;
+		
 	}
 	else if (currentTag == 12 && !ab_2_active)
 	{
@@ -264,7 +269,7 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 			{
 				_this->entity->Impulsate(hit_dir * 8000, 0, 0);
 			}
-			//App->audio->PlayFx(10);
+			
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::DEF)
 		{
@@ -325,4 +330,133 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 
 	}
+}
+
+void Rogue::CreateSounds()
+{
+	switch (currentState)
+	{
+	case IDLE:
+		if (!sound_avaliable)
+		{
+			sound_avaliable = true;
+		}
+		break;
+	case JUMP:
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(23);
+			sound_avaliable = false;
+		}
+		break;
+	case STOP:
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(9);
+			sound_avaliable = false;
+		}
+	case HIT:
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(21);
+			sound_avaliable = false;
+		}
+		break;
+	case DEATH:
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(22);
+			sound_avaliable = false;
+		}
+		break;
+	case PARRIED:
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(13);
+			sound_avaliable = false;
+		}
+		break;
+	case TAUNT:
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(26);
+			sound_avaliable = false;
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (currentTag != 0)
+	{
+		switch (currentTag)
+		{
+		case 1:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(1);
+				sound_avaliable = false;
+			}
+			break;
+		case 2:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(24);
+				sound_avaliable = false;
+			}
+			break;
+		case 4:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(1);
+				sound_avaliable = false;
+			}
+			break;
+		case 5:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(1);
+				sound_avaliable = false;
+			}
+			break;
+		case 6:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(25);
+				sound_avaliable = false;
+			}
+			break;
+		case 7:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(24);
+				sound_avaliable = false;
+			}
+			break;
+		case 11:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(27);
+				sound_avaliable = false;
+			}
+			break;
+		case 12:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(13);
+				sound_avaliable = false;
+			}
+			break;
+		case 13:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(7);
+				sound_avaliable = false;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
 }

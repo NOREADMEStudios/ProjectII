@@ -2,6 +2,7 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "ModuleAudio.h"
 #include "ModuleCollision.h"
 
 #include "ModuleMap.h"
@@ -113,6 +114,9 @@ bool Wizard::HeroUpdate(float dt)
 	{
 		ab_3_bool = false;
 	}
+
+	CreateSounds();
+
 	return true;
 }
 
@@ -261,3 +265,133 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 	}
 }
 
+void Wizard::CreateSounds()
+{
+	switch (currentState)
+	{
+	case IDLE:
+		if (!sound_avaliable)
+		{
+			sound_avaliable = true;
+		}
+		break;
+	case JUMP:
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(5);
+			sound_avaliable = false;
+		}
+		break;
+	case STOP:
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(9);
+			sound_avaliable = false;
+		}
+	case HIT:
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(3);
+			sound_avaliable = false;
+		}
+		break;
+	case DEATH:
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(8);
+			sound_avaliable = false;
+		}
+		break;
+	case PARRIED:
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(13);
+			sound_avaliable = false;
+		}
+		break;
+	case TAUNT:
+		if (sound_avaliable)
+		{
+			App->audio->PlayFx(12);
+			sound_avaliable = false;
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (currentTag != 0)
+	{
+		switch (currentTag)
+		{
+		case 1:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(1);
+				sound_avaliable = false;
+			}
+			break;
+		case 2:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(1);
+				sound_avaliable = false;
+			}
+			break;
+		case 4:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(1);
+				sound_avaliable = false;
+			}
+			break;
+		case 5:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(11);
+				sound_avaliable = false;
+			}
+			break;
+		case 6:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(1);
+				sound_avaliable = false;
+			}
+			break;
+		case 7:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(1);
+				sound_avaliable = false;
+			}
+			break;
+		case 8:
+			break;
+		case 11:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(17);
+				sound_avaliable = false;
+			}
+			break;
+		case 12:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(19);
+				sound_avaliable = false;
+			}
+			break;
+		case 13:
+			if (sound_avaliable)
+			{
+				App->audio->PlayFx(20);
+				sound_avaliable = false;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+}

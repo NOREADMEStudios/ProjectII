@@ -219,12 +219,18 @@ void Character::UpdateCollidersPosition() {
 	collFeet->collider.y += pivot_pos.y;//pivot
 	collHitBox->collider.x += pivot_pos.x;
 	collHitBox->collider.y += pivot_pos.y;
-	collAtk->collider.x += pivot_pos.x;
-	collAtk->collider.y += pivot_pos.y;
-	collDef->collider.y += pivot_pos.y;
-	collDef->collider.x += pivot_pos.x;
-	collParry->collider.y += pivot_pos.y;
-	collParry->collider.x += pivot_pos.x;
+	if (!(collAtk->collider.w == 0)) {
+		collAtk->collider.x += pivot_pos.x;
+		collAtk->collider.y += pivot_pos.y;
+	}
+	if (!(collDef->collider.w == 0)) {
+		collDef->collider.y += pivot_pos.y;
+		collDef->collider.x += pivot_pos.x;
+	}
+	if (!(collParry->collider.w == 0)) {
+		collParry->collider.y += pivot_pos.y;
+		collParry->collider.x += pivot_pos.x;
+	}
 }
 
 void Character::GetCollidersFromAnimation() {
@@ -250,8 +256,11 @@ void Character::GetCollidersFromAnimation() {
 	{
 		collFeet->collider.x = currentAnimation->CurrentFrame().rect.w - (collFeet->collider.x + collFeet->collider.w);
 		collHitBox->collider.x = currentAnimation->CurrentFrame().rect.w - (collHitBox->collider.x + collHitBox->collider.w);
+		if (!(collAtk->collider.w==0))
 		collAtk->collider.x = currentAnimation->CurrentFrame().rect.w - (collAtk->collider.x + collAtk->collider.w);
+		if (!(collDef->collider.w == 0))
 		collDef->collider.x = currentAnimation->CurrentFrame().rect.w - (collDef->collider.x + collDef->collider.w);
+		if (!(collParry->collider.w == 0))
 		collParry->collider.x = currentAnimation->CurrentFrame().rect.w - (collParry->collider.x + collParry->collider.w);
 	}
 }

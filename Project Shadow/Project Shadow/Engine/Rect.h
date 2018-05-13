@@ -71,6 +71,10 @@ struct Rect {
 			(y <= other.y && y + h >= other.y));
 	}
 
+	bool IsZero() const{
+		return (x == 0 && y == 0 && w == 0 && h == 0);	
+	}
+
 	Rect(TYPE x, TYPE y, TYPE w, TYPE h) : x(x), y(y), w(w), h(h) {}
 	~Rect() {}
 };

@@ -179,7 +179,7 @@ void IntroScene::LoadUIButtons() {
 
 	exitButton = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3.3f, atlas, { 1282,883,400,98 }, true, ExitPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
 
-	Label* exitLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
+	Label* exitLabel = App->gui->AddLabel(pvpButton->rect.w / 2, pvpButton->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string ExitStr = "EXIT";
 	exitLabel->setString(ExitStr);
 	exitLabel->SetParent(exitButton);

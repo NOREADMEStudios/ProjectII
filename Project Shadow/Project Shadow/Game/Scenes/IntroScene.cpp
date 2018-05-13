@@ -37,6 +37,18 @@ IntroScene::~IntroScene()
 bool IntroScene::Start()
 {
 	bool test= LoadBackground("UI/MainMenu.png");
+	uiPoint screenSize = App->gui->GetGuiSize();
+
+	Sprite* bg = App->gui->AddSprite(0, 0, background, { 0,0,1920,1080 });
+	bg->setPosition(screenSize.x * 0.5f, screenSize.y * 0.5f);
+	bg->ComputeRects();
+	if (screenSize.y < bg->rect.h) {
+		bg->scale = MAX((float)screenSize.y / (float)bg->rect.h, (float)screenSize.x / (float)bg->rect.w);
+	}
+	else {
+		bg->scale = MIN((float)screenSize.y / (float)bg->rect.h, (float)screenSize.x / (float)bg->rect.w);
+	}
+
 	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
 	atlas = App->textures->Load("UI/atlas.png");	
 	LoadBackground("UI/MainMenu.png");
@@ -50,7 +62,7 @@ bool IntroScene::Start()
 
 bool IntroScene::Update(float dt)
 {
-	DrawBackground();
+	//DrawBackground();
 
 	//App->input->CheckControllers();
 

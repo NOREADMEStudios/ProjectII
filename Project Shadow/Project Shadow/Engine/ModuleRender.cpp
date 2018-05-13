@@ -175,21 +175,20 @@ bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* sect
 	return ret;
 }
 
-bool ModuleRender::BlitGui(SDL_Texture * texture, int x, int y, const SDL_Rect * section, bool use_camera, float speed, double angle, bool h_flip, SDL_Color color, int pivot_x, int pivot_y)
+bool ModuleRender::BlitGui(SDL_Texture * texture, int x, int y, const SDL_Rect * section, bool use_camera, float speed, double angle, bool h_flip, SDL_Color color, int pivot_x, int pivot_y, float selfScale)
 {
 	bool ret = true;
 
-	float scale = 1.f;//App->win->GetScale();
 	SDL_Rect rect;
 	if (use_camera)
 	{
-		rect.x = (int)(x * scale) - (int)(camera.x * speed);
-		rect.y = (int)(y * scale) - (int)(camera.y * speed);
+		rect.x = (int)x - (int)(camera.x * speed);
+		rect.y = (int)y - (int)(camera.y * speed);
 	}
 	else
 	{
-		rect.x = (int)(x * scale);
-		rect.y = (int)(y * scale);
+		rect.x = (int)x;
+		rect.y = (int)y;
 	}
 
 	if (section != NULL)
@@ -202,8 +201,10 @@ bool ModuleRender::BlitGui(SDL_Texture * texture, int x, int y, const SDL_Rect *
 		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 	}
 
-	rect.w = (int)(rect.w * scale);
-	rect.h = (int)(rect.h * scale);
+	rect.x -= ((rect.w * selfScale) - rect.w) / 2;
+	rect.y -= ((rect.h * selfScale) - rect.h) / 2;
+	rect.w = (int)(rect.w * selfScale);
+	rect.h = (int)(rect.h * selfScale);
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;

@@ -20,8 +20,9 @@ public:
 
 	void ChangeAnimation(SDL_Rect anim);
 
-	SDL_Rect idle_anim;
-	SDL_Rect secondary_anim;
+	SDL_Rect	idle_anim;
+	SDL_Rect	secondary_anim;
+	float		scale = 1.0f;
 };
 
 #endif

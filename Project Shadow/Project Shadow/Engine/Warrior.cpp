@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
+#include "Entity.h"
 
 #include "../Game/Spells/DeathMark.h"
 
@@ -72,16 +73,16 @@ bool Warrior::HeroStart()
 	jump_a->AddChild(jump_a2);
 	jump_a->AddChild(jump_a3);
 
-	Ability* kick = new Ability(ab_1, 3);
+	Ability* kick = new Ability(ab_1, 5);
 	kick->ab_sprite = {202, 115, 50,50};
 	AdAbility(*kick);
 
-	Ability* stunt = new Ability(ab_2, 5);
+	Ability* stunt = new Ability(ab_2, 7);
 	stunt->ab_sprite = { 252, 115, 50,50 };
 	AdAbility(*stunt);
 
 
-	Ability* Aulti = new Ability(ulti, 10);
+	Ability* Aulti = new Ability(ulti, 20);
 	Aulti->ab_sprite = { 102, 165, 50,50 };
 	AdAbility(*Aulti);
 
@@ -101,7 +102,7 @@ bool Warrior::HeroUpdate(float dt)
 	int z_dir = directions.down - directions.up;
 	int x_dir = directions.right - directions.left;
 
-
+	partner = (Character*)App->entities->GetSameTeam(this);
 
 	switch (currentState)
 	{
@@ -207,6 +208,21 @@ void Warrior::UpdateSpecStates()
 		AdBuff(10, 100, 10, 10);
 		partner->AdBuff(10, 100, 10, 10);
 		buffed = true;
+
+		Spells* hw = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
+		hw->SetParent(this);
+		((DeathMark*)hw)->SetPath("battle_cry");
+		((DeathMark*)hw)->cl = true;
+
+
+		if (partner != nullptr)
+		{
+
+			Spells* hw2 = App->entities->CreateSpell({ DEATH_MARK ,team,  partner->GetGamePos() });
+			hw2->SetParent(partner);
+			((DeathMark*)hw2)->SetPath("battle_cry");
+			((DeathMark*)hw2)->cl = true;
+		}
 	}
 
 

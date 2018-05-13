@@ -315,6 +315,9 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 			{
 				Spells* dm = App->entities->CreateSpell({ DEATH_MARK , RED, {0,0,0} });
 				dm->SetParent((Character*)_other->entity);
+				if (stats.spd > _other->entity->stats.spd)
+				dmg += stats.spd - _other->entity->stats.spd;
+
 				((DeathMark*)dm)->SetPath("dagger");
 				_other->entity->AdBuff(10, 0, -10, -10);
 			}

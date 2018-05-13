@@ -33,7 +33,7 @@ bool Wizard::HeroStart()
 	stats.atk = 2;
 	stats.def = 0;
 
-	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 1);
+	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 3);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_dagger", animations_name, 5);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_crouch", animations_name, 1);
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);

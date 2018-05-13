@@ -89,6 +89,9 @@ public:
 	iRect GetFeetColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_frames.at(currFrame).feet;
+		if (collider.IsZero()) {
+			return collider;
+		}
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
@@ -96,6 +99,9 @@ public:
 	iRect GetHitBoxColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_frames.at(currFrame).hitbox;
+		if (collider.IsZero()) {
+			return collider;
+		}
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
@@ -103,18 +109,27 @@ public:
 	iRect GetAtkColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_frames.at(currFrame).attack;
+		if (collider.IsZero()) {
+			return collider;
+		}
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
 	iRect GetDefColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_frames.at(currFrame).defense;
+		if (collider.IsZero()) {
+			return collider;
+		}
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
 	iRect GetParryColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_frames.at(currFrame).parry;
+		if (collider.IsZero()) {
+			return collider;
+		}
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	}
@@ -122,6 +137,9 @@ public:
 	iRect GetSpellColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_spell.at(currFrame);
+		if (collider.IsZero()) {
+			return collider;
+		}
 		iRect frame = frames.at(currFrame).rect;
 		return { (collider.x - frame.x), collider.y - frame.y, collider.w, collider.h };
 	

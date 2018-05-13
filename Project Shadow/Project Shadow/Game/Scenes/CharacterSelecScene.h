@@ -40,12 +40,12 @@ public:
 
 	int controllersNum;
 	CharacterInfo charactersInfo[4];
-	CharacterTypes charactersType[3];
+	CharacterTypes charactersType[4];
 	Sprite* characterFrame[4];
 	Sprite* characterSprites[4];
-	SDL_Rect characterRects[3];
+	SDL_Rect characterRects[4];
 	Label* characterNameLabel[4];
-	String characterNameStrings[3];
+	String characterNameStrings[4];
 	int indexSprites[4];
 
 	CharacterSelecScene();

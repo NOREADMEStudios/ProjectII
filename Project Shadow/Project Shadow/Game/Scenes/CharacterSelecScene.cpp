@@ -36,12 +36,15 @@ bool CharacterSelecScene::Start()
 	characterRects[0] = { 1676, 156, 188, 275 }; // WIZARD For changing the sprite directly
 	characterRects[1] = { 1676, 431, 188, 275 }; //ROGUE
 	characterRects[2] = { 1864, 431, 188, 275 }; //WARRIOR
+	characterRects[3] = { 1864, 156, 188, 275 }; //CLERIC
 	characterNameStrings[0] = "WIZARD";
 	characterNameStrings[1] = "ROGUE";
 	characterNameStrings[2] = "WARRIOR";
+	characterNameStrings[3] = "CLERIC";
 	charactersType[0] = WIZARD;
 	charactersType[1] = ROGUE;
 	charactersType[2] = WARRIOR;
+	charactersType[3] = CLERIC;
 
 	LoadSceneUI();
 	SetControllerFocus();
@@ -127,7 +130,7 @@ void CharacterSelecScene::ChangeCharacter()
 		Player* player = &players[i];
 
 		if (App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT && !player->ready) {
-			if (indexSprites[i] < 2) {
+			if (indexSprites[i] < 3) {
 				characterSprites[i]->idle_anim = characterRects[indexSprites[i] + 1];
 				characterNameLabel[i]->setString(characterNameStrings[indexSprites[i] + 1]);
 				indexSprites[i]++;
@@ -145,9 +148,9 @@ void CharacterSelecScene::ChangeCharacter()
 				indexSprites[i]--;
 			}
 			else {
-				characterSprites[i]->idle_anim = characterRects[2];
-				characterNameLabel[i]->setString(characterNameStrings[2]);
-				indexSprites[i] = 2;
+				characterSprites[i]->idle_anim = characterRects[3];
+				characterNameLabel[i]->setString(characterNameStrings[3]);
+				indexSprites[i] = 3;
 			}
 		}
 		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_A && !player->ready ) {
@@ -198,8 +201,7 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[0] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
 		characterNameLabel[0]->setString(characterNameStrings[0]);
 		characterNameLabel[0]->SetParent(characterFrame[0]);
-		characterNameLabel[0]->SetAnchor(0, 0);
-		characterNameLabel[0]->setPosition(65, 14);
+		characterNameLabel[0]->setPosition(characterFrame[0]->idle_anim.w / 2, 35);
 		Label* stats1Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats1Label->setString("STATS");
 		stats1Label->SetParent(characterFrame[0]);
@@ -216,8 +218,7 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[1] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
 		characterNameLabel[1]->setString(characterNameStrings[0]);
 		characterNameLabel[1]->SetParent(characterFrame[1]);
-		characterNameLabel[1]->SetAnchor(0, 0);
-		characterNameLabel[1]->setPosition(65, 14);
+		characterNameLabel[1]->setPosition(characterFrame[0]->idle_anim.w / 2, 35);
 		Label* stats2Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats2Label->setString("STATS");
 		stats2Label->SetParent(characterFrame[1]);
@@ -234,8 +235,7 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[2] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
 		characterNameLabel[2]->setString(characterNameStrings[0]);
 		characterNameLabel[2]->SetParent(characterFrame[2]);
-		characterNameLabel[2]->SetAnchor(0, 0);
-		characterNameLabel[2]->setPosition(65, 14);
+		characterNameLabel[2]->setPosition(characterFrame[0]->idle_anim.w / 2, 35);
 		Label* stats3Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats3Label->setString("STATS");
 		stats3Label->SetParent(characterFrame[2]);
@@ -252,8 +252,7 @@ void CharacterSelecScene::LoadSceneUI() {
 		characterNameLabel[3] = App->gui->AddLabel(0, 0, 50, DEFAULT_FONT);
 		characterNameLabel[3]->setString(characterNameStrings[0]);
 		characterNameLabel[3]->SetParent(characterFrame[3]);
-		characterNameLabel[3]->SetAnchor(0, 0);
-		characterNameLabel[3]->setPosition(65, 14);
+		characterNameLabel[3]->setPosition(characterFrame[0]->idle_anim.w / 2, 35);
 		Label* stats4Label = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 80, 80, 80, 255 });
 		stats4Label->setString("STATS");
 		stats4Label->SetParent(characterFrame[3]);

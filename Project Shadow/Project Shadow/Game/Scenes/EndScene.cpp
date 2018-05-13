@@ -34,7 +34,7 @@ bool EndScene::Start()
 	LoadUIButtons();
 	SetControllerFocus();
 
-	return false;
+	return true;
 }
 
 bool EndScene::Update(float dt)
@@ -76,8 +76,8 @@ void EndScene::SetControllerFocus() {
 		return;
 	}
 	App->gui->setFocus(mainMenuButton);
-
 }
+
 void EndScene::LoadUIButtons() {
 	uiPoint screenSize = App->gui->GetGuiSize();
 	SDL_Texture* back_end = App->textures->Load("UI/YouWin.png");
@@ -103,8 +103,8 @@ void EndScene::LoadUIButtons() {
 	winnerLabel = App->gui->AddLabel(screenSize.x / 2, (screenSize.y / 4) * 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
 
 	winnerLabel->setString("WINNER: TEAM %d", App->entities->GetWinnerTeam());
-
 }
+
 void EndScene::ChooseFocus() {
 	if (App->input->GetButtonDown(1, SDL_CONTROLLER_BUTTON_A)) {
 		((Button*)App->gui->getFocusedItem())->OnClick(0);

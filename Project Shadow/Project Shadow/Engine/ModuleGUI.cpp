@@ -292,15 +292,15 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 		break;
 
 	case 1:
-		anchor.x = 1;
-		anchor.y = 0;
+		anchor.x = 0;
+		anchor.y = 1;
 
 		charFaceRect = { 890, 240, 91, 91 };
 		break;
 
 	case 2:
-		anchor.x = 0;
-		anchor.y = 1;
+		anchor.x = 1;
+		anchor.y = 0;
 
 		charFaceRect = { 890, 145, 91, 91 };
 		break;

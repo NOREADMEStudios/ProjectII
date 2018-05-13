@@ -98,7 +98,8 @@ public:
 	Entity* GetEntity(uint num);
 	uint GetWinnerTeam();
 	EntityStats items[4];
-	bool finish = false;
+	bool finish = false,
+		justIn = true;
 	uint winner, winnerTeam;
 
 private:

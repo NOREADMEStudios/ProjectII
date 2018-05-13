@@ -50,8 +50,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(textures);
 	AddModule(audio);
 	AddModule(map);
-	AddModule(entities);
 	AddModule(scenes);
+	AddModule(entities);
 	
 	AddModule(collision);
 	/*AddModule(pathfinding);*/

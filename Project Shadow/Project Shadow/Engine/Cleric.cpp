@@ -116,11 +116,11 @@ bool Cleric::HeroUpdate(float dt)
 	if (currentState != PROTECT && !StateisAtk(currentState)) {
 		if (directions.right - directions.left == 1)
 		{
-			flip = true;
+			flip = false;
 		}
 		else if (directions.right - directions.left == -1)
 		{
-			flip = false;
+			flip = true;
 		}
 	}
 

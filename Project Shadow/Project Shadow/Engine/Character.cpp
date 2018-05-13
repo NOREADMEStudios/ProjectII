@@ -548,7 +548,7 @@ void Character::UpdateCurState(float dt)
 			if (!jumping)
 			{
 				jumping = true;
-				max_speed_y = 800;
+				max_speed_y = 1000;
 				Accelerate(x_dir, 500, z_dir, dt);
 			}
 			break;

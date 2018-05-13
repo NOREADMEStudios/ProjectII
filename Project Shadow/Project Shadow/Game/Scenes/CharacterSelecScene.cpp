@@ -111,7 +111,7 @@ void CharacterSelecScene::SetControllerFocus() {
 void CharacterSelecScene::SetCharactersInfo(){
 	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
 		charactersInfo[0] = { ROGUE,{ 100,100 }, Team::BLUE };
-		charactersInfo[1] = { WARRIOR,{ 100,1000 }, Team::BLUE };
+		charactersInfo[1] = { CLERIC,{ 100,1000 }, Team::BLUE };
 		charactersInfo[2] = { WIZARD,{ 10000,100 }, Team::RED };
 		charactersInfo[3] = { WARRIOR,{ 10000,1000 }, Team::RED };
 	}

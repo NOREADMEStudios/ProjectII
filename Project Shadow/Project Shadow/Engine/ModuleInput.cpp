@@ -341,11 +341,11 @@ std::list<Input> ModuleInput::GetInputListFromController(int playerNum)const{
 			{
 				switch (i) {
 				case 0:
-					if (controllers[playerNum - 1].axis[i] > 0.5f)
+					if (controllers[playerNum - 1].axis[i] > 0.7f)
 					{
 						ret.push_back(Input::RIGHT);
 					}
-					else if (controllers[playerNum - 1].axis[i] < -0.5f)
+					else if (controllers[playerNum - 1].axis[i] < -0.7f)
 					{
 						ret.push_back(Input::LEFT);
 					}

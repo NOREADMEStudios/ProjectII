@@ -33,7 +33,7 @@ public:
 
 	void UpdateSpecStates();
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
-
+	void CreateSounds();
 
 private:
 	bool ab_3_active = false;

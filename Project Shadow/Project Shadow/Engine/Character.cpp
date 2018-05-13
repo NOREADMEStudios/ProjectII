@@ -417,11 +417,12 @@ void Character::RequestState() {
 
 void Character::UpdateMainStates()
 {
-	if (wantedTag != 0 && GetAtk(wantedTag)->ability && currentTag != 11 && currentTag != 12 && currentTag != 13)
+	if (wantedTag != 0 && GetAtk(wantedTag)->ability)
 	{
 		if (!GetAbAtk(wantedTag)->active)
 		{
 			wantedTag = 0;
+			if (!StateisAtk(currentState))
 			wantedState = currentState;
 		}
 		else
@@ -552,7 +553,7 @@ void Character::UpdateCurState(float dt)
 			if (!jumping)
 			{
 				jumping = true;
-				max_speed_y = 800;
+				max_speed_y = 1000;
 				Accelerate(x_dir, 500, z_dir, dt);
 			}
 			break;

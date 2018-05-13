@@ -155,6 +155,7 @@ public:
 	void CalcRealPos();
 
 
+
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 
 	virtual void OnCollisionStay(Collider* _this, Collider* _other);

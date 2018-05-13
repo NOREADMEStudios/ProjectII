@@ -73,6 +73,7 @@ public:
 		uint locked = 0;
 		Item* playerItems[3];
 		Sprite* MiniatureItems[3];
+		Label* playerName;
 		bool ready = false;
 
 		

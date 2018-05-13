@@ -366,7 +366,7 @@ Entity* ModuleEntityManager::GetSameTeam(Entity* c)
 	Entity* ret = nullptr;
 
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
-		if ((*item)->team == c->team)
+		if ((*item)->team == c->team && (*item) != c)
 		{
 			ret = (*item);
 		}

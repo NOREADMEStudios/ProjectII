@@ -3,6 +3,8 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleCollision.h"
+#include "Entity.h"
+#include "../Game/Spells/DeathMark.h"
 
 #include "ModuleMap.h"
 #include "App.h"
@@ -43,7 +45,7 @@ bool Cleric::HeroStart()
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_2", animations_name, 5);
-	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_3", animations_name, 1);
+	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_3", animations_name, 2);
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
 	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, true);
 	Attack* ab_1 = new Attack(11, AB_1, "ab_1", animations_name, 0, false, true);
@@ -62,9 +64,9 @@ bool Cleric::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
-	Ability* fire = new Ability(ab_1, 3);
+	Ability* fire = new Ability(ab_1, 6);
 	fire->ab_sprite = { 303,65, 50,50 };
-	Ability* thunder = new Ability(ab_2, 5);
+	Ability* thunder = new Ability(ab_2, 7);
 	thunder->ab_sprite = { 303,115, 50,50 };
 	Ability* ulti = new Ability(ab_3, 15);
 	ulti->ab_sprite = { 303,165, 50,50 };
@@ -85,16 +87,20 @@ bool Cleric::PreUpdate()
 
 bool Cleric::HeroUpdate(float dt)
 {
+	partner = (Character*)App->entities->GetSameTeam(this);
+
 	int z_dir = directions.down - directions.up;
 	int x_dir = directions.right - directions.left;
 
 	if (!ab_timer.Count(ab_duration))
 	{
 		partner->cleric_ab = true;
+		cleric_ab = true;
 	}
 	else
 	{
 		partner->cleric_ab = false;
+		cleric_ab = false;
 	}
 
 	switch (currentState)
@@ -116,11 +122,11 @@ bool Cleric::HeroUpdate(float dt)
 	if (currentState != PROTECT && !StateisAtk(currentState)) {
 		if (directions.right - directions.left == 1)
 		{
-			flip = true;
+			flip = false;
 		}
 		else if (directions.right - directions.left == -1)
 		{
-			flip = false;
+			flip = true;
 		}
 	}
 
@@ -167,19 +173,66 @@ bool Cleric::CleanUp(pugi::xml_node&)
 
 void Cleric::UpdateSpecStates()
 {
+	Point3D pgp = partner->GetGamePos();
+
 	if (currentTag == 11 && !ab_1_active)
 	{
+		Spells* dm = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
+		dm->SetParent(this);
+		((DeathMark*)dm)->SetPath("Blessing_Protection");
+		((DeathMark*)dm)->cl = true;
+
+		if (partner != nullptr)
+		{
+		Spells* dm2 = App->entities->CreateSpell({ DEATH_MARK , team,pgp });
+		dm2->SetParent(partner);
+
+		((DeathMark*)dm2)->SetPath("Blessing_Protection");
+		((DeathMark*)dm2)->cl = true;
+		}
+
 		ab_timer.Start();
 	}
 	if (currentTag == 12 && !ab_2_active)
 	{
 		AdBuff(5, 0, 0, 10);
+
+		Spells* bs = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
+		bs->SetParent(this);
+		((DeathMark*)bs)->SetPath("Energy Shield");
+		((DeathMark*)bs)->cl = true;
+
+		if (partner != nullptr)
+		{
+			partner->AdBuff(5, 0, 0, 10);
+
+			Spells* es = App->entities->CreateSpell({ DEATH_MARK , team,pgp });
+			es->SetParent(partner);
+			((DeathMark*)es)->SetPath("Energy Shield");
+			((DeathMark*)es)->cl = true;
+		}
+
 	}
 	if (currentTag == 13 && !ab_3_active)
 	{
-		partner->AdHp(35);
+
 		AdHp(35);
-		AdBuff(10, 50, 0, 0);
+		AdBuff(10, 50, 0, 10);
+		Spells* hw = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
+		hw->SetParent(this);
+		((DeathMark*)hw)->SetPath("Healing Wind");
+		((DeathMark*)hw)->cl = true;
+
+
+		if (partner != nullptr)
+		{
+			partner->AdHp(35);
+			partner->AdBuff(10, 50, 0, 10);
+			Spells* hw2 = App->entities->CreateSpell({ DEATH_MARK , team,pgp });
+			hw2->SetParent(partner);
+			((DeathMark*)hw2)->SetPath("Healing Wind");
+			((DeathMark*)hw2)->cl = true;
+		}
 	}
 
 	if (currentState == PROTECT && wantedState != PROTECT)

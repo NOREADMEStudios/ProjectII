@@ -72,7 +72,8 @@ public:
 		SDL_Rect arrowLockRect;
 		uint locked = 0;
 		Item* playerItems[3];
-		Sprite* MiniatureItems[3];
+		Sprite* miniatureItemsFrame;
+		Sprite* miniatureItems[3];
 		Label* playerName;
 		bool ready = false;
 

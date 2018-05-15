@@ -251,7 +251,6 @@ void ItemSelecScene::SetControllerFocus() {
 	if (controllersNum == 0) {
 		return;
 	}
-	
 
 	for (int i = 1; i <= controllersNum; i++) {
 		Player player ;		
@@ -260,7 +259,10 @@ void ItemSelecScene::SetControllerFocus() {
 		int marginBetweenNames = sizeScreen.x * 0.20f;
 		
 		player.playerNum = i;
-		player.playerName = App->gui->AddLabel( marginBetweenNames*i, sizeScreen.y * 0.80f, 30, DEFAULT_FONT, { 255,255,255,255 });
+		player.miniatureItemsFrame = App->gui->AddSprite((sizeScreen.x * ((i - 1) * 2 + 1)) / 8, sizeScreen.y * 7 / 8, atlas, { 4500,43000,392,150 });//only used for having empty sprite
+		player.playerName = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 255,255,255,255 });
+		player.playerName->SetParent(player.miniatureItemsFrame);
+		player.playerName->setPosition(player.miniatureItemsFrame->rect.w / 2, 15);
 		player.playerName->setString("Player "+ std::to_string(player.playerNum));
 		
 		player.totalControllersNum = controllersNum;
@@ -285,7 +287,11 @@ void ItemSelecScene::ChooseFocus() {
 			
 			Item* item = players[i].focusedItem;
 			players[i].playerItems[players[i].locked] = item;
-			players[i].MiniatureItems[players[i].locked] = App->gui->AddSprite(initialDisplacement + (item->butt->rect.w+ marginBetweenItemFrames)*players[i].locked + marginBetweenPlayerFrames * i, sizeScreen.y *0.90f, atlas, item->animRect);//need to check values
+			//players[i].miniatureItems[players[i].locked] = App->gui->AddSprite(initialDisplacement + (item->butt->rect.w+ marginBetweenItemFrames)*players[i].locked + marginBetweenPlayerFrames * i, sizeScreen.y *0.90f, atlas, item->animRect);//need to check values
+			players[i].miniatureItems[players[i].locked] = App->gui->AddSprite(-300, 0, atlas, item->animRect);
+			players[i].miniatureItems[players[i].locked]->SetParent(players[i].miniatureItemsFrame);
+			players[i].miniatureItems[players[i].locked]->SetAnchor(0, 0);
+			players[i].miniatureItems[players[i].locked]->setPosition(marginBetweenItemFrames + (item->butt->rect.w * players[i].locked) + (players[i].locked * marginBetweenItemFrames), 30);
 			players[i].LockedArrow(players[i].locked);
 			players[i].locked++;
 			FindFirstFreeItem(i);
@@ -304,8 +310,8 @@ void ItemSelecScene::RemoveSelectedItem() {
 				}
 				player->locked--;
 				player->playerItems[player->locked] = nullptr;
-				App->gui->RemoveElement(player->MiniatureItems[player->locked]);
-				player->MiniatureItems[player->locked] = nullptr;				
+				App->gui->RemoveElement(player->miniatureItems[player->locked]);
+				player->miniatureItems[player->locked] = nullptr;				
 				player->RemoveLockedArrow(player->locked);
 
 			}

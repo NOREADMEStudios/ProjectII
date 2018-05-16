@@ -283,13 +283,13 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 			else
 			{
-				_this->entity->Impulsate(hit_dir * 8000, 0, 0);
+				_this->entity->Impulsate(hit_dir * 10, 0, 0);
 			}
 			//App->audio->PlayFx(10);
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::DEF)
 		{
-			_this->entity->Impulsate(hit_dir * 8000, 0, 0);
+			_this->entity->Impulsate(hit_dir * 10, 0, 0);
 		}
 		else if (_this->type == Collider::PARRY && _other->type == Collider::ATK)
 		{

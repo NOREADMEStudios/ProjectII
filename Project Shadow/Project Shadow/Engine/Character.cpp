@@ -460,7 +460,7 @@ void Character::UpdateMainStates()
 			SetCombo();
 			time_attack.Start();
 		}
-		if ((currentState == AD_ACTION && GetAtk(currentTag)->air) && currentAnimation->Finished())
+		if ((currentState == AD_ACTION && currentTag != 0 && GetAtk(currentTag)->air) && currentAnimation->Finished())
 		{
 			currentAnimation->Reset();
 			currentState = JUMP;

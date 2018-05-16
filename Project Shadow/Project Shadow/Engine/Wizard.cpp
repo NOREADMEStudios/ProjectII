@@ -9,7 +9,8 @@
 #include "App.h"
 #include "..\Game\Spells\Lightning.h"
 #include "..\Game\Spells\Icicle.h"
-
+#include "..\Game\Spells\FireBall.h"
+#include "..\Game\Spells\FireDemon.h"
 
 
 
@@ -38,6 +39,10 @@ bool Wizard::HeroStart()
 	icicle = App->entities->CreateSpell({ ICICLE,team,{ gamepos.x, gamepos.y + 75, gamepos.z } });
 
 	lighting = (Lightning*)App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x, gamepos.y + 75, gamepos.z } });
+
+	fireball = App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
+
+	fireDemon = App->entities->CreateSpell({ FIRE_DEMON,team,{ gamepos.x, gamepos.y + 50 , gamepos.z } });
 
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 3);
@@ -166,16 +171,27 @@ void Wizard::UpdateSpecStates()
 	}
 	if (currentTag == 13 && !ab_3_bool)
 	{
+		for (int i = -1; i <= 1; i++)
+		{
+			for (int j = -1; j <= 1; j++)
+			{
+				if (!(i == 0 && j == 0))
+				{
+					FireBall* fb = new FireBall{ *(FireBall*)fireball };
+					fb->SetPos(gamepos.x + (50 * i) , gamepos.y, gamepos.z + (50 * j));
+					fb->SetDir(i, j);
+					fb->Start();
+				}
 
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x - 50, gamepos.y , gamepos.z },{ -1,0 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x, gamepos.y , gamepos.z + 50 },{ 0,1 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x, gamepos.y , gamepos.z - 50},{ 0,-1 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x + 30, gamepos.y , gamepos.z + 30 },{ 1,1 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x - 30, gamepos.y , gamepos.z + 30 },{ -1,1 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x + 30, gamepos.y , gamepos.z - 30 },{ 1,-1 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x - 30, gamepos.y , gamepos.z - 30 },{ -1,-1 } });
-		App->entities->CreateSpell({ FIRE_DEMON,team,{ gamepos.x, gamepos.y + 50 , gamepos.z} });
+
+			}
+
+		}
+
+		FireDemon* ice = new FireDemon{ *(FireDemon*)fireDemon };
+		ice->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
+		ice->SetDir(0, 0);
+		ice->Start();
 		ab_3_bool = true;
 		//noMove.Start();
 

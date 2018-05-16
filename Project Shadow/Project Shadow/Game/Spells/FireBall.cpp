@@ -40,7 +40,7 @@ bool FireBall::Start() {
 
 bool FireBall::CleanUp(pugi::xml_node&)
 {
-	UnLoadSprites();
+	//UnLoadSprites();
 	bool ret = App->collision->RemoveCollider(spellColl);
 
 	return ret;
@@ -72,9 +72,16 @@ bool FireBall::Update(float dt) {
 bool FireBall::PostUpdate() {
 	if (CheckLifetime()) {
 		if (!stop)
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x + (50 * dir.x), gamepos.y, gamepos.z + (30 * dir.y) }, dir });
+		{
+			FireBall* fb = new FireBall{ *(FireBall*)this };
+			fb->SetPos(gamepos.x + (50 * dir.x), gamepos.y, gamepos.z + (30 * dir.y));
+			fb->Start();			
+
+		}
 
 		to_delete = true;
+		
+
 	}
 	return true;
 }

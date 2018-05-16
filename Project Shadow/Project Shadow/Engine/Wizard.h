@@ -43,6 +43,7 @@ private:
 	Lightning* lighting;
 	Spells* fireDemon;
 	Spells* fireball;
+
 	
 };
 #endif

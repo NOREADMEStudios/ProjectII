@@ -36,7 +36,8 @@ bool Lightning::Start() {
 
 bool Lightning::CleanUp(pugi::xml_node&)
 {
-	UnLoadSprites();
+	//UnLoadSprites();
+	spellAnim.Reset();
 	bool ret = App->collision->RemoveCollider(spellColl);
 
 	return ret;

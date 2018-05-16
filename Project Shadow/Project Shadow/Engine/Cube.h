@@ -19,7 +19,7 @@ public:
 		return (w != 0 && h != 0 && d != 0);
 	}
 
-	bool Intersect(const Cube& other, Cube* result = nullptr) const {
+	bool Intersect(const Cube& other, Cube* result = nullptr, bool lowerDimension = false) const {
 		if (result != nullptr) {
 			result->x = MAX(x, other.x);
 			result->w = MIN(x + w, other.x + other.w) - result->x;
@@ -28,10 +28,10 @@ public:
 			result->z = MAX(z, other.z);
 			result->d = MIN(z + d, other.z + other.d) - result->z;
 		}
-		return (notZeroDims() && other.notZeroDims()) &&
-			(((x <= other.x && x + w >= other.x) || (x >= other.x && x <= other.x + other.w)) &&
-			((y <= other.y && y + h >= other.y) || (y >= other.y && y <= other.y + other.h)) &&
-			((z <= other.z && z + d >= other.z) || (z >= other.z && z <= other.z + other.d)));
+		return (lowerDimension || (notZeroDims() && other.notZeroDims())) &&						//None of the cubes has a dimension with 0 value,
+			(((x <= other.x && x + w >= other.x) || (x >= other.x && x <= other.x + other.w)) &&	//since that would make the object lower dimension
+			((y <= other.y && y + h >= other.y) || (y >= other.y && y <= other.y + other.h)) &&		//and therefore not really able to collide in theory.
+			((z <= other.z && z + d >= other.z) || (z >= other.z && z <= other.z + other.d)));		//It is arguable that a 2D object can collide with a 3D one.
 	}
 
 	Rect<TYPE> GetRectXY() {

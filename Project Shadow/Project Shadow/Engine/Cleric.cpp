@@ -298,10 +298,12 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::PARRY)
 		{
+			currentTag = 0;
 			currentState = HIT;
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
+			currentTag = 0;
 			currentState = HIT;
 			hit_bool = true;
 

@@ -11,6 +11,7 @@
 
 enum SpellsType;
 
+
 class Spells : 	public Entity
 {
 public:
@@ -29,10 +30,12 @@ public:
 
 	bool CleanUp(pugi::xml_node&)override { return true; }
 
+	Spells* LoadSpell(SpellsType type);
 	bool Load(pugi::xml_node&) override { return true; };
 	bool Save(pugi::xml_node&) const override { return true; };
 	void SetDir(int x, int z) { dir.x = x; dir.y = z; };
 	void SetParent(Character* p) { parent = p; };
+	void UpdateDir(iPoint _dir) { dir = _dir; };
 
 protected:
 	

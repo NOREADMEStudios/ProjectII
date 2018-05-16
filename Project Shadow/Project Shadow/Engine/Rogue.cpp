@@ -6,6 +6,7 @@
 #include "ModuleAudio.h"
 #include "Spells.h"
 #include "../Game/Spells/DeathMark.h"
+#include "../Game/Spells/Dagger.h"
 
 #include "ModuleMap.h"
 #include "App.h"
@@ -36,6 +37,11 @@ bool Rogue::HeroStart()
 	stats.life = 100;
 	stats.atk = 8;
 	stats.def = 1;
+
+
+	dagger = App->entities->CreateSpell({ DAGGER,team ,{ gamepos.x, gamepos.y + 50, gamepos.z },{ 0,0 } });
+	dagger->SetParent(this);
+
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "L_Attack_2", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "H_Attack", animations_name, 5);
@@ -202,10 +208,10 @@ void Rogue::UpdateSpecStates()
 
 	if (currentTag == 11 && !ab_1_active)
 	{
-
-		Spells* dag = nullptr;
-		dag = App->entities->CreateSpell({ DAGGER,team , {gamepos.x, gamepos.y + 50, gamepos.z},{dir,0} });
-		dag->SetParent(this);
+		Dagger* dag = new Dagger{ *(Dagger*)dagger };
+		dag->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
+		dag->SetDir(dir ,0 );
+		dag->Start();
 
 		ab_1_active = true;
 		
@@ -282,11 +288,13 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::PARRY)
 		{
+			currentTag = 0;
 			currentState = HIT;
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentState = HIT;
+			currentTag = 0;
 			hit_bool = true;
 
 

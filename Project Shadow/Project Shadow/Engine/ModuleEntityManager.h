@@ -13,6 +13,7 @@
 enum Team;
 class Character;
 class Spells;
+struct SDL_Texture;
 
 
 enum SpellsType {
@@ -23,7 +24,8 @@ enum SpellsType {
 	ICICLE,
 	FIRE_DEMON,
 	DAGGER,
-	DEATH_MARK
+	DEATH_MARK,
+
 };
 
 enum CharacterTypes {
@@ -86,6 +88,7 @@ public:
 	Spells* CreateSpell(SpellsInfo spellsInfo);
 	void DestroyEntity(Entity* entity);
 
+
 	void CheckMidPos(float& min_x, float& max_x);
 	void CheckMidPosY(float& min_y, float& max_y);
 	void StartItems();
@@ -101,10 +104,12 @@ public:
 	bool finish = false,
 		justIn = true;
 	uint winner, winnerTeam;
+	SDL_Texture* spellsTex;
+	std::list<Entity*> entities;
 
 private:
 
-	std::list<Entity*> entities;
+
 
 	
 };

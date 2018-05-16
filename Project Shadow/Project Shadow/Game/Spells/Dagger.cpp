@@ -16,13 +16,14 @@ Dagger::~Dagger()
 
 bool Dagger::Start() {
 	LoadSprites();
+	App->entities->entities.push_back(this);
 
-	spellAnim.LoadAnimationsfromXML("dagger", SPELLS_ANIMS_ROOT);
-	currentAnimation = &spellAnim;
+	spellColl = App->collision->CreateCollider({}, "Spell", Collider::SPELL);
+	App->collision->AddCollider(spellColl, this);
+
+
 	spellAnim.speed = 20;
 
-	spellColl = App->collision->CreateCollider({}, "Dagger_Spell", Collider::SPELL);
-	App->collision->AddCollider(spellColl, this);
 	//collider = { 0,0,45,65 };
 
 	stats.atk = 8;

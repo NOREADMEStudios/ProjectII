@@ -8,6 +8,7 @@
 #include "ModuleMap.h"
 #include "App.h"
 #include "..\Game\Spells\Lightning.h"
+#include "..\Game\Spells\Icicle.h"
 
 
 
@@ -33,6 +34,11 @@ bool Wizard::HeroStart()
 	stats.life = 100;
 	stats.atk = 2;
 	stats.def = 0;
+
+	icicle = App->entities->CreateSpell({ ICICLE,team,{ gamepos.x, gamepos.y + 75, gamepos.z } });
+
+	lighting = (Lightning*)App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x, gamepos.y + 75, gamepos.z } });
+
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 3);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_dagger", animations_name, 5);
@@ -142,14 +148,18 @@ void Wizard::UpdateSpecStates()
 
 	if (currentTag == 11 && !ab_1_active)
 	{
-
-		App->entities->CreateSpell({ ICICLE,team, {gamepos.x, gamepos.y+75, gamepos.z} });
+		Icicle* ice = new Icicle{ *(Icicle*)icicle };
+		ice->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
+		ice->SetDir(dir, 0);
+		ice->Start();
 		ab_1_active = true;
 	}
 	if (currentTag == 12 && !ab_2_bool )
 	{
-	
-		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x + (50 * -dir), gamepos.y + 40, gamepos.z },{flip,0} });
+		Lightning* light = new Lightning( *lighting );
+		light->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
+		light->SetDir(dir, 0);
+		light->Start();
 		ab_2_bool = true;
 		//noMove.Start();
 			

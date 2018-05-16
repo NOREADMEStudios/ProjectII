@@ -7,7 +7,7 @@
 #include "Animation.h"
 #include "Timer.h"
 
-
+class Lightning;
 
 
 class Wizard : public Character
@@ -39,6 +39,10 @@ private:
 	bool ab_1_active = false;
 	bool ab_2_bool = false;
 	bool ab_3_bool = false;
+	Spells* icicle;
+	Lightning* lighting;
+	Spells* fireDemon;
+	Spells* fireball;
 	
 };
 #endif

@@ -17,12 +17,15 @@ FireBall::~FireBall()
 bool FireBall::Start() {
 	LoadSprites();
 
-	spellAnim.LoadAnimationsfromXML("fireball", SPELLS_ANIMS_ROOT);
-	currentAnimation = &spellAnim;
-	spellAnim.speed = 20;
 
-	spellColl = App->collision->CreateCollider({}, "FireBall_Spell", Collider::SPELL);
+	spellAnim.speed = 20;
+	App->entities->entities.push_back(this);
+
+	spellColl = App->collision->CreateCollider({}, "Spell", Collider::SPELL);
 	App->collision->AddCollider(spellColl, this);
+
+
+
 	//collider = { 0,0,45,65 };
 
 	stats.atk = 15;

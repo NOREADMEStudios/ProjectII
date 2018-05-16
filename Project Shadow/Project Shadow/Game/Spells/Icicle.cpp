@@ -15,12 +15,9 @@ Icicle::~Icicle()
 
 bool Icicle::Start() {
 	LoadSprites();
-	spellAnim.LoadAnimationsfromXML("Icicle", SPELLS_ANIMS_ROOT);
+	App->entities->entities.push_back(this);
 
-	currentAnimation = &spellAnim;
-
-	spellColl = App->collision->CreateCollider({}, "Icicle_Spell", Collider::SPELL);
-	
+	spellColl = App->collision->CreateCollider({}, "Spell", Collider::SPELL);
 	App->collision->AddCollider(spellColl, this);
 	
 	stats.atk = 10;

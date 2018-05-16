@@ -4,7 +4,11 @@
 #include "..\..\Engine\Scene.h"
 #include "..\..\Engine\ModuleCollision.h"
 #include "..\..\PugiXml\src\pugixml.hpp"
+#include "..\..\Engine\UI\InterfaceElement.h"
 
+class Window;
+class Button;
+class Sprite;
 class Label;
 
 class MainScene :
@@ -12,6 +16,14 @@ class MainScene :
 {
 public:
 
+	class Player {
+
+	public:
+		int			playerNum;
+		int			totalControllersNum;
+		bool		ready = false;
+
+	};
 	
 	Entity* e = nullptr,* e2 = nullptr, * e3 = nullptr, *e4 = nullptr;
 	int		totalRounds,
@@ -19,7 +31,10 @@ public:
 			wonRounds[2];
 	Label	*roundsLabel = nullptr,
 			*winnerLabel = nullptr;
+	Window* pauseWindow = nullptr;
+	Button* mainMenuButt = nullptr;
 	bool	combatEndControlBool = false;
+	std::vector<Player> players;
 
 	MainScene();
 	virtual ~MainScene();
@@ -40,6 +55,10 @@ public:
 
 	bool Save(pugi::xml_node&) const override { return true; };
 
+	void LoadSceneUI();
+
+	void SetControllerFocus();
+	void WindowStates();
 
 };
 

@@ -85,7 +85,6 @@ public:
 	};
 
 	Item* items[15];
-	int controllersNum;
 
 	ItemSelecScene();
 	virtual ~ItemSelecScene();

@@ -17,9 +17,11 @@
 #include "../../Engine/ModuleAudio.h"
 #include "../../Engine/ModuleWindow.h"
 #include "../../Engine/UI/Label.h"
+#include "../../Engine/UI/Button.h"
 #include "../../Engine/ModuleFonts.h"
 #include "../../Engine/ModuleTransition.h"
 
+void mainMenuPressCallb(size_t arg_size...);
 
 void Reload(size_t i, ...) {
 	App->scenes->ChangeScene(App->scenes->mainSc);
@@ -70,11 +72,16 @@ bool MainScene::Start()
 		App->gui->AddHealthbar((Character*)e3, 2, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
 		App->gui->AddHealthbar((Character*)e4, 3, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
 	}
+
+	LoadSceneUI();
+	SetControllerFocus();
 	return false;
 }
 
 bool MainScene::Update(float dt)
 {
+	WindowStates();
+
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		App->input->BlockKeyboardEvent(SDL_SCANCODE_P);
 		App->scenes->ChangeScene(App->scenes->endSc);
@@ -132,3 +139,53 @@ bool MainScene::CleanUp()
 	App->entities->CleanUp(n);
 	return true;
 }
+
+void MainScene::SetControllerFocus(){
+	controllersNum = App->input->GetNumControllers();
+	if (controllersNum == 0) {
+		return;
+	}
+
+	for (int i = 1; i <= controllersNum; i++) {
+		Player player;
+
+		player.playerNum = i;
+		player.ready = false;
+		player.totalControllersNum = controllersNum;
+		
+		players.push_back(player);
+	}
+}
+
+void MainScene::WindowStates(){
+	for (int i = 0; i < controllersNum; i++) {
+		Player* player = &players[i];
+		if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_START) {
+			pauseWindow->Enable(true);//MISSING GAME PAUSE
+		}
+		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_B) {
+			pauseWindow->Enable(false);
+		}
+	}
+	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)//ONLY FOR TESTING WITHOUT CONTROLLER
+		pauseWindow->Enable(true);
+}
+
+void MainMenuPressCallb(size_t arg_size...) {
+
+}
+
+void MainScene::LoadSceneUI() {
+	uiPoint sizeScreen = App->gui->GetGuiSize();
+
+	pauseWindow = App->gui->AddWindow(sizeScreen.x / 2, sizeScreen.y / 2, nullptr, { 4000, 4000, 600, 500 }, false);
+	mainMenuButt = App->gui->AddButton(0, 0, nullptr, { 1282, 883, 400, 98 }, true, MainMenuPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	mainMenuButt->SetParent(pauseWindow);
+	mainMenuButt->setPosition(pauseWindow->rect.w / 2, pauseWindow->rect.h / 2);
+	Label* mainMenuLabel = App->gui->AddLabel(mainMenuButt->rect.w * 7 / 12, mainMenuButt->rect.h / 2, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string mainMenuStr = "MAIN MENU";
+	mainMenuLabel->setString(mainMenuStr);
+	mainMenuLabel->SetParent(mainMenuButt);
+	mainMenuLabel->culled = false;
+}
+

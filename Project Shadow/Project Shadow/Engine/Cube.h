@@ -15,6 +15,10 @@ public:
 	Cube(TYPE x, TYPE y, TYPE z, TYPE w, TYPE h, TYPE d) : x(x), y(y), z(z), w(w), h(h), d(d){}
 	~Cube(){}
 
+	bool notZeroDims() {
+		return (w != 0 && h != 0 && d != 0);
+	}
+
 	bool Intersect(const Cube& other, Cube* result = nullptr) const {
 		if (result != nullptr) {
 			result->x = MAX(x, other.x);
@@ -24,7 +28,8 @@ public:
 			result->z = MAX(z, other.z);
 			result->d = MIN(z + d, other.z + other.d) - result->z;
 		}
-		return (((x <= other.x && x + w >= other.x) || (x >= other.x && x <= other.x + other.w)) &&
+		return (notZeroDims() && other.notZeroDims()) &&
+			(((x <= other.x && x + w >= other.x) || (x >= other.x && x <= other.x + other.w)) &&
 			((y <= other.y && y + h >= other.y) || (y >= other.y && y <= other.y + other.h)) &&
 			((z <= other.z && z + d >= other.z) || (z >= other.z && z <= other.z + other.d)));
 	}

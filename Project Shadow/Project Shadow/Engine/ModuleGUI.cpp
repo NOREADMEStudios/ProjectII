@@ -32,7 +32,9 @@ bool ModuleGUI::Awake(pugi::xml_node& conf)
 
 	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
 
-	App->win->GetWindowSize(gui_size.x, gui_size.y);
+	//App->win->GetWindowSize(gui_size.x, gui_size.y);
+	gui_size.x = DEFAULT_RESOLUTION_X;
+	gui_size.y = DEFAULT_RESOLUTION_Y;
 	scale = App->win->GetScale();
 
 	return ret;

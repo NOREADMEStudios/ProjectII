@@ -3,6 +3,7 @@
 	<app framerateCap="60">
 		<Title value="Shadow Engine" />
 		<organisation value="NoReadme Studio" />
+		<debug_mode value="0" />
 		<Assets folder="Assets/">
 			<Animations folder="Animations/">
 				<Characters folder="Characters/" />
@@ -26,10 +27,10 @@
 		<vsync value="false" />
 	</renderer>
 	<window>
-		<resolution width="1680" height="1050" scale="1" />
+		<resolution width="1600" height="900" scale="1" />
 		<fullscreen value="0" />
 		<borderless value="0" />
-		<resizable value="0" />
+		<resizable value="1" />
 		<fullscreenWindow value="0" />
 	</window>
 	<scenes folder="Scenes/" />

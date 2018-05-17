@@ -26,8 +26,8 @@ bool ModuleTransition::MakeTransition(Callback _cb, Transition _type, float time
 	transitionTimeTotal = time;
 	transitionTimeCurrent = 0.0f;
 	type = _type;
-	uint w = 0, h = 0;
-	App->win->GetWindowSize(w, h);
+	uint w = DEFAULT_RESOLUTION_X, h = DEFAULT_RESOLUTION_Y;
+	//App->win->GetWindowSize(w, h);
 	dstRect.x = 0;
 	dstRect.y = 0;
 	switch (type)
@@ -97,7 +97,7 @@ void ModuleTransition::Scrolling()
 		transitionTimeCurrent = 0.0f;
 		break;
 	case ModuleTransition::SCROLLING:
-		if (dstRect.x > App->win->screen_surface->w || dstRect.x < -App->win->screen_surface->w) {
+		if (dstRect.x > DEFAULT_RESOLUTION_X || dstRect.x < -DEFAULT_RESOLUTION_X) {
 			completed = true;
 			scrollState = NOT_SCROLLING;
 			SDL_DestroyTexture(scrollTexture);
@@ -121,8 +121,8 @@ bool ModuleTransition::Awake(pugi::xml_node &)
 bool ModuleTransition::Start()
 {
 	completed = false;
-	uint w = 0, h = 0;
-	App->win->GetWindowSize(w, h);
+	uint w = DEFAULT_RESOLUTION_X, h = DEFAULT_RESOLUTION_Y;
+	//App->win->GetWindowSize(w, h);
 	fadeAlpha = 0;
 	speed = 0;
 	dstRect = { 0, 0, (int)w, (int)h };

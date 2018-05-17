@@ -89,6 +89,19 @@ bool MainScene::Update(float dt)
 		paused = !paused;
 		App->PauseGame(paused);
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
+		((Character*)e)->AdHp(-100);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
+		((Character*)e2)->AdHp(-100);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
+		((Character*)e3)->AdHp(-100);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
+		((Character*)e4)->AdHp(-100);
+	}
 	App->map->Draw();
 
 	return true;

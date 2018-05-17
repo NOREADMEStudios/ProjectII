@@ -267,6 +267,8 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 	if (_tex == nullptr)
 		_tex = atlas_texture;
 
+
+
 	Healthbar* aux = new Healthbar(character, charNum, leftSide, _x, _y, _tex, _enabled, &_anim);
 	Sprite* bar = App->gui->AddSprite(0, 0, _tex, { 451, 297, 258, 20 });
 	Label* charNumber = App->gui->AddLabel(0, 0, 48, "Assets/Textures/UI/TTF/Vecna Bold.ttf", { 255, 255, 255, 255 }, Label::BLENDED, "");
@@ -279,6 +281,9 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 	bar->SetParent(aux);
 	bar->setPosition(aux->rect.w / 2, aux->rect.h / 2);
 
+	int marginSprites = 4;
+	int dimensionSprites = 91;
+	iPoint initialPosSprites { 1663, 1126 };
 	iRect charFaceRect;
 	uiPoint screenDims = GetGuiSize();
 	fPoint anchor;
@@ -289,31 +294,30 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 	case 0:
 		anchor.x = 0;
 		anchor.y = 0;
-
-		charFaceRect = { 890, 335, 91, 91 };
 		break;
 
 	case 1:
 		anchor.x = 0;
 		anchor.y = 1;
-
-		charFaceRect = { 890, 240, 91, 91 };
 		break;
 
 	case 2:
 		anchor.x = 1;
 		anchor.y = 0;
-
-		charFaceRect = { 890, 145, 91, 91 };
 		break;
 
 	case 3:
 		anchor.x = 1;
 		anchor.y = 1;
-
-		charFaceRect = { 890, 50, 91, 91 };
 		break;
 	}
+
+	charFaceRect = {
+		initialPosSprites.x + (dimensionSprites + marginSprites) * character->charType,
+		initialPosSprites.y + (dimensionSprites + marginSprites) * (character->team - 1),
+		dimensionSprites,
+		dimensionSprites
+	};
 
 	Sprite* charFace = App->gui->AddSprite(0, 0, atlas_texture, charFaceRect.toSDL_Rect());
 

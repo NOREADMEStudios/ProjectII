@@ -69,7 +69,6 @@ bool ModuleEntityManager::Start() {
 		(*item)->Start();
 	}
 
-	justIn = true;
 	StartItems();
 	return true;
 }
@@ -108,11 +107,11 @@ bool ModuleEntityManager::Update(float dt) {
 		}
 	}
 
-	if (aliveCharacters == 1 && !justIn)
+	if (numofplayers != 0 && aliveCharacters <= numofplayers / 2 && !locked)
 	{
 		finish = true;
+		locked = true;
 	}
-	justIn = false;
 	return true;
 }
 
@@ -131,10 +130,11 @@ bool ModuleEntityManager::PostUpdate() {
 }
 
 bool ModuleEntityManager::CleanUp(pugi::xml_node& n) {
-	justIn = true;
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->CleanUp(n);
 	}
+	locked = false;
+	finish = false;
 	StartItems();
 	return true;
 }

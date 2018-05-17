@@ -102,7 +102,7 @@ public:
 	uint GetWinnerTeam();
 	EntityStats items[4];
 	bool finish = false,
-		justIn = true;
+		locked = false;
 	uint winner, winnerTeam;
 	SDL_Texture* spellsTex;
 	std::list<Entity*> entities;

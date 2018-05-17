@@ -38,7 +38,7 @@ public:
 		void RemoveLockedArrow(uint lockedNum);
 	};
 
-	int controllersNum;
+	//int controllersNum;
 	CharacterInfo charactersInfo[4];
 	CharacterTypes charactersType[4];
 	Sprite* characterFrame[4];

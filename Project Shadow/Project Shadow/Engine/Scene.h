@@ -32,6 +32,7 @@ public:
 	bool DrawBackground();
 	bool UnLoadBackground();
 
+	int controllersNum = 0;
 
 	bool loaded = false;
 	bool paused = false;

@@ -78,6 +78,8 @@ bool IntroScene::Update(float dt)
 
 bool IntroScene::CleanUp() {
 	App->gui->CleanUp();
+	pugi::xml_node n;
+	App->entities->CleanUp(n);
 	UnLoadBackground();
 	return true;
 }

@@ -7,6 +7,7 @@
 #include "..\..\Engine\UI\InterfaceElement.h"
 
 class Window;
+class Slider;
 class Button;
 class Sprite;
 class Label;
@@ -33,6 +34,17 @@ public:
 			*winnerLabel = nullptr;
 	Window* pauseWindow = nullptr;
 	Button* mainMenuButt = nullptr;
+	Button* changeCharactersButt = nullptr;
+	Button* settingsButt = nullptr;
+	Button* exitButt = nullptr;
+
+	Slider* music_sl = nullptr;
+	Sprite* music_sp = nullptr;
+	Slider* fx_sl = nullptr;
+	Sprite* fx_sp = nullptr;
+	Button* fullscrenButt = nullptr;
+	Button* settBackButt = nullptr;
+			
 	bool	combatEndControlBool = false;
 	std::vector<Player> players;
 
@@ -56,10 +68,14 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; };
 
 	void LoadSceneUI();
+	void ManageSettings(bool settingActive);
 
+private:
+	void ChooseFocus();
 	void SetControllerFocus();
+	void ManageDisplacement();
+	void CreateSettingsWindow();
 	void WindowStates();
-
 };
 
 #endif

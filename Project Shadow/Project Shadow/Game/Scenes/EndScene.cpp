@@ -90,11 +90,11 @@ void EndScene::LoadUIButtons() {
 	else {
 		background->scale = MIN((float)screenSize.y / (float)background->rect.h, (float)screenSize.x / (float)background->rect.w);
 	}
-
-	mainMenuButton = App->gui->AddButton((screenSize.x / 2) + ((400/1080) * screenSize.x), (screenSize.y / 4) * 3, nullptr, { 50,50,384,195 }, true, MainButtonPressCallb, { 50,270,384,195 }, { 50,491,384,195 });
+	
+	mainMenuButton = App->gui->AddButton((screenSize.x / 2), (screenSize.y / 4) * 3, nullptr, { 1282,883,400,98 }, true, MainButtonPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
 	mainMenuButton->OnHoverEnter = MainButtonHoverEnCallb;
 	mainMenuButton->OnHoverExit = MainButtonHoverExCallb;
-	mainLabel = App->gui->AddLabel(mainMenuButton->rect.w / 2, mainMenuButton->rect.h / 2, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
+	mainLabel = App->gui->AddLabel(mainMenuButton->rect.w * 5.8f / 10.f, mainMenuButton->rect.h / 2.f, 50, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string mainStr = "Main Menu";
 	mainLabel->setString(mainStr);
 	mainLabel->SetParent(mainMenuButton);

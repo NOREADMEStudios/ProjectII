@@ -114,6 +114,7 @@ bool Application::Awake() {
 		title = appConfig.child("Title").attribute("value").as_string();
 		organization = appConfig.child("organisation").attribute("value").as_string();
 		framerate_cap = appConfig.attribute("framerateCap").as_uint();
+		debug = appConfig.child("debug_mode").attribute("value").as_bool();
 
 		//Checking file structure
 		CheckFileStructure(appConfig);
@@ -176,6 +177,7 @@ void Application::CreateDefaultConfigFile(xmlNode & configNode) const {
 	app.append_attribute("framerateCap").set_value(60);
 	app.append_child("Title").append_attribute("value") = "Shadow Engine";
 	app.append_child("organisation").append_attribute("value") = "NoReadme Studio";
+	app.append_child("debug_mode").append_attribute("value") = "0";
 
 	// Assets folder structure
 	xmlNode assetsStructure = app.append_child("Assets");

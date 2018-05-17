@@ -15,7 +15,7 @@ public:
 	Cube(TYPE x, TYPE y, TYPE z, TYPE w, TYPE h, TYPE d) : x(x), y(y), z(z), w(w), h(h), d(d){}
 	~Cube(){}
 
-	bool notZeroDims() {
+	bool notZeroDims() const {
 		return (w != 0 && h != 0 && d != 0);
 	}
 

@@ -54,10 +54,7 @@ private:
 	void SetControllerFocus();
 	void ManageDisplacement();
 	void CreateSettingsWindow();
-
-
-	int controllersNum;
-	
+		
 };
 
 #endif

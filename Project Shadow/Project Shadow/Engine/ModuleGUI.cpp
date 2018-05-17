@@ -371,6 +371,8 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 
 Window* ModuleGUI::AddWindow(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled)
 {
+	if (tex == nullptr)
+		tex = atlas_texture;
 	Window* aux = new Window(x, y, tex, anim, enabled);
 	aux->ComputeRects();
 

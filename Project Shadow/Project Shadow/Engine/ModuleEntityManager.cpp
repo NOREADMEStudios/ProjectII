@@ -73,11 +73,9 @@ bool ModuleEntityManager::Start() {
 		(*item)->Start();
 	}
 
-<<<<<<< HEAD
+
 	spellsTex = App->textures->Load("Spells/spells.png");
-	justIn = true;
-=======
->>>>>>> develop2
+
 	StartItems();
 	return true;
 }

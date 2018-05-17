@@ -473,6 +473,11 @@ void Character::UpdateMainStates()
 			currentState = wantedState;
 		}
 	}
+	else if (currentState == KNOKED)
+	{
+		if (gamepos.y <= 0)
+			currentState == IDLE; //Standing
+	}
 	else if (currentAnimation->Finished())
 	{
 		if (currentState == DEATH)
@@ -545,6 +550,10 @@ void Character::UpdateCurState(float dt)
 			{
 				Accelerate(hit_dir, 0, 0, dt);
 				hit_bool = false;
+			}
+			if (gamepos.y > 0)
+			{
+				currentState = KNOKED;
 			}
 			break;
 		}
@@ -697,7 +706,7 @@ void Character::LoadBasicStates()
 	LoadState(HIT, "hit");
 	LoadState(DEATH, "death");
 	LoadState(TAUNT, "win");
-
+	LoadState(KNOKED, "death");
 
 }
 

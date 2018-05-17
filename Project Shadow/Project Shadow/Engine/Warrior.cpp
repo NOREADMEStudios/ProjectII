@@ -316,6 +316,10 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 			if (atk != nullptr)
 				_other->entity->stats.life -= dmg;
+			if (currentTag == 5)
+			{
+				_other->entity->Impulsate(0, 1, 0);
+			}
 
 			if (currentTag == 11)
 			{

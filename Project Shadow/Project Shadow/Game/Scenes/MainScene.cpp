@@ -19,7 +19,7 @@
 #include "../../Engine/UI/Label.h"
 #include "../../Engine/ModuleFonts.h"
 #include "../../Engine/ModuleTransition.h"
-
+#include <time.h>
 
 void Reload(size_t i, ...) {
 	App->scenes->ChangeScene(App->scenes->mainSc);
@@ -44,7 +44,12 @@ bool MainScene::Start()
 	combatEndControlBool = false;
 	App->audio->PlayMusic("Assets/Audio/BGM/Level1.ogg");
 
-	App->map->Load("map2small.tmx");
+	srand(time(NULL));
+	int rand_map = rand() % 2;
+	if (rand_map == 0)
+		App->map->Load("map2small.tmx");
+	else
+		App->map->Load("mapSmall.tmx");
 
 	atlas = App->textures->Load("UI/atlas.png");
 

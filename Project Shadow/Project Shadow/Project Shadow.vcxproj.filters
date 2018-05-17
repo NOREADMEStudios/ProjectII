@@ -339,7 +339,7 @@
     </ClInclude>
     <ClInclude Include="Game\Scenes\CharacterSelecScene.h">
       <Filter>Game\Scenes</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="Engine\Cube.h">
       <Filter>Engine\Tools</Filter>
     </ClInclude>
@@ -358,5 +358,11 @@
     <ClInclude Include="Game\Spells\DeathMark.h">
       <Filter>Engine\Entities\Spells</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
 </Project>

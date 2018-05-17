@@ -28,12 +28,13 @@ enum SpellsType {
 
 enum CharacterTypes {
 	WARRIOR,
-	ROGUE,
 	WIZARD,
+	ROGUE,
 	CLERIC,
 	NONE,
 	ENEMY,
 };
+
 enum EntityTypes {
 	NOTYPE,
 	SPELLS,

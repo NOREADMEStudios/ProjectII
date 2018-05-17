@@ -17,8 +17,8 @@ enum CharacterTypes;
 
 enum Team {
 	NOTEAM = 0,
-	BLUE,
-	RED
+	RED,
+	BLUE
 };
 
 struct InvBlit
@@ -182,7 +182,7 @@ public:
 	bool cleric_ab = 0;
 
 	bool to_delete = false;
-	Team team= NOTEAM;
+	Team team = NOTEAM;
 
 protected:
 	

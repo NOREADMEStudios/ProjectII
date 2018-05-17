@@ -84,6 +84,7 @@ void EndScene::LoadUIButtons() {
 	Sprite* background = App->gui->AddSprite(820, 540, back_end, { 0,0,1750,1080 }, true);
 	background->setPosition(screenSize.x * 0.5f, screenSize.y * 0.5f);
 	background->ComputeRects();
+
 	if (screenSize.y < background->rect.h) {
 		background->scale = MAX((float)screenSize.y / (float)background->rect.h, (float)screenSize.x / (float)background->rect.w);
 	}

@@ -13,15 +13,16 @@ FireDemon::~FireDemon()
 
 bool FireDemon::Start() {
 	LoadSprites();
+	App->entities->entities.push_back(this);
 
-	spellAnim.LoadAnimationsfromXML("fire_demon", SPELLS_ANIMS_ROOT);
-	currentAnimation = &spellAnim;
-	spellAnim.speed = 10;
-
-	spellColl = App->collision->CreateCollider({}, "FireDemon_Spell", Collider::SPELL);
+	spellColl = App->collision->CreateCollider({}, "Spell", Collider::SPELL);
 	App->collision->AddCollider(spellColl, this);
+
+
+
 	//collider = { 0,0,45,65 };
 
+	spellAnim.speed = 10;
 	stats.atk = 10;
 
 	char_depth = 20;

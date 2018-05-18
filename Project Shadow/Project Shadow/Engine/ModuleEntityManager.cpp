@@ -13,6 +13,7 @@
 #include "../Game/Spells/DeathMark.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
+#include "ModuleTextures.h"
 
 
 ModuleEntityManager::ModuleEntityManager()
@@ -36,6 +37,9 @@ bool ModuleEntityManager::Awake(pugi::xml_node& n) {
 	xmlNode iter2;
 
 	pugi::xml_parse_result result = audio_xml_file.load_file("Assets/Audio/audio_xml.xml");
+
+
+
 	if (result != NULL)
 	{
 		audio_xml = audio_xml_file.child("audio");
@@ -68,6 +72,9 @@ bool ModuleEntityManager::Start() {
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		(*item)->Start();
 	}
+
+
+	spellsTex = App->textures->Load("Spells/spells.png");
 
 	StartItems();
 	return true;
@@ -244,11 +251,11 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	ret->SetPos(spellsInfo.pos.x, spellsInfo.pos.y, spellsInfo.pos.z);
 	ret->SetDir(spellsInfo.dir.x, spellsInfo.dir.y);
 
-	entities.push_back(ret);
-	ret->Start();
+	ret->LoadSpell(spellsInfo.spType);
 
 	return ret;
 }
+
 
 
 void ModuleEntityManager::DestroyEntity(Entity* entity) {

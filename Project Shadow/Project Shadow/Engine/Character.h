@@ -210,6 +210,7 @@ public:
 	void AdHp(int hp);
 	Point3D GetGamePos() { return gamepos; };
 
+	CharStateEnum GetState() { return currentState; };
 
 
 protected:

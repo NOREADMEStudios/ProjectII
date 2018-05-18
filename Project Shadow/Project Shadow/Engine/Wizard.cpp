@@ -8,7 +8,9 @@
 #include "ModuleMap.h"
 #include "App.h"
 #include "..\Game\Spells\Lightning.h"
-
+#include "..\Game\Spells\Icicle.h"
+#include "..\Game\Spells\FireBall.h"
+#include "..\Game\Spells\FireDemon.h"
 
 
 
@@ -33,6 +35,15 @@ bool Wizard::HeroStart()
 	stats.life = 100;
 	stats.atk = 2;
 	stats.def = 0;
+
+	icicle = App->entities->CreateSpell({ ICICLE,team,{ gamepos.x, gamepos.y + 75, gamepos.z } });
+
+	lighting = (Lightning*)App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x, gamepos.y + 75, gamepos.z } });
+
+	fireball = App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
+
+	fireDemon = App->entities->CreateSpell({ FIRE_DEMON,team,{ gamepos.x, gamepos.y + 50 , gamepos.z } });
+
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 3);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_dagger", animations_name, 5);
@@ -89,6 +100,7 @@ bool Wizard::HeroUpdate(float dt)
 		flip = true;
 	}
 
+
 	if (!GetAbAtk(11)->active)
 	{
 		ab_1_active = true;
@@ -142,30 +154,45 @@ void Wizard::UpdateSpecStates()
 
 	if (currentTag == 11 && !ab_1_active)
 	{
-
-		App->entities->CreateSpell({ ICICLE,team, {gamepos.x, gamepos.y+75, gamepos.z} });
+		Icicle* ice = new Icicle{ *(Icicle*)icicle };
+		ice->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
+		ice->SetDir(dir, 0);
+		ice->Start();
 		ab_1_active = true;
 	}
 	if (currentTag == 12 && !ab_2_bool )
 	{
-	
-		App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x + (50 * -dir), gamepos.y + 40, gamepos.z },{flip,0} });
+		Lightning* light = new Lightning( *lighting );
+		light->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
+		light->SetDir(dir, 0);
+		light->Start();
 		ab_2_bool = true;
 		//noMove.Start();
 			
 	}
 	if (currentTag == 13 && !ab_3_bool)
 	{
+		for (int i = -1; i <= 1; i++)
+		{
+			for (int j = -1; j <= 1; j++)
+			{
+				if (!(i == 0 && j == 0))
+				{
+					FireBall* fb = new FireBall{ *(FireBall*)fireball };
+					fb->SetPos(gamepos.x + (50 * i) , gamepos.y, gamepos.z + (50 * j));
+					fb->SetDir(i, j);
+					fb->Start();
+				}
 
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x - 50, gamepos.y , gamepos.z },{ -1,0 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x, gamepos.y , gamepos.z + 50 },{ 0,1 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x, gamepos.y , gamepos.z - 50},{ 0,-1 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x + 30, gamepos.y , gamepos.z + 30 },{ 1,1 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x - 30, gamepos.y , gamepos.z + 30 },{ -1,1 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x + 30, gamepos.y , gamepos.z - 30 },{ 1,-1 } });
-		App->entities->CreateSpell({ FIREBALL,team,{ gamepos.x - 30, gamepos.y , gamepos.z - 30 },{ -1,-1 } });
-		App->entities->CreateSpell({ FIRE_DEMON,team,{ gamepos.x, gamepos.y + 50 , gamepos.z} });
+
+			}
+
+		}
+
+		FireDemon* ice = new FireDemon{ *(FireDemon*)fireDemon };
+		ice->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
+		ice->SetDir(0, 0);
+		ice->Start();
 		ab_3_bool = true;
 		//noMove.Start();
 
@@ -190,7 +217,7 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 
 	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))*/
 	{
-		if (_this->collider.x - _other->collider.x > 0)
+		if (_this->entity->GetGamePos().x - _other->entity->GetGamePos().x > 0)
 		{
 			hit_dir = 1;
 		}
@@ -209,13 +236,13 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 			else
 			{
-				_this->entity->Impulsate(hit_dir * 8000, 0, 0);
+				_this->entity->Impulsate(hit_dir * 10, 0, 0);
 			}
 			//App->audio->PlayFx(10);
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::DEF)
 		{
-			_this->entity->Impulsate(hit_dir * 8000, 0, 0);
+			_this->entity->Impulsate(hit_dir * 10, 0, 0);
 		}
 		else if (_this->type == Collider::PARRY && _other->type == Collider::ATK)
 		{
@@ -224,10 +251,12 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::PARRY)
 		{
+			currentTag = 0;
 			currentState = HIT;
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
+			currentTag = 0;
 			currentState = HIT;
 			hit_bool = true;
 

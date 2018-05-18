@@ -88,19 +88,23 @@ bool Cleric::PreUpdate()
 
 bool Cleric::HeroUpdate(float dt)
 {
-	partner = (Character*)App->entities->GetSameTeam(this);
+
 
 	int z_dir = directions.down - directions.up;
 	int x_dir = directions.right - directions.left;
 
 	if (!ab_timer.Count(ab_duration))
 	{
+		if (partner  != nullptr)
 		partner->cleric_ab = true;
+
 		cleric_ab = true;
 	}
 	else
 	{
+		if (partner != nullptr)
 		partner->cleric_ab = false;
+
 		cleric_ab = false;
 	}
 
@@ -176,7 +180,11 @@ bool Cleric::CleanUp(pugi::xml_node&)
 
 void Cleric::UpdateSpecStates()
 {
-	Point3D pgp = partner->GetGamePos();
+	partner = (Character*)App->entities->GetSameTeam(this);
+	Point3D pgp;
+
+	if (partner != nullptr)
+	pgp = partner->GetGamePos();
 
 	if (currentTag == 11 && !ab_1_active)
 	{
@@ -283,13 +291,13 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 			else
 			{
-				_this->entity->Impulsate(hit_dir * 8000, 0, 0);
+				_this->entity->Impulsate(hit_dir * 10, 0, 0);
 			}
 			//App->audio->PlayFx(10);
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::DEF)
 		{
-			_this->entity->Impulsate(hit_dir * 8000, 0, 0);
+			_this->entity->Impulsate(hit_dir * 10, 0, 0);
 		}
 		else if (_this->type == Collider::PARRY && _other->type == Collider::ATK)
 		{
@@ -298,10 +306,12 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::PARRY)
 		{
+			currentTag = 0;
 			currentState = HIT;
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
+			currentTag = 0;
 			currentState = HIT;
 			hit_bool = true;
 

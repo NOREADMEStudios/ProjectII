@@ -1,5 +1,6 @@
 #include "Spells.h"
 #include "ModuleTextures.h"
+#include "ModuleEntityManager.h"
 
 
 Spells::Spells(SpellsType spellType): Entity(EntityTypes::SPELLS)
@@ -24,7 +25,7 @@ bool Spells::CheckLifetime() const{
 
 void Spells::LoadSprites() {
 
-	sprites = App->textures->Load("Spells/spells.png");
+	sprites = App->entities->spellsTex;
 }
 
 void Spells::UnLoadSprites() {
@@ -46,4 +47,41 @@ void Spells::GetColliderFromAnimation(){
 	spellColl->collider.x += pivot_pos.x;
 	spellColl->collider.y += pivot_pos.y;
 	
+}
+
+Spells* Spells::LoadSpell(SpellsType type)
+{
+	std::string name;
+	bool collides = true;
+	bool is_mark = false;
+	switch (type)
+	{
+	case FIREBALL:
+		name = "fireball";
+		break;
+	case LIGHTING:
+		name = "Lightning";
+		break;
+	case ICICLE:
+		name = "Icicle";
+		break;
+	case FIRE_DEMON:
+		name = "fire_demon";
+		break;
+	case DAGGER:
+		name = "dagger";
+		break;
+	case DEATH_MARK:
+		collides = false;
+		is_mark = true;
+		break;
+	}
+	if (!is_mark)
+	{
+		spellAnim.LoadAnimationsfromXML(name, SPELLS_ANIMS_ROOT);
+		currentAnimation = &spellAnim;
+	}
+
+
+	return this;
 }

@@ -460,7 +460,7 @@ void Character::UpdateMainStates()
 			SetCombo();
 			time_attack.Start();
 		}
-		if ((currentState == AD_ACTION && GetAtk(currentTag)->air) && currentAnimation->Finished())
+		if ((currentState == AD_ACTION && currentTag != 0 && GetAtk(currentTag)->air) && currentAnimation->Finished())
 		{
 			currentAnimation->Reset();
 			currentState = JUMP;
@@ -472,6 +472,15 @@ void Character::UpdateMainStates()
 			currentAnimation->Reset();
 			currentState = wantedState;
 		}
+	}
+	else if (currentState == KNOKED)
+	{
+		if (currentAnimation->Finished() && gamepos.y <= 0)
+		{
+			currentAnimation->Reset();
+			currentState = IDLE;
+		}
+
 	}
 	else if (currentAnimation->Finished())
 	{
@@ -521,10 +530,12 @@ void Character::UpdateCurState(float dt)
 
 	if (gamepos.y > 0)
 	{
-		if ((currentState != AD_ACTION && currentTag != 0 && !GetAtk(currentTag)->air) ||currentState == JUMP)
+		if (currentState != AD_ACTION && currentTag != 0 && !GetAtk(currentTag)->air)
+		Accelerate(x_dir, -1, z_dir, dt);
+
+		else 
 			Accelerate(x_dir, -2, z_dir, dt);
-		else
-			Accelerate(x_dir, -1, z_dir, dt);
+	
 	}
 	else if (gamepos.y < 0)
 	{
@@ -545,6 +556,11 @@ void Character::UpdateCurState(float dt)
 			{
 				Accelerate(hit_dir, 0, 0, dt);
 				hit_bool = false;
+			}
+			if (gamepos.y > 0)
+			{
+				currentState = KNOKED;
+				currentTag = 0;
 			}
 			break;
 		}
@@ -697,7 +713,7 @@ void Character::LoadBasicStates()
 	LoadState(HIT, "hit");
 	LoadState(DEATH, "death");
 	LoadState(TAUNT, "win");
-
+	LoadState(KNOKED, "death");
 
 }
 

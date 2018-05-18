@@ -17,11 +17,7 @@ bool Lightning::Start() {
 	App->entities->CreateSpell({ SpellsType::LIGHTNING_AURA, team, {gamepos.x, gamepos.y, gamepos.z}, dir });
 
 	LoadSprites();
-
-	spellAnim.LoadAnimationsfromXML("Lightning", SPELLS_ANIMS_ROOT);
-	
-	currentAnimation = &spellAnim;
-	
+	App->entities->entities.push_back(this);
 
 	spellColl = App->collision->CreateCollider({}, "Lightning_Spell", Collider::SPELL);	
 	App->collision->AddCollider(spellColl, this);
@@ -40,7 +36,8 @@ bool Lightning::Start() {
 
 bool Lightning::CleanUp(pugi::xml_node&)
 {
-	UnLoadSprites();
+	//UnLoadSprites();
+	spellAnim.Reset();
 	bool ret = App->collision->RemoveCollider(spellColl);
 
 	return ret;

@@ -151,6 +151,7 @@ public:
 	void Accelerate(float x, float y,float z, float delta_time);
 	void Impulsate(float x, float y, float z);
 	void AdBuff(float time = 0, float spd = 0, float atk = 0, float def = 0);
+	void SetFlip(bool f) { flip = f; };
 
 	void CalcRealPos();
 

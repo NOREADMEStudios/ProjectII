@@ -88,19 +88,23 @@ bool Cleric::PreUpdate()
 
 bool Cleric::HeroUpdate(float dt)
 {
-	partner = (Character*)App->entities->GetSameTeam(this);
+
 
 	int z_dir = directions.down - directions.up;
 	int x_dir = directions.right - directions.left;
 
 	if (!ab_timer.Count(ab_duration))
 	{
+		if (partner  != nullptr)
 		partner->cleric_ab = true;
+
 		cleric_ab = true;
 	}
 	else
 	{
+		if (partner != nullptr)
 		partner->cleric_ab = false;
+
 		cleric_ab = false;
 	}
 
@@ -176,7 +180,11 @@ bool Cleric::CleanUp(pugi::xml_node&)
 
 void Cleric::UpdateSpecStates()
 {
-	Point3D pgp = partner->GetGamePos();
+	partner = (Character*)App->entities->GetSameTeam(this);
+	Point3D pgp;
+
+	if (partner != nullptr)
+	pgp = partner->GetGamePos();
 
 	if (currentTag == 11 && !ab_1_active)
 	{

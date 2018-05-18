@@ -475,8 +475,12 @@ void Character::UpdateMainStates()
 	}
 	else if (currentState == KNOKED)
 	{
-		if (gamepos.y <= 0)
-			currentState == IDLE; //Standing
+		if (currentAnimation->Finished() && gamepos.y <= 0)
+		{
+			currentAnimation->Reset();
+			currentState = IDLE;
+		}
+
 	}
 	else if (currentAnimation->Finished())
 	{
@@ -526,10 +530,12 @@ void Character::UpdateCurState(float dt)
 
 	if (gamepos.y > 0)
 	{
-		if ((currentState != AD_ACTION && currentTag != 0 && !GetAtk(currentTag)->air) ||currentState == JUMP)
+		if (currentState != AD_ACTION && currentTag != 0 && !GetAtk(currentTag)->air)
+		Accelerate(x_dir, -1, z_dir, dt);
+
+		else 
 			Accelerate(x_dir, -2, z_dir, dt);
-		else
-			Accelerate(x_dir, -1, z_dir, dt);
+	
 	}
 	else if (gamepos.y < 0)
 	{
@@ -554,6 +560,7 @@ void Character::UpdateCurState(float dt)
 			if (gamepos.y > 0)
 			{
 				currentState = KNOKED;
+				currentTag = 0;
 			}
 			break;
 		}

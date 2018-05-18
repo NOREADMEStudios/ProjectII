@@ -250,14 +250,13 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
 
-		if (_this->collider.x - _other->collider.x > 0)
-
+		if (_this->entity->GetGamePos().x - _other->entity->GetGamePos().x > 0)
 		{
-			hit_dir = 1;
+			hit_dir = -1;
 		}
 		else
 		{
-			hit_dir = -1;
+			hit_dir = 1;
 		}
 
 		if (_this->type == Collider::DEF && _other->type == Collider::ATK)
@@ -295,19 +294,18 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			currentTag = 0;
 			currentState = HIT;
 			hit_bool = true;
-
-
-			if (_this->collider.x - _other->collider.x > 0)
-			{
-				hit_dir = 1 * _other->entity->stats.atk;
-			}
-			else
-			{
-				hit_dir = -1 * _other->entity->stats.atk;
-			}
+			//if (_this->collider.x - _other->collider.x > 0)
+			//{
+			//	hit_dir = 1 * _other->entity->stats.atk;
+			//}
+			//else
+			//{
+			//	hit_dir = -1 * _other->entity->stats.atk;
+			//}
 		}
 		else if ((_this->type == Collider::ATK || _this->type == Collider::PARRY) && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{
+
 			Attack * atk = GetAtk(currentTag);
 			int dmg = _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 			if (dmg <= 0)
@@ -316,9 +314,13 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			}
 			if (atk != nullptr)
 				_other->entity->stats.life -= dmg;
-			if (currentTag == 5)
+			
+			if (currentTag == 5 && _other->entity->type == CHARACTER/* &&  ((Character*)(_other->entity))->GetState() != KNOKED*/)
 			{
-				_other->entity->Impulsate(0, 1, 0);
+				_other->entity->max_speed = 500;
+				_other->entity->max_speed_y = 1000;
+				_other->entity->Accelerate(hit_dir * 5, 500, 0, 1);
+				_other->entity->SetFlip(hit_dir);
 			}
 
 			if (currentTag == 11)

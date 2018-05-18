@@ -100,6 +100,7 @@ bool Wizard::HeroUpdate(float dt)
 		flip = true;
 	}
 
+
 	if (!GetAbAtk(11)->active)
 	{
 		ab_1_active = true;
@@ -216,7 +217,7 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 
 	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))*/
 	{
-		if (_this->collider.x - _other->collider.x > 0)
+		if (_this->entity->GetGamePos().x - _other->entity->GetGamePos().x > 0)
 		{
 			hit_dir = 1;
 		}

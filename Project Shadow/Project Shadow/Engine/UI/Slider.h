@@ -2,6 +2,8 @@
 #define __SLIDER_H__
 #include "Button.h"
 #include "..\Rect.h"
+#define STEP_SLIDER_PERCENT 0.05
+
 class Slider :
 	public Button
 {

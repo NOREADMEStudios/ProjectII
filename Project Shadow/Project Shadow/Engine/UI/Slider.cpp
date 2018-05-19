@@ -23,7 +23,7 @@ bool Slider::PreUpdate()
 	Mouse.w = CURSOR_WIDTH;
 	Mouse.h = CURSOR_WIDTH;
 
-	//Focus();
+	Focus();
 
 	SDL_Rect result, r;
 	r = (parent == nullptr) ? rect : result_rect;
@@ -80,13 +80,33 @@ void Slider::DragSlider()
 
 float Slider::GetValue()
 {
-	return (axis) ? (float)(rel_pos.x - initial_pos.x + parent->content_rect.w * parent->GetAnchorX()) / (float)parent->content_rect.w :
-		(float)(rel_pos.y - initial_pos.y + parent->content_rect.h * parent->GetAnchorY()) / (float)parent->content_rect.h;
+	return (axis) ? (float)(rel_pos.x  / (float)parent->content_rect.w ):
+		(float)(rel_pos.y ) / (float)parent->content_rect.h;
 }
 
 
 void Slider::Focus()
 {
+	if (in_focus) {
+		if (axis) {
+			if (App->input->GetButtonFromController(1) == Input::RIGHT) {
+				if (rel_pos.x + STEP_SLIDER_PERCENT * parent->content_rect.w < parent->content_rect.w) {
+					rel_pos.x += STEP_SLIDER_PERCENT * parent->content_rect.w;
+				}
+				else
+					rel_pos.x = parent->content_rect.w;
+			}
+			if (App->input->GetButtonFromController(1) == Input::LEFT) {
+				if (rel_pos.x - STEP_SLIDER_PERCENT * parent->content_rect.w > 0) {
+					rel_pos.x -= STEP_SLIDER_PERCENT * parent->content_rect.w;
+				}
+				else
+					rel_pos.x = 0;
+			}
+		}
+	}
+
+
 	/*LIST_ITERATOR(InterfaceElement*) curr = children.begin();
 
 	while (curr != children.end())

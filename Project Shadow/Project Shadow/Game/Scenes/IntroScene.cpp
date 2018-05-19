@@ -229,6 +229,11 @@ void IntroScene::ChooseFocus() {
 	if (App->input->GetButtonDown(1, SDL_CONTROLLER_BUTTON_A)) {
 		((Button*)App->gui->getFocusedItem())->OnClick(0);
 	}
+	if (App->input->GetButtonFromController(1) == Input::RIGHT || App->input->GetButtonFromController(1) == Input::LEFT) {
+		if (((Button*)App->gui->getFocusedItem()) == music_sl || ((Button*)App->gui->getFocusedItem()) == fx_sl) {
+			((Button*)App->gui->getFocusedItem())->OnClick(0);		
+		}
+	}
 }
 
 void IntroScene::CreateSettingsWindow() {
@@ -297,10 +302,10 @@ void IntroScene::CreateSettingsWindow() {
 	BckLabel->culled = false;
 
 	
-
-	
+	music_sl->SetRelation(fx_sl, InterfaceElement::Directions::DOWN);
+	fx_sl->SetRelation(fullscrenBut, InterfaceElement::Directions::DOWN);
 	fullscrenBut->SetRelation(settBack, InterfaceElement::Directions::DOWN);
-	settBack->SetRelation(fullscrenBut, InterfaceElement::Directions::DOWN);
+	settBack->SetRelation(music_sl, InterfaceElement::Directions::DOWN);
 }
 
 void IntroScene::ManageSettings(bool settingActive) {
@@ -317,6 +322,6 @@ void IntroScene::ManageSettings(bool settingActive) {
 	fx_sl->Enable(settingActive);
 	fx_sp->Enable(settingActive);
 
-	App->gui->setFocus(settingActive ? fullscrenBut : pvpButton);
+	App->gui->setFocus(settingActive ? music_sl : pvpButton);
 }
 

@@ -79,13 +79,6 @@ bool Wizard::HeroStart()
 	return true;
 }
 
-bool Wizard::PreUpdate()
-{
-	//collider = currentAnimation->CurrentFrame().rect;
-
-	return true;
-}
-
 bool Wizard::HeroUpdate(float dt)
 {
 	if (!noMove.IsZero() && noMove.Read() > LIGHTNING_MS_LIFETIME) {

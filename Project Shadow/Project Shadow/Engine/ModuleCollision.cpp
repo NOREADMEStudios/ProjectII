@@ -114,6 +114,16 @@ bool ModuleCollision::PreUpdate() {
 }
 
 bool ModuleCollision::Update(float dt) {
+	return true;
+}
+
+bool ModuleCollision::PostUpdate() {
+	for (size_t i = 0; i < colliders.size(); i++) {
+		for (LIST_ITERATOR(Collision*) col = colliders[i]->collisions.begin(); col != colliders[i]->collisions.end(); col++) {
+			(*col)->updated = false;
+		}
+	}
+	
 	if (App->debug) {
 		for (std::vector<Collider*>::const_iterator c = colliders.begin(); c != colliders.end(); c++) {
 			SDL_Color color;
@@ -142,15 +152,6 @@ bool ModuleCollision::Update(float dt) {
 			}
 			float scale = App->win->GetScale();
 			App->render->DrawQuad(((*c)->collider.GetRectXY()).toSDL_Rect(), color.r, color.g, color.b, color.a, 1.0f);
-		}
-	}
-	return true;
-}
-
-bool ModuleCollision::PostUpdate() {
-	for (size_t i = 0; i < colliders.size(); i++) {
-		for (LIST_ITERATOR(Collision*) col = colliders[i]->collisions.begin(); col != colliders[i]->collisions.end(); col++) {
-			(*col)->updated = false;
 		}
 	}
 	return true;

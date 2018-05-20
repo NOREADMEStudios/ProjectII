@@ -20,8 +20,6 @@ public:
 
 	bool HeroStart();
 
-	bool PreUpdate()override;
-
 	bool HeroUpdate(float dt);
 
 	bool PostUpdate()override;

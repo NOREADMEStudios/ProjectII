@@ -66,14 +66,14 @@ bool Character::Start()
 
 	LoadShadow();
 
-
 	HeroStart();
 	noMove.SetZero();
-
 
 	max_speed = stats.spd;
 	max_speed_y = stats.spd;
 	initialLife = stats.life;
+
+	collider = currentAnimation->CurrentFrame().rect;
 
 	active = true;
 	return true; 

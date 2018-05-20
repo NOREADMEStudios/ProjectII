@@ -84,13 +84,6 @@ bool Rogue::HeroStart()
 	return true;
 }
 
-bool Rogue::PreUpdate()
-{
-	//collider = currentAnimation->CurrentFrame().rect;
-
-	return true;
-}
-
 bool Rogue::HeroUpdate(float dt)
 {
 	int z_dir = directions.down - directions.up;

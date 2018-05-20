@@ -279,7 +279,7 @@ void ModuleEntityManager::CheckMidPos(float &min_x, float &max_x)
 			if ((*item)->GetType() == CHARACTER)
 			{
 				current_players++;
-				if ((*item)->GetPosX() < min_x)
+				if ((*item)->GetPosX() - (*item)->GetCollider().w / 2 < min_x)
 				{
 					min_x = (*item)->GetPosX();
 				}
@@ -309,7 +309,7 @@ void ModuleEntityManager::CheckMidPosY(float &min_y, float &max_y)
 			if ((*item)->GetType() == CHARACTER)
 			{
 				current_players++;
-				float posL = (*item)->GetPosY(), posR = (*item)->GetCollider().h;
+				float posR = (*item)->GetPosY(), posL = posR - (*item)->GetCollider().h;
 				if (posL < min_y)
 				{
 					min_y = posL;
@@ -317,7 +317,7 @@ void ModuleEntityManager::CheckMidPosY(float &min_y, float &max_y)
 
 				if (posR > max_y)
 				{
-					max_y = posL + posR;
+					max_y = posR;
 				}
 			}
 		}

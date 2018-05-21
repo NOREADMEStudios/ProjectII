@@ -277,6 +277,7 @@ protected:
 	uint currentTag = 0;
 	uint wantedTag = 0;
 	std::string animations_name;
+	Timer hpRecTimer;
 
 
 

@@ -83,28 +83,28 @@ void ItemSelecScene::LoadSceneUI() {
 
 	int i = 0;
 
-	items[i] = new Item("Staff of Thoth", STAFF, { 480,240,120,120 }, { 0,0,0,0,0 });
+	items[i] = new Item("Staff of Thoth", STAFF, { 480,240,120,120 }, { 0,0,0,0,0,20,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y / 3, atlas, items[i]->animRect, true, nullptr);
 	App->gui->setFocus(items[i]->butt);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 360,240,120,120 }, { 0,30,0,0,0 });
+	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 360,240,120,120 }, { 0,30,0,0,0,0,0,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3, atlas, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Plate Mail", PLATE, { 0,0,120,120 }, { 0,0,30,0,0 });
+	items[++i] = new Item("Plate Mail", PLATE, { 0,0,120,120 }, { 0,0,30,0,0,0,0,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y / 3, atlas, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Ring of Protection", RING, { 240,120,120,120 }, { 0,0,0,0,0 });
+	items[++i] = new Item("Ring of Protection", RING, { 240,120,120,120 }, { 0,0,0,0,0,0,30,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y * 2 / 3, atlas, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Swift Boots", SWIFT_BOOTS, { 240,0,120,120 }, { 0,0,0,50,0 });
+	items[++i] = new Item("Swift Boots", SWIFT_BOOTS, { 240,0,120,120 }, { 0,0,0,50,0,0,0,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y * 2 / 3, atlas, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Tiara", TIARA, { 360,120,120,120 }, { 5,0,0,0,0 });
+	items[++i] = new Item("Tiara", TIARA, { 360,120,120,120 }, { 0,0,0,0,0,0,0,1 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y * 2 / 3, atlas, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 

@@ -315,7 +315,7 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 				_other->entity->stats.life -= dmg;
 
 			if (currentTag == 11)
-				_other->entity->AdBuff(3, -_other->entity->stats.spd);
+				_other->entity->AdBuff(3 - ((_other->entity->stats.ccr/100)*3), -_other->entity->stats.spd);
 			else if (currentTag == 12)
 				_other->entity->Impulsate(hit_dir, 0, 0);
 			else if (currentTag == 13)
@@ -326,7 +326,7 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 				dmg += stats.spd - _other->entity->stats.spd;
 
 				((DeathMark*)dm)->SetPath("dagger");
-				_other->entity->AdBuff(10, 0, -10, -10);
+				_other->entity->AdBuff(10 - ((_other->entity->stats.ccr / 100) *10), 0, -10, -10);
 			}
 
 		}

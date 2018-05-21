@@ -44,16 +44,16 @@ bool Warrior::HeroStart()
 
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack",animations_name, 2);
-	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "kick", animations_name, 2, false);
-	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
-	Attack* light_2 = new Attack(4, LIGHT_ATTACK, "attack_knee", animations_name, 2);
+	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "kick", animations_name, 2, 40, false);
+	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 20, true);
+	Attack* light_2 = new Attack(4, LIGHT_ATTACK, "attack_knee", animations_name, 2, 40);
 	Attack* heavy_2 = new Attack(5, HEAVY_ATTACK, "strong_attack", animations_name, 2);
 	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", animations_name, 5);
-	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK, "jump_attack", animations_name, 2, true);
-	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", animations_name, 5, true);
-	Attack* ab_1 = new Attack(11, AB_1, "slide", animations_name, 5, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "slide_2", animations_name, 5, false, true);
-	Attack* ulti = new Attack(13, AB_3, "intro",animations_name, 0,false, true);
+	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK, "jump_attack", animations_name, 2, 30, true);
+	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", animations_name, 5, 50, true);
+	Attack* ab_1 = new Attack(11, AB_1, "slide", animations_name, 5, 20, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "slide_2", animations_name, 5, 20, false, true);
+	Attack* ulti = new Attack(13, AB_3, "intro",animations_name, 0, 20,false, true);
 
 	attacks.push_back(light_1);
 	attacks.push_back(light_2);

@@ -48,11 +48,11 @@ bool Wizard::HeroStart()
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 3);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_dagger", animations_name, 5);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_crouch", animations_name, 1);
-	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
-	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, true);
-	Attack* ab_1 = new Attack(11, AB_1, "attack_m1", animations_name, 0, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "attack_m2", animations_name, 0, false, true);
-	Attack* ab_3 = new Attack(13, AB_3, "win", animations_name, 0, false, true);
+	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 20, true);
+	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, 20, true);
+	Attack* ab_1 = new Attack(11, AB_1, "attack_m1", animations_name, 0, 20, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "attack_m2", animations_name, 0, 20, false, true);
+	Attack* ab_3 = new Attack(13, AB_3, "win", animations_name, 0,20, false, true);
 
 	attacks.push_back(light_1);
 	attacks.push_back(heavy_1);

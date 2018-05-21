@@ -2,7 +2,7 @@
 
 
 - Check our website [here](https://github.com/NOREADMEStudios/ProjectII).
-- You can download our vertical slice [here](https://github.com/NOREADMEStudios/ProjectII/releases).
+- You can download our Gold Version (WIP) [here](https://github.com/NOREADMEStudios/ProjectII/releases).
 
 ## Game Description
 

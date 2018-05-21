@@ -1,4 +1,4 @@
-﻿# UPC School Vertical Slice for Project II 
+﻿# UPC School Gold for Project II 
 
 
 - Check our website [here](https://github.com/NOREADMEStudios/ProjectII).

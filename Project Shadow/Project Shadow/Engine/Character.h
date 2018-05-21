@@ -79,8 +79,9 @@ struct Attack
 	Animation anim;
 	bool air;
 	bool ability;
+	int depth;
 
-	Attack(uint _tag, CharInput _input, std::string animationName, std::string fileName, int _damage = 0, bool _air = false, bool ab = false)
+	Attack(uint _tag, CharInput _input, std::string animationName, std::string fileName, int _damage = 0, int _depth = 20, bool _air = false, bool ab = false)
 	{
 		tag = _tag;
 		input = _input;
@@ -88,6 +89,7 @@ struct Attack
 		anim.LoadAnimationsfromXML(animationName, fileName);
 		air = _air;
 		ability = ab;
+		depth = _depth;
 	}
 
 	void AddChild(Attack* _child)

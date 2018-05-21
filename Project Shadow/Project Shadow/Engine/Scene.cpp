@@ -55,10 +55,9 @@ bool Scene::DrawBackground() {
 	rect.w = w;
 	rect.h = h;
 
-	uint s_w;
-	uint s_h;
-	App->win->GetWindowSize(s_w, s_h);
-	bool ret = App->render->Blit(background,  s_w - w, s_h - h, &rect.toSDL_Rect());
+	uiPoint s;
+	s = App->gui->GetGuiSize();
+	bool ret = App->render->Blit(background,  s.x - w, s.y - h, &rect.toSDL_Rect());
 
 	return ret;
 }

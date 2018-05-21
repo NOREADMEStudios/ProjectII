@@ -66,14 +66,14 @@ bool Character::Start()
 
 	LoadShadow();
 
-
 	HeroStart();
 	noMove.SetZero();
-
 
 	max_speed = stats.spd;
 	max_speed_y = stats.spd;
 	initialLife = stats.life;
+
+	collider = currentAnimation->CurrentFrame().rect;
 
 	active = true;
 	return true; 
@@ -515,6 +515,14 @@ void Character::UpdateMainStates()
 			currentTag = 0;
 		}
 	}
+	if (currentState == AD_ACTION && currentTag != 0)
+	{
+		char_depth = GetAtk(currentTag)->depth;
+	}
+	else
+	{
+		char_depth = 20;
+	}
 
 	if (time_attack.Count(COMBO_MARGIN))
 	{
@@ -530,7 +538,7 @@ void Character::UpdateCurState(float dt)
 
 	if (gamepos.y > 0)
 	{
-		if (currentState != AD_ACTION && currentTag != 0 && !GetAtk(currentTag)->air)
+		if (currentState == AD_ACTION && currentTag != 0 && GetAtk(currentTag)->air)
 		Accelerate(x_dir, -1, z_dir, dt);
 
 		else 

@@ -20,8 +20,6 @@ public:
 
 	bool HeroStart();
 
-	bool PreUpdate()override;
-
 	bool HeroUpdate(float dt);
 
 	bool PostUpdate()override;
@@ -43,7 +41,11 @@ private:
 	Lightning* lighting;
 	Spells* fireDemon;
 	Spells* fireball;
+	Spells* light_aura;
 
+	Ability* icicle_ab;
+	Ability* thunder;
+	Ability* ulti;
 	
 };
 #endif

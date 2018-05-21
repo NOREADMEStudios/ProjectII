@@ -26,9 +26,7 @@ Window::~Window() {
 
 bool Window::PreUpdate() {
 	bool ret = InterfaceElement::PreUpdate();
-
-	//Focus();
-
+	
 	App->input->GetMousePosition(Mouse.x, Mouse.y);
 	Mouse.w = CURSOR_WIDTH;
 	Mouse.h = CURSOR_WIDTH;

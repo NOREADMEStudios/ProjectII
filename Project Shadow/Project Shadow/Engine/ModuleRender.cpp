@@ -252,7 +252,7 @@ bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uin
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 	SDL_Rect rec(rect);
-	if(use_camera)
+	if (use_camera)
 	{
 		rec.x = (int)((-camera.x * speed * scale) + (rect.x * scale));
 		rec.y = (int)((-camera.y * speed * scale) + (rect.y * scale));
@@ -347,48 +347,56 @@ void ModuleRender::CheckCameraPos()
 		float mid_pos = (((max_x - min_x) / 2) + min_x);
 		float mid_pos_y = (((max_y - min_y) / 2) + min_y);
 
-		float cameraMarginExt = 0.03f,
-			cameraMarginInt = 0.18f;
-
-		innerContainerExterior = {
-			camera.x + (camera.w * cameraMarginExt), camera.y + (camera.h * cameraMarginExt * 1.5f),
-			camera.x + camera.w - (camera.w * cameraMarginExt * 2), camera.y + camera.h - (camera.h * cameraMarginExt * 2 * 1.5f)
-		};
-		innerContainerInterior = {
-			camera.x + (camera.w * cameraMarginInt), camera.y + (camera.h * cameraMarginInt * 1.5f),
-			camera.x + camera.w - (camera.w * cameraMarginInt * 2), camera.y + camera.h - (camera.h * cameraMarginInt * 2 * 1.5f)
-		};
-		/*DrawQuad(innerContainerExterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
-		DrawQuad(innerContainerInterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);*/
-		innerContainerInterior = innerContainerInterior * (1 / scale);
-		innerContainerExterior = innerContainerExterior * (1 / scale);
+		fRect minMaxPos = { min_x, min_y, max_x - min_x, max_y - min_y };
 
 		float min_scale = MAX((float)camera.h / (mapheight - (mapheight / App->map->GetYTiles())), (float)camera.w / (mapwidth - (mapwidth / App->map->GetXTiles())));
 		float new_scale = scale;
-		if (!innerContainerExterior.Intersect(fPoint( min_x, min_y ))) {
+		if (innerContainerExterior.x > minMaxPos.x
+			|| innerContainerExterior.x + innerContainerExterior.w < minMaxPos.x + minMaxPos.w
+			|| innerContainerExterior.y > minMaxPos.y
+			|| innerContainerExterior.y + innerContainerExterior.h < minMaxPos.y + minMaxPos.h) {
 			new_scale -= 0.01f;
 		}
-		else if (innerContainerInterior.Intersect(fPoint(min_x, min_y))) {
-			new_scale += 0.01f;
-		}
-
-		if (!innerContainerExterior.Intersect(fPoint(max_x, max_y))) {
-			new_scale -= 0.01f;
-		}
-		else if (innerContainerInterior.Intersect(fPoint(max_x, max_y))) {
+		else if (innerContainerInterior.Intersect(fPoint(min_x, min_y))
+			|| innerContainerInterior.Intersect(fPoint(min_x, max_y))
+			|| innerContainerInterior.Intersect(fPoint(max_x, min_y))
+			|| innerContainerInterior.Intersect(fPoint(max_x, max_y))) {
 			new_scale += 0.01f;
 		}
 
 		new_scale = CLAMP(new_scale, min_scale, MAX_SCALE);
 		App->win->SetScale(new_scale);
 
-		camera.x = mid_pos - (camera.w * 0.5f) / scale;
-		if (camera.x < 0) camera.x = 0;
-		else if (camera.x + camera.w / scale > mapwidth - (mapwidth / App->map->GetXTiles())) camera.x = mapwidth - (mapwidth / App->map->GetXTiles()) - camera.w / scale;
+		float cameraMarginExt = 0.03f,
+			cameraMarginInt = 0.16f;
 
-		camera.y = mid_pos_y - (camera.h * 0.5f) / scale;
+		innerContainerExterior = {
+			(camera.w * cameraMarginExt), (camera.h * cameraMarginExt * 3.f),
+			camera.w - (camera.w * cameraMarginExt * 2), camera.h - (camera.h * cameraMarginExt * 2 * 3.f)
+		};
+		innerContainerInterior = {
+			(camera.w * cameraMarginInt), (camera.h * cameraMarginInt * 1.5f),
+			camera.w - (camera.w * cameraMarginInt * 2), camera.h - (camera.h * cameraMarginInt * 2 * 1.5f)
+		};
+
+		DrawQuad(innerContainerExterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
+		DrawQuad(innerContainerInterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
+
+		innerContainerInterior = innerContainerInterior * (1 / scale);
+		innerContainerExterior = innerContainerExterior * (1 / scale);
+
+		innerContainerExterior.x += camera.x;
+		innerContainerExterior.y += camera.y;
+		innerContainerInterior.x += camera.x;
+		innerContainerInterior.y += camera.y;
+
+		camera.x = mid_pos - (camera.w * 0.5f) / new_scale;
+		if (camera.x < 0) camera.x = 0;
+		else if (camera.x + camera.w / new_scale > mapwidth - (mapwidth / App->map->GetXTiles())) camera.x = mapwidth - (mapwidth / App->map->GetXTiles()) - camera.w / new_scale;
+
+		camera.y = mid_pos_y - (camera.h * 0.5f) / new_scale;
 		if (camera.y < 0) camera.y = 0;
-		else if (camera.y + camera.h / scale > mapheight - (mapheight/App->map->GetYTiles())) camera.y = mapheight - (mapheight / App->map->GetYTiles()) - camera.h / scale;
+		else if (camera.y + camera.h / new_scale > mapheight - (mapheight/App->map->GetYTiles())) camera.y = mapheight - (mapheight / App->map->GetYTiles()) - camera.h / new_scale;
 	}
 }
 

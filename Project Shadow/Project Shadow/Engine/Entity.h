@@ -66,6 +66,7 @@ struct EntityStats
 	int def = 0;
 	int spd = 0;
 	int mgk = 0;
+	bool hpRecover = false;
 
 	EntityStats operator -(const EntityStats &v) const {
 	EntityStats r;

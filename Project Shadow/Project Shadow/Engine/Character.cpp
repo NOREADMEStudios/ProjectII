@@ -66,14 +66,14 @@ bool Character::Start()
 
 	LoadShadow();
 
-
 	HeroStart();
 	noMove.SetZero();
-
 
 	max_speed = stats.spd;
 	max_speed_y = stats.spd;
 	initialLife = stats.life;
+
+	collider = currentAnimation->CurrentFrame().rect;
 
 	active = true;
 	return true; 
@@ -776,36 +776,46 @@ void Character::UpdateEventStates()
 
 void Character::SetAnimations()
 {
+	std::string red = "_red.png";
+	std::string blue = "_blue.png";
+
+	std::string spritePath;
 	switch (charType)
 	{
 		case WARRIOR:
 		{
-			animations_name = HERO_SPRITE_ROOT;
-			sprites = App->textures->Load("Characters/Fighter sprites original.png");
+			animations_name = FIGHTER_ANIM_ROOT;
+			spritePath = FIGHTER_SPRITE_ROOT;
 			break;
 		}	
 		case ROGUE:
 		{
-			animations_name = ELF_SPRITE_ROOT;
-			sprites = App->textures->Load("Characters/Elf_sprites.png");
+			animations_name = ELF_ANIM_ROOT;
+			spritePath = ELF_SPRITE_ROOT;
 			break;
 		}
 		case WIZARD:
 		{
-			animations_name = MAGE_SPRITE_ROOT;
-			sprites = App->textures->Load("Characters/Mage_sprites.png");
+			animations_name = MAGE_ANIM_ROOT;
+			spritePath = MAGE_SPRITE_ROOT;
 			break;
 		}
 		case CLERIC:
 		{
-			animations_name = CLERIC_SPRITE_ROOT;
-			sprites = App->textures->Load("Characters/cleric_sprites.png");
+			animations_name = CLERIC_ANIM_ROOT;
+			spritePath = CLERIC_SPRITE_ROOT;
 			break;
 		}
 		
 	}
-	
+	if (team == Team::BLUE) {
+		spritePath += blue;
+	}
+	else if (team == Team::RED) {
+		spritePath += red;	
+	}
 
+	sprites = App->textures->Load(spritePath.c_str());
 }
 
 void Character::SetCharType(CharacterTypes type)

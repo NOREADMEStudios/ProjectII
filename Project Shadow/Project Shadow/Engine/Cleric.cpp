@@ -79,13 +79,6 @@ bool Cleric::HeroStart()
 	return true;
 }
 
-bool Cleric::PreUpdate()
-{
-	//collider = currentAnimation->CurrentFrame().rect;
-
-	return true;
-}
-
 bool Cleric::HeroUpdate(float dt)
 {
 

@@ -92,13 +92,6 @@ bool Warrior::HeroStart()
 	return true;
 }
 
-bool Warrior::PreUpdate()
-{
-	//collider = currentAnimation->CurrentFrame().rect;
-
-	return true;
-}
-
 bool Warrior::HeroUpdate(float dt)
 {
 

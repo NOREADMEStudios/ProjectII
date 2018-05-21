@@ -235,7 +235,7 @@ void MainScene::ManageDisplacement() {
 	}
 }
 void MainScene::ChooseFocus() {
-	if (App->input->GetButtonDown(1, SDL_CONTROLLER_BUTTON_A)) {
+	if (App->input->GetButtonDown(1, SDL_CONTROLLER_BUTTON_A) && paused) {
 		((Button*)App->gui->getFocusedItem())->OnClick(0);
 	}
 }
@@ -306,8 +306,7 @@ void MainScene::CreateSettingsWindow() {
 	BckLabel->SetParent(settBackButt);
 	BckLabel->culled = false;
 
-
-
+	music_sp->SetParent(pauseWindow);
 
 	fullscrenButt->SetRelation(settBackButt, InterfaceElement::Directions::DOWN);
 	settBackButt->SetRelation(fullscrenButt, InterfaceElement::Directions::DOWN);

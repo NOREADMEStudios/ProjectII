@@ -42,6 +42,9 @@ private:
 	Spells* fireDemon;
 	Spells* fireball;
 
+	Ability* icicle_ab;
+	Ability* thunder;
+	Ability* ulti;
 	
 };
 #endif

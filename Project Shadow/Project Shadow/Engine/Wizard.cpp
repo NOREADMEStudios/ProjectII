@@ -66,14 +66,15 @@ bool Wizard::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
-	Ability* icicle = new Ability(ab_1, 3);
-	icicle->ab_sprite = {152,65, 50,50 };
-	Ability* thunder = new Ability(ab_2, 5);
+	icicle_ab = new Ability(ab_1, 3);
+	icicle_ab->ab_sprite = {152,65, 50,50 };
+
+	thunder = new Ability(ab_2, 5);
 	thunder->ab_sprite = { 202, 65,50,50 };
-	Ability* ulti = new Ability(ab_3, 10);
+	ulti = new Ability(ab_3, 10);
 	ulti->ab_sprite = { 102, 115, 50,50 };
 
-	AdAbility(*icicle);
+	AdAbility(*icicle_ab);
 	AdAbility(*thunder);
 	AdAbility(*ulti);
 	return true;
@@ -94,31 +95,22 @@ bool Wizard::HeroUpdate(float dt)
 	}
 
 
-	if (!GetAbAtk(11)->active)
-	{
-		ab_1_active = true;
-	}
-	else
+	if (icicle_ab->active && ab_1_active)
 	{
 		ab_1_active = false;
 	}
 
-	if (!GetAbAtk(12)->active)
-	{
-		ab_2_bool = true;
-	}
-	else
+
+    if (thunder->active && ab_2_bool)
 	{
 		ab_2_bool = false;
 	}
-	if (!GetAbAtk(13)->active)
-	{
-		ab_3_bool = true;
-	}
-	else
+
+	if (ulti->active && ab_3_bool )
 	{
 		ab_3_bool = false;
 	}
+
 
 	CreateSounds();
 
@@ -141,29 +133,30 @@ void Wizard::UpdateSpecStates()
 	int dir = 0;
 
 	if (flip)
-		dir = 1;
-	else
 		dir = -1;
+	else
+		dir = 1;
 
-	if (currentTag == 11 && !ab_1_active)
+	if (currentTag == 11 && !ab_1_active && currentAnimation == &icicle_ab->atk->anim && currentAnimation->getFrameIndex() >= 6)
 	{
 		Icicle* ice = new Icicle{ *(Icicle*)icicle };
 		ice->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
-		ice->SetDir(dir, 0);
+		ice->SetDir(flip, 0);
 		ice->Start();
 		ab_1_active = true;
 	}
-	if (currentTag == 12 && !ab_2_bool )
+	if (currentTag == 12 && !ab_2_bool && currentAnimation == &thunder->atk->anim && currentAnimation->getFrameIndex() >= 3)
 	{
-		Lightning* light = new Lightning( *lighting );
-		light->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
-		light->SetDir(dir, 0);
+		Lightning* light = nullptr;
+		light = new Lightning( *lighting );
+		light->SetPos(gamepos.x + (50 * dir), gamepos.y + 50 , gamepos.z);
+		light->SetDir(flip, 0);
 		light->Start();
 		ab_2_bool = true;
 		//noMove.Start();
 			
 	}
-	if (currentTag == 13 && !ab_3_bool)
+	if (currentTag == 13 && !ab_3_bool && currentAnimation == &ulti->atk->anim && currentAnimation->getFrameIndex() >= 10)
 	{
 		for (int i = -1; i <= 1; i++)
 		{
@@ -182,10 +175,9 @@ void Wizard::UpdateSpecStates()
 
 		}
 
-		FireDemon* ice = new FireDemon{ *(FireDemon*)fireDemon };
-		ice->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
-		ice->SetDir(0, 0);
-		ice->Start();
+		FireDemon* fired = new FireDemon{ *(FireDemon*)fireDemon };
+		fired->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
+		fired->Start();
 		ab_3_bool = true;
 		//noMove.Start();
 

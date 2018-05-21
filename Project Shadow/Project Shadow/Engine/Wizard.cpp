@@ -44,6 +44,7 @@ bool Wizard::HeroStart()
 
 	fireDemon = App->entities->CreateSpell({ FIRE_DEMON,team,{ gamepos.x, gamepos.y + 50 , gamepos.z } });
 
+	light_aura = App->entities->CreateSpell({ SpellsType::LIGHTNING_AURA, team,{ gamepos.x, gamepos.y, gamepos.z } });
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 3);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_dagger", animations_name, 5);
@@ -95,18 +96,18 @@ bool Wizard::HeroUpdate(float dt)
 	}
 
 
-	if (icicle_ab->active && ab_1_active)
+	if (GetAbAtk(11)->active && ab_1_active)
 	{
 		ab_1_active = false;
 	}
 
 
-    if (thunder->active && ab_2_bool)
+    if (GetAbAtk(12)->active && ab_2_bool)
 	{
 		ab_2_bool = false;
 	}
 
-	if (ulti->active && ab_3_bool )
+	if (GetAbAtk(13)->active && ab_3_bool )
 	{
 		ab_3_bool = false;
 	}
@@ -152,6 +153,12 @@ void Wizard::UpdateSpecStates()
 		light->SetPos(gamepos.x + (50 * dir), gamepos.y + 50 , gamepos.z);
 		light->SetDir(flip, 0);
 		light->Start();
+
+		Aura* light_a = nullptr;
+		light_a = new Aura{ *(Aura*)light_aura };
+		light_a->SetPos(gamepos.x + (50 * dir), gamepos.y + 50, gamepos.z);
+		light_a->SetDir(flip, 0);
+		light_a->Start();
 		ab_2_bool = true;
 		//noMove.Start();
 			

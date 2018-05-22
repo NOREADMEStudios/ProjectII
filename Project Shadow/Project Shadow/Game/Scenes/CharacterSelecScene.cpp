@@ -18,6 +18,8 @@
 #include "../../Engine/UI/Label.h"
 #include "../../Engine/ModuleCollision.h"
 #include "../../Engine/ModuleFonts.h"
+#include "../../Engine/ModuleTransition.h"
+
 
 CharacterSelecScene::CharacterSelecScene()
 {
@@ -68,6 +70,7 @@ bool CharacterSelecScene::Update(float dt)
 
 	DrawBackground();
 	ChangeCharacter();
+	ReturnIntroScene();
 
 	//App->input->CheckControllers();
 	return true;
@@ -131,6 +134,15 @@ void CharacterSelecScene::SetCharactersInfo(){
 	}
 
 }
+
+void CharacterSelecScene::ReturnIntroScene() {
+
+	if (App->input->GetButtonFromController(1) == Input::BUTTON_B) {
+		App->transition->MakeTransition(nullptr, ModuleTransition::Transition::FADE_TO_BLACK, 1.0f);
+		App->scenes->ChangeScene(App->scenes->introSc);
+	}
+}
+
 void CharacterSelecScene::ChangeCharacter()
 {
 	for (int i = 0; i < controllersNum; i++) {

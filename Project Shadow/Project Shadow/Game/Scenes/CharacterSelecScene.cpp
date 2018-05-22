@@ -325,6 +325,9 @@ void CharacterSelecScene::LoadSceneUI() {
 	atlas = App->textures->Load("UI/atlas.png");
 	uiPoint sizeScreen = App->gui->GetGuiSize();
 
+	Label* backLabel = App->gui->AddLabel(sizeScreen.x*0.15f, sizeScreen.y*0.95f, 50, DEFAULT_FONT);
+	backLabel->setString("Press B to go back");
+
 	Sprite* crossedSwordsSprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 1700, 782,187,175 });
 	characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 4, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
 	characterSprites[0] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);

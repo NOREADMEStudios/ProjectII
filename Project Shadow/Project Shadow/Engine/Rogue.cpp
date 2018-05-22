@@ -50,6 +50,7 @@ bool Rogue::HeroStart()
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "L_Attack_3", animations_name, 1);
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 20, true);
 	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "jump_attack", animations_name, 0, 40, true);
+
 	Attack* ab_1 = new Attack(11, AB_1, "dagger", animations_name, 0, false, true);
 	Attack* ab_2 = new Attack(12, AB_2, "L_Attack_1", animations_name, 0, 20, false, true);
 	Attack* ab_3 = new Attack(13, AB_3, "dash", animations_name, 0, 20, false, true);
@@ -71,11 +72,11 @@ bool Rogue::HeroStart()
 	crouch->AddChild(heavy_2);
 	jump_a->AddChild(jump_a2);
 
-	Ability* parry = new Ability(ab_1, 3);
+	Ability* parry = new Ability(ab_1, 3 - ((stats.cdr / 100) * 3));
 	parry->ab_sprite = { 152,165, 50,50 };
-	Ability* behindU = new Ability(ab_2, 4);
+	Ability* behindU = new Ability(ab_2, 4 - ((stats.cdr / 100) * 4));
 	behindU->ab_sprite = { 202,165, 50,50 };
-	Ability* ulti = new Ability(ab_3, 8);
+	Ability* ulti = new Ability(ab_3, 8 - ((stats.cdr / 100) * 8));
 	ulti->ab_sprite = { 253, 165, 50,50 };
 
 	AdAbility(*parry);
@@ -314,7 +315,7 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 				_other->entity->stats.life -= dmg;
 
 			if (currentTag == 11)
-				_other->entity->AdBuff(3, -_other->entity->stats.spd);
+				_other->entity->AdBuff(3 - ((_other->entity->stats.ccr/100)*3), -_other->entity->stats.spd);
 			else if (currentTag == 12)
 				_other->entity->Impulsate(hit_dir, 0, 0);
 			else if (currentTag == 13)
@@ -325,7 +326,7 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 				dmg += stats.spd - _other->entity->stats.spd;
 
 				((DeathMark*)dm)->SetPath("dagger");
-				_other->entity->AdBuff(10, 0, -10, -10);
+				_other->entity->AdBuff(10 - ((_other->entity->stats.ccr / 100) *10), 0, -10, -10);
 			}
 
 		}

@@ -65,11 +65,11 @@ bool Cleric::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
-	Ability* fire = new Ability(ab_1, 6);
+	Ability* fire = new Ability(ab_1, 6 - ((stats.cdr/100)*6));
 	fire->ab_sprite = { 303,65, 50,50 };
-	Ability* thunder = new Ability(ab_2, 7);
+	Ability* thunder = new Ability(ab_2, 7 - ((stats.cdr / 100) * 7));
 	thunder->ab_sprite = { 303,115, 50,50 };
-	Ability* ulti = new Ability(ab_3, 15);
+	Ability* ulti = new Ability(ab_3, 15 - ((stats.cdr / 100) * 15));
 	ulti->ab_sprite = { 303,165, 50,50 };
 
 	AdAbility(*fire);
@@ -325,10 +325,7 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (atk != nullptr)
 				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 
-			//if (currentTag == 11)
-			//	_other->entity->AdBuff(3, -_other->entity->stats.spd);
-			//else if (currentTag == 12)
-			//	_other->entity->Impulsate(hit_dir, 0, 0);
+
 		}
 
 	}

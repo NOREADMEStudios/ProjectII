@@ -15,21 +15,11 @@ class Label;
 enum ItemType { 
 	NO_ITEM,
 	PLATE,
-	SWORD,
-	SWIFT_BOOTS,
-	ROBE,
-	MAGE_HAT,
-	HOOD,
-	CLERIC_HAT,
-	RING,
-	TIARA,
-	CURSED_SWORD,
-	HASTE_BOOTS,
-	HANDGUARDS,
-	EARRINGS,
 	DRAGONSLAYER,
+	TIARA,
+	SWIFT_BOOTS,
+	RING,
 	STAFF
-
 };
 
 
@@ -84,7 +74,9 @@ public:
 		void DrawOrderedArrow();
 	};
 
-	Item* items[15];
+	Item* items[6];
+	/*String* statsItemsStr[6];
+	Label* stats*/
 
 	ItemSelecScene();
 	virtual ~ItemSelecScene();

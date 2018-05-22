@@ -46,6 +46,7 @@ bool Icicle::Update(float dt) {
 	}
 
 	priority = gamepos.z;	
+	gamepos.y -= ICICLE_SPEED;
 
 	CalcRealPos();
 	GetColliderFromAnimation();

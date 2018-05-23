@@ -67,7 +67,8 @@ bool Cleric::HeroStart()
 
 	knock = App->entities->CreateSpell({ CLERIC_STUN,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
 	area = App->entities->CreateSpell({ AREA,team,{ gamepos.x, gamepos.y , gamepos.z },{ 0,0 } });
-	ulti = App->entities->CreateSpell({ DEATH_MARK,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
+	ulti = App->entities->CreateSpell({ DEATH_MARK,team,{ gamepos.x, gamepos.y , gamepos.z },{ 1,0 } });
+	((DeathMark*)ulti)->SetPath("Healing Wind");
 
 	fire = new Ability(ab_1, 6);
 	fire->ab_sprite = { 303,65, 50,50 };
@@ -125,12 +126,12 @@ bool Cleric::HeroUpdate(float dt)
 	}
 
 
-	if (GetAbAtk(11)->active && ab_2_active)
+	if (GetAbAtk(12)->active && ab_2_active)
 	{
-		ab_3_active = false;
+		ab_2_active = false;
 	}
 
-	if (GetAbAtk(11)->active && ab_3_active)
+	if (GetAbAtk(13)->active && ab_3_active)
 	{
 		ab_3_active = false;
 	}
@@ -189,17 +190,27 @@ void Cleric::UpdateSpecStates()
 		ab_2_active = true;
 
 	}
-	if (currentTag == 13 && !ab_3_active && currentAnimation == &ulti_ab->atk->anim && currentAnimation->getFrameIndex() >= 6)
+	if (currentTag == 13 && !ab_3_active && currentAnimation == &ulti_ab->atk->anim && currentAnimation->getFrameIndex() >= 4)
 	{
 
 		AdHp(35);
 		AdBuff(10, 50, 0, 10);
-
+		DeathMark* bp = new DeathMark{ *(DeathMark*)ulti };
+		bp->SetParent(this);
+		bp->SetPos(gamepos.x, gamepos.y, gamepos.z - 1);
+		bp->cl = true;
+		bp->Start();
+		ab_2_active = true;
 
 		if (partner != nullptr)
 		{
 			partner->AdHp(35);
 			partner->AdBuff(10, 50, 0, 10);
+			DeathMark* bp2 = new DeathMark{ *(DeathMark*)ulti };
+			bp2->SetParent(partner);
+			bp2->SetPos(gamepos.x, gamepos.y, gamepos.z - 1);
+			bp2->cl = true;
+			bp2->Start();
 
 		}
 		ab_3_active = true;

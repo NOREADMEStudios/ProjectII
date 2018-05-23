@@ -23,7 +23,7 @@ bool Stun::Start() {
 	App->collision->AddCollider(spellColl, this);
 
 
-	currentAnimation->speed = 15;
+	currentAnimation->speed = 10;
 	currentAnimation->loop = false;
 
 	//collider = { 0,0,45,65 };
@@ -145,7 +145,7 @@ bool Area::Start() {
 	LoadSprites();
 
 
-	spellAnim.speed = 10;
+
 	App->entities->entities.push_back(this);
 
 	spellColl = App->collision->CreateCollider({}, "Spell", Collider::SPELL);
@@ -185,10 +185,15 @@ bool Area::Update(float dt) {
 		return PausedUpdate();
 	}
 
-	priority = gamepos.z;
+	priority = 1;
 
 	CalcRealPos();
 	GetColliderFromAnimation();
+
+	Point3D gp = parent->GetGamePos();
+	gamepos.x = gp.x;
+	gamepos.y = 0;
+	gamepos.z = gp.z;
 
 
 	//UpdateCollidersPosition();

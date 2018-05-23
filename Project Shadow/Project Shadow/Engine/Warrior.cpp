@@ -316,7 +316,7 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 				_other->entity->SetFlip(hit_dir);
 			}
 
-			if (currentTag == 11 && ((Character*)_other->entity)->GetState() != STUNED)
+			if (currentTag == 11 && (((Character*)_other->entity)->GetState() != STUNED && ((Character*)_other->entity)->GetState() != HIT))
 			{
 				_other->entity->AdBuff(3, -_other->entity->stats.spd);
 				DeathMark* stun = new DeathMark{ *(DeathMark*)App->entities->stuned };

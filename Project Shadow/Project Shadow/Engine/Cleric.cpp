@@ -6,6 +6,7 @@
 #include "ModuleAudio.h"
 #include "Entity.h"
 #include "../Game/Spells/DeathMark.h"
+#include "../Game/Spells/ClericSpells.h"
 
 #include "ModuleMap.h"
 #include "App.h"
@@ -49,7 +50,7 @@ bool Cleric::HeroStart()
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_3", animations_name, 2);
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
 	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, true);
-	Attack* ab_1 = new Attack(11, AB_1, "ab_1", animations_name, 0, 20, false, true);
+	Attack* ab_1 = new Attack(11, AB_1, "maze", animations_name, 0, 20, false, true);
 	Attack* ab_2 = new Attack(12, AB_2, "ab_2", animations_name, 0, 20, false, true);
 	Attack* ab_3 = new Attack(13, AB_3, "ab_3", animations_name, 0, 20, false, true);
 
@@ -65,20 +66,20 @@ bool Cleric::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
-	knock = App->entities->CreateSpell({ DAGGER,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
+	knock = App->entities->CreateSpell({ CLERIC_STUN,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
 	area = App->entities->CreateSpell({ DEATH_MARK,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
 	ulti = App->entities->CreateSpell({ DEATH_MARK,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
 
-	Ability* fire = new Ability(ab_1, 6);
+	fire = new Ability(ab_1, 6);
 	fire->ab_sprite = { 303,65, 50,50 };
-	Ability* thunder = new Ability(ab_2, 7);
+	thunder = new Ability(ab_2, 7);
 	thunder->ab_sprite = { 303,115, 50,50 };
-	Ability* ulti = new Ability(ab_3, 15);
-	ulti->ab_sprite = { 303,165, 50,50 };
+	ulti_ab = new Ability(ab_3, 15);
+	ulti_ab->ab_sprite = { 303,165, 50,50 };
 
 	AdAbility(*fire);
 	AdAbility(*thunder);
-	AdAbility(*ulti);
+	AdAbility(*ulti_ab);
 
 	return true;
 }
@@ -132,29 +133,18 @@ bool Cleric::HeroUpdate(float dt)
 		}
 	}
 
-	if (!GetAbAtk(11)->active)
-	{
-		ab_1_active = true;
-	}
-	else
+	if (GetAbAtk(11)->active && ab_1_active)
 	{
 		ab_1_active = false;
 	}
 
-	if (!GetAbAtk(12)->active)
+
+	if (GetAbAtk(11)->active && ab_2_active)
 	{
-		ab_2_active = true;
-	}
-	else
-	{
-		ab_2_active = false;
+		ab_3_active = false;
 	}
 
-	if (!GetAbAtk(13)->active)
-	{
-		ab_3_active = true;
-	}
-	else
+	if (GetAbAtk(11)->active && ab_3_active)
 	{
 		ab_3_active = false;
 	}
@@ -180,67 +170,56 @@ void Cleric::UpdateSpecStates()
 	partner = (Character*)App->entities->GetSameTeam(this);
 	Point3D pgp;
 
+	int dir = 0;
+
+	if (flip)
+		dir = -1;
+	else
+		dir = 1;
+
+
 	if (partner != nullptr)
 	pgp = partner->GetGamePos();
 
-	if (currentTag == 11 && !ab_1_active)
+	if (currentTag == 11 && !ab_1_active && currentAnimation == &fire->atk->anim && currentAnimation->getFrameIndex() >= 6)
 	{
-		Spells* dm = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
-		dm->SetParent(this);
-		((DeathMark*)dm)->SetPath("Blessing_Protection");
-		((DeathMark*)dm)->cl = true;
 
-		if (partner != nullptr)
-		{
-		Spells* dm2 = App->entities->CreateSpell({ DEATH_MARK , team,pgp });
-		dm2->SetParent(partner);
+		Stun* stun = new Stun{ *(Stun*)knock };
+		stun->SetPos(gamepos.x + (20 * dir), gamepos.y + 50, gamepos.z -1);
+		stun->SetDir(dir, 0);
+		stun->Start();
 
-		((DeathMark*)dm2)->SetPath("Blessing_Protection");
-		((DeathMark*)dm2)->cl = true;
-		}
 
-		ab_timer.Start();
+		ab_1_active = true;
 	}
-	if (currentTag == 12 && !ab_2_active)
+	if (currentTag == 12 && !ab_2_active && currentAnimation == &thunder->atk->anim && currentAnimation->getFrameIndex() >= 6)
 	{
 		AdBuff(5, 0, 0, 10);
 
-		Spells* bs = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
-		bs->SetParent(this);
-		((DeathMark*)bs)->SetPath("Energy Shield");
-		((DeathMark*)bs)->cl = true;
+
 
 		if (partner != nullptr)
 		{
 			partner->AdBuff(5, 0, 0, 10);
 
-			Spells* es = App->entities->CreateSpell({ DEATH_MARK , team,pgp });
-			es->SetParent(partner);
-			((DeathMark*)es)->SetPath("Energy Shield");
-			((DeathMark*)es)->cl = true;
 		}
+		ab_2_active = true;
 
 	}
-	if (currentTag == 13 && !ab_3_active)
+	if (currentTag == 13 && !ab_3_active && currentAnimation == &ulti_ab->atk->anim && currentAnimation->getFrameIndex() >= 6)
 	{
 
 		AdHp(35);
 		AdBuff(10, 50, 0, 10);
-		Spells* hw = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
-		hw->SetParent(this);
-		((DeathMark*)hw)->SetPath("Healing Wind");
-		((DeathMark*)hw)->cl = true;
 
 
 		if (partner != nullptr)
 		{
 			partner->AdHp(35);
 			partner->AdBuff(10, 50, 0, 10);
-			Spells* hw2 = App->entities->CreateSpell({ DEATH_MARK , team,pgp });
-			hw2->SetParent(partner);
-			((DeathMark*)hw2)->SetPath("Healing Wind");
-			((DeathMark*)hw2)->cl = true;
+
 		}
+		ab_3_active = true;
 	}
 
 	if (currentState == PROTECT && wantedState != PROTECT)

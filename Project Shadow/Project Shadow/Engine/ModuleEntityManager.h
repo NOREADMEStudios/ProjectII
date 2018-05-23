@@ -25,6 +25,7 @@ enum SpellsType {
 	FIRE_DEMON,
 	DAGGER,
 	DEATH_MARK,
+	CLERIC_STUN
 
 };
 

@@ -32,6 +32,7 @@ public:
 	void UpdateSpecStates();
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 	void CreateSounds();
+	Character* GetPartner() { return partner; };
 
 private:
 	bool ab_3_active = false;
@@ -43,6 +44,10 @@ private:
 	Spells* knock;
 	Spells* area;
 	Spells* ulti;
+
+	Ability* fire;
+	Ability* thunder;
+	Ability* ulti_ab;
 
 };
 #endif

@@ -76,6 +76,12 @@ bool ModuleEntityManager::Start() {
 
 	spellsTex = App->textures->Load("Spells/spells.png");
 
+	stuned = App->entities->CreateSpell({ DEATH_MARK , NOTEAM,{ 0,0,0 } });
+	((DeathMark*)stuned)->SetPath("stun");
+
+	slowed = App->entities->CreateSpell({ DEATH_MARK , NOTEAM,{ 0,0,0 } });
+	((DeathMark*)slowed)->SetPath("slow");
+
 	StartItems();
 	return true;
 }

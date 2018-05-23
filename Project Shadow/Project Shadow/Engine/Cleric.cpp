@@ -65,6 +65,10 @@ bool Cleric::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
+	knock = App->entities->CreateSpell({ DAGGER,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
+	area = App->entities->CreateSpell({ DEATH_MARK,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
+	ulti = App->entities->CreateSpell({ DEATH_MARK,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
+
 	Ability* fire = new Ability(ab_1, 6);
 	fire->ab_sprite = { 303,65, 50,50 };
 	Ability* thunder = new Ability(ab_2, 7);
@@ -252,19 +256,7 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 	if (_this->entity == _other->entity) return;
 	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
-	/*int z1 = _this->entity->GetGamePos().z;
-	int d1 = _this->entity->GetCharDepth();
 
-	int z2 = _other->entity->GetGamePos().z;
-	int d2 = _other->entity->GetCharDepth();
-
-	int p11 = z1 - (d1 / 2);
-	int p12 = z1 + (d1 / 2);
-	int p21 = z2 - (d2 / 2);
-	int p22 = z2 + (d2 / 2);
-
-	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))*/
-	{
 		if (_this->collider.x - _other->collider.x > 0)
 		{
 			hit_dir = 1;
@@ -325,13 +317,8 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (atk != nullptr)
 				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 
-			//if (currentTag == 11)
-			//	_other->entity->AdBuff(3, -_other->entity->stats.spd);
-			//else if (currentTag == 12)
-			//	_other->entity->Impulsate(hit_dir, 0, 0);
 		}
-
-	}
+	
 }
 
 void Cleric::CreateSounds()

@@ -107,6 +107,8 @@ public:
 	uint winner, winnerTeam;
 	SDL_Texture* spellsTex;
 	std::list<Entity*> entities;
+	Spells* stuned;
+	Spells* slowed;
 
 private:
 

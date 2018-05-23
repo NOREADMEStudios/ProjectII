@@ -1,8 +1,8 @@
 #include "DeathMark.h"
 
-#define MS_LIFETIME	5000
+#define MS_LIFETIME	3000
 
-DeathMark::DeathMark() : Spells(SpellsType::FIRE_DEMON)
+DeathMark::DeathMark() : Spells(SpellsType::DEATH_MARK)
 {
 }
 
@@ -13,7 +13,7 @@ DeathMark::~DeathMark()
 
 bool DeathMark::Start() {
 	LoadSprites();
-
+	App->entities->entities.push_back(this);
 
 	currentAnimation = &spellAnim;
 	spellAnim.speed = 10;
@@ -21,15 +21,7 @@ bool DeathMark::Start() {
 	if (cl)
 		spellAnim.speed = 15;
 
-	//spellColl = App->collision->CreateCollider({}, "DeathMark_Spell", Collider::SPELL);
-	//App->collision->AddCollider(spellColl, this);
-	//collider = { 0,0,45,65 };
 
-
-
-	stats.atk = 8;
-
-	char_depth = 20;
 
 	lifeTime.Start();
 	lifetime = MS_LIFETIME;
@@ -39,8 +31,8 @@ bool DeathMark::Start() {
 
 bool DeathMark::CleanUp(pugi::xml_node&)
 {
-	UnLoadSprites();
-
+	currentAnimation->Reset();
+	//UnLoadSprites();
 
 	return true;
 }
@@ -60,7 +52,7 @@ bool DeathMark::Update(float dt) {
 	if (cl)
 		gamepos.y = gp.y;
 	else
-	gamepos.y = gp.y + 100;
+	gamepos.y = gp.y + 70;
 
 	gamepos.z = gp.z;
 	if (cl && currentAnimation->Finished())

@@ -40,6 +40,9 @@ private:
 	Character* partner;
 	Timer ab_timer;
 	float ab_duration;
+	Spells* knock;
+	Spells* area;
+	Spells* ulti;
 
 };
 #endif

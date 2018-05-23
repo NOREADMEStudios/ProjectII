@@ -71,6 +71,9 @@ Spells* Spells::LoadSpell(SpellsType type)
 	case DAGGER:
 		name = "dagger";
 		break;
+	case LIGHTNING_AURA:
+		name = "Aura";
+		break;
 	case DEATH_MARK:
 		collides = false;
 		is_mark = true;

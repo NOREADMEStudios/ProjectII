@@ -49,9 +49,9 @@ bool Cleric::HeroStart()
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_3", animations_name, 2);
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
 	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, true);
-	Attack* ab_1 = new Attack(11, AB_1, "ab_1", animations_name, 0, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "ab_2", animations_name, 0, false, true);
-	Attack* ab_3 = new Attack(13, AB_3, "ab_3", animations_name, 0, false, true);
+	Attack* ab_1 = new Attack(11, AB_1, "ab_1", animations_name, 0, 20, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "ab_2", animations_name, 0, 20, false, true);
+	Attack* ab_3 = new Attack(13, AB_3, "ab_3", animations_name, 0, 20, false, true);
 
 	attacks.push_back(light_1);
 	attacks.push_back(heavy_1);
@@ -65,11 +65,11 @@ bool Cleric::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
-	Ability* fire = new Ability(ab_1, 6);
+	Ability* fire = new Ability(ab_1, 6 - ((stats.cdr/100)*6));
 	fire->ab_sprite = { 303,65, 50,50 };
-	Ability* thunder = new Ability(ab_2, 7);
+	Ability* thunder = new Ability(ab_2, 7 - ((stats.cdr / 100) * 7));
 	thunder->ab_sprite = { 303,115, 50,50 };
-	Ability* ulti = new Ability(ab_3, 15);
+	Ability* ulti = new Ability(ab_3, 15 - ((stats.cdr / 100) * 15));
 	ulti->ab_sprite = { 303,165, 50,50 };
 
 	AdAbility(*fire);
@@ -316,10 +316,7 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (atk != nullptr)
 				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 
-			//if (currentTag == 11)
-			//	_other->entity->AdBuff(3, -_other->entity->stats.spd);
-			//else if (currentTag == 12)
-			//	_other->entity->Impulsate(hit_dir, 0, 0);
+
 		}
 
 	}

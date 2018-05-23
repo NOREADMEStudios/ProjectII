@@ -33,6 +33,7 @@ bool Icicle::Start() {
 bool Icicle::CleanUp(pugi::xml_node&)
 {
 	//UnLoadSprites();
+	currentAnimation->Reset();
 	bool ret = App->collision->RemoveCollider(spellColl);
 
 	return ret;
@@ -75,7 +76,7 @@ void Icicle::OnCollisionEnter(Collider* _this, Collider* _other) {
 	}
 	if (_other->type == Collider::HITBOX)
 	{
-		_other->entity->AdBuff(COOL_DURATION, -COOL_EFFECT * _other->entity->stats.spd);
+		_other->entity->AdBuff(COOL_DURATION - ((_other->entity->stats.ccr / 100) * COOL_DURATION), -COOL_EFFECT * _other->entity->stats.spd);
 		_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
 		Spells* dm = App->entities->CreateSpell({ DEATH_MARK , NOTEAM,{ 0,0,0 } });
 		dm->SetParent((Character*)_other->entity);

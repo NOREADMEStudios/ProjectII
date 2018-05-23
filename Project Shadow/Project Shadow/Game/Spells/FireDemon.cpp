@@ -30,12 +30,15 @@ bool FireDemon::Start() {
 	lifeTime.Start();
 	lifetime = MS_LIFETIME;
 
+
+
 	return true;
 }
 
 bool FireDemon::CleanUp(pugi::xml_node&)
 {
-	UnLoadSprites();
+	//UnLoadSprites();
+	currentAnimation->Reset();
 	bool ret = App->collision->RemoveCollider(spellColl);
 
 	return ret;

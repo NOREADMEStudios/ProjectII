@@ -98,6 +98,11 @@ bool Character::Update(float dt)
 		resume = false;
 	}
 
+	if (stats.hpRecover && hpRecTimer.Count(5) && stats.life < initialLife)
+	{
+		AdHp(5);
+		hpRecTimer.Start();
+	}
 
 	currentAnimation = &states.front()->anim;
 
@@ -515,6 +520,14 @@ void Character::UpdateMainStates()
 			currentTag = 0;
 		}
 	}
+	if (currentState == AD_ACTION && currentTag != 0)
+	{
+		char_depth = GetAtk(currentTag)->depth;
+	}
+	else
+	{
+		char_depth = 20;
+	}
 
 	if (time_attack.Count(COMBO_MARGIN))
 	{
@@ -530,7 +543,7 @@ void Character::UpdateCurState(float dt)
 
 	if (gamepos.y > 0)
 	{
-		if (currentState != AD_ACTION && currentTag != 0 && !GetAtk(currentTag)->air)
+		if (currentState == AD_ACTION && currentTag != 0 && GetAtk(currentTag)->air)
 		Accelerate(x_dir, -1, z_dir, dt);
 
 		else 

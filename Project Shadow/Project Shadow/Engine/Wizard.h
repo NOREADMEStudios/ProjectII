@@ -41,7 +41,11 @@ private:
 	Lightning* lighting;
 	Spells* fireDemon;
 	Spells* fireball;
+	Spells* light_aura;
 
+	Ability* icicle_ab;
+	Ability* thunder;
+	Ability* ulti;
 	
 };
 #endif

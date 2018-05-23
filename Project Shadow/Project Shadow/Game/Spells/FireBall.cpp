@@ -41,6 +41,7 @@ bool FireBall::Start() {
 bool FireBall::CleanUp(pugi::xml_node&)
 {
 	//UnLoadSprites();
+	currentAnimation->Reset();
 	bool ret = App->collision->RemoveCollider(spellColl);
 
 	return ret;
@@ -75,6 +76,7 @@ bool FireBall::PostUpdate() {
 		{
 			FireBall* fb = new FireBall{ *(FireBall*)this };
 			fb->SetPos(gamepos.x + (50 * dir.x), gamepos.y, gamepos.z + (30 * dir.y));
+			fb->currentAnimation->Reset();
 			fb->Start();			
 
 		}

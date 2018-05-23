@@ -37,6 +37,8 @@ bool Stun::Start() {
 	lifeTime.Start();
 	lifetime = MS_LIFETIME;
 
+	
+
 	return true;
 }
 
@@ -54,6 +56,7 @@ bool Stun::Update(float dt) {
 	if (paused) {
 		return PausedUpdate();
 	}
+
 
 	priority = gamepos.z;
 
@@ -101,7 +104,7 @@ void Stun::OnCollisionEnter(Collider* _this, Collider* _other) {
 	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 	if (_other->entity == parent) return;
 
-
+	
 	int hit_dir;
 
 	if (_this->collider.x - _other->collider.x > 0)
@@ -127,3 +130,105 @@ void Stun::OnCollisionEnter(Collider* _this, Collider* _other) {
 	}
 }
 
+
+
+Area::Area() : Spells(SpellsType::FIREBALL)
+{
+}
+
+
+Area::~Area()
+{
+}
+
+bool Area::Start() {
+	LoadSprites();
+
+
+	spellAnim.speed = 10;
+	App->entities->entities.push_back(this);
+
+	spellColl = App->collision->CreateCollider({}, "Spell", Collider::SPELL);
+	App->collision->AddCollider(spellColl, this);
+
+	buffed = false;
+
+	currentAnimation->speed = 10;
+
+	//collider = { 0,0,45,65 };
+	parent->cleric_ab = true;
+
+	secondParnter = (Character*)App->entities->GetSameTeam(this);
+	char_depth = 200;
+
+	lifeTime.Start();
+	lifetime = MS_LIFETIME;
+
+	return true;
+}
+
+bool Area::CleanUp(pugi::xml_node&)
+{
+	//UnLoadSprites();
+	parent->cleric_ab = false;
+	secondParnter->cleric_ab = false;
+	buffed = false;
+
+	bool ret = App->collision->RemoveCollider(spellColl);
+
+	return ret;
+}
+
+bool Area::Update(float dt) {
+
+	if (paused) {
+		return PausedUpdate();
+	}
+
+	priority = gamepos.z;
+
+	CalcRealPos();
+	GetColliderFromAnimation();
+
+
+	//UpdateCollidersPosition();
+
+	App->render->FillQueue(this);//prints the spell
+
+	return true;
+}
+
+bool Area::PostUpdate() {
+	if (CheckLifetime()) {
+
+		to_delete = true;
+	}
+	return true;
+}
+
+void Area::Dead() {
+
+	App->entities->DestroyEntity(this);
+}
+
+void Area::OnCollisionEnter(Collider* _this, Collider* _other) {
+
+	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
+
+	if (team == _other->entity->team)
+	{
+		_other->entity->cleric_ab = true;
+
+		if (buffed)
+		{
+			secondParnter->AdBuff(5, 0, 0, 10);
+			buffed = true;
+		}
+
+	}
+	else
+	{
+		_other->entity->cleric_ab = false;
+	}
+
+}

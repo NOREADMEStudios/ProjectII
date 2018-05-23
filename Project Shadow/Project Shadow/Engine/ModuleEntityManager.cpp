@@ -244,6 +244,9 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 	case CLERIC_STUN:
 		ret = new Stun();
 		break;
+	case AREA:
+		ret = new Area();
+		break;
 
 	}
 

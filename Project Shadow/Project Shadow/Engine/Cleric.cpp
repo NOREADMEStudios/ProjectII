@@ -39,7 +39,6 @@ bool Cleric::HeroStart()
 	stats.atk = 5;
 	stats.def = 3;
 
-	ab_duration = 5;
 
 	LoadState(PROTECT, "protect");
 	LoadState(PARRY, "standup");
@@ -67,7 +66,7 @@ bool Cleric::HeroStart()
 	jump_a->AddChild(jump_a2);
 
 	knock = App->entities->CreateSpell({ CLERIC_STUN,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
-	area = App->entities->CreateSpell({ DEATH_MARK,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
+	area = App->entities->CreateSpell({ AREA,team,{ gamepos.x, gamepos.y , gamepos.z },{ 0,0 } });
 	ulti = App->entities->CreateSpell({ DEATH_MARK,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
 
 	fire = new Ability(ab_1, 6);
@@ -91,20 +90,7 @@ bool Cleric::HeroUpdate(float dt)
 	int z_dir = directions.down - directions.up;
 	int x_dir = directions.right - directions.left;
 
-	if (!ab_timer.Count(ab_duration))
-	{
-		if (partner  != nullptr)
-		partner->cleric_ab = true;
 
-		cleric_ab = true;
-	}
-	else
-	{
-		if (partner != nullptr)
-		partner->cleric_ab = false;
-
-		cleric_ab = false;
-	}
 
 	switch (currentState)
 	{
@@ -196,13 +182,10 @@ void Cleric::UpdateSpecStates()
 	{
 		AdBuff(5, 0, 0, 10);
 
-
-
-		if (partner != nullptr)
-		{
-			partner->AdBuff(5, 0, 0, 10);
-
-		}
+		Area* ar = new Area{ *(Area*)area };
+		ar->SetParent(this);
+		ar->SetPos(gamepos.x, gamepos.y , gamepos.z - 1);
+		ar->Start();
 		ab_2_active = true;
 
 	}

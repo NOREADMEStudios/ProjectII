@@ -39,8 +39,7 @@ private:
 	bool ab_1_active = false;
 	bool ab_2_active = false;
 	Character* partner;
-	Timer ab_timer;
-	float ab_duration;
+
 	Spells* knock;
 	Spells* area;
 	Spells* ulti;

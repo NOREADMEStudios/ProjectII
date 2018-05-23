@@ -325,8 +325,8 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 	charFace->SetAnchor(anchor.x, anchor.y);
 	charNumber->SetAnchor(anchor.x, anchor.y);
 
-	aux->setPositionX(screenMargin + ((screenDims.x - (screenMargin * 2)) * anchor.x));
-	aux->setPositionY(screenMargin + ((screenDims.y - (screenMargin * 2)) * anchor.y));
+	/*aux->setPositionX(screenMargin + ((screenDims.x - (screenMargin * 2)) * anchor.x));
+	aux->setPositionY(screenMargin + ((screenDims.y - (screenMargin * 2)) * anchor.y));*/
 
 	charFace->setPosition(aux->rect.w * anchor.x, aux->rect.h * (1 - anchor.y));
 	charFace->culled = false;

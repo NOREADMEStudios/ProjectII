@@ -3,6 +3,8 @@
 
 #include "Scene.h"
 #include "Module.h"
+#include "Timer.h"
+#include "ModuleTransition.h"
 
 #include <list>
 
@@ -44,7 +46,7 @@ public:
 
 	void AddScene(Scene* scene);
 	void LoadScene(Scene* scene);
-	void ChangeScene(Scene* scene_to_change);
+	void ChangeScene(Scene* scene_to_change, unsigned int  duration = 3, ModuleTransition::Transition = ModuleTransition::Transition::FADE_TO_BLACK);
 	void UnloadScene(Scene* scene);
 
 	IntroScene* introSc;
@@ -60,7 +62,9 @@ private:
 	std::list<Scene> scenes;
 	Scene* currentScene = nullptr;
 	Scene* nextScene = nullptr;
-
+	bool timerFinished = false;
+	Timer sceneChangeTimer;
+	float sceneChangeDuration = 0;
 };
 
 #endif // !__SCENEMANAGER_H__

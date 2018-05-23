@@ -49,11 +49,12 @@ bool ModuleSceneManager::PostUpdate() {
 	bool ret = true;
 	if (currentScene != nullptr)
 		ret = currentScene->PostUpdate();
-	if (nextScene != nullptr) {
+	
+	if (nextScene != nullptr && sceneChangeTimer.Count(sceneChangeDuration)) {
 		UnloadScene(currentScene);
 		LoadScene(nextScene);
+		nextScene = nullptr;
 	}
-	nextScene = nullptr;
 	return ret;
 }
 
@@ -75,8 +76,12 @@ void ModuleSceneManager::LoadScene(Scene* scene) {
 	//App->entities->Start();
 }
 
-void ModuleSceneManager::ChangeScene(Scene* scene_to_change) {
-	nextScene = scene_to_change;
+void ModuleSceneManager::ChangeScene(Scene* scene_to_change, unsigned int duration, ModuleTransition::Transition) {
+	if (sceneChangeTimer.IsZero()) {
+		sceneChangeTimer.Start();
+		sceneChangeDuration = duration;
+		nextScene = scene_to_change;
+	}
 }
 
 void ModuleSceneManager::UnloadScene(Scene* scene) {

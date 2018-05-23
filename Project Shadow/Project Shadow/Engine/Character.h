@@ -24,6 +24,8 @@
 
 #define MAX_CHARACTER_ITEMS 3
 
+#define HIT_STOP_FRAMES 10
+
 
 enum CharInput
 {
@@ -279,7 +281,7 @@ protected:
 	std::string animations_name;
 	Timer hpRecTimer;
 
-
+	int hitStopFrames = HIT_STOP_FRAMES;
 
 	LIST(Attack*) attacks;
 	std::vector<Ability> abilities;

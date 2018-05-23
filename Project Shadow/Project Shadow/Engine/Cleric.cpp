@@ -252,18 +252,6 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 	if (_this->entity == _other->entity) return;
 	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
-	/*int z1 = _this->entity->GetGamePos().z;
-	int d1 = _this->entity->GetCharDepth();
-
-	int z2 = _other->entity->GetGamePos().z;
-	int d2 = _other->entity->GetCharDepth();
-
-	int p11 = z1 - (d1 / 2);
-	int p12 = z1 + (d1 / 2);
-	int p21 = z2 - (d2 / 2);
-	int p22 = z2 + (d2 / 2);
-
-	if ((p11 <= p21 && p21 <= p12) || (p11 <= p22 && p22 <= p12) || (p21 <= p11 && p11 <= p22) || (p21 <= p12 && p12 <= p22))*/
 	{
 		if (_this->collider.x - _other->collider.x > 0)
 		{
@@ -279,6 +267,7 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (_other->entity->breaking)
 			{
 				currentState = HIT;
+				App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 			}
@@ -301,12 +290,14 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentTag = 0;
 			currentState = HIT;
+			App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentTag = 0;
 			currentState = HIT;
 			hit_bool = true;
+			App->SetTimeScale(0.f, hitStopFrames);
 
 
 			if (_this->collider.x - _other->collider.x > 0)

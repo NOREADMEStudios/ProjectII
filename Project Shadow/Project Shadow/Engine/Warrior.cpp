@@ -51,8 +51,8 @@ bool Warrior::HeroStart()
 	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", animations_name, 5);
 	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK, "jump_attack", animations_name, 2, 30, true);
 	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", animations_name, 5, 50, true);
-	Attack* ab_1 = new Attack(11, AB_1, "slide", animations_name, 5, 20, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "slide_2", animations_name, 5, 20, false, true);
+	Attack* ab_1 = new Attack(11, AB_1, "slide", animations_name, 5, 40, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "slide_2", animations_name, 5, 40, false, true);
 	Attack* ulti = new Attack(13, AB_3, "intro",animations_name, 0, 20,false, true);
 
 	attacks.push_back(light_1);
@@ -75,11 +75,11 @@ bool Warrior::HeroStart()
 	jump_a->AddChild(jump_a2);
 	jump_a->AddChild(jump_a3);
 
-	Ability* kick = new Ability(ab_1, 5 - ((stats.cdr / 100) * 5));
+	Ability* kick = new Ability(ab_1, 3 - ((stats.cdr / 100) * 3));
 	kick->ab_sprite = {202, 115, 50,50};
 	AdAbility(*kick);
 
-	Ability* stunt = new Ability(ab_2, 7 - ((stats.cdr / 100) * 7));
+	Ability* stunt = new Ability(ab_2, 5 - ((stats.cdr / 100) * 5));
 	stunt->ab_sprite = { 252, 115, 50,50 };
 	AdAbility(*stunt);
 

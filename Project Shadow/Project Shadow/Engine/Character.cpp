@@ -847,9 +847,6 @@ std::list<CharInput> Character::FirstPlayerConfig()
 
 	std::list<CharInput> ret;
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		App->debug = !App->debug;
-
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		ret.push_back(CharInput::CH_LEFT);
 

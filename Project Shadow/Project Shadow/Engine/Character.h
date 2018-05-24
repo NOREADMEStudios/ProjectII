@@ -24,7 +24,7 @@
 
 #define MAX_CHARACTER_ITEMS 3
 
-#define HIT_STOP_FRAMES 10
+#define HIT_STOP_FRAMES 5
 
 
 enum CharInput

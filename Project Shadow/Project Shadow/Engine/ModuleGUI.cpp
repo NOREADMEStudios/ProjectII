@@ -267,10 +267,8 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 	if (_tex == nullptr)
 		_tex = atlas_texture;
 
-
-
 	Healthbar* aux = new Healthbar(character, charNum, leftSide, _x, _y, _tex, _enabled, &_anim);
-	Sprite* bar = App->gui->AddSprite(0, 0, _tex, { 451, 297, 258, 20 });
+	Sprite* bar = App->gui->AddSprite(0, 0, _tex, { 304, 297, 572, 20 });
 	Label* charNumber = App->gui->AddLabel(0, 0, 48, "Assets/Textures/UI/TTF/Vecna Bold.ttf", { 255, 255, 255, 255 }, Label::BLENDED, "");
 
 	aux->characterText = charNumber;

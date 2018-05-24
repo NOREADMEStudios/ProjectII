@@ -134,7 +134,7 @@ bool MainScene::Update(float dt)
 
 bool MainScene::PostUpdate()
 {
-	if ((App->entities->finish || App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) && !combatEndControlBool) {
+	if (App->entities->finish && !combatEndControlBool) {
 		combatEndControlBool = true;
 		uint winner = App->entities->GetWinnerTeam();
 		wonRounds[winner - 1]++;

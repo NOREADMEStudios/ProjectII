@@ -319,12 +319,13 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 				_other->entity->SetFlip(hit_dir);
 			}
 
-			if (currentTag == 11)
+			if (currentTag == 11 && (((Character*)_other->entity)->GetState() != STUNED && ((Character*)_other->entity)->GetState() != HIT))
 			{
 				_other->entity->AdBuff(3, -_other->entity->stats.spd);
-				Spells* dm = App->entities->CreateSpell({ DEATH_MARK , NOTEAM,{ 0,0,0 } });
-				dm->SetParent((Character*)_other->entity);
-				((DeathMark*)dm)->SetPath("stun");
+				DeathMark* stun = new DeathMark{ *(DeathMark*)App->entities->stuned };
+				stun->SetPos(gamepos.x, gamepos.y + 20, gamepos.z);
+				stun->SetParent((Character*)_other->entity);
+				stun->Start();
 			}
 			else if (currentTag == 12)
 			{

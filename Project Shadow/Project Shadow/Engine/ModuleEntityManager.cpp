@@ -11,6 +11,7 @@
 #include "../Game/Spells/FireDemon.h"
 #include "../Game/Spells/Dagger.h"
 #include "../Game/Spells/DeathMark.h"
+#include "../Game/Spells/ClericSpells.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneManager.h"
 #include "ModuleTextures.h"
@@ -75,6 +76,12 @@ bool ModuleEntityManager::Start() {
 
 
 	spellsTex = App->textures->Load("Spells/spells.png");
+
+	stuned = App->entities->CreateSpell({ DEATH_MARK , NOTEAM,{ 0,0,0 } });
+	((DeathMark*)stuned)->SetPath("stun");
+
+	slowed = App->entities->CreateSpell({ DEATH_MARK , NOTEAM,{ 0,0,0 } });
+	((DeathMark*)slowed)->SetPath("slow");
 
 	StartItems();
 	return true;
@@ -210,40 +217,42 @@ Spells* ModuleEntityManager::CreateSpell(SpellsInfo spellsInfo) {
 
 	Spells* ret = nullptr;
 
-	if (spellsInfo.spType == SpellsType::FIREBALL)
+	switch (spellsInfo.spType)
 	{
-		ret = new FireBall();		
-	}
-	else if (spellsInfo.spType == SpellsType::ICICLE)
-	{
+	case FIREBALL:
+		ret = new FireBall();
+		break;
+	case ICICLE:
 		ret = new Icicle();
-	}
-	else if (spellsInfo.spType == SpellsType::LIGHTING)
-	{
+		break;
+	case LIGHTING:
 		ret = new Lightning();
-	}
-	else if (spellsInfo.spType == SpellsType::LIGHTNING_AURA)
-	{
+		break;
+	case LIGHTNING_AURA:
 		ret = new Aura();
-	}
-
-	else if (spellsInfo.spType == SpellsType::FIRE_DEMON)
-	{
+		break;
+	case FIRE_DEMON:
 		ret = new FireDemon();
-	}
-	else if (spellsInfo.spType == SpellsType::DAGGER)
-	{
+		break;
+	case DAGGER:
 		ret = new Dagger();
-	}
-	else if (spellsInfo.spType == SpellsType::DEATH_MARK)
-	{
+		break;
+	case DEATH_MARK:
 		ret = new DeathMark();
+		break;
+
+	case CLERIC_STUN:
+		ret = new Stun();
+		break;
+	case AREA:
+		ret = new Area();
+		break;
+
 	}
 
-	else
-	{
-		return nullptr;
-	}
+
+
+
 
 	ret->type = SPELLS;
 

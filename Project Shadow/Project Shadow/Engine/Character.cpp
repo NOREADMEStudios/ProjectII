@@ -529,6 +529,13 @@ void Character::UpdateMainStates()
 		char_depth = 20;
 	}
 
+
+	//if (stats.spd == 0 && currentState != HIT)
+	//{
+	//	currentState = STUNED;
+	//	currentTag = 0;
+	//}
+
 	if (time_attack.Count(COMBO_MARGIN))
 	{
 		last_attack = 0;
@@ -727,6 +734,7 @@ void Character::LoadBasicStates()
 	LoadState(DEATH, "death");
 	LoadState(TAUNT, "win");
 	LoadState(KNOKED, "death");
+	LoadState(STUNED, "stuned");
 
 }
 
@@ -783,6 +791,7 @@ void Character::SetAnimations()
 {
 	std::string red = "_red.png";
 	std::string blue = "_blue.png";
+	bool cleric = false;
 
 	std::string spritePath;
 	switch (charType)
@@ -809,16 +818,21 @@ void Character::SetAnimations()
 		{
 			animations_name = CLERIC_ANIM_ROOT;
 			spritePath = CLERIC_SPRITE_ROOT;
+			cleric = true;
 			break;
 		}
 		
 	}
-	if (team == Team::BLUE) {
-		spritePath += blue;
+	if (!cleric)
+	{
+		if (team == Team::BLUE) {
+			spritePath += blue;
+		}
+		else if (team == Team::RED) {
+			spritePath += red;
+		}
 	}
-	else if (team == Team::RED) {
-		spritePath += red;	
-	}
+
 
 	sprites = App->textures->Load(spritePath.c_str());
 }

@@ -32,14 +32,21 @@ public:
 	void UpdateSpecStates();
 	virtual void OnCollisionEnter(Collider* _this, Collider* _other);
 	void CreateSounds();
+	Character* GetPartner() { return partner; };
 
 private:
 	bool ab_3_active = false;
 	bool ab_1_active = false;
 	bool ab_2_active = false;
 	Character* partner;
-	Timer ab_timer;
-	float ab_duration;
+
+	Spells* knock;
+	Spells* area;
+	Spells* ulti;
+
+	Ability* fire;
+	Ability* thunder;
+	Ability* ulti_ab;
 
 };
 #endif

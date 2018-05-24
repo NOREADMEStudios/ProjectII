@@ -21,6 +21,7 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; }
 
 
+
 protected:
 	void Dead();
 	bool stop = false;

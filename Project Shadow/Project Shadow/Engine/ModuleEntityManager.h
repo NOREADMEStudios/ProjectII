@@ -25,6 +25,8 @@ enum SpellsType {
 	FIRE_DEMON,
 	DAGGER,
 	DEATH_MARK,
+	CLERIC_STUN,
+	AREA
 
 };
 
@@ -107,6 +109,8 @@ public:
 	uint winner, winnerTeam;
 	SDL_Texture* spellsTex;
 	std::list<Entity*> entities;
+	Spells* stuned;
+	Spells* slowed;
 
 private:
 

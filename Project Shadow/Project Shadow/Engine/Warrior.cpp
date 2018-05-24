@@ -75,16 +75,16 @@ bool Warrior::HeroStart()
 	jump_a->AddChild(jump_a2);
 	jump_a->AddChild(jump_a3);
 
-	Ability* kick = new Ability(ab_1, 5);
+	Ability* kick = new Ability(ab_1, 5 - ((stats.cdr / 100) * 5));
 	kick->ab_sprite = {202, 115, 50,50};
 	AdAbility(*kick);
 
-	Ability* stunt = new Ability(ab_2, 7);
+	Ability* stunt = new Ability(ab_2, 7 - ((stats.cdr / 100) * 7));
 	stunt->ab_sprite = { 252, 115, 50,50 };
 	AdAbility(*stunt);
 
 
-	Ability* Aulti = new Ability(ulti, 20);
+	Ability* Aulti = new Ability(ulti, 20 - ((stats.cdr / 100) * 20));
 	Aulti->ab_sprite = { 102, 165, 50,50 };
 	AdAbility(*Aulti);
 
@@ -257,6 +257,7 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (_other->entity->breaking)
 			{
 				currentState = HIT;
+				App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 			}
@@ -281,11 +282,13 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentTag = 0;
 			currentState = HIT;
+			App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentTag = 0;
 			currentState = HIT;
+			App->SetTimeScale(0.f, hitStopFrames);
 			hit_bool = true;
 			//if (_this->collider.x - _other->collider.x > 0)
 			//{

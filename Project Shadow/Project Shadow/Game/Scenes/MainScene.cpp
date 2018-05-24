@@ -71,20 +71,20 @@ bool MainScene::Start()
 	if (App->scenes->gameMode == GameMode::ONEvsONE) {
 		e = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[0]);
 		e2 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[1]);
-		App->gui->AddHealthbar((Character*)e, 0, true, 10, 10, atlas, true, { 451, 271, 264, 26 });
-		App->gui->AddHealthbar((Character*)e2, 2, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
+		App->gui->AddHealthbar((Character*)e, 0, false, 10, 10, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e2, 2, false, 1910, 10, atlas, true, { 304, 271, 577, 26 });
 	}
-	else if (App->scenes->gameMode==GameMode::TWOvsTWO)
+	else if (App->scenes->gameMode == GameMode::TWOvsTWO)
 	{
 		e = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[0]);
 		e2 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[1]);
-		App->gui->AddHealthbar((Character*)e, 0, true, 10, 10, atlas, true, { 451, 271, 264, 26 });
-		App->gui->AddHealthbar((Character*)e2, 1, true, 1590, 10, atlas, true, { 451, 271, 264, 26 });
+		App->gui->AddHealthbar((Character*)e, 0, true, 10, 10, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e2, 1, true, 170, 240, atlas, true, { 304, 271, 577, 26 });
 
 		e3 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[2]);
 		e4 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[3]);
-		App->gui->AddHealthbar((Character*)e3, 2, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
-		App->gui->AddHealthbar((Character*)e4, 3, false, 1590, 10, atlas, true, { 451, 271, 264, 26 });
+		App->gui->AddHealthbar((Character*)e3, 2, false, 1910, 10, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e4, 3, false, 1740, 240, atlas, true, { 304, 271, 577, 26 });
 	}
 
 	LoadSceneUI();
@@ -97,11 +97,6 @@ bool MainScene::Update(float dt)
 {
 	WindowStates();
 
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
-		App->input->BlockKeyboardEvent(SDL_SCANCODE_P);
-		App->scenes->ChangeScene(App->scenes->endSc);
-	}
-
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		paused = !paused;
 		App->PauseGame(paused);
@@ -112,6 +107,7 @@ bool MainScene::Update(float dt)
 		ChooseFocus();
 	}
 
+#ifdef _DEBUG
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
 		((Character*)e)->AdHp(-100);
 	}
@@ -124,6 +120,12 @@ bool MainScene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
 		((Character*)e4)->AdHp(-100);
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+		App->input->BlockKeyboardEvent(SDL_SCANCODE_P);
+		App->scenes->ChangeScene(App->scenes->endSc);
+	}
+#endif
 
 	App->map->Draw();
 
@@ -171,6 +173,7 @@ bool MainScene::CleanUp()
 	App->collision->CleanUp(n);
 	App->gui->CleanUp();
 	App->entities->CleanUp(n);
+	App->SetTimeScale(1.f);
 	return true;
 }
 
@@ -380,6 +383,8 @@ void BackButtPressCallb(size_t arg_size...) {
 
 void MainScene::LoadSceneUI() {
 	uiPoint sizeScreen = App->gui->GetGuiSize();
+
+	paused = false;
 
 	pauseWindow = App->gui->AddWindow(sizeScreen.x / 2, sizeScreen.y / 2, nullptr, { 2130, 42, 1294, 743 }, false);
 	mainMenuButt = App->gui->AddButton(0, 0, nullptr, { 1282, 883, 400, 98 }, true, MainMenuPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });

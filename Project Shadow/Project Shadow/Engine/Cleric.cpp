@@ -65,17 +65,20 @@ bool Cleric::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
+
 	knock = App->entities->CreateSpell({ CLERIC_STUN,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
 	area = App->entities->CreateSpell({ AREA,team,{ gamepos.x, gamepos.y , gamepos.z },{ 0,0 } });
 	ulti = App->entities->CreateSpell({ DEATH_MARK,team,{ gamepos.x, gamepos.y , gamepos.z },{ 1,0 } });
 	((DeathMark*)ulti)->SetPath("Healing Wind");
 
-	fire = new Ability(ab_1, 6);
+
+	Ability* fire = new Ability(ab_1, 6 - ((stats.cdr/100)*6));
 	fire->ab_sprite = { 303,65, 50,50 };
-	thunder = new Ability(ab_2, 7);
+	Ability* thunder = new Ability(ab_2, 7 - ((stats.cdr / 100) * 7));
 	thunder->ab_sprite = { 303,115, 50,50 };
-	ulti_ab = new Ability(ab_3, 15);
-	ulti_ab->ab_sprite = { 303,165, 50,50 };
+	Ability* ulti = new Ability(ab_3, 15 - ((stats.cdr / 100) * 15));
+	ulti->ab_sprite = { 303,165, 50,50 };
+
 
 	AdAbility(*fire);
 	AdAbility(*thunder);
@@ -244,6 +247,7 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (_other->entity->breaking)
 			{
 				currentState = HIT;
+				App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 			}
@@ -266,12 +270,14 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentTag = 0;
 			currentState = HIT;
+			App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentTag = 0;
 			currentState = HIT;
 			hit_bool = true;
+			App->SetTimeScale(0.f, hitStopFrames);
 
 
 			if (_this->collider.x - _other->collider.x > 0)
@@ -291,7 +297,6 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 
 		}
-	
 }
 
 void Cleric::CreateSounds()

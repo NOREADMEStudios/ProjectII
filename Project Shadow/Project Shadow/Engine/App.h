@@ -69,7 +69,7 @@ public:
 	void SetFramerateCap(uint32 cap);
 
 	float GetTimeScale()const;
-	void SetTimeScale(float ts);
+	void SetTimeScale(float ts, int frameNumber = -1);
 
 	void Quit();
 
@@ -131,6 +131,8 @@ private:
 	uint				frames = 0;
 	float				dt = .0f;
 	float				time_scale = 1.0f;
+	float				prevTime_scale = 1.f;
+	int					time_scaleFrames = -1;
 	int					argc;
 	char**				args;
 

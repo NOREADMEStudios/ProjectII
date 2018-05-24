@@ -290,7 +290,14 @@ void Application::PrepareUpdate() {
 	last_sec_frame_count++;
 
 	delta_time = frame_time.Read();
-	dt = delta_time / 1000.0f;
+	dt = (delta_time / 1000.0f) * time_scale;
+	if (time_scaleFrames > 0) {
+		time_scaleFrames--;
+	}
+	else if (time_scaleFrames == 0) {
+		time_scale = prevTime_scale = 1.f;
+		time_scaleFrames = -1;
+	}
 	frame_time.Start();
 }
 
@@ -620,9 +627,11 @@ float Application::GetTimeScale() const
 	return time_scale;
 }
 
-void Application::SetTimeScale(float ts)
+void Application::SetTimeScale(float ts, int frameNumber)
 {
+	prevTime_scale = time_scale;
 	time_scale = ts;
+	time_scaleFrames = frameNumber;
 }
 
 void Application::Quit()
@@ -635,7 +644,7 @@ void Application::Reload() {
 }
 
 void Application::PauseGame(bool pause) {
-
+	SetTimeScale(pause ? 0.f : 1.f);
 	entities->PauseEntities(pause);
 
 }

@@ -98,6 +98,11 @@ bool Character::Update(float dt)
 		resume = false;
 	}
 
+	if (stats.hpRecover && hpRecTimer.Count(5) && stats.life < initialLife)
+	{
+		AdHp(5);
+		hpRecTimer.Start();
+	}
 
 	currentAnimation = &states.front()->anim;
 

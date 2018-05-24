@@ -72,12 +72,12 @@ bool Cleric::HeroStart()
 	((DeathMark*)ulti)->SetPath("Healing Wind");
 
 
-	Ability* fire = new Ability(ab_1, 6 - ((stats.cdr/100)*6));
+	fire = new Ability(ab_1, 6 - ((stats.cdr/100)*6));
 	fire->ab_sprite = { 303,65, 50,50 };
-	Ability* thunder = new Ability(ab_2, 7 - ((stats.cdr / 100) * 7));
+	thunder = new Ability(ab_2, 7 - ((stats.cdr / 100) * 7));
 	thunder->ab_sprite = { 303,115, 50,50 };
-	Ability* ulti = new Ability(ab_3, 15 - ((stats.cdr / 100) * 15));
-	ulti->ab_sprite = { 303,165, 50,50 };
+	ulti_ab = new Ability(ab_3, 15 - ((stats.cdr / 100) * 15));
+	ulti_ab->ab_sprite = { 303,165, 50,50 };
 
 
 	AdAbility(*fire);

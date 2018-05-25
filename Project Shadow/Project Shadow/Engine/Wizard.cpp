@@ -36,7 +36,7 @@ bool Wizard::HeroStart()
 	stats.atk = 2;
 	stats.def = 0;
 
-	icicle = App->entities->CreateSpell({ ICICLE,team,{ gamepos.x, gamepos.y + 75, gamepos.z } });
+	icicle = App->entities->CreateSpell({ ICICLE,team,{ gamepos.x, gamepos.y , gamepos.z} });
 
 	lighting = (Lightning*)App->entities->CreateSpell({ LIGHTING,team,{ gamepos.x, gamepos.y + 75, gamepos.z } });
 
@@ -141,7 +141,7 @@ void Wizard::UpdateSpecStates()
 	if (currentTag == 11 && !ab_1_active && currentAnimation == &icicle_ab->atk->anim && currentAnimation->getFrameIndex() >= 6)
 	{
 		Icicle* ice = new Icicle{ *(Icicle*)icicle };
-		ice->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
+		ice->SetPos(gamepos.x+(50*dir), gamepos.y + 200, gamepos.z);
 		ice->SetDir(flip, 0);
 		ice->Start();
 		ab_1_active = true;

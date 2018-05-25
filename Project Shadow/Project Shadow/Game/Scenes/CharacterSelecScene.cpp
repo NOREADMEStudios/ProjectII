@@ -108,6 +108,7 @@ void CharacterSelecScene::SetControllerFocus() {
 		return;
 	}
 
+
 	for (int i = 1; i <= controllersNum; i++) {
 		Player player;
 
@@ -121,16 +122,18 @@ void CharacterSelecScene::SetControllerFocus() {
 		players.push_back(player);
 	}
 }
+
 void CharacterSelecScene::SetCharactersInfo(){
+
 	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
-		charactersInfo[0] = { ROGUE,{ 100,0,100 }, Team::BLUE };
-		charactersInfo[1] = { WARRIOR,{ 100,0,1000 }, Team::BLUE };
-		charactersInfo[2] = { WIZARD,{ 10000,0,100 }, Team::RED };
-		charactersInfo[3] = { WARRIOR,{ 10000,0,1000 }, Team::RED };
+		charactersInfo[0] = { ROGUE,{ 150,0,150 }, Team::BLUE };
+		charactersInfo[1] = { WARRIOR,{ 100,0,500 }, Team::BLUE };
+		charactersInfo[2] = { WIZARD,{ 700,0,150 }, Team::RED };
+		charactersInfo[3] = { CLERIC,{ 750,0,500 }, Team::RED };
 	}
 	else if (App->scenes->gameMode == GameMode::ONEvsONE) {
-		charactersInfo[0] = { ROGUE,{ 100,0,100 }, Team::BLUE };
-		charactersInfo[1] = { WARRIOR,{ 500, 0 ,500 }, Team::RED };
+		charactersInfo[0] = { ROGUE,{ 100 ,0,250 }, Team::BLUE };
+		charactersInfo[1] = { WARRIOR,{ 800, 0 ,250 }, Team::RED };
 	}
 
 }

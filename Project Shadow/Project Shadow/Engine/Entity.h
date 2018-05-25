@@ -66,6 +66,9 @@ struct EntityStats
 	int def = 0;
 	int spd = 0;
 	int mgk = 0;
+	int cdr = 0;
+	int ccr = 0;
+	bool hpRecover = false;
 
 	EntityStats operator -(const EntityStats &v) const {
 	EntityStats r;
@@ -75,6 +78,8 @@ struct EntityStats
 	r.def = def - v.def;
 	r.spd = spd - v.spd;
 	r.mgk = mgk - v.mgk;
+	r.cdr = cdr - v.cdr;
+	r.ccr = ccr - v.ccr;
 
 	return(r);
 	}
@@ -86,7 +91,9 @@ struct EntityStats
 		r.def = def + v.def;
 		r.spd = spd + v.spd;
 		r.mgk = mgk + v.mgk;
-
+		r.cdr = cdr + v.cdr;
+		r.ccr = ccr + v.ccr;
+		
 		return(r);
 	}
 };

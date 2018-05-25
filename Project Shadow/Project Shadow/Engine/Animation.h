@@ -86,6 +86,7 @@ public:
 		}
 		return false;
 	}
+
 	iRect GetFeetColliderFromFrame() {
 		int currFrame = this->current_frame;
 		iRect collider = coll_frames.at(currFrame).feet;

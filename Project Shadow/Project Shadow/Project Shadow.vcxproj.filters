@@ -188,6 +188,9 @@
     <ClCompile Include="Game\Spells\DeathMark.cpp">
       <Filter>Engine\Entities\Spells</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Spells\ClericSpells.cpp">
+      <Filter>Engine\Entities\Spells</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -360,6 +363,9 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Spells\ClericSpells.h">
+      <Filter>Engine\Entities\Spells</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

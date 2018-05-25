@@ -51,8 +51,8 @@ bool Warrior::HeroStart()
 	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", animations_name, 5);
 	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK, "jump_attack", animations_name, 2, 30, true);
 	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", animations_name, 5, 50, true);
-	Attack* ab_1 = new Attack(11, AB_1, "slide", animations_name, 5, 20, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "slide_2", animations_name, 5, 20, false, true);
+	Attack* ab_1 = new Attack(11, AB_1, "slide", animations_name, 5, 40, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "slide_2", animations_name, 5, 40, false, true);
 	Attack* ulti = new Attack(13, AB_3, "intro",animations_name, 0, 20,false, true);
 
 	attacks.push_back(light_1);
@@ -75,16 +75,16 @@ bool Warrior::HeroStart()
 	jump_a->AddChild(jump_a2);
 	jump_a->AddChild(jump_a3);
 
-	Ability* kick = new Ability(ab_1, 5);
+	Ability* kick = new Ability(ab_1, 3 - ((stats.cdr / 100) * 3));
 	kick->ab_sprite = {202, 115, 50,50};
 	AdAbility(*kick);
 
-	Ability* stunt = new Ability(ab_2, 7);
+	Ability* stunt = new Ability(ab_2, 5 - ((stats.cdr / 100) * 5));
 	stunt->ab_sprite = { 252, 115, 50,50 };
 	AdAbility(*stunt);
 
 
-	Ability* Aulti = new Ability(ulti, 20);
+	Ability* Aulti = new Ability(ulti, 20 - ((stats.cdr / 100) * 20));
 	Aulti->ab_sprite = { 102, 165, 50,50 };
 	AdAbility(*Aulti);
 
@@ -257,6 +257,7 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (_other->entity->breaking)
 			{
 				currentState = HIT;
+				App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 			}
@@ -281,11 +282,13 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentTag = 0;
 			currentState = HIT;
+			App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentTag = 0;
 			currentState = HIT;
+			App->SetTimeScale(0.f, hitStopFrames);
 			hit_bool = true;
 			//if (_this->collider.x - _other->collider.x > 0)
 			//{
@@ -316,12 +319,13 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 				_other->entity->SetFlip(hit_dir);
 			}
 
-			if (currentTag == 11)
+			if (currentTag == 11 && (((Character*)_other->entity)->GetState() != STUNED && ((Character*)_other->entity)->GetState() != HIT))
 			{
 				_other->entity->AdBuff(3, -_other->entity->stats.spd);
-				Spells* dm = App->entities->CreateSpell({ DEATH_MARK , NOTEAM,{ 0,0,0 } });
-				dm->SetParent((Character*)_other->entity);
-				((DeathMark*)dm)->SetPath("stun");
+				DeathMark* stun = new DeathMark{ *(DeathMark*)App->entities->stuned };
+				stun->SetPos(gamepos.x, gamepos.y + 20, gamepos.z);
+				stun->SetParent((Character*)_other->entity);
+				stun->Start();
 			}
 			else if (currentTag == 12)
 			{

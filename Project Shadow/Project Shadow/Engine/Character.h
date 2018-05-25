@@ -20,9 +20,11 @@
 #define FIGHTER_SPRITE_ROOT "Characters/fighter_sprites"
 #define ELF_SPRITE_ROOT "Characters/elf_sprites"
 #define MAGE_SPRITE_ROOT "Characters/mage_sprites"
-#define CLERIC_SPRITE_ROOT "Characters/cleric_sprites"
+#define CLERIC_SPRITE_ROOT "Characters/cleric_sprites.png"
 
 #define MAX_CHARACTER_ITEMS 3
+
+#define HIT_STOP_FRAMES 5
 
 
 enum CharInput
@@ -61,6 +63,7 @@ enum CharStateEnum
 	PARRIED,
 	TAUNT,
 	AD_ACTION,
+	STUNED
 };
 
 struct State
@@ -277,8 +280,9 @@ protected:
 	uint currentTag = 0;
 	uint wantedTag = 0;
 	std::string animations_name;
+	Timer hpRecTimer;
 
-
+	int hitStopFrames = HIT_STOP_FRAMES;
 
 	LIST(Attack*) attacks;
 	std::vector<Ability> abilities;

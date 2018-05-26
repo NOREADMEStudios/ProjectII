@@ -78,9 +78,10 @@ void Icicle::OnCollisionEnter(Collider* _this, Collider* _other) {
 	{
 		_other->entity->AdBuff(COOL_DURATION - ((_other->entity->stats.ccr / 100) * COOL_DURATION), -COOL_EFFECT * _other->entity->stats.spd);
 		_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
-		Spells* dm = App->entities->CreateSpell({ DEATH_MARK , NOTEAM,{ 0,0,0 } });
-		dm->SetParent((Character*)_other->entity);
-		((DeathMark*)dm)->SetPath("slow");
+		DeathMark* slow = new DeathMark{ *(DeathMark*)App->entities->slowed };
+		slow->SetPos(gamepos.x, gamepos.y + 40, gamepos.z);
+		slow->SetParent((Character*)_other->entity);
+		slow->Start();
 
 		entitiesHitted.push_back(_other->entity);
 	}

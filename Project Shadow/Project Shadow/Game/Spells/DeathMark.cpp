@@ -52,7 +52,7 @@ bool DeathMark::Update(float dt) {
 	if (cl)
 		gamepos.y = gp.y;
 	else
-	gamepos.y = gp.y + 70;
+	gamepos.y = gp.y + 75;
 
 	gamepos.z = gp.z;
 	if (cl && currentAnimation->Finished())

@@ -75,6 +75,7 @@ private:
 	void SetControllerFocus();
 	void SetCharactersInfo();
 	void ChangeCharacter();
+	void ReturnIntroScene();
 	void ChangeStats(int playerNum, int index);
 	bool AllPlayersReady();
 	void ApplyCharacterSelection();

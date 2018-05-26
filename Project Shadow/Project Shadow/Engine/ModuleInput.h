@@ -74,7 +74,6 @@ public:
 
 class ModuleInput : public Module
 {
-
 public:
 
 	ModuleInput();
@@ -90,6 +89,8 @@ public:
 
 	// Called each loop iteration
 	bool PreUpdate() override;
+
+	bool Update(float dt) override;
 
 	// Called before quitting
 	bool CleanUp(pugi::xml_node&) override;

@@ -53,6 +53,7 @@ bool Rogue::HeroStart()
 
 	Attack* ab_1 = new Attack(11, AB_1, "dagger", animations_name, 0,20, false, true);
 	Attack* ab_2 = new Attack(12, AB_2, "L_Attack_1", animations_name, 0, 20, false, true);
+
 	Attack* ab_3 = new Attack(13, AB_3, "dash", animations_name, 0, 20, false, true);
 
 	attacks.push_back(light_1);
@@ -76,6 +77,7 @@ bool Rogue::HeroStart()
 	behindU->ab_sprite = { 152,165, 50,50 };
 	parry = new Ability(ab_2, 4 - ((stats.cdr / 100) * 4));
 	parry->ab_sprite = { 202,165, 50,50 };
+
 	ulti = new Ability(ab_3, 8 - ((stats.cdr / 100) * 8));
 	ulti->ab_sprite = { 253, 165, 50,50 };
 
@@ -196,6 +198,7 @@ void Rogue::UpdateSpecStates()
 		currentState = wantedState;
 		currentAnimation->Reset();
 	}
+
 
 	if (currentTag == 11 && !ab_1_active && currentAnimation == &behindU->atk->anim && currentAnimation->getFrameIndex() >= 8)
 	{

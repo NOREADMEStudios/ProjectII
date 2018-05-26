@@ -18,6 +18,8 @@
 #include "../../Engine/UI/Label.h"
 #include "../../Engine/ModuleCollision.h"
 #include "../../Engine/ModuleFonts.h"
+#include "../../Engine/ModuleTransition.h"
+
 
 CharacterSelecScene::CharacterSelecScene()
 {
@@ -68,6 +70,7 @@ bool CharacterSelecScene::Update(float dt)
 
 	DrawBackground();
 	ChangeCharacter();
+	ReturnIntroScene();
 
 	//App->input->CheckControllers();
 	return true;
@@ -105,6 +108,7 @@ void CharacterSelecScene::SetControllerFocus() {
 		return;
 	}
 
+
 	for (int i = 1; i <= controllersNum; i++) {
 		Player player;
 
@@ -118,19 +122,32 @@ void CharacterSelecScene::SetControllerFocus() {
 		players.push_back(player);
 	}
 }
+
 void CharacterSelecScene::SetCharactersInfo(){
+
 	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
-		charactersInfo[0] = { ROGUE,{ 100,0,100 }, Team::BLUE };
-		charactersInfo[1] = { WARRIOR,{ 100,0,1000 }, Team::BLUE };
-		charactersInfo[2] = { WIZARD,{ 10000,0,100 }, Team::RED };
-		charactersInfo[3] = { WARRIOR,{ 10000,0,1000 }, Team::RED };
+		charactersInfo[0] = { ROGUE,{ 150,0,150 }, Team::BLUE };
+		charactersInfo[1] = { WARRIOR,{ 100,0,500 }, Team::BLUE };
+		charactersInfo[2] = { WIZARD,{ 700,0,150 }, Team::RED };
+		charactersInfo[3] = { CLERIC,{ 750,0,500 }, Team::RED };
 	}
 	else if (App->scenes->gameMode == GameMode::ONEvsONE) {
-		charactersInfo[0] = { WIZARD,{ 100,0,100 }, Team::BLUE };
-		charactersInfo[1] = { WARRIOR,{ 500, 0 ,500 }, Team::RED };
+
+		charactersInfo[0] = { ROGUE,{ 100 ,0,250 }, Team::BLUE };
+		charactersInfo[1] = { WARRIOR,{ 800, 0 ,250 }, Team::RED };
+
 	}
 
 }
+
+void CharacterSelecScene::ReturnIntroScene() {
+
+	if (App->input->GetButtonFromController(1) == Input::BUTTON_B) {
+		App->transition->MakeTransition(nullptr, ModuleTransition::Transition::FADE_TO_BLACK, 1.0f);
+		App->scenes->ChangeScene(App->scenes->introSc);
+	}
+}
+
 void CharacterSelecScene::ChangeCharacter()
 {
 	for (int i = 0; i < controllersNum; i++) {
@@ -312,6 +329,9 @@ void CharacterSelecScene::ChangeStats(int playerNum, int index) {
 void CharacterSelecScene::LoadSceneUI() {
 	atlas = App->textures->Load("UI/atlas.png");
 	uiPoint sizeScreen = App->gui->GetGuiSize();
+
+	Label* backLabel = App->gui->AddLabel(sizeScreen.x*0.15f, sizeScreen.y*0.95f, 50, DEFAULT_FONT);
+	backLabel->setString("Press B to go back");
 
 	Sprite* crossedSwordsSprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 1700, 782,187,175 });
 	characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 4, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });

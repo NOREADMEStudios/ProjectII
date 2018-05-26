@@ -91,7 +91,7 @@ void PvPPressCallb(size_t arg_size...) {
 
 void OnevsPressCallb(size_t arg_size...) {	
 	App->scenes->gameMode = GameMode::ONEvsONE;
-	App->transition->MakeTransition(ChangeSceneCallback, ModuleTransition::Transition::FADE_TO_BLACK, 1.0f);
+	App->transition->MakeTransition(ChangeSceneCallback, ModuleTransition::Transition::SCROLL_LEFT, 1.0f);
 }
 
 void SliderMPressCallb(size_t arg_size...) {

@@ -78,7 +78,9 @@ bool ItemSelecScene::CleanUp()
 }
 
 void ItemSelecScene::LoadSceneUI() {
-	atlas = App->textures->Load("UI/Items_Cursors.png");
+
+	SDL_Texture* atlas = App->textures->Load("UI/Items_Cursors.png");
+
 	uiPoint sizeScreen = App->gui->GetGuiSize();
 
 	int i = 0;
@@ -325,7 +327,7 @@ void ItemSelecScene::Player::LoadArrows() {
 		arrowLockRect = { 802, 87, 23,21 };
 		break;
 	}
-	SDL_Texture* itemsTex = App->textures->Load("UI/Items&Cursors.png");
+	SDL_Texture* itemsTex = App->textures->Load("UI/Items_Cursors.png");
 	arrow = App->gui->AddSprite(focusedItem->butt->getPositionX(), focusedItem->butt->getPositionY() - focusedItem->butt->rect.h/2, itemsTex, arrowRect);
 	DrawOrderedArrow();
 }

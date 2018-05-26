@@ -40,10 +40,6 @@ bool Cleric::HeroStart()
 	stats.def = 3;
 
 
-	LoadState(PROTECT, "protect");
-	LoadState(PARRY, "standup");
-	LoadState(RUN, "run");
-
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_2", animations_name, 5);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_3", animations_name, 2);
@@ -205,7 +201,7 @@ void Cleric::UpdateSpecStates()
 		bp->Start();
 		ab_2_active = true;
 
-		if (partner != nullptr)
+		if (partner != nullptr && partner->stats.life > 0)
 		{
 			partner->AdHp(35);
 			partner->AdBuff(10, 50, 0, 10);

@@ -65,6 +65,7 @@ bool Cleric::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
+
 	knock = App->entities->CreateSpell({ CLERIC_STUN,team,{ gamepos.x + 50, gamepos.y , gamepos.z },{ 1,0 } });
 	area = App->entities->CreateSpell({ AREA,team,{ gamepos.x, gamepos.y , gamepos.z },{ 0,0 } });
 	ulti = App->entities->CreateSpell({ DEATH_MARK,team,{ gamepos.x, gamepos.y , gamepos.z },{ 1,0 } });
@@ -76,6 +77,7 @@ bool Cleric::HeroStart()
 	thunder->ab_sprite = { 303,115, 50,50 };
 	ulti_ab = new Ability(ab_3, 15);
 	ulti_ab->ab_sprite = { 303,165, 50,50 };
+
 
 	AdAbility(*fire);
 	AdAbility(*thunder);
@@ -230,6 +232,8 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
 
+	
+
 		if (_this->collider.x - _other->collider.x > 0)
 		{
 			hit_dir = 1;
@@ -244,6 +248,7 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (_other->entity->breaking)
 			{
 				currentState = HIT;
+				App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 			}
@@ -266,12 +271,14 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentTag = 0;
 			currentState = HIT;
+			App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentTag = 0;
 			currentState = HIT;
 			hit_bool = true;
+			App->SetTimeScale(0.f, hitStopFrames);
 
 
 			if (_this->collider.x - _other->collider.x > 0)

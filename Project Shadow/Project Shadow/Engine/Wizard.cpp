@@ -67,12 +67,12 @@ bool Wizard::HeroStart()
 	light_1->AddChild(crouch);
 	jump_a->AddChild(jump_a2);
 
-	icicle_ab = new Ability(ab_1, 3);
+	icicle_ab = new Ability(ab_1, 3 - ((stats.cdr / 100) * 3));
 	icicle_ab->ab_sprite = {152,65, 50,50 };
 
-	thunder = new Ability(ab_2, 5);
+	thunder = new Ability(ab_2, 5 - ((stats.cdr / 100) * 5));
 	thunder->ab_sprite = { 202, 65,50,50 };
-	ulti = new Ability(ab_3, 10);
+	ulti = new Ability(ab_3, 10 - ((stats.cdr / 100) * 10));
 	ulti->ab_sprite = { 102, 115, 50,50 };
 
 	AdAbility(*icicle_ab);
@@ -223,6 +223,7 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (_other->entity->breaking)
 			{
 				currentState = HIT;
+				App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 			}
@@ -245,11 +246,13 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentTag = 0;
 			currentState = HIT;
+			App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentTag = 0;
 			currentState = HIT;
+			App->SetTimeScale(0.f, hitStopFrames);
 			hit_bool = true;
 
 

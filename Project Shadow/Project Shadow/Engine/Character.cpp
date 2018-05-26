@@ -530,11 +530,11 @@ void Character::UpdateMainStates()
 	}
 
 
-	if (stats.spd == 0 && currentState != HIT)
-	{
-		currentState = STUNED;
-		currentTag = 0;
-	}
+	//if (stats.spd == 0 && currentState != HIT)
+	//{
+	//	currentState = STUNED;
+	//	currentTag = 0;
+	//}
 
 	if (time_attack.Count(COMBO_MARGIN))
 	{
@@ -791,6 +791,7 @@ void Character::SetAnimations()
 {
 	std::string red = "_red.png";
 	std::string blue = "_blue.png";
+	bool cleric = false;
 
 	std::string spritePath;
 	switch (charType)
@@ -817,16 +818,21 @@ void Character::SetAnimations()
 		{
 			animations_name = CLERIC_ANIM_ROOT;
 			spritePath = CLERIC_SPRITE_ROOT;
+			cleric = true;
 			break;
 		}
 		
 	}
-	//if (team == Team::BLUE) {
-	//	spritePath += blue;
-	//}
-	//else if (team == Team::RED) {
-	//	spritePath += red;	
-	//}
+	if (!cleric)
+	{
+		if (team == Team::BLUE) {
+			spritePath += blue;
+		}
+		else if (team == Team::RED) {
+			spritePath += red;
+		}
+	}
+
 
 	sprites = App->textures->Load(spritePath.c_str());
 }

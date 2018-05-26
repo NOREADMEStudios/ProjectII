@@ -47,8 +47,8 @@ bool Cleric::HeroStart()
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_2", animations_name, 5);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_3", animations_name, 2);
-	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, true);
-	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, true);
+	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 20, true);
+	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, 20, true);
 	Attack* ab_1 = new Attack(11, AB_1, "maze", animations_name, 0, 20, false, true);
 	Attack* ab_2 = new Attack(12, AB_2, "ab_2", animations_name, 0, 20, false, true);
 	Attack* ab_3 = new Attack(13, AB_3, "ab_3", animations_name, 0, 20, false, true);
@@ -71,11 +71,12 @@ bool Cleric::HeroStart()
 	ulti = App->entities->CreateSpell({ DEATH_MARK,team,{ gamepos.x, gamepos.y , gamepos.z },{ 1,0 } });
 	((DeathMark*)ulti)->SetPath("Healing Wind");
 
-	fire = new Ability(ab_1, 6);
+
+	fire = new Ability(ab_1, 6 - ((stats.cdr/100)*6));
 	fire->ab_sprite = { 303,65, 50,50 };
-	thunder = new Ability(ab_2, 7);
+	thunder = new Ability(ab_2, 7 - ((stats.cdr / 100) * 7));
 	thunder->ab_sprite = { 303,115, 50,50 };
-	ulti_ab = new Ability(ab_3, 15);
+	ulti_ab = new Ability(ab_3, 15 - ((stats.cdr / 100) * 15));
 	ulti_ab->ab_sprite = { 303,165, 50,50 };
 
 
@@ -232,8 +233,6 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
 
-	
-
 		if (_this->collider.x - _other->collider.x > 0)
 		{
 			hit_dir = 1;
@@ -298,7 +297,6 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
 
 		}
-	
 }
 
 void Cleric::CreateSounds()

@@ -267,10 +267,8 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 	if (_tex == nullptr)
 		_tex = atlas_texture;
 
-
-
 	Healthbar* aux = new Healthbar(character, charNum, leftSide, _x, _y, _tex, _enabled, &_anim);
-	Sprite* bar = App->gui->AddSprite(0, 0, _tex, { 451, 297, 258, 20 });
+	Sprite* bar = App->gui->AddSprite(0, 0, _tex, { 304, 297, 572, 20 });
 	Label* charNumber = App->gui->AddLabel(0, 0, 48, "Assets/Textures/UI/TTF/Vecna Bold.ttf", { 255, 255, 255, 255 }, Label::BLENDED, "");
 
 	aux->characterText = charNumber;
@@ -325,8 +323,8 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 	charFace->SetAnchor(anchor.x, anchor.y);
 	charNumber->SetAnchor(anchor.x, anchor.y);
 
-	aux->setPositionX(screenMargin + ((screenDims.x - (screenMargin * 2)) * anchor.x));
-	aux->setPositionY(screenMargin + ((screenDims.y - (screenMargin * 2)) * anchor.y));
+	/*aux->setPositionX(screenMargin + ((screenDims.x - (screenMargin * 2)) * anchor.x));
+	aux->setPositionY(screenMargin + ((screenDims.y - (screenMargin * 2)) * anchor.y));*/
 
 	charFace->setPosition(aux->rect.w * anchor.x, aux->rect.h * (1 - anchor.y));
 	charFace->culled = false;

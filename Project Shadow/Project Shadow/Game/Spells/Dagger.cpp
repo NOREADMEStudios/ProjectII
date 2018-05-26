@@ -30,7 +30,7 @@ bool Dagger::Start() {
 	stats.spd = 10;
 
 	char_depth = 20;
-	max_speed = 1000;
+	max_speed = 800;
 
 	lifeTime.Start();
 	lifetime = MS_LIFETIME;
@@ -40,7 +40,7 @@ bool Dagger::Start() {
 
 bool Dagger::CleanUp(pugi::xml_node&)
 {
-	UnLoadSprites();
+	//UnLoadSprites();
 	bool ret = App->collision->RemoveCollider(spellColl);
 
 	return ret;

@@ -51,7 +51,7 @@ bool Rogue::HeroStart()
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 20, true);
 	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "jump_attack", animations_name, 0, 40, true);
 
-	Attack* ab_1 = new Attack(11, AB_1, "dagger", animations_name, 0, false, true);
+	Attack* ab_1 = new Attack(11, AB_1, "dagger", animations_name, 0,20, false, true);
 	Attack* ab_2 = new Attack(12, AB_2, "L_Attack_1", animations_name, 0, 20, false, true);
 	Attack* ab_3 = new Attack(13, AB_3, "dash", animations_name, 0, 20, false, true);
 
@@ -72,11 +72,11 @@ bool Rogue::HeroStart()
 	crouch->AddChild(heavy_2);
 	jump_a->AddChild(jump_a2);
 
-	Ability* parry = new Ability(ab_1, 3 - ((stats.cdr / 100) * 3));
-	parry->ab_sprite = { 152,165, 50,50 };
-	Ability* behindU = new Ability(ab_2, 4 - ((stats.cdr / 100) * 4));
-	behindU->ab_sprite = { 202,165, 50,50 };
-	Ability* ulti = new Ability(ab_3, 8 - ((stats.cdr / 100) * 8));
+	behindU = new Ability(ab_1, 3 - ((stats.cdr / 100) * 3));
+	behindU->ab_sprite = { 152,165, 50,50 };
+	parry = new Ability(ab_2, 4 - ((stats.cdr / 100) * 4));
+	parry->ab_sprite = { 202,165, 50,50 };
+	ulti = new Ability(ab_3, 8 - ((stats.cdr / 100) * 8));
 	ulti->ab_sprite = { 253, 165, 50,50 };
 
 	AdAbility(*parry);
@@ -142,11 +142,8 @@ bool Rogue::HeroUpdate(float dt)
 	}
 
 
-	if (!GetAbAtk(11)->active)
-	{
-		ab_1_active = true;
-	}
-	else
+
+	if (GetAbAtk(11)->active && ab_1_active)
 	{
 		ab_1_active = false;
 	}
@@ -200,7 +197,7 @@ void Rogue::UpdateSpecStates()
 		currentAnimation->Reset();
 	}
 
-	if (currentTag == 11 && !ab_1_active)
+	if (currentTag == 11 && !ab_1_active && currentAnimation == &behindU->atk->anim && currentAnimation->getFrameIndex() >= 8)
 	{
 		Dagger* dag = new Dagger{ *(Dagger*)dagger };
 		dag->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);

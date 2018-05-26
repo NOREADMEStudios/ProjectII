@@ -39,5 +39,9 @@ private:
 	bool ab_2_active = false;
 	Spells* dagger;
 
+	Ability* parry;
+	Ability* behindU;
+	Ability* ulti;
+
 };
 #endif

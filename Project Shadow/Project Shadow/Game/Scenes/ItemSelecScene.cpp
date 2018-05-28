@@ -78,7 +78,9 @@ bool ItemSelecScene::CleanUp()
 }
 
 void ItemSelecScene::LoadSceneUI() {
+
 	SDL_Texture* atlas = App->textures->Load("UI/Items_Cursors.png");
+
 	uiPoint sizeScreen = App->gui->GetGuiSize();
 
 	int i = 0;

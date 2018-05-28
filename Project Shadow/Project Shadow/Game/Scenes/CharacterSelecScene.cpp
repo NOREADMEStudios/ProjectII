@@ -132,8 +132,10 @@ void CharacterSelecScene::SetCharactersInfo(){
 		charactersInfo[3] = { CLERIC,{ 750,0,500 }, Team::RED };
 	}
 	else if (App->scenes->gameMode == GameMode::ONEvsONE) {
+
 		charactersInfo[0] = { ROGUE,{ 100 ,0,250 }, Team::BLUE };
 		charactersInfo[1] = { WARRIOR,{ 800, 0 ,250 }, Team::RED };
+
 	}
 
 }

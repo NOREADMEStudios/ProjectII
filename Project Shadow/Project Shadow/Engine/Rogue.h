@@ -42,5 +42,6 @@ private:
 	Ability* parry;
 	Ability* behindU;
 	Ability* ulti;
+
 };
 #endif

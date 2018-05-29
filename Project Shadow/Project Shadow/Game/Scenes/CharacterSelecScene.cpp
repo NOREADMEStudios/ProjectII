@@ -56,6 +56,9 @@ bool CharacterSelecScene::Start()
 	charactersType[1] = ROGUE;
 	charactersType[2] = WARRIOR;
 	charactersType[3] = CLERIC;
+	charactersTeam[0] = RED;
+	charactersTeam[1] = BLUE;
+
 
 	LoadSceneUI();
 	SetControllerFocus();
@@ -73,6 +76,7 @@ bool CharacterSelecScene::Update(float dt)
 	}
 
 	DrawBackground();
+	ChangeTeam();
 	ChangeCharacter();
 	ReturnIntroScene();
 
@@ -157,7 +161,7 @@ void CharacterSelecScene::ChangeCharacter()
 	for (int i = 0; i < controllersNum; i++) {
 		Player* player = &players[i];
 
-		if (App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT && !player->ready) { //CHANGE CHARACTER
+		if (App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT && !player->ready && player->teamSelected) { //CHANGE CHARACTER
 			if (indexSprites[i] < 3) {
 				characterSprites[i]->idle_anim = characterRects[indexSprites[i] + 1];
 				characterNameLabel[i]->setString(characterNameStrings[indexSprites[i] + 1]);
@@ -171,7 +175,7 @@ void CharacterSelecScene::ChangeCharacter()
 				ChangeStats(i, indexSprites[i]);
 			}
 		}
-		else if (App->input->GetButtonFromController(player->playerNum, false) == Input::LEFT  && !player->ready) { //CHANGE CHARACTER
+		else if (App->input->GetButtonFromController(player->playerNum, false) == Input::LEFT  && !player->ready && player->teamSelected) { //CHANGE CHARACTER
 			if (indexSprites[i] > 0) {
 				characterSprites[i]->idle_anim = characterRects[indexSprites[i] - 1];
 				characterNameLabel[i]->setString(characterNameStrings[indexSprites[i] - 1]);
@@ -185,8 +189,7 @@ void CharacterSelecScene::ChangeCharacter()
 				ChangeStats(i, indexSprites[i]);
 			}
 		}
-		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_A &&  !player->ready ) { //SELECT CHARACTER
-			player->ready = true;
+		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_A &&  !player->ready && player->teamSelected) { //SELECT CHARACTER
 			
 			player->lockedArrows[0] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockLeftRect);
 			player->lockedArrows[0]->SetParent(characterFrame[i]);
@@ -202,6 +205,7 @@ void CharacterSelecScene::ChangeCharacter()
 			player->lockedLightSprite->SetParent(characterFrame[i]);
 			player->lockedLightSprite->SetAnchor(0, 0);
 			player->lockedLightSprite->setPosition(62, 95);
+			player->ready = true;
 		}
 		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_B && player->ready) {
 			player->ready = false;
@@ -216,17 +220,23 @@ void CharacterSelecScene::ChangeTeam(){
 	for (int i = 0; i < controllersNum; i++) {
 		Player* player = &players[i];
 
-		if (App->input->GetButtonFromController(player->playerNum, false) == Input::LEFT || App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT) {
+		if ((App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT || App->input->GetButtonFromController(player->playerNum, false) == Input::LEFT) && !player->teamSelected) {
 			if (teamIndex[i] == 1) {
 				characTeamSprite[i]->idle_anim = teamRects[0];
-				indexSprites[i]--;
+				teamIndex[i]--;
 			}
 			else if (teamIndex[i] == 0) {
-				characTeamSprite[i]->idle_anim = teamRects[0];
-				indexSprites[i]++;
+				characTeamSprite[i]->idle_anim = teamRects[1];
+				teamIndex[i]++;
 			}
 		}
-		else if (App->input->GetButtonFromController(player->playerNum, false) == Input::BUTTON_A) {
+		else if (App->input->GetButtonFromController(player->playerNum, false) == Input::BUTTON_A && !player->teamSelected) {
+			if (teamIndex[i] == 1) {
+				characTeamSprite[i]->idle_anim = teamRects[3];
+			}
+			else if (teamIndex[i] == 0) {
+				characTeamSprite[i]->idle_anim = teamRects[2];
+			}
 			player->teamSelected = true;
 		}
 	}
@@ -237,6 +247,7 @@ void CharacterSelecScene::ChangeTeam(){
 void CharacterSelecScene::ApplyCharacterSelection() {
 	for (int i = 0; i < controllersNum; i++) {
 		charactersInfo[i].chType = charactersType[indexSprites[i]];
+		charactersInfo[i].chTeam = charactersTeam[teamIndex[i]];
 	}
 }
 

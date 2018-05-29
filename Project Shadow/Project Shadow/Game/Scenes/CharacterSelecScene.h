@@ -39,9 +39,10 @@ public:
 		void RemoveLockedArrow(uint lockedNum);
 	};
 
-	//int controllersNum;
 	CharacterInfo charactersInfo[4];
 	CharacterTypes charactersType[4];
+	Team charactersTeam[2];
+
 	Sprite* characterFrame[4];
 	Sprite* characterSprites[4];
 	Sprite* statsSprites[16];
@@ -53,6 +54,7 @@ public:
 	String characterNameStrings[4];
 	int indexSprites[4];
 	int teamIndex[4];
+
 
 	CharacterSelecScene();
 	virtual ~CharacterSelecScene();

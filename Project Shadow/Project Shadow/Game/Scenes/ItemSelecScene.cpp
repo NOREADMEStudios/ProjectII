@@ -79,7 +79,7 @@ bool ItemSelecScene::CleanUp()
 
 void ItemSelecScene::LoadSceneUI() {
 
-	SDL_Texture* atlas = App->textures->Load("UI/Items_Cursors.png");
+	SDL_Texture* atlas = App->textures->Load("UI/Items&Cursors.png");
 
 	uiPoint sizeScreen = App->gui->GetGuiSize();
 
@@ -220,7 +220,7 @@ void ItemSelecScene::SetControllerFocus() {
 void ItemSelecScene::ChooseFocus() {
 
 	uiPoint sizeScreen = App->gui->GetGuiSize();
-	SDL_Texture* itemsTex = App->textures->Load("UI/Items_Cursors.png");
+	SDL_Texture* itemsTex = App->textures->Load("UI/Items&Cursors.png");
 	int initialDisplacement = sizeScreen.x * 0.1f;
 	int marginBetweenItemFrames = sizeScreen.x * 0.005f;
 	int marginBetweenPlayerFrames = sizeScreen.x * 0.085f;
@@ -326,7 +326,7 @@ void ItemSelecScene::Player::LoadArrows() {
 		arrowLockRect = { 802, 87, 23,21 };
 		break;
 	}
-	SDL_Texture* itemsTex = App->textures->Load("UI/Items_Cursors.png");
+	SDL_Texture* itemsTex = App->textures->Load("UI/Items&Cursors.png");
 	arrow = App->gui->AddSprite(focusedItem->butt->getPositionX(), focusedItem->butt->getPositionY() - focusedItem->butt->rect.h/2, itemsTex, arrowRect);
 	DrawOrderedArrow();
 }

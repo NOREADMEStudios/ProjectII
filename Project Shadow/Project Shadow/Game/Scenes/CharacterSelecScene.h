@@ -27,9 +27,12 @@ public:
 	public:
 		int			playerNum;
 		int			totalControllersNum;
-		Sprite*		lockedArrows[4],
-			  *		lockedLightSprite;
-		SDL_Rect	arrowLockLeftRect,
+		Sprite*		lockedArrows[4];
+		Sprite*		arrows[4];
+		Sprite*		lockedLightSprite;
+		SDL_Rect	arrowLeftRect,
+					arrowRightRect,
+					arrowLockLeftRect,
 					arrowLockRightRect,
 					lockedLightRect;
 		bool		teamSelected = false;
@@ -82,10 +85,13 @@ private:
 	void SetCharactersInfo();
 	void ChangeCharacter();
 	void ChangeTeam();
-	void ReturnIntroScene();
 	void ChangeStats(int playerNum, int index);
 	bool AllPlayersReady();
 	void ApplyCharacterSelection();
+	void LoadArrows();
+	bool loadedArrows = false;
+	int redTeamMembers = 0;
+	int blueTeamMembers = 0;
 
 	std::vector<Player> players;
 };

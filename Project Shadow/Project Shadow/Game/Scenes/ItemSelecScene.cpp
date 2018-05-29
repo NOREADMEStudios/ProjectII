@@ -152,12 +152,12 @@ void ItemSelecScene::AddLabelToButton(Item* item) {
 	item->labels.push_back(label1 );
 	int i = 1;
 	
-	if (item->stats.life > 0) {
+	/*if (item->stats.hpRecover == true) {
 		Label* label2 = App->gui->AddLabel(item->butt->rect.w / 2, offset + i*fontSize, fontSize, DEFAULT_FONT, { 218,165,32,255 });
-		label2->setString("Recovers " + std::to_string(item->stats.life) + "% Health each 5 seconds");
+		label2->setString("Recovers 5% Health each 5 seconds");
 		item->labels.push_back(label2);
 		i++;
-	}
+	}*/
 	if (item->stats.atk > 0) {
 		Label* label3 = App->gui->AddLabel(item->butt->rect.w / 2, offset + i*fontSize, fontSize, DEFAULT_FONT, { 218,165,32,255 });
 		label3->setString("+" + std::to_string(item->stats.atk) + "% Attack");
@@ -176,10 +176,16 @@ void ItemSelecScene::AddLabelToButton(Item* item) {
 		item->labels.push_back(label5);
 		i++;
 	}
-	if (item->stats.mgk > 0) {
+	if (item->stats.cdr > 0) {
 		Label* label6 = App->gui->AddLabel(item->butt->rect.w / 2, offset + i*fontSize, fontSize, DEFAULT_FONT, { 218,165,32,255 });
-		label6->setString("+" + std::to_string(item->stats.mgk) + " mgk"); //RESISTANCE TO CROWD CONTROL
+		label6->setString("+" + std::to_string(item->stats.mgk) + "  Cooldown Reduction"); //COOLDOWN REDUCTION
 		item->labels.push_back(label6);
+		i++;
+	}
+	if (item->stats.ccr > 0) {
+		Label* label7 = App->gui->AddLabel(item->butt->rect.w / 2, offset + i * fontSize, fontSize, DEFAULT_FONT, { 218,165,32,255 });
+		label7->setString("+" + std::to_string(item->stats.mgk) + " Resistance to Crowd control"); //RESISTANCE TO CROWD CONTROL
+		item->labels.push_back(label7);
 		i++;
 	}
 	for (std::vector<Label*>::iterator lab = item->labels.begin(); lab != item->labels.end(); lab++) {
@@ -311,19 +317,19 @@ void ItemSelecScene::Player::LoadArrows() {
 	case 0: return;
 	case 1: 
 		arrowRect = { 600, 36, 56, 36 }; // Red
-		arrowLockRect = { 754, 87, 23,21 };
+		arrowLockRect = { 1082, 129, 51,45 };
 		break;
 	case 2:
 		arrowRect = { 656, 36, 56,36 }; // Green
-		arrowLockRect = { 825, 87, 23,21 };
+		arrowLockRect = { 1133, 129, 51,45 };
 		break;
 	case 3:
 		arrowRect = { 656, 0, 56,36 }; //Blue
-		arrowLockRect = { 778, 87, 23,21 };
+		arrowLockRect = { 1184, 129, 51,45 };
 		break;
 	case 4:
 		arrowRect = { 600, 0, 56,36 }; // Yellow (should be gray)
-		arrowLockRect = { 802, 87, 23,21 };
+		arrowLockRect = { 1235, 129, 51,45 };
 		break;
 	}
 	SDL_Texture* itemsTex = App->textures->Load("UI/Items&Cursors.png");

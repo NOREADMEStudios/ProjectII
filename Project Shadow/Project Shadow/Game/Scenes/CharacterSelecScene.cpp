@@ -63,6 +63,7 @@ bool CharacterSelecScene::Start()
 	LoadSceneUI();
 	SetControllerFocus();
 	SetCharactersInfo();
+	LoadArrows();
 
 	return true;
 }
@@ -76,9 +77,8 @@ bool CharacterSelecScene::Update(float dt)
 	}
 
 	DrawBackground();
-	ChangeTeam();
 	ChangeCharacter();
-	ReturnIntroScene();
+	ChangeTeam();
 
 	//App->input->CheckControllers();
 	return true;
@@ -123,6 +123,8 @@ void CharacterSelecScene::SetControllerFocus() {
 		player.playerNum = i;
 		player.ready = false;
 		player.totalControllersNum = controllersNum;
+		player.arrowLeftRect = { 1713,14,39,51 };
+		player.arrowRightRect = { 1784,14,39,51 };
 		player.arrowLockLeftRect = { 1713,68,39,51 };
 		player.arrowLockRightRect = { 1784,68,39,51 };
 		player.lockedLightRect = { 50,1200,216,298 };
@@ -146,14 +148,6 @@ void CharacterSelecScene::SetCharactersInfo(){
 
 	}
 
-}
-
-void CharacterSelecScene::ReturnIntroScene() {
-
-	if (App->input->GetButtonFromController(1) == Input::BUTTON_B) {
-		App->transition->MakeTransition(nullptr, ModuleTransition::Transition::FADE_TO_BLACK, 1.0f);
-		App->scenes->ChangeScene(App->scenes->introSc);
-	}
 }
 
 void CharacterSelecScene::ChangeCharacter()
@@ -191,15 +185,15 @@ void CharacterSelecScene::ChangeCharacter()
 		}
 		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_A &&  !player->ready && player->teamSelected) { //SELECT CHARACTER
 			
-			player->lockedArrows[0] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockLeftRect);
-			player->lockedArrows[0]->SetParent(characterFrame[i]);
-			player->lockedArrows[0]->SetAnchor(0, 0);
-			player->lockedArrows[0]->setPosition(17, 220);
+			player->lockedArrows[2] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockLeftRect);
+			player->lockedArrows[2]->SetParent(characterFrame[i]);
+			player->lockedArrows[2]->SetAnchor(0, 0);
+			player->lockedArrows[2]->setPosition(17, 220);
 
-			player->lockedArrows[1] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockRightRect);
-			player->lockedArrows[1]->SetParent(characterFrame[i]);
-			player->lockedArrows[1]->SetAnchor(0, 0);
-			player->lockedArrows[1]->setPosition(284, 220);
+			player->lockedArrows[3] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockRightRect);
+			player->lockedArrows[3]->SetParent(characterFrame[i]);
+			player->lockedArrows[3]->SetAnchor(0, 0);
+			player->lockedArrows[3]->setPosition(284, 220);
 
 			player->lockedLightSprite = App->gui->AddSprite(-500, 0, atlas, player->lockedLightRect);
 			player->lockedLightSprite->SetParent(characterFrame[i]);
@@ -209,35 +203,93 @@ void CharacterSelecScene::ChangeCharacter()
 		}
 		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_B && player->ready) {
 			player->ready = false;
-			player->lockedArrows[0]->Enable(false);
-			player->lockedArrows[1]->Enable(false);
+			player->lockedArrows[2]->Enable(false);
+			player->lockedArrows[3]->Enable(false);
 			player->lockedLightSprite->Enable(false);
 		}
 	}
 }
 
 void CharacterSelecScene::ChangeTeam(){
-	for (int i = 0; i < controllersNum; i++) {
-		Player* player = &players[i];
-
-		if ((App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT || App->input->GetButtonFromController(player->playerNum, false) == Input::LEFT) && !player->teamSelected) {
-			if (teamIndex[i] == 1) {
-				characTeamSprite[i]->idle_anim = teamRects[0];
-				teamIndex[i]--;
+	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
+		for (int i = 0; i < controllersNum; i++) {
+			Player* player = &players[i];
+			if ((App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT || App->input->GetButtonFromController(player->playerNum, false) == Input::LEFT) && !player->teamSelected) {
+				if (teamIndex[i] == 1) {
+					characTeamSprite[i]->idle_anim = teamRects[0];
+					teamIndex[i]--;
+				}
+				else if (teamIndex[i] == 0) {
+					characTeamSprite[i]->idle_anim = teamRects[1];
+					teamIndex[i]++;
+				}
 			}
-			else if (teamIndex[i] == 0) {
-				characTeamSprite[i]->idle_anim = teamRects[1];
-				teamIndex[i]++;
+			else if (App->input->GetButtonFromController(player->playerNum, false) == Input::BUTTON_A && !player->teamSelected) {
+				if (teamIndex[i] == 1 && blueTeamMembers < 2) {
+					characTeamSprite[i]->idle_anim = teamRects[3];
+					player->lockedArrows[0] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockLeftRect);
+					player->lockedArrows[0]->SetParent(characterFrame[i]);
+					player->lockedArrows[0]->setPosition(121, 414);
+					player->lockedArrows[1] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockRightRect);
+					player->lockedArrows[1]->SetParent(characterFrame[i]);
+					player->lockedArrows[1]->setPosition(220, 414);
+					blueTeamMembers++;
+					player->arrows[2]->Enable(true);
+					player->arrows[3]->Enable(true);
+				}
+				else if (teamIndex[i] == 0 && redTeamMembers < 2) {
+					characTeamSprite[i]->idle_anim = teamRects[2];
+					player->lockedArrows[0] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockLeftRect);
+					player->lockedArrows[0]->SetParent(characterFrame[i]);
+					player->lockedArrows[0]->setPosition(121, 414);
+					player->lockedArrows[1] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockRightRect);
+					player->lockedArrows[1]->SetParent(characterFrame[i]);
+					player->lockedArrows[1]->setPosition(220, 414);
+					redTeamMembers++;
+					player->arrows[2]->Enable(true);
+					player->arrows[3]->Enable(true);
+				}
+				player->teamSelected = true;
+			}
+			else if (!player->teamSelected && blueTeamMembers == 2) {
+				characTeamSprite[i]->idle_anim = teamRects[2];
+				player->lockedArrows[0] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockLeftRect);
+				player->lockedArrows[0]->SetParent(characterFrame[i]);
+				player->lockedArrows[0]->setPosition(121, 414);
+				player->lockedArrows[1] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockRightRect);
+				player->lockedArrows[1]->SetParent(characterFrame[i]);
+				player->lockedArrows[1]->setPosition(220, 414);
+				redTeamMembers++;
+				teamIndex[i] == 1;
+				player->teamSelected = true;
+				player->arrows[2]->Enable(true);
+				player->arrows[3]->Enable(true);
+			}
+			else if (!player->teamSelected && redTeamMembers == 2) {
+				characTeamSprite[i]->idle_anim = teamRects[3];
+				player->lockedArrows[0] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockLeftRect);
+				player->lockedArrows[0]->SetParent(characterFrame[i]);
+				player->lockedArrows[0]->setPosition(121, 414);
+				player->lockedArrows[1] = App->gui->AddSprite(-100, 0, atlas, player->arrowLockRightRect);
+				player->lockedArrows[1]->SetParent(characterFrame[i]);
+				player->lockedArrows[1]->setPosition(220, 414);
+				blueTeamMembers++;
+				teamIndex[i] == 0;
+				player->teamSelected = true;
+				player->arrows[2]->Enable(true);
+				player->arrows[3]->Enable(true);
 			}
 		}
-		else if (App->input->GetButtonFromController(player->playerNum, false) == Input::BUTTON_A && !player->teamSelected) {
-			if (teamIndex[i] == 1) {
-				characTeamSprite[i]->idle_anim = teamRects[3];
-			}
-			else if (teamIndex[i] == 0) {
-				characTeamSprite[i]->idle_anim = teamRects[2];
-			}
+	}
+	else
+	{
+		for (int i = 0; i < controllersNum; i++) {
+			Player* player = &players[i];
 			player->teamSelected = true;
+			player->arrows[0]->Enable(false);
+			player->arrows[1]->Enable(false);
+			player->arrows[2]->Enable(true);
+			player->arrows[3]->Enable(true);
 		}
 	}
 }
@@ -247,7 +299,31 @@ void CharacterSelecScene::ChangeTeam(){
 void CharacterSelecScene::ApplyCharacterSelection() {
 	for (int i = 0; i < controllersNum; i++) {
 		charactersInfo[i].chType = charactersType[indexSprites[i]];
-		charactersInfo[i].chTeam = charactersTeam[teamIndex[i]];
+		if (App->scenes->gameMode == GameMode::TWOvsTWO)
+			charactersInfo[i].chTeam = charactersTeam[teamIndex[i]];
+	}
+}
+
+void CharacterSelecScene::LoadArrows(){
+	for (int i = 0; i < controllersNum; i++) {
+		Player* player = &players[i];
+		player->arrows[0] = App->gui->AddSprite(0, 0, nullptr, player->arrowLeftRect);//LEFT TEAM ARROW
+		player->arrows[0]->SetParent(characterFrame[0]);
+		player->arrows[0]->setPosition(121, 414);
+
+		player->arrows[1] = App->gui->AddSprite(0, 0, nullptr, player->arrowRightRect);//RIGHT TEAM ARROW
+		player->arrows[1]->SetParent(characterFrame[0]);
+		player->arrows[1]->setPosition(220, 414);
+
+		player->arrows[2] = App->gui->AddSprite(0, 0, nullptr, player->arrowLeftRect, false);//LEFT FRAME ARROW
+		player->arrows[2]->SetParent(characterFrame[0]);
+		player->arrows[2]->SetAnchor(0, 0);
+		player->arrows[2]->setPosition(17, 220);
+
+		player->arrows[3] = App->gui->AddSprite(0, 0, nullptr, player->arrowRightRect, false);//RIGHT FRAME ARROW
+		player->arrows[3]->SetParent(characterFrame[0]);
+		player->arrows[3]->SetAnchor(0, 0);
+		player->arrows[3]->setPosition(284, 220);
 	}
 }
 
@@ -365,8 +441,8 @@ void CharacterSelecScene::LoadSceneUI() {
 	atlas = App->textures->Load("UI/atlas.png");
 	uiPoint sizeScreen = App->gui->GetGuiSize();
 
-	Label* backLabel = App->gui->AddLabel(sizeScreen.x*0.15f, sizeScreen.y*0.95f, 50, DEFAULT_FONT);
-	backLabel->setString("Press B to go back");
+	/*Label* backLabel = App->gui->AddLabel(sizeScreen.x*0.15f, sizeScreen.y*0.95f, 50, DEFAULT_FONT);
+	backLabel->setString("Press B to go back");*/
 
 	Sprite* crossedSwordsSprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 1700, 782,187,175 });
 	characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 4, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });

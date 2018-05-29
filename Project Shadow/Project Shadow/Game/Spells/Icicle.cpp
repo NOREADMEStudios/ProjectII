@@ -26,7 +26,10 @@ bool Icicle::Start() {
 
 	lifeTime.Start();
 	lifetime = ICICLE_MS_LIFETIME;
+	currentAnimation->speed = 0;
+	LoadShadow();
 
+	shadowed = true;
 	return true;
 }
 
@@ -46,10 +49,23 @@ bool Icicle::Update(float dt) {
 	}
 
 	priority = gamepos.z;	
-	gamepos.y -= ICICLE_SPEED;
 
 	CalcRealPos();
 	GetColliderFromAnimation();
+
+	if (gamepos.y > 10)
+	{
+		gamepos.y -= ICICLE_SPEED;
+	}
+	else
+	{
+		currentAnimation->speed = 10;
+	}
+
+	if (currentAnimation->Finished())
+	{
+		to_delete = true;
+	}
 
 	App->render->FillQueue(this);//prints the spell
 

@@ -86,13 +86,17 @@ bool Wizard::HeroUpdate(float dt)
 	if (!noMove.IsZero() && noMove.Read() > LIGHTNING_MS_LIFETIME) {
 		noMove.SetZero();	
 	}
-	if (directions.right - directions.left == 1)
+
+	if (!StateisAtk(currentState)) 
 	{
-		flip = false;
-	}
-	else if (directions.right - directions.left == -1)
-	{
-		flip = true;
+		if (directions.right - directions.left == 1)
+		{
+			flip = false;
+		}
+		else if (directions.right - directions.left == -1)
+		{
+			flip = true;
+		}
 	}
 
 
@@ -111,6 +115,7 @@ bool Wizard::HeroUpdate(float dt)
 	{
 		ab_3_bool = false;
 	}
+
 
 
 	CreateSounds();
@@ -138,10 +143,29 @@ void Wizard::UpdateSpecStates()
 	else
 		dir = 1;
 
+	if (start_pose)
+	{
+		if (pose_bool)
+		{
+			pose_timer.Start();
+			pose_bool = false;
+		}
+
+		if (pose_timer.Count(pose_wait))
+		{
+			currentAnimation->speed = prevAnimSpeed;
+			start_pose = false;
+		}
+		else
+		{
+			currentAnimation->speed = 0;
+		}
+	}
+
 	if (currentTag == 11 && !ab_1_active && currentAnimation == &icicle_ab->atk->anim && currentAnimation->getFrameIndex() >= 6)
 	{
 		Icicle* ice = new Icicle{ *(Icicle*)icicle };
-		ice->SetPos(gamepos.x+(50*dir), gamepos.y + 200, gamepos.z);
+		ice->SetPos(gamepos.x+(100*dir), gamepos.y + 400, gamepos.z);
 		ice->SetDir(flip, 0);
 		ice->Start();
 		ab_1_active = true;
@@ -156,37 +180,36 @@ void Wizard::UpdateSpecStates()
 
 		Aura* light_a = nullptr;
 		light_a = new Aura{ *(Aura*)light_aura };
-		light_a->SetPos(gamepos.x + (50 * dir), gamepos.y + 50, gamepos.z);
+		light_a->SetPos(gamepos.x + (50 * dir), gamepos.y + 50, gamepos.z + 1);
 		light_a->SetDir(flip, 0);
 		light_a->Start();
 		ab_2_bool = true;
-		//noMove.Start();
+		
+		pose_bool = true;
+		start_pose = true;
+		pose_wait = 1.5f;
+		prevAnimSpeed = thunder->atk->anim.speed;
 			
 	}
-	if (currentTag == 13 && !ab_3_bool && currentAnimation == &ulti->atk->anim && currentAnimation->getFrameIndex() >= 10)
+	if (currentTag == 13 && !ab_3_bool && currentAnimation == &ulti->atk->anim && currentAnimation->getFrameIndex() >= 12)
 	{
-		for (int i = -1; i <= 1; i++)
+		int map_border_x = App->map->GetMapBorders_X();
+		int map_border_z = App->map->GetMapBorders_Z();
+
+
+		for (int i = 0; i <= 10; i++)
 		{
-			for (int j = -1; j <= 1; j++)
-			{
-				if (!(i == 0 && j == 0))
-				{
-					FireBall* fb = new FireBall{ *(FireBall*)fireball };
-					fb->SetPos(gamepos.x + (50 * i) , gamepos.y, gamepos.z + (50 * j));
-					fb->SetDir(i, j);
-					fb->Start();
-				}
-
-
-			}
-
+			FireBall* fb = new FireBall{ *(FireBall*)fireball };
+			fb->SetPos( map_border_x + 50 , gamepos.y,  map_border_z + (i * 25));
+			fb->SetDir(1, 0);
+			fb->Start();
 		}
 
 		FireDemon* fired = new FireDemon{ *(FireDemon*)fireDemon };
 		fired->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
 		fired->Start();
 		ab_3_bool = true;
-		//noMove.Start();
+
 
 	}
 }

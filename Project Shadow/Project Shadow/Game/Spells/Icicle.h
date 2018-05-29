@@ -2,8 +2,8 @@
 #define __ICICLE_H__
 #include "../../Engine/Spells.h"
 
-#define ICICLE_MS_LIFETIME	1500
-#define ICICLE_SPEED 2.0f
+#define ICICLE_MS_LIFETIME	3000
+#define ICICLE_SPEED 8.0f
 #define COOL_DURATION 4
 #define COOL_EFFECT 0.35 
 

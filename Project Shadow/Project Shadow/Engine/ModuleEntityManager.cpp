@@ -363,7 +363,7 @@ Entity* ModuleEntityManager::GetEntity(uint num)
 	return ret;
 }
 
-uint ModuleEntityManager::GetWinnerTeam()
+Team ModuleEntityManager::GetWinnerTeam()
 {
 	return winnerTeam;
 }

@@ -23,11 +23,13 @@ public:
 	bool Load(pugi::xml_node&)override { return true; }
 	bool Save(pugi::xml_node&) const override { return true; }
 	void SetPath(std::string _name);
+	void SetBack() { z = -1; };
 
 	bool cl;
 protected:
 	void Dead();
 	bool stop = false;
+	int z = 0;
 
 
 

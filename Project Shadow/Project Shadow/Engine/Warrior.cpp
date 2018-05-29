@@ -83,11 +83,12 @@ bool Warrior::HeroStart()
 	stunt->ab_sprite = { 252, 115, 50,50 };
 	AdAbility(*stunt);
 
-
-	Ability* Aulti = new Ability(ulti, 20 - ((stats.cdr / 100) * 20));
+	Aulti = new Ability(ulti, 20 - ((stats.cdr / 100) * 20));
 	Aulti->ab_sprite = { 102, 165, 50,50 };
 	AdAbility(*Aulti);
 
+	ulti_sp = App->entities->CreateSpell({ DEATH_MARK ,team,  {0,0,0} });
+	((DeathMark*)ulti_sp)->SetPath("battle_cry");
 
 	return true;
 }
@@ -128,32 +129,24 @@ bool Warrior::HeroUpdate(float dt)
 		}
 	}
 
-	if ((!GetAbAtk(13)->active))
+
+
+
+
+	if (GetAbAtk(11)->active && ab_1_bool)
 	{
-		buffed = true;
-	}
-	
-	else
-	{
-		buffed = false;
+		ab_1_bool = false;
 	}
 
-	if (!GetAbAtk(12)->active)
-	{
-		ab_2_bool = true;
-	}
-	else
+
+	if (GetAbAtk(12)->active && ab_2_bool)
 	{
 		ab_2_bool = false;
 	}
 
-	if (!GetAbAtk(11)->active)
+	if (GetAbAtk(13)->active && buffed)
 	{
-		ab_1_bool = true;
-	}
-	else
-	{
-		ab_1_bool = false;
+		buffed = false;
 	}
 
 	CreateSounds();
@@ -200,24 +193,28 @@ void Warrior::UpdateSpecStates()
 			currentState = STOP;
 	}
 
-	if (currentTag == 13 && !buffed)
+	if (currentTag == 13 && !buffed && currentAnimation == &Aulti->atk->anim && currentAnimation->getFrameIndex() >= 6)
 	{
+		buffed = true;
 		AdBuff(10, 100, 10, 10);
 		buffed = true;
-
-		Spells* hw = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
-		hw->SetParent(this);
-		((DeathMark*)hw)->SetPath("battle_cry");
-		((DeathMark*)hw)->cl = true;
+		DeathMark* bp = new DeathMark{ *(DeathMark*)ulti_sp };
+		bp->SetParent(this);
+		bp->SetPos(gamepos.x, gamepos.y, gamepos.z - 1);
+		bp->cl = true;
+		bp->Start();
+		bp->SetBack();
 
 		
 		if (partner != nullptr)
 		{
 			partner->AdBuff(10, 100, 10, 10);
-			Spells* hw2 = App->entities->CreateSpell({ DEATH_MARK ,team,  partner->GetGamePos() });
-			hw2->SetParent(partner);
-			((DeathMark*)hw2)->SetPath("battle_cry");
-			((DeathMark*)hw2)->cl = true;
+			DeathMark* bp_2 = new DeathMark{ *(DeathMark*)ulti_sp };
+			bp_2->SetParent(partner);
+			bp_2->SetPos(gamepos.x, gamepos.y, gamepos.z - 1);
+			bp_2->cl = true;
+			bp_2->Start();
+			bp->SetBack();
 		}
 	}
 
@@ -290,14 +287,6 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			currentState = HIT;
 			App->SetTimeScale(0.f, hitStopFrames);
 			hit_bool = true;
-			//if (_this->collider.x - _other->collider.x > 0)
-			//{
-			//	hit_dir = 1 * _other->entity->stats.atk;
-			//}
-			//else
-			//{
-			//	hit_dir = -1 * _other->entity->stats.atk;
-			//}
 		}
 		else if ((_this->type == Collider::ATK || _this->type == Collider::PARRY) && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{

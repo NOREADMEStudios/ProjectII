@@ -40,5 +40,8 @@ private:
 	bool ab_2_bool = false;
 	Character* partner;
 
+	Spells* ulti_sp;
+	Ability* Aulti;
+
 };
 #endif

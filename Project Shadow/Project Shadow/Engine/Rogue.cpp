@@ -42,6 +42,9 @@ bool Rogue::HeroStart()
 	dagger = App->entities->CreateSpell({ DAGGER,team ,{ gamepos.x, gamepos.y + 50, gamepos.z },{ 0,0 } });
 	dagger->SetParent(this);
 
+	death_m = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
+	((DeathMark*)death_m)->SetPath("dagger");
+
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "L_Attack_2", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "H_Attack", animations_name, 5, 40);
@@ -52,7 +55,7 @@ bool Rogue::HeroStart()
 	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "jump_attack", animations_name, 0, 40, true);
 
 	Attack* ab_1 = new Attack(11, AB_1, "dagger", animations_name, 0,20, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "L_Attack_1", animations_name, 0, 20, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "stop", animations_name, 0, 20, false, true);
 
 	Attack* ab_3 = new Attack(13, AB_3, "dash", animations_name, 0, 20, false, true);
 
@@ -73,10 +76,10 @@ bool Rogue::HeroStart()
 	crouch->AddChild(heavy_2);
 	jump_a->AddChild(jump_a2);
 
-	behindU = new Ability(ab_1, 3 - ((stats.cdr / 100) * 3));
-	behindU->ab_sprite = { 152,165, 50,50 };
-	parry = new Ability(ab_2, 4 - ((stats.cdr / 100) * 4));
-	parry->ab_sprite = { 202,165, 50,50 };
+	behindU = new Ability(ab_1, 4 - ((stats.cdr / 100) * 4));
+	behindU->ab_sprite = { 202,165, 50,50 };
+	parry = new Ability(ab_2, 3 - ((stats.cdr / 100) * 3));
+	parry->ab_sprite = { 152, 165, 50, 50 };
 
 	ulti = new Ability(ab_3, 8 - ((stats.cdr / 100) * 8));
 	ulti->ab_sprite = { 253, 165, 50,50 };
@@ -213,7 +216,7 @@ void Rogue::UpdateSpecStates()
 	else if (currentTag == 12 && !ab_2_active)
 	{
 
-		Impulsate(2 * dir, 0, 0);
+		//Impulsate(2 * dir, 0, 0);
 		ab_2_active = true;
 	}
 	else if (currentTag == 13 && !ab_3_active)
@@ -311,13 +314,14 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 				_other->entity->Impulsate(hit_dir, 0, 0);
 			else if (currentTag == 13)
 			{
-				Spells* dm = App->entities->CreateSpell({ DEATH_MARK , RED, {0,0,0} });
-				dm->SetParent((Character*)_other->entity);
 				if (stats.spd > _other->entity->stats.spd)
-				dmg += stats.spd - _other->entity->stats.spd;
+					dmg += stats.spd - _other->entity->stats.spd;
+				
+				DeathMark* death = new DeathMark{ *(DeathMark*)death_m };
+				death->SetParent((Character*)_other->entity);
+				death->Start();
 
-				((DeathMark*)dm)->SetPath("dagger");
-				_other->entity->AdBuff(10 - ((_other->entity->stats.ccr / 100) *10), 0, -10, -10);
+				_other->entity->AdBuff(10 - ((_other->entity->stats.ccr / 100) *10), 0, -5, -5);
 			}
 
 		}

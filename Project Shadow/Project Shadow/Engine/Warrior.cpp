@@ -168,6 +168,14 @@ bool Warrior::CleanUp(pugi::xml_node&)
 
 void Warrior::UpdateSpecStates()
 {
+
+	int dir = 0;
+
+	if (flip)
+		dir = -1;
+	else
+		dir = 1;
+
 	if (currentState == PARRY)
 	{
 		if (parried)
@@ -192,6 +200,19 @@ void Warrior::UpdateSpecStates()
 		if (wantedState != RUN)
 			currentState = STOP;
 	}
+
+	if (currentTag == 11 && !ab_1_bool)
+	{
+		Impulsate(3 * dir, 0, 0);
+		ab_1_bool = true;
+	}
+
+	if (currentTag == 12 && !ab_2_bool)
+	{
+		Impulsate(3.5f * dir, 0, 0);
+		ab_2_bool = true;
+	}
+
 
 	if (currentTag == 13 && !buffed && currentAnimation == &Aulti->atk->anim && currentAnimation->getFrameIndex() >= 6)
 	{
@@ -218,19 +239,6 @@ void Warrior::UpdateSpecStates()
 		}
 	}
 
-
-	int dir = 0;
-
-	if (flip)
-		dir = -1;
-	else
-		dir = 1;
-
-	if (currentTag == 11 && !ab_1_bool)
-		Impulsate(2 * dir, 0, 0);
-
-	else if (currentTag == 12 && !ab_2_bool)
-		Impulsate(3 * dir, 0, 0);
 
 }
 

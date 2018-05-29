@@ -27,11 +27,12 @@ public:
 	public:
 		int			playerNum;
 		int			totalControllersNum;
-		Sprite*		lockedArrows[2],
+		Sprite*		lockedArrows[4],
 			  *		lockedLightSprite;
 		SDL_Rect	arrowLockLeftRect,
 					arrowLockRightRect,
 					lockedLightRect;
+		bool		teamSelected = false;
 		bool		ready = false;
 
 		void LockedArrow(uint lockedNum);
@@ -44,11 +45,14 @@ public:
 	Sprite* characterFrame[4];
 	Sprite* characterSprites[4];
 	Sprite* statsSprites[16];
+	Sprite* characTeamSprite[4];
 	SDL_Rect statsRects[5];
 	SDL_Rect characterRects[4];
+	SDL_Rect teamRects[4];
 	Label* characterNameLabel[4];
 	String characterNameStrings[4];
 	int indexSprites[4];
+	int teamIndex[4];
 
 	CharacterSelecScene();
 	virtual ~CharacterSelecScene();
@@ -75,6 +79,7 @@ private:
 	void SetControllerFocus();
 	void SetCharactersInfo();
 	void ChangeCharacter();
+	void ChangeTeam();
 	void ReturnIntroScene();
 	void ChangeStats(int playerNum, int index);
 	bool AllPlayersReady();

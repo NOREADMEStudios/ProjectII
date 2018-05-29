@@ -102,11 +102,12 @@ public:
 	Entity* GetSameTeam(Entity* c);
 
 	Entity* GetEntity(uint num);
-	uint GetWinnerTeam();
+	Team GetWinnerTeam();
 	EntityStats items[4];
 	bool finish = false,
 		locked = false;
-	uint winner, winnerTeam;
+	uint winner;
+	Team winnerTeam;
 	SDL_Texture* spellsTex;
 	std::list<Entity*> entities;
 	Spells* stuned;

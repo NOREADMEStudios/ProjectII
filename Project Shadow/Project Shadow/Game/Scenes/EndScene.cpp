@@ -103,7 +103,17 @@ void EndScene::LoadUIButtons() {
 
 	winnerLabel = App->gui->AddLabel(screenSize.x / 2, (screenSize.y / 4) * 2, 75, DEFAULT_FONT, { 255, 255, 255, 255 });
 
-	winnerLabel->setString("WINNER: TEAM %d", App->entities->GetWinnerTeam());
+
+	std::string TeamLabel;
+	switch (App->entities->GetWinnerTeam()) {
+	case Team::BLUE:
+		TeamLabel = "BLUE";
+		
+	case Team::RED:
+		TeamLabel = "RED";
+	}
+
+	winnerLabel->setString("WINNER: TEAM %s", TeamLabel.c_str() );
 }
 
 void EndScene::ChooseFocus() {

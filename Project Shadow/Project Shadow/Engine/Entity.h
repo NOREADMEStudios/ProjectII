@@ -206,6 +206,7 @@ protected:
 	iRect collider{ 0,0,0,0 };
 	Animation* currentAnimation = nullptr;
 	Point3D gamepos;
+	SDL_Rect animRect;
 
 	SDL_Texture* sprites;
 

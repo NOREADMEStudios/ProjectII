@@ -128,11 +128,6 @@ bool Wizard::PostUpdate()
 	return true;
 }
 
-bool Wizard::CleanUp(pugi::xml_node&)
-{
-
-	return true;
-}
 
 void Wizard::UpdateSpecStates()
 {

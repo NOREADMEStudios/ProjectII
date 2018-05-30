@@ -38,6 +38,7 @@ private:
 	bool ab_1_active = false;
 	bool ab_2_active = false;
 	Spells* dagger;
+	Spells* death_m;
 
 	Ability* parry;
 	Ability* behindU;

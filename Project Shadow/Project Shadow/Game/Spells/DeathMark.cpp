@@ -21,7 +21,7 @@ bool DeathMark::Start() {
 	if (cl)
 		spellAnim.speed = 15;
 
-
+	z = 0;
 
 	lifeTime.Start();
 	lifetime = MS_LIFETIME;
@@ -54,7 +54,7 @@ bool DeathMark::Update(float dt) {
 	else
 	gamepos.y = gp.y + 75;
 
-	gamepos.z = gp.z;
+	gamepos.z = gp.z + z;
 	if (cl && currentAnimation->Finished())
 		to_delete = true;
 

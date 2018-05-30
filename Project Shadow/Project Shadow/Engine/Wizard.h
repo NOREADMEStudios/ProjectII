@@ -47,5 +47,10 @@ private:
 	Ability* thunder;
 	Ability* ulti;
 	
+	Timer pose_timer;
+	float pose_wait;
+	bool pose_bool;
+	bool start_pose;
+	float prevAnimSpeed;
 };
 #endif

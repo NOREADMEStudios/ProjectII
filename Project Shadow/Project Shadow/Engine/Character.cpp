@@ -424,14 +424,15 @@ void Character::UpdateMainStates()
 {
 	if (wantedTag != 0 && GetAtk(wantedTag)->ability)
 	{
-		if (!GetAbAtk(wantedTag)->active)
+		if (!GetAbAtk(wantedTag)->active || (currentState == JUMP || (currentState == AD_ACTION && currentTag != 0 && GetAtk(currentTag)->air)))
 		{
-			wantedTag = 0;
+			wantedTag = currentTag;
 			if (!StateisAtk(currentState))
-			wantedState = currentState;
+				wantedState = currentState;
 		}
-		else
+		else 
 			GetAbAtk(wantedTag)->Activate();
+
 	}
 
 	if (currentState == WALK || currentState == IDLE)

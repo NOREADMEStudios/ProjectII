@@ -5,6 +5,7 @@
 #include "ModuleCollision.h"
 #include "ModuleAudio.h"
 #include "ModuleInput.h"
+#include "Corpse.h"
 
 #include "ModuleMap.h"
 
@@ -93,9 +94,15 @@ bool Character::Update(float dt)
 		resume = true;
 		return PausedUpdate();
 	}
+
 	if (resume) {
 		currentAnimation->ResumeFrame();
 		resume = false;
+	}
+	if (charType == CORPSE) {
+		DrawCorpse();
+		
+		return true;
 	}
 
 	if (stats.hpRecover && hpRecTimer.Count(5) && stats.life < initialLife)
@@ -493,6 +500,7 @@ void Character::UpdateMainStates()
 		if (currentState == DEATH)
 		{
 			active = false;
+			LeaveCorpse();
 		}
 		
 		if (StateisAtk(currentState))
@@ -685,6 +693,16 @@ Ability* Character::GetAbAtk(uint atk)
 	return ret;
 }
 
+void Character::LeaveCorpse() {
+
+	Corpse* corpse = new Corpse(this->charType);
+	corpse->gamepos = this->gamepos;
+	corpse->team = this->team;
+	corpse->flip = flip;
+	App->entities->entities.push_back(corpse);
+	corpse->HeroStart();
+
+}
 
 uint Character::GetMaxLives() const
 {
@@ -901,4 +919,12 @@ void Character::AdHp(int hp)
 	{
 		stats.life = initialLife;
 	}
+}
+
+void Character::DrawCorpse() {
+
+
+	priority = gamepos.z;	
+	App->render->FillQueue(this);
+	
 }

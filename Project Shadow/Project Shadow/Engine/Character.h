@@ -245,6 +245,8 @@ protected:
 	void UpdateAbilities();
 	void AdAbility(Ability ab);
 	void UpdateEventStates();
+	void LeaveCorpse();
+	void DrawCorpse();
 
 
 	virtual bool HeroStart() { return true; };
@@ -272,6 +274,8 @@ protected:
 	int initialLife = 0;
 	uint lives = 0, maxLives = 1;
 	int hit_dir = 0;
+
+	bool corpse = false;
 	
 	bool hit_bool = 0;
 	bool parried = 0;
@@ -286,6 +290,7 @@ protected:
 
 	LIST(Attack*) attacks;
 	std::vector<Ability> abilities;
+	
 
 };
 

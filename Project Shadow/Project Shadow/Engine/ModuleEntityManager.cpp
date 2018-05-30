@@ -192,7 +192,7 @@ Character* ModuleEntityManager::CreateCharacter(CharacterInfo charInfo) {
 	{
 		ret = new Wizard();
 
-	}
+	}	
 
 	else {
 		return ret;

@@ -19,7 +19,9 @@ public:
 
 	bool PostUpdate()override { return true; }
 
-	bool CleanUp(pugi::xml_node&)override { return true; }
+	bool Update(float dt)override;
+
+	bool CleanUp(pugi::xml_node&)override;
 
 	CharacterTypes corpseType;
 	

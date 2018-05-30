@@ -115,6 +115,8 @@ bool ModuleEntityManager::Update(float dt) {
 		if ((*item)->active)
 		{
 			(*item)->Update(dt);
+			if ((*item)->charType == CharacterTypes::CORPSE) { 
+				continue; }
 			winner = (*item)->heroNum;
 			winnerTeam = (*item)->team;
 			aliveCharacters++;

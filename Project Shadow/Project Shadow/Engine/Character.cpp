@@ -99,11 +99,7 @@ bool Character::Update(float dt)
 		currentAnimation->ResumeFrame();
 		resume = false;
 	}
-	if (charType == CORPSE) {
-		DrawCorpse();
-		
-		return true;
-	}
+	
 
 	if (stats.hpRecover && hpRecTimer.Count(5) && stats.life < initialLife)
 	{
@@ -191,6 +187,11 @@ bool Character::CleanUp(pugi::xml_node&)
 
 	App->collision->RemoveCollider(collHitBox);
 	App->collision->RemoveCollider(collFeet);
+
+	if (heroCorpse) {
+		pugi::xml_node n;
+		heroCorpse->CleanUp(n);
+	}
 	
 	return true;
 }
@@ -695,12 +696,13 @@ Ability* Character::GetAbAtk(uint atk)
 
 void Character::LeaveCorpse() {
 
-	Corpse* corpse = new Corpse(this->charType);
-	corpse->gamepos = this->gamepos;
-	corpse->team = this->team;
-	corpse->flip = flip;
-	App->entities->entities.push_back(corpse);
-	corpse->HeroStart();
+	heroCorpse = new Corpse(this->charType);
+	heroCorpse->gamepos = this->gamepos;
+	heroCorpse->team = this->team;
+	heroCorpse->sprites = sprites;
+	heroCorpse->flip = flip;
+	App->entities->entities.push_back(heroCorpse);
+	heroCorpse->HeroStart();
 
 }
 

@@ -160,11 +160,6 @@ bool Warrior::PostUpdate()
 	return true;
 }
 
-bool Warrior::CleanUp(pugi::xml_node&)
-{
-
-	return true;
-}
 
 void Warrior::UpdateSpecStates()
 {

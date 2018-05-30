@@ -26,6 +26,7 @@
 
 #define HIT_STOP_FRAMES 5
 
+class Corpse;
 
 enum CharInput
 {
@@ -276,6 +277,7 @@ protected:
 	int hit_dir = 0;
 
 	bool corpse = false;
+	Corpse* heroCorpse= nullptr;
 	
 	bool hit_bool = 0;
 	bool parried = 0;
@@ -285,6 +287,7 @@ protected:
 	uint wantedTag = 0;
 	std::string animations_name;
 	Timer hpRecTimer;
+	
 
 	int hitStopFrames = HIT_STOP_FRAMES;
 

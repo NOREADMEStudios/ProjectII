@@ -132,7 +132,7 @@ bool ItemSelecScene::AllPlayersReady() {
 	
 	bool ret = true;
 	for (int i = 0; i < controllersNum; i++) {
-		if (players[i].locked == 3) {
+		if (players[i].locked == 2) {
 			players[i].ready = true;
 		}
 	}
@@ -220,6 +220,7 @@ void ItemSelecScene::SetControllerFocus() {
 void ItemSelecScene::ChooseFocus() {
 
 	uiPoint sizeScreen = App->gui->GetGuiSize();
+	SDL_Texture* itemsTex = App->textures->Load("UI/Items_Cursors.png");
 	int initialDisplacement = sizeScreen.x * 0.1f;
 	int marginBetweenItemFrames = sizeScreen.x * 0.005f;
 	int marginBetweenPlayerFrames = sizeScreen.x * 0.085f;
@@ -232,11 +233,9 @@ void ItemSelecScene::ChooseFocus() {
 			
 			Item* item = players[i].focusedItem;
 			players[i].playerItems[players[i].locked] = item;
-			//players[i].miniatureItems[players[i].locked] = App->gui->AddSprite(initialDisplacement + (item->butt->rect.w+ marginBetweenItemFrames)*players[i].locked + marginBetweenPlayerFrames * i, sizeScreen.y *0.90f, atlas, item->animRect);//need to check values
-			players[i].miniatureItems[players[i].locked] = App->gui->AddSprite(-300, 0, atlas, item->animRect);
+			players[i].miniatureItems[players[i].locked] = App->gui->AddSprite(-300, 0, itemsTex, item->animRect);
 			players[i].miniatureItems[players[i].locked]->SetParent(players[i].miniatureItemsFrame);
-			players[i].miniatureItems[players[i].locked]->SetAnchor(0, 0);
-			players[i].miniatureItems[players[i].locked]->setPosition(marginBetweenItemFrames + (item->butt->rect.w * players[i].locked) + (players[i].locked * marginBetweenItemFrames), 30);
+			players[i].miniatureItems[players[i].locked]->setPosition((players[i].miniatureItemsFrame->rect.w * (1 + i) / 3), players[i].miniatureItemsFrame->rect.h * 2 / 3);
 			players[i].LockedArrow(players[i].locked);
 			players[i].locked++;
 			FindFirstFreeItem(i);
@@ -379,7 +378,7 @@ void ItemSelecScene::FindFirstFreeItem(uint playerNum) {
 void ItemSelecScene::ApplyItemAttributes() {
 	for (int i = 0; i < controllersNum; i++) {
 		EntityStats* item = &App->entities->items[i];
-		for (int itemNum = 0; itemNum < 3; itemNum++) {
+		for (int itemNum = 0; itemNum < 2; itemNum++) {
 			item->atk += (item->atk * players[i].playerItems[itemNum]->stats.atk / 100);
 			item->def += (item->def * players[i].playerItems[itemNum]->stats.def / 100);
 			item->mgk += players[i].playerItems[itemNum]->stats.mgk;

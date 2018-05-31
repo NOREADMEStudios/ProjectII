@@ -262,7 +262,7 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (_other->entity->breaking)
 			{
 				currentState = HIT;
-				App->SetTimeScale(0.f, hitStopFrames);
+				//App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 			}
@@ -287,13 +287,13 @@ void Warrior::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentTag = 0;
 			currentState = HIT;
-			App->SetTimeScale(0.f, hitStopFrames);
+			//App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentTag = 0;
 			currentState = HIT;
-			App->SetTimeScale(0.f, hitStopFrames);
+			//App->SetTimeScale(0.f, hitStopFrames);
 			hit_bool = true;
 		}
 		else if ((_this->type == Collider::ATK || _this->type == Collider::PARRY) && _other->type == Collider::HITBOX && StateisAtk(currentState))

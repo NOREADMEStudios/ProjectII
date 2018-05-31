@@ -32,6 +32,7 @@ bool Rogue::HeroStart()
 {
 	LoadState(RUN, "run");
 	LoadState(PROTECT, "protect");
+	LoadState(STAND_UP, "roll");
 
 	stats.spd = 180;
 	stats.life = 100;
@@ -253,7 +254,7 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (_other->entity->breaking)
 			{
 				currentState = HIT;
-				App->SetTimeScale(0.f, hitStopFrames);
+				//App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 			}
@@ -276,12 +277,12 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentTag = 0;
 			currentState = HIT;
-			App->SetTimeScale(0.f, hitStopFrames);
+			//App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentState = HIT;
-			App->SetTimeScale(0.f, hitStopFrames);
+			//App->SetTimeScale(0.f, hitStopFrames);
 			currentTag = 0;
 			hit_bool = true;
 

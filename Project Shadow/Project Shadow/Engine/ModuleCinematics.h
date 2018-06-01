@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Defs.h"
+#include "Point.h"
 
 class Cinematic;
 
@@ -13,7 +14,7 @@ public:
 	ModuleCinematics();
 	virtual ~ModuleCinematics();
 
-	bool Awake(pugi::xml_node&) override { return true; };
+	bool Awake(pugi::xml_node&) override;
 
 	bool Start() override;
 
@@ -28,11 +29,13 @@ public:
 	float GetCurrentCinematicTime();
 	float GetCurrentCinematicTimeLeft();
 
+	iPoint GetInitialCameraPosition();
+
+	bool IsPlaying() { return currentCinematic != nullptr; }
+
 private:
 	bool PlayCurrentCinematic();
 	Cinematic* currentCinematic = nullptr;
-
-	Callback OnCinematicEnd = nullptr;
 };
 
 #endif

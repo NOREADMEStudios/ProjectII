@@ -7,7 +7,7 @@
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
 #define MAX_KEYS 300
-#define MAX_BUTTONS 16
+#define MAX_BUTTONS 15
 #define MAX_AXIS 6
 #define MAX_CONTROLLERS 4
 //#define LAST_KEYS_PRESSED_BUFFER 50
@@ -132,9 +132,13 @@ public:
 
 	void BlockMouse();
 	void BlockKeyboard();
+	void BlockAllControllers();
 
 	void BlockMouseEvent(int event_id);
 	void BlockKeyboardEvent(int event_id);
+	void BlockControllerEvent(int controller, int event_id);
+
+	void BlockAllInput();
 
 	//std::list<CharInput> FirstPlayerConfig();
 	//std::list<CharInput> SecondPlayerConfig();

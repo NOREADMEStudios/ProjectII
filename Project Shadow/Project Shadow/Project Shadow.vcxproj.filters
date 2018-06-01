@@ -198,7 +198,7 @@
       <Filter>Engine\Tools</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ModuleCinematics.cpp">
-      <Filter>Game</Filter>
+      <Filter>Engine\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -383,7 +383,7 @@
       <Filter>Engine\Tools</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ModuleCinematics.h">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

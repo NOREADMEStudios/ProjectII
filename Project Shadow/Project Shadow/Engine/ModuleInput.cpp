@@ -358,11 +358,11 @@ std::list<Input> ModuleInput::GetInputListFromController(int playerNum)const{
 					}
 					break;
 				case 1:
-					if (controllers[playerNum - 1].axis[i] > 0.5f)
+					if (controllers[playerNum - 1].axis[i] > 0.7f)
 					{
 						ret.push_back(Input::DOWN);
 					}
-					else if (controllers[playerNum - 1].axis[i] < -0.5f)
+					else if (controllers[playerNum - 1].axis[i] < -0.7f)
 					{
 						ret.push_back(Input::UP);
 					}

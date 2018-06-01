@@ -52,13 +52,13 @@ bool Rogue::HeroStart()
 	Attack* heavy_2 = new Attack(7, HEAVY_ATTACK, "H_Attack2", animations_name, 5, 40);
 	Attack* heavy_3 = new Attack(6, HEAVY_ATTACK, "H_Attack3", animations_name, 5, 40);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "L_Attack_3", animations_name, 1);
-	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 20, true);
+	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 30, true);
 	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "jump_attack", animations_name, 0, 40, true);
 
-	Attack* ab_1 = new Attack(11, AB_1, "dagger", animations_name, 0,20, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "stop", animations_name, 0, 20, false, true);
+	Attack* ab_1 = new Attack(11, AB_1, "dagger", animations_name, 0,30, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "stop", animations_name, 0, 30, false, true);
 
-	Attack* ab_3 = new Attack(13, AB_3, "dash", animations_name, 0, 20, false, true);
+	Attack* ab_3 = new Attack(13, AB_3, "dash", animations_name, 0, 30, false, true);
 
 	attacks.push_back(light_1);
 	attacks.push_back(heavy_1);

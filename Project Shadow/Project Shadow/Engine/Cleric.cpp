@@ -39,12 +39,14 @@ bool Cleric::HeroStart()
 	stats.atk = 5;
 	stats.def = 3;
 
+	LoadState(RUN, "run");
+
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_2", animations_name, 5);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_3", animations_name, 2);
 	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 20, true);
-	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, 20, true);
+	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "death_mark", animations_name, 0, 20, true);
 	Attack* ab_1 = new Attack(11, AB_1, "maze", animations_name, 0, 20, false, true);
 	Attack* ab_2 = new Attack(12, AB_2, "ab_2", animations_name, 0, 20, false, true);
 	Attack* ab_3 = new Attack(13, AB_3, "ab_3", animations_name, 0, 20, false, true);
@@ -102,7 +104,7 @@ bool Cleric::HeroUpdate(float dt)
 	}
 	case RUN:
 	{
-		max_speed = stats.spd * 1.5f;
+		max_speed = stats.spd * 1.2f;
 		Accelerate((x_dir * stats.spd), 0, (z_dir * stats.spd), dt);
 		break;
 	}
@@ -217,6 +219,14 @@ void Cleric::UpdateSpecStates()
 		currentAnimation->Reset();
 	}
 
+
+	else if (currentState == RUN)
+	{
+		if (wantedState != RUN)
+			currentState = wantedState;
+	}
+
+
 }
 
 void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
@@ -239,7 +249,7 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 			if (_other->entity->breaking)
 			{
 				currentState = HIT;
-				App->SetTimeScale(0.f, hitStopFrames);
+				//App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 			}
@@ -262,14 +272,14 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			currentTag = 0;
 			currentState = HIT;
-			App->SetTimeScale(0.f, hitStopFrames);
+			//App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
 			currentTag = 0;
 			currentState = HIT;
 			hit_bool = true;
-			App->SetTimeScale(0.f, hitStopFrames);
+			//App->SetTimeScale(0.f, hitStopFrames);
 
 
 			if (_this->collider.x - _other->collider.x > 0)

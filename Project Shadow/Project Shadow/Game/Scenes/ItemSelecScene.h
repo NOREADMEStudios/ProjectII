@@ -75,6 +75,7 @@ public:
 	};
 
 	Item* items[6];
+	SDL_Texture* itemsTex = nullptr;
 	/*String* statsItemsStr[6];
 	Label* stats*/
 
@@ -109,7 +110,7 @@ private:
 	bool AllPlayersReady();
 	void FindFirstFreeItem(uint playerNum);
 	void AddLabelToButton(Item* item);
-	
+
 	std::vector<Player> players;
 	std::list<Button*> buttonsForController;
 };

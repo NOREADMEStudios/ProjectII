@@ -33,6 +33,8 @@ bool ItemSelecScene::Start()
 	uiPoint screenSize = App->gui->GetGuiSize();
 	LoadBackground("UI/BackgroundItems.png");
 
+	itemsTex = App->textures->Load("UI/ItemsCursors.png");
+
 	Sprite* bg = App->gui->AddSprite(0, 0, background, { 0,0,1920,1080 });
 	bg->setPosition(screenSize.x * 0.5f, screenSize.y * 0.5f);
 	bg->ComputeRects();
@@ -71,7 +73,8 @@ bool ItemSelecScene::Update(float dt)
 bool ItemSelecScene::CleanUp()
 {	
 	App->gui->CleanUp();
-	App->textures->UnLoad(atlas);
+	App->textures->UnLoad(itemsTex);
+	
 	UnLoadBackground();
 	players.clear();
 	return true;
@@ -79,35 +82,33 @@ bool ItemSelecScene::CleanUp()
 
 void ItemSelecScene::LoadSceneUI() {
 
-	SDL_Texture* atlas = App->textures->Load("UI/Items&Cursors.png");
-
 	uiPoint sizeScreen = App->gui->GetGuiSize();
 
 	int i = 0;
 
 	items[i] = new Item("Staff of Thoth", STAFF, { 480,240,120,120 }, { 0,0,0,0,0,20,0 });
-	items[i]->butt = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y / 3, atlas, items[i]->animRect, true, nullptr);
+	items[i]->butt = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y / 3, itemsTex, items[i]->animRect, true, nullptr);
 	App->gui->setFocus(items[i]->butt);
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 360,240,120,120 }, { 0,30,0,0,0,0,0,0 });
-	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3, atlas, items[i]->animRect, true, nullptr);
+	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3, itemsTex, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Plate Mail", PLATE, { 0,0,120,120 }, { 0,0,30,0,0,0,0,0 });
-	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y / 3, atlas, items[i]->animRect, true, nullptr);
+	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y / 3, itemsTex, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Ring of Protection", RING, { 240,120,120,120 }, { 0,0,0,0,0,0,30,0 });
-	items[i]->butt = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y * 2 / 3, atlas, items[i]->animRect, true, nullptr);
+	items[i]->butt = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y * 2 / 3, itemsTex, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Swift Boots", SWIFT_BOOTS, { 240,0,120,120 }, { 0,0,0,50,0,0,0,0 });
-	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y * 2 / 3, atlas, items[i]->animRect, true, nullptr);
+	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y * 2 / 3, itemsTex, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
 	items[++i] = new Item("Tiara", TIARA, { 360,120,120,120 }, { 0,0,0,0,0,0,0,1 });
-	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y * 2 / 3, atlas, items[i]->animRect, true, nullptr);
+	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y * 2 / 3, itemsTex, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
 
@@ -152,39 +153,39 @@ void ItemSelecScene::AddLabelToButton(Item* item) {
 	item->labels.push_back(label1 );
 	int i = 1;
 	
-	/*if (item->stats.hpRecover == true) {
+	if (item->stats.hpRecover == true) {
 		Label* label2 = App->gui->AddLabel(item->butt->rect.w / 2, offset + i*fontSize, fontSize, DEFAULT_FONT, { 218,165,32,255 });
-		label2->setString("Recovers 5% Health each 5 seconds");
+		label2->setString(std::string("Recovers 5\% Health each 5 seconds"));
 		item->labels.push_back(label2);
 		i++;
-	}*/
+	}
 	if (item->stats.atk > 0) {
 		Label* label3 = App->gui->AddLabel(item->butt->rect.w / 2, offset + i*fontSize, fontSize, DEFAULT_FONT, { 218,165,32,255 });
-		label3->setString("+" + std::to_string(item->stats.atk) + "% Attack");
+		label3->setString("+" + std::to_string(item->stats.atk) + "\% Attack");
 		item->labels.push_back(label3);
 		i++;
 	}
 	if (item->stats.def > 0) {
 		Label* label4 = App->gui->AddLabel(item->butt->rect.w / 2, offset + i*fontSize, fontSize, DEFAULT_FONT, { 218,165,32,255 });
-		label4->setString("+" + std::to_string(item->stats.def) + "% Defense");
+		label4->setString("+" + std::to_string(item->stats.def) + "\% Defense");
 		item->labels.push_back(label4);
 		i++;
 	}
 	if (item->stats.spd > 0) {
 		Label* label5 = App->gui->AddLabel(item->butt->rect.w / 2, offset + i*fontSize, fontSize, DEFAULT_FONT, { 218,165,32,255 });
-		label5->setString("+" + std::to_string(item->stats.spd) + "% Speed");
+		label5->setString("+" + std::to_string(item->stats.spd) + "\% Speed");
 		item->labels.push_back(label5);
 		i++;
 	}
 	if (item->stats.cdr > 0) {
 		Label* label6 = App->gui->AddLabel(item->butt->rect.w / 2, offset + i*fontSize, fontSize, DEFAULT_FONT, { 218,165,32,255 });
-		label6->setString("+" + std::to_string(item->stats.mgk) + "  Cooldown Reduction"); //COOLDOWN REDUCTION
+		label6->setString("+" + std::to_string(item->stats.cdr) + "\% Cooldown Reduction"); //COOLDOWN REDUCTION
 		item->labels.push_back(label6);
 		i++;
 	}
 	if (item->stats.ccr > 0) {
 		Label* label7 = App->gui->AddLabel(item->butt->rect.w / 2, offset + i * fontSize, fontSize, DEFAULT_FONT, { 218,165,32,255 });
-		label7->setString("+" + std::to_string(item->stats.mgk) + " Resistance to Crowd control"); //RESISTANCE TO CROWD CONTROL
+		label7->setString("+" + std::to_string(item->stats.ccr) + "\% Resistance to Crowd control"); //RESISTANCE TO CROWD CONTROL
 		item->labels.push_back(label7);
 		i++;
 	}
@@ -210,7 +211,7 @@ void ItemSelecScene::SetControllerFocus() {
 		int marginBetweenNames = sizeScreen.x * 0.20f;
 		
 		player.playerNum = i;
-		player.miniatureItemsFrame = App->gui->AddSprite((sizeScreen.x * ((i - 1) * 2 + 1)) / 8, sizeScreen.y * 7 / 8, atlas, { 4500,43000,392,150 });//only used for having empty sprite
+		player.miniatureItemsFrame = App->gui->AddSprite((sizeScreen.x * ((i - 1) * 2 + 1)) / 8, sizeScreen.y * 7 / 8, nullptr, { 4500,43000,392,150 });//only used for having empty sprite
 		player.playerName = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 255,255,255,255 });
 		player.playerName->SetParent(player.miniatureItemsFrame);
 		player.playerName->setPosition(player.miniatureItemsFrame->rect.w / 2, 15);
@@ -226,7 +227,6 @@ void ItemSelecScene::SetControllerFocus() {
 void ItemSelecScene::ChooseFocus() {
 
 	uiPoint sizeScreen = App->gui->GetGuiSize();
-	SDL_Texture* itemsTex = App->textures->Load("UI/Items&Cursors.png");
 	int initialDisplacement = sizeScreen.x * 0.1f;
 	int marginBetweenItemFrames = sizeScreen.x * 0.005f;
 	int marginBetweenPlayerFrames = sizeScreen.x * 0.085f;
@@ -332,8 +332,7 @@ void ItemSelecScene::Player::LoadArrows() {
 		arrowLockRect = { 1235, 129, 51,45 };
 		break;
 	}
-	SDL_Texture* itemsTex = App->textures->Load("UI/Items&Cursors.png");
-	arrow = App->gui->AddSprite(focusedItem->butt->getPositionX(), focusedItem->butt->getPositionY() - focusedItem->butt->rect.h/2, itemsTex, arrowRect);
+	arrow = App->gui->AddSprite(focusedItem->butt->getPositionX(), focusedItem->butt->getPositionY() - focusedItem->butt->rect.h/2, App->scenes->itemSc->itemsTex, arrowRect);
 	DrawOrderedArrow();
 }
 

@@ -283,8 +283,12 @@ void CharacterSelecScene::ChangeTeam(){
 	}
 	else
 	{
-		for (int i = 0; i < controllersNum; i++) {
+		for (int i = 0; i < 2; i++) {
 			Player* player = &players[i];
+			if (i = 1)			{
+				characTeamSprite[i]->idle_anim = teamRects[1];
+				teamIndex[i] = 1;
+			}
 			player->teamSelected = true;
 			player->arrows[0]->Enable(false);
 			player->arrows[1]->Enable(false);

@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "ModuleCollision.h"
 #include "Log.h"
+#include "ModuleEntityManager.h"
 
 #define SHADOW_PATH "Characters/Shadow.png"
 #define SHADOW_RECT {0,0,36,9}
@@ -16,6 +17,16 @@ Entity::Entity() {}
 Entity::~Entity() {}
 
 void Entity::Draw(float dt) {
+
+	if (charType == CharacterTypes::CORPSE) {
+		iRect r = SHADOW_RECT;
+		//App->render->Blit(sprites, position.x, position.y, &animRect, 1.0f, 0.0, flip);
+		
+		App->render->Blit(shadowSprites, gamepos.x - 17, gamepos.z, &r.toSDL_Rect());
+		App->render->Blit(sprites, gamepos.x - 60, gamepos.z - 30, &animRect, 1.0f, 0.0, flip);
+		
+		return;
+	}
 	AnimationFrame frame = currentAnimation->GetCurrentFrame(dt);
 
 	if (shadowed) {

@@ -26,6 +26,7 @@
 
 #define HIT_STOP_FRAMES 5
 
+class Corpse;
 
 enum CharInput
 {
@@ -245,6 +246,8 @@ protected:
 	void UpdateAbilities();
 	void AdAbility(Ability ab);
 	void UpdateEventStates();
+	void LeaveCorpse();
+	void DrawCorpse();
 
 
 	virtual bool HeroStart() { return true; };
@@ -272,6 +275,9 @@ protected:
 	int initialLife = 0;
 	uint lives = 0, maxLives = 1;
 	int hit_dir = 0;
+
+	bool corpse = false;
+	Corpse* heroCorpse= nullptr;
 	
 	bool hit_bool = 0;
 	bool parried = 0;
@@ -281,11 +287,13 @@ protected:
 	uint wantedTag = 0;
 	std::string animations_name;
 	Timer hpRecTimer;
+	
 
 	int hitStopFrames = HIT_STOP_FRAMES;
 
 	LIST(Attack*) attacks;
 	std::vector<Ability> abilities;
+	
 
 };
 

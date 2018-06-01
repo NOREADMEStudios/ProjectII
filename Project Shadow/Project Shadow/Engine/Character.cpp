@@ -5,6 +5,7 @@
 #include "ModuleCollision.h"
 #include "ModuleAudio.h"
 #include "ModuleInput.h"
+#include "Corpse.h"
 
 #include "ModuleMap.h"
 
@@ -93,10 +94,12 @@ bool Character::Update(float dt)
 		resume = true;
 		return PausedUpdate();
 	}
+
 	if (resume) {
 		currentAnimation->ResumeFrame();
 		resume = false;
 	}
+	
 
 	if (stats.hpRecover && hpRecTimer.Count(5) && stats.life < initialLife)
 	{
@@ -184,6 +187,11 @@ bool Character::CleanUp(pugi::xml_node&)
 
 	App->collision->RemoveCollider(collHitBox);
 	App->collision->RemoveCollider(collFeet);
+
+	if (heroCorpse) {
+		pugi::xml_node n;
+		heroCorpse->CleanUp(n);
+	}
 	
 	return true;
 }
@@ -493,6 +501,7 @@ void Character::UpdateMainStates()
 		if (currentState == DEATH)
 		{
 			active = false;
+			LeaveCorpse();
 		}
 		
 		if (StateisAtk(currentState))
@@ -685,6 +694,17 @@ Ability* Character::GetAbAtk(uint atk)
 	return ret;
 }
 
+void Character::LeaveCorpse() {
+
+	heroCorpse = new Corpse(this->charType);
+	heroCorpse->gamepos = this->gamepos;
+	heroCorpse->team = this->team;
+	heroCorpse->sprites = sprites;
+	heroCorpse->flip = flip;
+	App->entities->entities.push_back(heroCorpse);
+	heroCorpse->HeroStart();
+
+}
 
 uint Character::GetMaxLives() const
 {
@@ -901,4 +921,12 @@ void Character::AdHp(int hp)
 	{
 		stats.life = initialLife;
 	}
+}
+
+void Character::DrawCorpse() {
+
+
+	priority = gamepos.z;	
+	App->render->FillQueue(this);
+	
 }

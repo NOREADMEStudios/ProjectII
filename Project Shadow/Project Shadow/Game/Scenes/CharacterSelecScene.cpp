@@ -143,7 +143,7 @@ void CharacterSelecScene::SetCharactersInfo(){
 	}
 	else if (App->scenes->gameMode == GameMode::ONEvsONE) {
 
-		charactersInfo[0] = { ROGUE,{ 100 ,0,250 }, Team::BLUE };
+		charactersInfo[0] = { CLERIC,{ 100 ,0,250 }, Team::BLUE };
 		charactersInfo[1] = { WARRIOR,{ 800, 0 ,250 }, Team::RED };
 
 	}
@@ -260,7 +260,7 @@ void CharacterSelecScene::ChangeTeam(){
 				player->lockedArrows[1]->SetParent(characterFrame[i]);
 				player->lockedArrows[1]->setPosition(220, 414);
 				redTeamMembers++;
-				teamIndex[i] == 1;
+				teamIndex[i] = 0;
 				player->teamSelected = true;
 				player->arrows[2]->Enable(true);
 				player->arrows[3]->Enable(true);
@@ -274,7 +274,7 @@ void CharacterSelecScene::ChangeTeam(){
 				player->lockedArrows[1]->SetParent(characterFrame[i]);
 				player->lockedArrows[1]->setPosition(220, 414);
 				blueTeamMembers++;
-				teamIndex[i] == 0;
+				teamIndex[i] = 1;
 				player->teamSelected = true;
 				player->arrows[2]->Enable(true);
 				player->arrows[3]->Enable(true);
@@ -308,20 +308,20 @@ void CharacterSelecScene::LoadArrows(){
 	for (int i = 0; i < controllersNum; i++) {
 		Player* player = &players[i];
 		player->arrows[0] = App->gui->AddSprite(0, 0, nullptr, player->arrowLeftRect);//LEFT TEAM ARROW
-		player->arrows[0]->SetParent(characterFrame[0]);
+		player->arrows[0]->SetParent(characterFrame[i]);
 		player->arrows[0]->setPosition(121, 414);
 
 		player->arrows[1] = App->gui->AddSprite(0, 0, nullptr, player->arrowRightRect);//RIGHT TEAM ARROW
-		player->arrows[1]->SetParent(characterFrame[0]);
+		player->arrows[1]->SetParent(characterFrame[i]);
 		player->arrows[1]->setPosition(220, 414);
 
 		player->arrows[2] = App->gui->AddSprite(0, 0, nullptr, player->arrowLeftRect, false);//LEFT FRAME ARROW
-		player->arrows[2]->SetParent(characterFrame[0]);
+		player->arrows[2]->SetParent(characterFrame[i]);
 		player->arrows[2]->SetAnchor(0, 0);
 		player->arrows[2]->setPosition(17, 220);
 
 		player->arrows[3] = App->gui->AddSprite(0, 0, nullptr, player->arrowRightRect, false);//RIGHT FRAME ARROW
-		player->arrows[3]->SetParent(characterFrame[0]);
+		player->arrows[3]->SetParent(characterFrame[i]);
 		player->arrows[3]->SetAnchor(0, 0);
 		player->arrows[3]->setPosition(284, 220);
 	}
@@ -492,7 +492,7 @@ void CharacterSelecScene::LoadSceneUI() {
 	stats2Label->setString("STATS");
 	stats2Label->SetParent(characterFrame[1]);
 	stats2Label->setPosition(171, 462);
-	characTeamSprite[1] = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, teamRects[1]);
+	characTeamSprite[1] = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, teamRects[0]);
 	characTeamSprite[1]->SetParent(characterFrame[1]);
 	characTeamSprite[1]->setPosition(172, 416);
 	statsSprites[4] = App->gui->AddSprite(0, 0, atlas, statsRects[4]);
@@ -562,7 +562,7 @@ void CharacterSelecScene::LoadSceneUI() {
 		stats4Label->setString("STATS");
 		stats4Label->SetParent(characterFrame[3]);
 		stats4Label->setPosition(171, 462);
-		characTeamSprite[3] = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, teamRects[1]);
+		characTeamSprite[3] = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, teamRects[0]);
 		characTeamSprite[3]->SetParent(characterFrame[3]);
 		characTeamSprite[3]->setPosition(172, 416);
 		statsSprites[12] = App->gui->AddSprite(0, 0, atlas, statsRects[4]);

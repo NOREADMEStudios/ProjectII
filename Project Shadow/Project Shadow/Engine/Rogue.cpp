@@ -182,11 +182,7 @@ bool Rogue::PostUpdate()
 	return true;
 }
 
-bool Rogue::CleanUp(pugi::xml_node&)
-{
 
-	return true;
-}
 
 void Rogue::UpdateSpecStates()
 {

@@ -191,6 +191,9 @@
     <ClCompile Include="Game\Spells\ClericSpells.cpp">
       <Filter>Engine\Entities\Spells</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Corpse.cpp">
+      <Filter>Engine\Entities\Character\Heros</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -366,6 +369,9 @@
     </ClInclude>
     <ClInclude Include="Game\Spells\ClericSpells.h">
       <Filter>Engine\Entities\Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Corpse.h">
+      <Filter>Engine\Entities\Character\Heros</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

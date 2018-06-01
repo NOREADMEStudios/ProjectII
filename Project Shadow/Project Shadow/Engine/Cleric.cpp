@@ -147,11 +147,7 @@ bool Cleric::PostUpdate()
 	return true;
 }
 
-bool Cleric::CleanUp(pugi::xml_node&)
-{
 
-	return true;
-}
 
 void Cleric::UpdateSpecStates()
 {

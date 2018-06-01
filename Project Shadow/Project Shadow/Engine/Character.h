@@ -64,7 +64,8 @@ enum CharStateEnum
 	PARRIED,
 	TAUNT,
 	AD_ACTION,
-	STUNED
+	STUNED,
+	STAND_UP
 };
 
 struct State

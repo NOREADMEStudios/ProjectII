@@ -34,6 +34,8 @@ bool CharacterSelecScene::Start()
 {
 	LoadBackground("UI/BasicMenuScene.png");
 	indexSprites[0] = indexSprites[1] = indexSprites[2] = indexSprites[3] = 0;
+	teamIndex[0] = teamIndex[1] = teamIndex[2] = teamIndex[3] = 0;
+	blueTeamMembers = redTeamMembers = 0;
 
 	characterRects[0] = { 1676, 156, 188, 275 }; // WIZARD For changing the sprite directly
 	characterRects[1] = { 1676, 431, 188, 275 }; //ROGUE
@@ -99,11 +101,15 @@ bool CharacterSelecScene::AllPlayersReady() {
 	bool ret = true;
 	int index = controllersNum;
 	for (int i = 0; i < controllersNum; i++) {
-		if (players[i].ready == true) {
+		if (App->scenes->gameMode == GameMode::ONEvsONE && i >= 2)
+			i = controllersNum;
+		if (players[i].ready == true){
 			index--;
 		}
 	}
-	if (index != 0)
+	if (App->scenes->gameMode == GameMode::TWOvsTWO && index != 0)
+		ret = false;
+	else if(App->scenes->gameMode == GameMode::ONEvsONE && index != (controllersNum - 2))
 		ret = false;
 
 	return ret;
@@ -117,7 +123,7 @@ void CharacterSelecScene::SetControllerFocus() {
 	}
 
 
-	for (int i = 1; i <= controllersNum; i++) {
+	for (int i = 1; (i <= controllersNum || i <= 4); i++) { //For only creating 4 players maximum
 		Player player;
 
 		player.playerNum = i;
@@ -154,6 +160,8 @@ void CharacterSelecScene::ChangeCharacter()
 {
 	for (int i = 0; i < controllersNum; i++) {
 		Player* player = &players[i];
+		if (App->scenes->gameMode == GameMode::ONEvsONE && i >= 2)
+			return;
 
 		if (App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT && !player->ready && player->teamSelected) { //CHANGE CHARACTER
 			if (indexSprites[i] < 3) {

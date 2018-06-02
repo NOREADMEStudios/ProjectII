@@ -55,7 +55,6 @@ bool ItemSelecScene::Start()
 bool ItemSelecScene::Update(float dt)
 {
 	if (AllPlayersReady()) {//ALL ARROWS LOCKED 
-		ApplyItemAttributes();						 // NEED TO FILL 
 		App->scenes->ChangeScene(App->scenes->mainSc);
 	}
 
@@ -73,11 +72,12 @@ bool ItemSelecScene::Update(float dt)
 
 bool ItemSelecScene::CleanUp()
 {	
+
 	App->gui->CleanUp();
 	App->textures->UnLoad(itemsTex);
 	
 	UnLoadBackground();
-	players.clear();
+	//players.clear();
 	return true;
 }
 
@@ -92,11 +92,11 @@ void ItemSelecScene::LoadSceneUI() {
 	App->gui->setFocus(items[i]->butt);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 360,240,120,120 }, { 0,30,0,0,0,0,0,0 });
+	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 360,240,120,120 }, { 0,3,0,0,0,0,0,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3, itemsTex, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Plate Mail", PLATE, { 0,0,120,120 }, { 0,0,30,0,0,0,0,0 });
+	items[++i] = new Item("Plate Mail", PLATE, { 0,0,120,120 }, { 0,0,3,0,0,0,0,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y / 3, itemsTex, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
@@ -381,21 +381,7 @@ void ItemSelecScene::FindFirstFreeItem(uint playerNum) {
 	}
 }
 
-void ItemSelecScene::ApplyItemAttributes() {
-	for (int i = 0; i < controllersNum; i++) {
-		EntityStats* item = &App->entities->items[i];
-		for (int itemNum = 0; itemNum < 2; itemNum++) {
-			item->atk += (item->atk * players[i].playerItems[itemNum]->stats.atk / 100);
-			item->def += (item->def * players[i].playerItems[itemNum]->stats.def / 100);
-			item->spd += (item->spd * players[i].playerItems[itemNum]->stats.spd / 100);
-			item->ccr += (item->ccr * players[i].playerItems[itemNum]->stats.ccr);
-			item->cdr += (item->cdr * players[i].playerItems[itemNum]->stats.cdr);
 
-			if (players[i].playerItems[itemNum]->stats.life != 0)
-				item->hpRecover = true;
-		}
-	}
-}
 
 void ItemSelecScene::Player::LockedArrow(uint lockedNum) {
 	int distance = focusedItem->butt->rect.w / (totalControllersNum+1);
@@ -419,3 +405,4 @@ ItemSelecScene::Item* ItemSelecScene::Item::GetRelativeItem(InterfaceElement::Di
 
 	return relations[dir];
 }
+

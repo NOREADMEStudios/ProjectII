@@ -6,6 +6,8 @@
 #include "ModuleAudio.h"
 #include "ModuleInput.h"
 #include "Corpse.h"
+#include "ModuleSceneManager.h"
+#include "../Game/Scenes/ItemSelecScene.h"
 
 #include "ModuleMap.h"
 
@@ -75,6 +77,15 @@ bool Character::Start()
 	initialLife = stats.life;
 
 	collider = currentAnimation->CurrentFrame().rect;
+
+	if (App->scenes->itemSc->players.size() >= heroNum)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			stats = stats + App->scenes->itemSc->players[heroNum - 1].playerItems[i]->stats;
+		}
+	}
+
 
 	active = true;
 	return true; 

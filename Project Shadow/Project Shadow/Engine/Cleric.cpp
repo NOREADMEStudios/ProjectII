@@ -39,6 +39,8 @@ bool Cleric::HeroStart()
 	stats.atk = 5;
 	stats.def = 3;
 
+
+	LoadState(PROTECT, "protect");
 	LoadState(RUN, "run");
 
 

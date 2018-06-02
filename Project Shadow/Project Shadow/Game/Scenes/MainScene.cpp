@@ -52,6 +52,10 @@ MainScene::~MainScene()
 
 bool MainScene::Start()
 {
+
+	uiPoint sizeScreen = App->gui->GetGuiSize(); 
+	
+
 	combatEndControlBool = false;
 	App->audio->PlayMusic("Assets/Audio/BGM/Level1.ogg");
 
@@ -67,24 +71,25 @@ bool MainScene::Start()
 	uiPoint dims = App->gui->GetGuiSize();
 	roundsLabel = App->gui->AddLabel(0.5f * dims.x, 0.1f * dims.y, 70, DEFAULT_FONT,
 										{ 255, 255, 255, 255 }, Label::BLENDED, "Round %d", currentRound);
-
+	uint healthbarMargin = 10;
+	uint secHealtbarMargin = 180;
 	if (App->scenes->gameMode == GameMode::ONEvsONE) {
 		e = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[0]);
 		e2 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[1]);
-		App->gui->AddHealthbar((Character*)e, 0, false, 10, 10, atlas, true, { 304, 271, 577, 26 });
-		App->gui->AddHealthbar((Character*)e2, 2, false, 1910, 10, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e, 0, true, healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e2, 2, false, sizeScreen.x - healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
 	}
 	else if (App->scenes->gameMode == GameMode::TWOvsTWO)
 	{
 		e = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[0]);
 		e2 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[1]);
-		App->gui->AddHealthbar((Character*)e, 0, true, 10, 10, atlas, true, { 304, 271, 577, 26 });
-		App->gui->AddHealthbar((Character*)e2, 1, true, 170, 240, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e, 0, true,healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e2, 1, true, secHealtbarMargin, 240, atlas, true, { 304, 271, 577, 26 });
 
 		e3 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[2]);
 		e4 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[3]);
-		App->gui->AddHealthbar((Character*)e3, 2, false, 1910, 10, atlas, true, { 304, 271, 577, 26 });
-		App->gui->AddHealthbar((Character*)e4, 3, false, 1740, 240, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e3, 2, false, sizeScreen.x - healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e4, 3, false, sizeScreen.x -secHealtbarMargin, 240, atlas, true, { 304, 271, 577, 26 });
 	}
 
 	LoadSceneUI();
@@ -204,7 +209,7 @@ void MainScene::WindowStates(){
 			App->PauseGame(paused);			
 			pauseWindow->Enable(true);
 		}
-		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_B && paused) {
+		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_START && paused) {
 			pauseWindow->Enable(false);
 			paused = false;
 			ManageSettings(false);

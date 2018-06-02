@@ -122,7 +122,6 @@ void CharacterSelecScene::SetControllerFocus() {
 		return;
 	}
 
-
 	for (int i = 1; (i <= controllersNum || i <= 4); i++) { //For only creating 4 players maximum
 		Player player;
 

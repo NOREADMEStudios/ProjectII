@@ -32,6 +32,7 @@ bool Rogue::HeroStart()
 {
 	LoadState(RUN, "run");
 	LoadState(PROTECT, "protect");
+	LoadState(KNOKED, "ko");
 	LoadState(STAND_UP, "roll");
 
 	stats.spd = 180;

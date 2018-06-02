@@ -506,7 +506,7 @@ void Character::UpdateMainStates()
 		if (currentAnimation->Finished() && gamepos.y <= 0)
 		{
 			currentAnimation->Reset();
-			currentState = IDLE;
+			currentState = STAND_UP;
 		}
 
 	}
@@ -768,7 +768,6 @@ void Character::LoadBasicStates()
 	LoadState(HIT, "hit");
 	LoadState(DEATH, "death");
 	LoadState(TAUNT, "win");
-	LoadState(KNOKED, "death");
 	LoadState(STUNED, "stuned");
 
 }

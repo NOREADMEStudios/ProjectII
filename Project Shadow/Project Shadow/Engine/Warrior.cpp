@@ -41,6 +41,8 @@ bool Warrior::HeroStart()
 	LoadState(PROTECT, "protect");
 	LoadState(PARRY, "standup");
 	LoadState(RUN, "run");
+	LoadState(KNOKED, "death");
+	LoadState(STAND_UP, "get_up");
 
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack",animations_name, 2);

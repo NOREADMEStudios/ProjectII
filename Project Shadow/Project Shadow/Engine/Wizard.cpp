@@ -30,6 +30,9 @@ bool Wizard::Awake(pugi::xml_node&)
 
 bool Wizard::HeroStart()
 {
+	LoadState(KNOKED, "death");
+	LoadState(STAND_UP, "get_up");
+
 
 	stats.spd = 180;
 	stats.life = 100;

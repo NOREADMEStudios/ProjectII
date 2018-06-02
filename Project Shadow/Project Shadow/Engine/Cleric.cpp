@@ -40,6 +40,8 @@ bool Cleric::HeroStart()
 	stats.def = 3;
 
 	LoadState(RUN, "run");
+	LoadState(KNOKED, "ko");
+	LoadState(STAND_UP, "get_up");
 
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", animations_name, 1);

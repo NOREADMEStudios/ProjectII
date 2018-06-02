@@ -90,6 +90,7 @@ bool MainScene::Start()
 	LoadSceneUI();
 	CreateSettingsWindow();
 	SetControllerFocus();
+	SetDebugLabels();
 	return false;
 }
 
@@ -114,10 +115,10 @@ bool MainScene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		((Character*)e2)->AdHp(-100);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && App->scenes->gameMode == GameMode::TWOvsTWO) {
 		((Character*)e3)->AdHp(-100);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && App->scenes->gameMode == GameMode::TWOvsTWO) {
 		((Character*)e4)->AdHp(-100);
 	}
 
@@ -125,8 +126,20 @@ bool MainScene::Update(float dt)
 		App->input->BlockKeyboardEvent(SDL_SCANCODE_P);
 		App->scenes->ChangeScene(App->scenes->endSc);
 	}
-#endif
 
+	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+	{
+		((Character*)e)->AdHp(100);
+		((Character*)e2)->AdHp(100);
+		if (App->scenes->gameMode == GameMode::TWOvsTWO)
+		{
+			((Character*)e3)->AdHp(100);
+			((Character*)e4)->AdHp(100);
+		}
+	}
+
+#endif
+	UpdateDebugLabels();
 	App->map->Draw();
 
 	return true;

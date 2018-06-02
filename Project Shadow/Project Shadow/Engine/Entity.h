@@ -93,6 +93,7 @@ struct EntityStats
 		r.mgk = mgk + v.mgk;
 		r.cdr = cdr + v.cdr;
 		r.ccr = ccr + v.ccr;
+		r.hpRecover = hpRecover + v.hpRecover;
 		
 		return(r);
 	}

@@ -3,6 +3,7 @@
 #include "CharacterSelecScene.h"
 #include "../../Engine/Warrior.h"
 #include "EndScene.h"
+#include "ItemSelecScene.h"
 #include "../../Engine/Warrior.h"
 #include "../../Engine/ModuleMap.h"
 #include "../../Engine/App.h"
@@ -187,6 +188,8 @@ bool MainScene::CleanUp()
 	App->gui->CleanUp();
 	App->entities->CleanUp(n);
 	App->SetTimeScale(1.f);
+
+	App->scenes->itemSc->players.clear();
 	return true;
 }
 

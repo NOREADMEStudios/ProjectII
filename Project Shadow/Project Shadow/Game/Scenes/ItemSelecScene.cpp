@@ -47,6 +47,7 @@ bool ItemSelecScene::Start()
 
 	LoadSceneUI();
 	SetControllerFocus();
+	SetDebugLabels();
 
 	return true;
 }
@@ -66,7 +67,7 @@ bool ItemSelecScene::Update(float dt)
 		ChooseFocus();
 		RemoveSelectedItem();
 	}
-
+	UpdateDebugLabels();
 	return true;
 }
 
@@ -386,8 +387,9 @@ void ItemSelecScene::ApplyItemAttributes() {
 		for (int itemNum = 0; itemNum < 2; itemNum++) {
 			item->atk += (item->atk * players[i].playerItems[itemNum]->stats.atk / 100);
 			item->def += (item->def * players[i].playerItems[itemNum]->stats.def / 100);
-			item->mgk += players[i].playerItems[itemNum]->stats.mgk;
 			item->spd += (item->spd * players[i].playerItems[itemNum]->stats.spd / 100);
+			item->ccr += (item->ccr * players[i].playerItems[itemNum]->stats.ccr);
+			item->cdr += (item->cdr * players[i].playerItems[itemNum]->stats.cdr);
 
 			if (players[i].playerItems[itemNum]->stats.life != 0)
 				item->hpRecover = true;

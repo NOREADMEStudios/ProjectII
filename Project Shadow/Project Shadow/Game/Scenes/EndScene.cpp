@@ -33,7 +33,7 @@ bool EndScene::Start()
 {
 	LoadUIButtons();
 	SetControllerFocus();
-
+	SetDebugLabels();
 	return true;
 }
 
@@ -48,7 +48,7 @@ bool EndScene::Update(float dt)
 	}
 
 	DrawBackground();
-
+	UpdateDebugLabels();
 	return true;
 }
 

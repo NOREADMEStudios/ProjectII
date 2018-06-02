@@ -4,6 +4,8 @@
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
 #include "ModuleAudio.h"
+#include "ModuleGUI.h"
+#include "UI\Label.h"
 #include "../SDL/include/SDL.h"
 
 
@@ -184,7 +186,12 @@ bool ModuleInput::PreUpdate() {
 bool ModuleInput::Update(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
 		App->debug = !App->debug;
+		App->scenes->EnableDebugLab();
+		//App->gui->debugfpslab->Enable(!App->gui->debugfpslab->enabled);
+	}
+
 	return true;
 }
 

@@ -59,7 +59,7 @@ bool CharacterSelecScene::Start()
 	charactersTeam[0] = RED;
 	charactersTeam[1] = BLUE;
 
-
+	SetDebugLabels();
 	LoadSceneUI();
 	SetControllerFocus();
 	SetCharactersInfo();
@@ -79,7 +79,7 @@ bool CharacterSelecScene::Update(float dt)
 	DrawBackground();
 	ChangeCharacter();
 	ChangeTeam();
-
+	UpdateDebugLabels();
 	//App->input->CheckControllers();
 	return true;
 }

@@ -92,6 +92,9 @@ bool Warrior::HeroStart()
 	ulti_sp = App->entities->CreateSpell({ DEATH_MARK ,team,  {0,0,0} });
 	((DeathMark*)ulti_sp)->SetPath("battle_cry");
 
+	ulti_indicator = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
+	((DeathMark*)ulti_indicator)->SetPath("warbuff");
+
 	return true;
 }
 
@@ -216,12 +219,19 @@ void Warrior::UpdateSpecStates()
 		buffed = true;
 		AdBuff(10, 100, 10, 10);
 		buffed = true;
+
 		DeathMark* bp = new DeathMark{ *(DeathMark*)ulti_sp };
 		bp->SetParent(this);
 		bp->SetPos(gamepos.x, gamepos.y, gamepos.z - 1);
 		bp->cl = true;
 		bp->Start();
 		bp->SetBack();
+
+		DeathMark* ulti_i = new DeathMark{ *(DeathMark*)ulti_indicator };
+		ulti_i->SetParent(this);
+		ulti_i->SetPos(gamepos.x, gamepos.y, gamepos.z - 1);
+		ulti_i->Start();
+		ulti_i->SetLifeTime(10 * 1000);
 
 		
 		if (partner != nullptr)
@@ -233,6 +243,12 @@ void Warrior::UpdateSpecStates()
 			bp_2->cl = true;
 			bp_2->Start();
 			bp->SetBack();
+
+			DeathMark* ulti_i2 = new DeathMark{ *(DeathMark*)ulti_indicator };
+			ulti_i2->SetParent(partner);
+			ulti_i2->SetPos(gamepos.x, gamepos.y, gamepos.z - 1);
+			ulti_i2->Start();
+			ulti_i2->SetLifeTime(10 * 1000);
 		}
 	}
 

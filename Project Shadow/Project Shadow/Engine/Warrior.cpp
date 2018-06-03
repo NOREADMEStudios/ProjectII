@@ -41,19 +41,21 @@ bool Warrior::HeroStart()
 	LoadState(PROTECT, "protect");
 	LoadState(PARRY, "standup");
 	LoadState(RUN, "run");
+	LoadState(KNOKED, "death");
+	LoadState(STAND_UP, "get_up");
 
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack",animations_name, 2);
-	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "kick", animations_name, 2, 40, false);
-	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 20, true);
-	Attack* light_2 = new Attack(4, LIGHT_ATTACK, "attack_knee", animations_name, 2, 40);
+	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "kick", animations_name, 2, 50, false);
+	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 40, true);
+	Attack* light_2 = new Attack(4, LIGHT_ATTACK, "attack_knee", animations_name, 2, 50);
 	Attack* heavy_2 = new Attack(5, HEAVY_ATTACK, "strong_attack", animations_name, 2);
 	Attack* light_3 = new Attack(6, LIGHT_ATTACK, "attack_2", animations_name, 5);
-	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK, "jump_attack", animations_name, 2, 30, true);
-	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", animations_name, 5, 50, true);
-	Attack* ab_1 = new Attack(11, AB_1, "slide", animations_name, 5, 40, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "slide_2", animations_name, 5, 40, false, true);
-	Attack* ulti = new Attack(13, AB_3, "intro",animations_name, 0, 20,false, true);
+	Attack* jump_a2 = new Attack(7, LIGHT_ATTACK, "jump_attack", animations_name, 2, 40, true);
+	Attack* jump_a3 = new Attack(8, HEAVY_ATTACK, "windwhirl", animations_name, 5, 60, true);
+	Attack* ab_1 = new Attack(11, AB_1, "slide", animations_name, 5, 50, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "slide_2", animations_name, 5, 50, false, true);
+	Attack* ulti = new Attack(13, AB_3, "intro",animations_name, 0, 30,false, true);
 
 	attacks.push_back(light_1);
 	attacks.push_back(light_2);
@@ -89,6 +91,9 @@ bool Warrior::HeroStart()
 
 	ulti_sp = App->entities->CreateSpell({ DEATH_MARK ,team,  {0,0,0} });
 	((DeathMark*)ulti_sp)->SetPath("battle_cry");
+
+	ulti_indicator = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
+	((DeathMark*)ulti_indicator)->SetPath("warbuff");
 
 	return true;
 }
@@ -214,12 +219,19 @@ void Warrior::UpdateSpecStates()
 		buffed = true;
 		AdBuff(10, 100, 10, 10);
 		buffed = true;
+
 		DeathMark* bp = new DeathMark{ *(DeathMark*)ulti_sp };
 		bp->SetParent(this);
 		bp->SetPos(gamepos.x, gamepos.y, gamepos.z - 1);
 		bp->cl = true;
 		bp->Start();
 		bp->SetBack();
+
+		DeathMark* ulti_i = new DeathMark{ *(DeathMark*)ulti_indicator };
+		ulti_i->SetParent(this);
+		ulti_i->SetPos(gamepos.x, gamepos.y, gamepos.z - 1);
+		ulti_i->Start();
+		ulti_i->SetLifeTime(10 * 1000);
 
 		
 		if (partner != nullptr)
@@ -231,6 +243,12 @@ void Warrior::UpdateSpecStates()
 			bp_2->cl = true;
 			bp_2->Start();
 			bp->SetBack();
+
+			DeathMark* ulti_i2 = new DeathMark{ *(DeathMark*)ulti_indicator };
+			ulti_i2->SetParent(partner);
+			ulti_i2->SetPos(gamepos.x, gamepos.y, gamepos.z - 1);
+			ulti_i2->Start();
+			ulti_i2->SetLifeTime(10 * 1000);
 		}
 	}
 

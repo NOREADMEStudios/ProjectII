@@ -8,7 +8,7 @@ Sprite::Sprite(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _an
 	rel_pos.x = _x;
 	rel_pos.y = _y;
 	initial_pos = rel_pos;
-	Enable(_enabled);
+	enabled = _enabled;
 
 	if (_anim != NULL)
 	{

@@ -33,7 +33,7 @@ bool EndScene::Start()
 {
 	LoadUIButtons();
 	SetControllerFocus();
-
+	SetDebugLabels();
 	return true;
 }
 
@@ -47,6 +47,8 @@ bool EndScene::Update(float dt)
 		ChooseFocus();
 	}
 
+	DrawBackground();
+	UpdateDebugLabels();
 	return true;
 }
 
@@ -80,17 +82,7 @@ void EndScene::SetControllerFocus() {
 
 void EndScene::LoadUIButtons() {
 	uiPoint screenSize = App->gui->GetGuiSize();
-	SDL_Texture* back_end = App->textures->Load("UI/YouWin.png");
-	Sprite* background = App->gui->AddSprite(820, 540, back_end, { 0,0,1750,1080 }, true);
-	background->setPosition(screenSize.x * 0.5f, screenSize.y * 0.5f);
-	background->ComputeRects();
-
-	if (screenSize.y < background->rect.h) {
-		background->scale = MAX((float)screenSize.y / (float)background->rect.h, (float)screenSize.x / (float)background->rect.w);
-	}
-	else {
-		background->scale = MIN((float)screenSize.y / (float)background->rect.h, (float)screenSize.x / (float)background->rect.w);
-	}
+	LoadBackground("UI/BackgroundItems.png");
 	
 	mainMenuButton = App->gui->AddButton((screenSize.x / 2), (screenSize.y / 4) * 3, nullptr, { 1282,883,400,98 }, true, MainButtonPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
 	mainMenuButton->OnHoverEnter = MainButtonHoverEnCallb;

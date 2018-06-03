@@ -3,6 +3,7 @@
 #include "CharacterSelecScene.h"
 #include "../../Engine/Warrior.h"
 #include "EndScene.h"
+#include "ItemSelecScene.h"
 #include "../../Engine/Warrior.h"
 #include "../../Engine/ModuleMap.h"
 #include "../../Engine/App.h"
@@ -95,6 +96,8 @@ bool MainScene::Start()
 	LoadSceneUI();
 	CreateSettingsWindow();
 	SetControllerFocus();
+	SetDebugLabels();
+	
 	return false;
 }
 
@@ -119,10 +122,10 @@ bool MainScene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		((Character*)e2)->AdHp(-100);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && App->scenes->gameMode == GameMode::TWOvsTWO) {
 		((Character*)e3)->AdHp(-100);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && App->scenes->gameMode == GameMode::TWOvsTWO) {
 		((Character*)e4)->AdHp(-100);
 	}
 
@@ -130,8 +133,20 @@ bool MainScene::Update(float dt)
 		App->input->BlockKeyboardEvent(SDL_SCANCODE_P);
 		App->scenes->ChangeScene(App->scenes->endSc);
 	}
-#endif
 
+	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+	{
+		((Character*)e)->AdHp(100);
+		((Character*)e2)->AdHp(100);
+		if (App->scenes->gameMode == GameMode::TWOvsTWO)
+		{
+			((Character*)e3)->AdHp(100);
+			((Character*)e4)->AdHp(100);
+		}
+	}
+
+#endif
+	UpdateDebugLabels();
 	App->map->Draw();
 
 	return true;
@@ -179,6 +194,8 @@ bool MainScene::CleanUp()
 	App->gui->CleanUp();
 	App->entities->CleanUp(n);
 	App->SetTimeScale(1.f);
+
+	App->scenes->itemSc->players.clear();
 	return true;
 }
 
@@ -314,7 +331,12 @@ void MainScene::CreateSettingsWindow() {
 	BckLabel->SetParent(settBackButt);
 	BckLabel->culled = false;
 
-	music_sp->SetParent(pauseWindow);
+	music_sp->SetParent(pauseWindow); 
+	fx_sp->SetParent(pauseWindow);
+	fullscrenButt->SetParent(pauseWindow);
+	settBackButt->SetParent(pauseWindow);
+	pauseWindow->Enable(false);
+	
 
 	fullscrenButt->SetRelation(settBackButt, InterfaceElement::Directions::DOWN);
 	settBackButt->SetRelation(fullscrenButt, InterfaceElement::Directions::DOWN);

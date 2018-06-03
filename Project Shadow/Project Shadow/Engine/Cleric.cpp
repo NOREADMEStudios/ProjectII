@@ -42,16 +42,18 @@ bool Cleric::HeroStart()
 
 	LoadState(PROTECT, "protect");
 	LoadState(RUN, "run");
+	LoadState(KNOKED, "ko");
+	LoadState(STAND_UP, "get_up");
 
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack", animations_name, 1);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_2", animations_name, 5);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_3", animations_name, 2);
-	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 20, true);
-	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "death_mark", animations_name, 0, 20, true);
-	Attack* ab_1 = new Attack(11, AB_1, "maze", animations_name, 0, 20, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "ab_2", animations_name, 0, 20, false, true);
-	Attack* ab_3 = new Attack(13, AB_3, "ab_3", animations_name, 0, 20, false, true);
+	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 40, true);
+	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "death_mark", animations_name, 0, 40, true);
+	Attack* ab_1 = new Attack(11, AB_1, "maze", animations_name, 0, 40, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "ab_2", animations_name, 0, 40, false, true);
+	Attack* ab_3 = new Attack(13, AB_3, "ab_3", animations_name, 0, 40, false, true);
 
 	attacks.push_back(light_1);
 	attacks.push_back(heavy_1);
@@ -297,8 +299,14 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 		else if (_this->type == Collider::ATK && _other->type == Collider::HITBOX && StateisAtk(currentState))
 		{
 			Attack * atk = GetAtk(currentTag);
+			int dmg = _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
+			if (dmg <= 0)
+			{
+				dmg = 1;
+			}
 			if (atk != nullptr)
-				_other->entity->stats.life -= _this->entity->stats.atk + atk->damage - _other->entity->stats.def;
+				_other->entity->stats.life -= dmg;
+
 
 		}
 }

@@ -72,6 +72,10 @@ public:
 	void SetTimeScale(float ts, int frameNumber = -1);
 
 	void Quit();
+	float avg_fps;
+	float seconds_since_startup;
+	uint32 last_frame_ms;
+	uint32 frames_on_last_update;
 
 private:
 	// Sets the provided node with the default structure of the config file

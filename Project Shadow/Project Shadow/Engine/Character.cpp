@@ -6,6 +6,8 @@
 #include "ModuleAudio.h"
 #include "ModuleInput.h"
 #include "Corpse.h"
+#include "ModuleSceneManager.h"
+#include "../Game/Scenes/ItemSelecScene.h"
 
 #include "ModuleMap.h"
 
@@ -58,7 +60,7 @@ bool Character::Start()
 
 	invencible.dur = 3;
 	invencible.fr = 0.2f;
-	char_depth = 20;
+	char_depth = 30;
 
 
 	initialpos.x = gamepos.x;
@@ -75,6 +77,15 @@ bool Character::Start()
 	initialLife = stats.life;
 
 	collider = currentAnimation->CurrentFrame().rect;
+
+	if (App->scenes->itemSc->players.size() >= heroNum)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			stats = stats + App->scenes->itemSc->players[heroNum - 1].playerItems[i]->stats;
+		}
+	}
+
 
 	active = true;
 	return true; 
@@ -359,7 +370,8 @@ void Character::RequestState() {
 	}
 
 	bool run = false,
-		block = false;
+		block = false,
+		jump = false;
 	directions.down = false;
 	directions.up = false;
 	directions.left = false;
@@ -394,10 +406,6 @@ void Character::RequestState() {
 			wantedState = ATTACK_HEAVY;
 			wantedTag = 2;
 			break;
-		case JUMPINPUT:
-			wantedState = JUMP;
-			wantedTag = 3;
-			break;
 		case RUNINPUT:
 			run = true;
 			break;
@@ -422,16 +430,33 @@ void Character::RequestState() {
 			wantedState = AD_ACTION;
 			wantedTag = 13;
 			break;
+		case JUMPINPUT:
+			jump = true;
+			break;
 		default:
 			break;
 		}
 	}
+
+	if (StateisAtk(currentState) && wantedState == AD_ACTION)
+	{
+		wantedState = IDLE;
+		wantedTag = 0;
+	}
+
+
 
 	if (wantedState == IDLE && (directions.down == true || directions.up == true || directions.left == true || directions.right == true))
 	{
 		wantedState = WALK;
 		if (run)
 			wantedState = RUN;
+	}
+
+	if (jump)
+	{
+		wantedState = JUMP;
+		wantedTag = 3;
 	}
 
 }
@@ -500,7 +525,7 @@ void Character::UpdateMainStates()
 		if (currentAnimation->Finished() && gamepos.y <= 0)
 		{
 			currentAnimation->Reset();
-			currentState = IDLE;
+			currentState = STAND_UP;
 		}
 
 	}
@@ -762,7 +787,6 @@ void Character::LoadBasicStates()
 	LoadState(HIT, "hit");
 	LoadState(DEATH, "death");
 	LoadState(TAUNT, "win");
-	LoadState(KNOKED, "death");
 	LoadState(STUNED, "stuned");
 
 }

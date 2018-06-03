@@ -57,6 +57,8 @@ bool IntroScene::Start()
 	LoadUIButtons();
 	CreateSettingsWindow();
 	SetControllerFocus();
+	SetDebugLabels();
+	ManageSettings(false);
 	return true;
 }
 
@@ -70,7 +72,7 @@ bool IntroScene::Update(float dt)
 		ManageDisplacement();
 		ChooseFocus();
 	}
-
+	UpdateDebugLabels();
 	//Scene::Update(dt);
 
 	return true;

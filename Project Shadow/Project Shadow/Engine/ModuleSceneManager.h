@@ -46,6 +46,7 @@ public:
 	void LoadScene(Scene* scene);
 	void ChangeScene(Scene* scene_to_change);
 	void UnloadScene(Scene* scene);
+	void EnableDebugLab();
 
 	IntroScene* introSc;
 	CharacterSelecScene* characterSc;

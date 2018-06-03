@@ -75,7 +75,6 @@ public:
 	};
 
 	Item* items[6];
-	SDL_Texture* itemsTex = nullptr;
 	/*String* statsItemsStr[6];
 	Label* stats*/
 

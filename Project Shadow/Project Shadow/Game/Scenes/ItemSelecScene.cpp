@@ -33,8 +33,6 @@ bool ItemSelecScene::Start()
 	uiPoint screenSize = App->gui->GetGuiSize();
 	LoadBackground("UI/BackgroundItems.png");
 
-	itemsTex = App->textures->Load("UI/ItemsCursors.png");
-
 	Sprite* bg = App->gui->AddSprite(0, 0, background, { 0,0,1920,1080 });
 	bg->setPosition(screenSize.x * 0.5f, screenSize.y * 0.5f);
 	bg->ComputeRects();
@@ -73,7 +71,7 @@ bool ItemSelecScene::Update(float dt)
 bool ItemSelecScene::CleanUp()
 {	
 	App->gui->CleanUp();
-	App->textures->UnLoad(itemsTex);
+	App->textures->UnLoad(atlas);
 	
 	UnLoadBackground();
 	players.clear();
@@ -86,29 +84,29 @@ void ItemSelecScene::LoadSceneUI() {
 
 	int i = 0;
 
-	items[i] = new Item("Staff of Thoth", STAFF, { 480,240,120,120 }, { 0,0,0,0,0,20,0 });
-	items[i]->butt = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y / 3, itemsTex, items[i]->animRect, true, nullptr);
+	items[i] = new Item("Staff of Thoth", STAFF, { 360,1825,90,90 }, { 0,0,0,0,0,20,0 });
+	items[i]->butt = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y / 3, nullptr, items[i]->animRect, true, nullptr);
 	App->gui->setFocus(items[i]->butt);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 360,240,120,120 }, { 0,30,0,0,0,0,0,0 });
-	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3, itemsTex, items[i]->animRect, true, nullptr);
+	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 360,1735,90,90 }, { 0,30,0,0,0,0,0,0 });
+	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Plate Mail", PLATE, { 0,0,120,120 }, { 0,0,30,0,0,0,0,0 });
-	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y / 3, itemsTex, items[i]->animRect, true, nullptr);
+	items[++i] = new Item("Plate Mail", PLATE, { 0,1645,90,90 }, { 0,0,30,0,0,0,0,0 });
+	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Ring of Protection", RING, { 240,120,120,120 }, { 0,0,0,0,0,0,30,0 });
-	items[i]->butt = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y * 2 / 3, itemsTex, items[i]->animRect, true, nullptr);
+	items[++i] = new Item("Ring of Protection", RING, { 180,1735,90,90 }, { 0,0,0,0,0,0,30,0 });
+	items[i]->butt = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y * 2 / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Swift Boots", SWIFT_BOOTS, { 240,0,120,120 }, { 0,0,0,50,0,0,0,0 });
-	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y * 2 / 3, itemsTex, items[i]->animRect, true, nullptr);
+	items[++i] = new Item("Swift Boots", SWIFT_BOOTS, { 180,1645,90,90 }, { 0,0,0,50,0,0,0,0 });
+	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y * 2 / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Tiara", TIARA, { 360,120,120,120 }, { 0,0,0,0,0,0,0,1 });
-	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y * 2 / 3, itemsTex, items[i]->animRect, true, nullptr);
+	items[++i] = new Item("Tiara", TIARA, { 270,1735,90,90 }, { 0,0,0,0,0,0,0,1 });
+	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y * 2 / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
 
@@ -239,7 +237,7 @@ void ItemSelecScene::ChooseFocus() {
 			
 			Item* item = players[i].focusedItem;
 			players[i].playerItems[players[i].locked] = item;
-			players[i].miniatureItems[players[i].locked] = App->gui->AddSprite(-300, 0, itemsTex, item->animRect);
+			players[i].miniatureItems[players[i].locked] = App->gui->AddSprite(-300, 0, nullptr, item->animRect);
 			players[i].miniatureItems[players[i].locked]->SetParent(players[i].miniatureItemsFrame);
 			players[i].miniatureItems[players[i].locked]->setPosition((players[i].miniatureItemsFrame->rect.w * (1 + i) / 3), players[i].miniatureItemsFrame->rect.h * 2 / 3);
 			players[i].LockedArrow(players[i].locked);
@@ -316,23 +314,23 @@ void ItemSelecScene::Player::LoadArrows() {
 	switch (playerNum) {
 	case 0: return;
 	case 1: 
-		arrowRect = { 600, 36, 56, 36 }; // Red
+		arrowRect = { 450, 1672, 42,27 }; // Red
 		arrowLockRect = { 1082, 129, 51,45 };
 		break;
 	case 2:
-		arrowRect = { 656, 36, 56,36 }; // Green
+		arrowRect = { 492,1726, 42,27 }; // Green
 		arrowLockRect = { 1133, 129, 51,45 };
 		break;
 	case 3:
-		arrowRect = { 656, 0, 56,36 }; //Blue
+		arrowRect = { 492,1753, 42,27 }; //Blue
 		arrowLockRect = { 1184, 129, 51,45 };
 		break;
 	case 4:
-		arrowRect = { 600, 0, 56,36 }; // Yellow (should be gray)
+		arrowRect = { 450, 1807, 42,27 }; // Yellow (should be gray)
 		arrowLockRect = { 1235, 129, 51,45 };
 		break;
 	}
-	arrow = App->gui->AddSprite(focusedItem->butt->getPositionX(), focusedItem->butt->getPositionY() - focusedItem->butt->rect.h/2, App->scenes->itemSc->itemsTex, arrowRect);
+	arrow = App->gui->AddSprite(focusedItem->butt->getPositionX(), focusedItem->butt->getPositionY() - focusedItem->butt->rect.h/2,nullptr, arrowRect);
 	DrawOrderedArrow();
 }
 

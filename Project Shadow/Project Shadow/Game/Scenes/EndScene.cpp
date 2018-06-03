@@ -108,9 +108,11 @@ void EndScene::LoadUIButtons() {
 	switch (App->entities->GetWinnerTeam()) {
 	case Team::BLUE:
 		TeamLabel = "BLUE";
+		break;
 		
 	case Team::RED:
 		TeamLabel = "RED";
+		break;
 	}
 
 	winnerLabel->setString("WINNER: TEAM %s", TeamLabel.c_str() );

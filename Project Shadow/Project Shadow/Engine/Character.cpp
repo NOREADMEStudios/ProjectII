@@ -99,7 +99,7 @@ bool Character::PreUpdate()
 }
 
 bool Character::Update(float dt)
-{ 
+{
 
 	if (paused) {
 		resume = true;
@@ -110,7 +110,7 @@ bool Character::Update(float dt)
 		currentAnimation->ResumeFrame();
 		resume = false;
 	}
-	
+
 
 	if (stats.hpRecover && hpRecTimer.Count(5) && stats.life < initialLife)
 	{
@@ -169,6 +169,10 @@ bool Character::Update(float dt)
 	if (gamepos.z > App->map->GetMapBorders_Z() + App->map->GetMapBorders_H())
 		gamepos.z = App->map->GetMapBorders_Z() + App->map->GetMapBorders_H();
 
+	if (dead) {	
+		LeaveCorpse();
+		RemoveColliders();
+	}
 	return true; 
 }
 
@@ -182,22 +186,8 @@ bool Character::CleanUp(pugi::xml_node&)
 	App->textures->UnLoad(sprites);
 
 	UnloadShadow();
-
-	if (collAtk) {
-		App->collision->RemoveCollider(collAtk);
-	}
-	if (collDef) {
-		App->collision->RemoveCollider(collDef);
-	}
-	if (collParry) {
-		App->collision->RemoveCollider(collParry);
-	}
-
+	RemoveColliders();
 	Utils::ClearList(attacks);
-
-
-	App->collision->RemoveCollider(collHitBox);
-	App->collision->RemoveCollider(collFeet);
 
 	if (heroCorpse) {
 		pugi::xml_node n;
@@ -207,6 +197,24 @@ bool Character::CleanUp(pugi::xml_node&)
 	return true;
 }
 
+void Character::RemoveColliders() {
+
+	if (collAtk) {
+		App->collision->RemoveCollider(collAtk); collAtk = nullptr;
+	}
+	if (collDef) {
+		App->collision->RemoveCollider(collDef); collDef = nullptr;
+	}
+	if (collParry) {
+		App->collision->RemoveCollider(collParry); collParry = nullptr;
+	}
+	if (collHitBox) {
+		App->collision->RemoveCollider(collHitBox); collHitBox = nullptr;
+	}
+	if (collFeet) {
+		App->collision->RemoveCollider(collFeet); collFeet = nullptr;
+	}
+}
 
 void Character::ModifyStats(int attack, int defense, int speed, int magic)
 {
@@ -525,8 +533,8 @@ void Character::UpdateMainStates()
 	{
 		if (currentState == DEATH)
 		{
-			active = false;
-			LeaveCorpse();
+			active = false;			
+			dead = true;
 		}
 		
 		if (StateisAtk(currentState))

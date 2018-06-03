@@ -215,7 +215,7 @@ public:
 	Timer time_attack;
 	Timer noMove;
 
-
+	void RemoveColliders();
 	void SetAnimations();
 	void SetCharType(CharacterTypes type);
 	void SetState(CharStateEnum st) { currentState = st; };
@@ -271,7 +271,7 @@ protected:
 	LIST(State*) states;
 
 
-
+	bool dead = false;
 	iPoint initialpos;
 	int initialLife = 0;
 	uint lives = 0, maxLives = 1;

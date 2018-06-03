@@ -112,7 +112,7 @@ bool ModuleEntityManager::PreUpdate() {
 bool ModuleEntityManager::Update(float dt) {
 	uint aliveCharacters = 0;
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
-		if ((*item)->active)
+		if ((*item)->active )
 		{
 			(*item)->Update(dt);
 			if ((*item)->charType == CharacterTypes::CORPSE) { 
@@ -365,10 +365,11 @@ Entity* ModuleEntityManager::GetEntity(uint num)
 	return ret;
 }
 
-Team ModuleEntityManager::GetWinnerTeam()
+Team ModuleEntityManager::GetWinnerTeam() const
 {
 	return winnerTeam;
 }
+
 
 void ModuleEntityManager::StartItems()
 {

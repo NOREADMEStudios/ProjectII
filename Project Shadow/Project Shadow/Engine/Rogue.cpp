@@ -45,7 +45,7 @@ bool Rogue::HeroStart()
 	dagger->SetParent(this);
 
 	death_m = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
-	((DeathMark*)death_m)->SetPath("dagger");
+	((DeathMark*)death_m)->SetPath("death_mark");
 
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "L_Attack_2", animations_name, 1);
@@ -318,6 +318,7 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 				DeathMark* death = new DeathMark{ *(DeathMark*)death_m };
 				death->SetParent((Character*)_other->entity);
 				death->Start();
+				death->SetLifeTime((10 - ((_other->entity->stats.ccr / 100) * 10)) * 1000);
 
 				_other->entity->AdBuff(10 - ((_other->entity->stats.ccr / 100) *10), 0, -5, -5);
 			}

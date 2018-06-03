@@ -93,6 +93,7 @@ private:
 	int redTeamMembers = 0;
 	int blueTeamMembers = 0;
 
+	Sprite* characterIndicatorSquare[4];
 	std::vector<Player> players;
 };
 

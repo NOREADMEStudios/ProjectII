@@ -457,6 +457,9 @@ void CharacterSelecScene::LoadSceneUI() {
 
 	Sprite* crossedSwordsSprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 1700, 782,187,175 });
 	characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 4, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
+	characterIndicatorSquare[0] = App->gui->AddSprite(0, 0, nullptr, { 450,1861,42,27 });
+	characterIndicatorSquare[0]->SetParent(characterFrame[0]);
+	characterIndicatorSquare[0]->setPosition(characterFrame[0]->rect.w / 2, 72);
 	characterSprites[0] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 	characterSprites[0]->idle_anim = characterRects[0];
 	characterSprites[0]->SetParent(characterFrame[0]);
@@ -491,6 +494,9 @@ void CharacterSelecScene::LoadSceneUI() {
 	statsSprites[3]->setPosition(45, 626);
 
 	characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 4 * 3, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
+	characterIndicatorSquare[1] = App->gui->AddSprite(0, 0, nullptr, { 492,1861,42,27 });
+	characterIndicatorSquare[1]->SetParent(characterFrame[1]);
+	characterIndicatorSquare[1]->setPosition(characterFrame[0]->rect.w / 2, 72);
 	characterSprites[1] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 	characterSprites[1]->SetParent(characterFrame[1]);
 	characterSprites[1]->SetAnchor(0, 0);
@@ -525,9 +531,12 @@ void CharacterSelecScene::LoadSceneUI() {
 
 	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
 		characterFrame[0]->setPositionX(sizeScreen.x / 8 - 30);
-		characterFrame[1]->setPositionX(sizeScreen.x / 8 * 3 - 60);
+		characterFrame[1]->setPositionX(sizeScreen.x / 8 * 3 - 60); 
 
 		characterFrame[2] = App->gui->AddSprite((sizeScreen.x / 8) * 5 + 60, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
+		characterIndicatorSquare[2] = App->gui->AddSprite(0, 0, nullptr, { 450,1888,42,27 });
+		characterIndicatorSquare[2]->SetParent(characterFrame[2]);
+		characterIndicatorSquare[2]->setPosition(characterFrame[2]->rect.w / 2, 72);
 		characterSprites[2] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[2]->SetParent(characterFrame[2]);
 		characterSprites[2]->SetAnchor(0, 0);
@@ -561,6 +570,9 @@ void CharacterSelecScene::LoadSceneUI() {
 		statsSprites[11]->setPosition(45, 626);
 
 		characterFrame[3] = App->gui->AddSprite((sizeScreen.x / 8) * 7 + 30, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
+		characterIndicatorSquare[3] = App->gui->AddSprite(0, 0, nullptr, { 492,1888,42,27 });
+		characterIndicatorSquare[3]->SetParent(characterFrame[3]);
+		characterIndicatorSquare[3]->setPosition(characterFrame[3]->rect.w / 2, 72);
 		characterSprites[3] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[3]->SetParent(characterFrame[3]);
 		characterSprites[3]->SetAnchor(0, 0);

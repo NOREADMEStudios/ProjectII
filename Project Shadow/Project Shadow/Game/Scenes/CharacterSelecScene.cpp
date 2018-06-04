@@ -34,6 +34,8 @@ bool CharacterSelecScene::Start()
 {
 	LoadBackground("UI/BasicMenuScene.png");
 	indexSprites[0] = indexSprites[1] = indexSprites[2] = indexSprites[3] = 0;
+	teamIndex[0] = teamIndex[1] = teamIndex[2] = teamIndex[3] = 0;
+	blueTeamMembers = redTeamMembers = 0;
 
 	characterRects[0] = { 1676, 156, 188, 275 }; // WIZARD For changing the sprite directly
 	characterRects[1] = { 1676, 431, 188, 275 }; //ROGUE
@@ -99,11 +101,15 @@ bool CharacterSelecScene::AllPlayersReady() {
 	bool ret = true;
 	int index = controllersNum;
 	for (int i = 0; i < controllersNum; i++) {
-		if (players[i].ready == true) {
+		if (App->scenes->gameMode == GameMode::ONEvsONE && i >= 2)
+			i = controllersNum;
+		if (players[i].ready == true){
 			index--;
 		}
 	}
-	if (index != 0)
+	if (App->scenes->gameMode == GameMode::TWOvsTWO && index != 0)
+		ret = false;
+	else if(App->scenes->gameMode == GameMode::ONEvsONE && index != (controllersNum - 2))
 		ret = false;
 
 	return ret;
@@ -116,8 +122,7 @@ void CharacterSelecScene::SetControllerFocus() {
 		return;
 	}
 
-
-	for (int i = 1; i <= controllersNum; i++) {
+	for (int i = 1; (i <= controllersNum || i <= 4); i++) { //For only creating 4 players maximum
 		Player player;
 
 		player.playerNum = i;
@@ -154,6 +159,8 @@ void CharacterSelecScene::ChangeCharacter()
 {
 	for (int i = 0; i < controllersNum; i++) {
 		Player* player = &players[i];
+		if (App->scenes->gameMode == GameMode::ONEvsONE && i >= 2)
+			return;
 
 		if (App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT && !player->ready && player->teamSelected) { //CHANGE CHARACTER
 			if (indexSprites[i] < 3) {
@@ -283,8 +290,12 @@ void CharacterSelecScene::ChangeTeam(){
 	}
 	else
 	{
-		for (int i = 0; i < controllersNum; i++) {
+		for (int i = 0; i < 2; i++) {
 			Player* player = &players[i];
+			if (i = 1)			{
+				characTeamSprite[i]->idle_anim = teamRects[1];
+				teamIndex[i] = 1;
+			}
 			player->teamSelected = true;
 			player->arrows[0]->Enable(false);
 			player->arrows[1]->Enable(false);
@@ -446,6 +457,9 @@ void CharacterSelecScene::LoadSceneUI() {
 
 	Sprite* crossedSwordsSprite = App->gui->AddSprite(sizeScreen.x / 2, sizeScreen.y / 5 * 3 + 20, atlas, { 1700, 782,187,175 });
 	characterFrame[0] = App->gui->AddSprite(sizeScreen.x / 4, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
+	characterIndicatorSquare[0] = App->gui->AddSprite(0, 0, nullptr, { 450,1861,42,27 });
+	characterIndicatorSquare[0]->SetParent(characterFrame[0]);
+	characterIndicatorSquare[0]->setPosition(characterFrame[0]->rect.w / 2, 72);
 	characterSprites[0] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 	characterSprites[0]->idle_anim = characterRects[0];
 	characterSprites[0]->SetParent(characterFrame[0]);
@@ -480,6 +494,9 @@ void CharacterSelecScene::LoadSceneUI() {
 	statsSprites[3]->setPosition(45, 626);
 
 	characterFrame[1] = App->gui->AddSprite(sizeScreen.x / 4 * 3, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
+	characterIndicatorSquare[1] = App->gui->AddSprite(0, 0, nullptr, { 492,1861,42,27 });
+	characterIndicatorSquare[1]->SetParent(characterFrame[1]);
+	characterIndicatorSquare[1]->setPosition(characterFrame[0]->rect.w / 2, 72);
 	characterSprites[1] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 	characterSprites[1]->SetParent(characterFrame[1]);
 	characterSprites[1]->SetAnchor(0, 0);
@@ -514,9 +531,12 @@ void CharacterSelecScene::LoadSceneUI() {
 
 	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
 		characterFrame[0]->setPositionX(sizeScreen.x / 8 - 30);
-		characterFrame[1]->setPositionX(sizeScreen.x / 8 * 3 - 60);
+		characterFrame[1]->setPositionX(sizeScreen.x / 8 * 3 - 60); 
 
 		characterFrame[2] = App->gui->AddSprite((sizeScreen.x / 8) * 5 + 60, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
+		characterIndicatorSquare[2] = App->gui->AddSprite(0, 0, nullptr, { 450,1888,42,27 });
+		characterIndicatorSquare[2]->SetParent(characterFrame[2]);
+		characterIndicatorSquare[2]->setPosition(characterFrame[2]->rect.w / 2, 72);
 		characterSprites[2] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[2]->SetParent(characterFrame[2]);
 		characterSprites[2]->SetAnchor(0, 0);
@@ -550,6 +570,9 @@ void CharacterSelecScene::LoadSceneUI() {
 		statsSprites[11]->setPosition(45, 626);
 
 		characterFrame[3] = App->gui->AddSprite((sizeScreen.x / 8) * 7 + 30, 20 + sizeScreen.y / 5 * 3, atlas, { 1296, 43, 343, 659 });
+		characterIndicatorSquare[3] = App->gui->AddSprite(0, 0, nullptr, { 492,1888,42,27 });
+		characterIndicatorSquare[3]->SetParent(characterFrame[3]);
+		characterIndicatorSquare[3]->setPosition(characterFrame[3]->rect.w / 2, 72);
 		characterSprites[3] = App->gui->AddSprite(0, 0, atlas, characterRects[0]);
 		characterSprites[3]->SetParent(characterFrame[3]);
 		characterSprites[3]->SetAnchor(0, 0);

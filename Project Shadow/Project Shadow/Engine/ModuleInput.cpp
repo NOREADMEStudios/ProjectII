@@ -492,3 +492,8 @@ void ModuleInput::SetBasicConfig()
 	input_list.push_back({ R2, "R_TRIGGER", 7 , AB_3});
 
 }
+
+InputButton ModuleInput::GetInputButton(Input i)
+{
+
+}

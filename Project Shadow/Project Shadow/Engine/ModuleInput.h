@@ -158,7 +158,7 @@ public:
 	bool GetButtonDown(int controller, int input) const;
 	std::list<Input> GetInputListFromController(int controllerNum) const;
 	void SetBasicConfig();
-
+	InputButton GetInputButton(Input i);
 
 private:
 

@@ -61,7 +61,7 @@ bool CharacterSelecScene::Start()
 	charactersTeam[0] = RED;
 	charactersTeam[1] = BLUE;
 
-
+	SetDebugLabels();
 	LoadSceneUI();
 	SetControllerFocus();
 	SetCharactersInfo();
@@ -81,7 +81,7 @@ bool CharacterSelecScene::Update(float dt)
 	DrawBackground();
 	ChangeCharacter();
 	ChangeTeam();
-
+	UpdateDebugLabels();
 	//App->input->CheckControllers();
 	return true;
 }
@@ -141,10 +141,10 @@ void CharacterSelecScene::SetControllerFocus() {
 void CharacterSelecScene::SetCharactersInfo(){
 
 	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
-		charactersInfo[0] = { CLERIC,{ 150,0,150 }, Team::BLUE };
+		charactersInfo[0] = { WARRIOR,{ 150,0,150 }, Team::BLUE };
 		charactersInfo[1] = { ROGUE,{ 100,0,500 }, Team::BLUE };
-		charactersInfo[2] = { WIZARD,{ 700,0,150 }, Team::RED };
-		charactersInfo[3] = { CLERIC,{ 750,0,500 }, Team::RED };
+		charactersInfo[2] = { WARRIOR,{ 700,0,150 }, Team::RED };
+		charactersInfo[3] = { ROGUE,{ 750,0,500 }, Team::RED };
 	}
 	else if (App->scenes->gameMode == GameMode::ONEvsONE) {
 

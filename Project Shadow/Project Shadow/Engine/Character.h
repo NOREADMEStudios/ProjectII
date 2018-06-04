@@ -86,7 +86,7 @@ struct Attack
 	bool ability;
 	int depth;
 
-	Attack(uint _tag, CharInput _input, std::string animationName, std::string fileName, int _damage = 0, int _depth = 20, bool _air = false, bool ab = false)
+	Attack(uint _tag, CharInput _input, std::string animationName, std::string fileName, int _damage = 0, int _depth = 40, bool _air = false, bool ab = false)
 	{
 		tag = _tag;
 		input = _input;
@@ -215,7 +215,7 @@ public:
 	Timer time_attack;
 	Timer noMove;
 
-
+	void RemoveColliders();
 	void SetAnimations();
 	void SetCharType(CharacterTypes type);
 	void SetState(CharStateEnum st) { currentState = st; };
@@ -271,7 +271,7 @@ protected:
 	LIST(State*) states;
 
 
-
+	bool dead = false;
 	iPoint initialpos;
 	int initialLife = 0;
 	uint lives = 0, maxLives = 1;

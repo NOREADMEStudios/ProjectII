@@ -45,6 +45,7 @@ bool ItemSelecScene::Start()
 
 	LoadSceneUI();
 	SetControllerFocus();
+	SetDebugLabels();
 
 	return true;
 }
@@ -52,7 +53,6 @@ bool ItemSelecScene::Start()
 bool ItemSelecScene::Update(float dt)
 {
 	if (AllPlayersReady()) {//ALL ARROWS LOCKED 
-		ApplyItemAttributes();						 // NEED TO FILL 
 		App->scenes->ChangeScene(App->scenes->mainSc);
 	}
 
@@ -64,17 +64,18 @@ bool ItemSelecScene::Update(float dt)
 		ChooseFocus();
 		RemoveSelectedItem();
 	}
-
+	UpdateDebugLabels();
 	return true;
 }
 
 bool ItemSelecScene::CleanUp()
 {	
+
 	App->gui->CleanUp();
 	App->textures->UnLoad(atlas);
 	
 	UnLoadBackground();
-	players.clear();
+	//players.clear();
 	return true;
 }
 
@@ -378,20 +379,7 @@ void ItemSelecScene::FindFirstFreeItem(uint playerNum) {
 	}
 }
 
-void ItemSelecScene::ApplyItemAttributes() {
-	for (int i = 0; i < controllersNum; i++) {
-		EntityStats* item = &App->entities->items[i];
-		for (int itemNum = 0; itemNum < 2; itemNum++) {
-			item->atk += (item->atk * players[i].playerItems[itemNum]->stats.atk / 100);
-			item->def += (item->def * players[i].playerItems[itemNum]->stats.def / 100);
-			item->mgk += players[i].playerItems[itemNum]->stats.mgk;
-			item->spd += (item->spd * players[i].playerItems[itemNum]->stats.spd / 100);
 
-			if (players[i].playerItems[itemNum]->stats.life != 0)
-				item->hpRecover = true;
-		}
-	}
-}
 
 void ItemSelecScene::Player::LockedArrow(uint lockedNum) {
 	int distance = focusedItem->butt->rect.w / (totalControllersNum+1);
@@ -415,3 +403,4 @@ ItemSelecScene::Item* ItemSelecScene::Item::GetRelativeItem(InterfaceElement::Di
 
 	return relations[dir];
 }
+

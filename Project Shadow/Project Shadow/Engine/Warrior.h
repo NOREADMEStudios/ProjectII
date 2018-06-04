@@ -40,6 +40,7 @@ private:
 	Character* partner;
 
 	Spells* ulti_sp;
+	Spells* ulti_indicator;
 	Ability* Aulti;
 
 };

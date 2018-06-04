@@ -3,6 +3,7 @@
 #include "CharacterSelecScene.h"
 #include "../../Engine/Warrior.h"
 #include "EndScene.h"
+#include "ItemSelecScene.h"
 #include "../../Engine/Warrior.h"
 #include "../../Engine/ModuleMap.h"
 #include "../../Engine/App.h"
@@ -52,6 +53,10 @@ MainScene::~MainScene()
 
 bool MainScene::Start()
 {
+
+	uiPoint sizeScreen = App->gui->GetGuiSize(); 
+	
+
 	combatEndControlBool = false;
 	App->audio->PlayMusic("Assets/Audio/BGM/Level1.ogg");
 
@@ -67,29 +72,32 @@ bool MainScene::Start()
 	uiPoint dims = App->gui->GetGuiSize();
 	roundsLabel = App->gui->AddLabel(0.5f * dims.x, 0.1f * dims.y, 70, DEFAULT_FONT,
 										{ 255, 255, 255, 255 }, Label::BLENDED, "Round %d", currentRound);
-
+	uint healthbarMargin = 10;
+	uint secHealtbarMargin = 180;
 	if (App->scenes->gameMode == GameMode::ONEvsONE) {
 		e = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[0]);
 		e2 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[1]);
-		App->gui->AddHealthbar((Character*)e, 0, false, 10, 10, atlas, true, { 304, 271, 577, 26 });
-		App->gui->AddHealthbar((Character*)e2, 2, false, 1910, 10, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e, 0, true, healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e2, 2, false, sizeScreen.x - healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
 	}
 	else if (App->scenes->gameMode == GameMode::TWOvsTWO)
 	{
 		e = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[0]);
 		e2 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[1]);
-		App->gui->AddHealthbar((Character*)e, 0, true, 10, 10, atlas, true, { 304, 271, 577, 26 });
-		App->gui->AddHealthbar((Character*)e2, 1, true, 170, 240, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e, 0, true,healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e2, 1, true, secHealtbarMargin, 240, atlas, true, { 304, 271, 577, 26 });
 
 		e3 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[2]);
 		e4 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[3]);
-		App->gui->AddHealthbar((Character*)e3, 2, false, 1910, 10, atlas, true, { 304, 271, 577, 26 });
-		App->gui->AddHealthbar((Character*)e4, 3, false, 1740, 240, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e3, 2, false, sizeScreen.x - healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)e4, 3, false, sizeScreen.x -secHealtbarMargin, 240, atlas, true, { 304, 271, 577, 26 });
 	}
 
 	LoadSceneUI();
 	CreateSettingsWindow();
 	SetControllerFocus();
+	SetDebugLabels();
+	
 	return false;
 }
 
@@ -116,10 +124,10 @@ bool MainScene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		((Character*)e2)->AdHp(-100);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && App->scenes->gameMode == GameMode::TWOvsTWO) {
 		((Character*)e3)->AdHp(-100);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && App->scenes->gameMode == GameMode::TWOvsTWO) {
 		((Character*)e4)->AdHp(-100);
 	}
 
@@ -127,8 +135,20 @@ bool MainScene::Update(float dt)
 		App->input->BlockKeyboardEvent(SDL_SCANCODE_P);
 		App->scenes->ChangeScene(App->scenes->endSc);
 	}
-#endif
 
+	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+	{
+		((Character*)e)->AdHp(100);
+		((Character*)e2)->AdHp(100);
+		if (App->scenes->gameMode == GameMode::TWOvsTWO)
+		{
+			((Character*)e3)->AdHp(100);
+			((Character*)e4)->AdHp(100);
+		}
+	}
+
+#endif
+	UpdateDebugLabels();
 	App->map->Draw();
 
 	return true;
@@ -176,6 +196,8 @@ bool MainScene::CleanUp()
 	App->gui->CleanUp();
 	App->entities->CleanUp(n);
 	App->SetTimeScale(1.f);
+
+	App->scenes->itemSc->players.clear();
 	return true;
 }
 
@@ -206,7 +228,7 @@ void MainScene::WindowStates(){
 			App->PauseGame(paused);			
 			pauseWindow->Enable(true);
 		}
-		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_B && paused) {
+		else if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_START && paused) {
 			pauseWindow->Enable(false);
 			paused = false;
 			ManageSettings(false);
@@ -397,6 +419,12 @@ void MainScene::CreateSettingsWindow() {
 	BckLabel->setString(BckStr);
 	BckLabel->SetParent(settBackButt);
 	BckLabel->culled = false;
+  
+	music_sp->SetParent(pauseWindow); 
+	fx_sp->SetParent(pauseWindow);
+	fullscrenButt->SetParent(pauseWindow);
+	settBackButt->SetParent(pauseWindow);
+	pauseWindow->Enable(false);
 
 
 	music_sl->SetRelation(fx_sl, InterfaceElement::Directions::DOWN);

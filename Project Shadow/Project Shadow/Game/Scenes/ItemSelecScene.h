@@ -60,12 +60,12 @@ public:
 		int totalControllersNum;
 		Sprite* arrow = nullptr;
 		SDL_Rect arrowRect;
-		Sprite* lockedArrows[3];		
+		Sprite* lockedArrows[2];		
 		SDL_Rect arrowLockRect;
 		uint locked = 0;
-		Item* playerItems[3];
+		Item* playerItems[2];
 		Sprite* miniatureItemsFrame;
-		Sprite* miniatureItems[3];
+		Sprite* miniatureItems[2];
 		Label* playerName;
 		bool ready = false;
 
@@ -77,6 +77,7 @@ public:
 	};
 
 	Item* items[6];
+	std::vector<Player> players;
 	/*String* statsItemsStr[6];
 	Label* stats*/
 
@@ -99,6 +100,8 @@ public:
 
 	bool Save(pugi::xml_node&) const override { return true; };
 
+
+
 private:
 	void LoadSceneUI();
 	void FindNextArrowUnlocked(uint player, InterfaceElement::Directions direction);
@@ -107,13 +110,13 @@ private:
 	void ManageDisplacementFocus();
 	void ChooseFocus();
 	void RemoveSelectedItem();
-	void ApplyItemAttributes();
 	bool AllPlayersReady();
 	void FindFirstFreeItem(uint playerNum);
 	void AddLabelToButton(Item* item);
 
-	std::vector<Player> players;
+
 	std::list<Button*> buttonsForController;
+
 };
 
 #endif

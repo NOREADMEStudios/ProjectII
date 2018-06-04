@@ -103,7 +103,8 @@ public:
 	Entity* GetSameTeam(Entity* c);
 
 	Entity* GetEntity(uint num);
-	Team GetWinnerTeam();
+	Team GetWinnerTeam()const;
+
 	EntityStats items[4];
 	bool finish = false,
 		locked = false;

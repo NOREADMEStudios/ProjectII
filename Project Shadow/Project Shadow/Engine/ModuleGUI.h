@@ -68,11 +68,14 @@ public:
 
 	std::list<InterfaceElement*> elements;
 
+
 private:
 	SDL_Texture* atlas_texture = nullptr;
 	SDL_Texture* characterFace = nullptr;
 	uiPoint gui_size;
 	float scale;
+
+
 
 
 	InterfaceElement* focused_item = nullptr;

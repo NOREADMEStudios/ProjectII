@@ -210,7 +210,7 @@ void ItemSelecScene::SetControllerFocus() {
 		int marginBetweenNames = sizeScreen.x * 0.20f;
 		
 		player.playerNum = i;
-		player.miniatureItemsFrame = App->gui->AddSprite((sizeScreen.x * ((i - 1) * 2 + 1)) / 8, sizeScreen.y * 7 / 8, nullptr, { 4500,43000,392,150 });//only used for having empty sprite
+		player.miniatureItemsFrame = App->gui->AddSprite((sizeScreen.x * ((i - 1) * 2 + 1)) / 8, sizeScreen.y * 7 / 8 + 15, nullptr, { 4500,43000,392,150 });//only used for having empty sprite
 		player.playerName = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 255,255,255,255 });
 		player.playerName->SetParent(player.miniatureItemsFrame);
 		player.playerName->setPosition(player.miniatureItemsFrame->rect.w / 2, 15);

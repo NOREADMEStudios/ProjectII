@@ -268,6 +268,15 @@ void MainScene::ChooseFocus() {
 }
 
 void MainScene::ChangeRoundsIndicator(){
+	if (paused && roundsIndicatorSprite[0]->isEnabled()) {
+		for (int i = 0; i < 4; i++)
+			roundsIndicatorSprite[i]->Enable(false);
+	}
+	else if (!paused && !roundsIndicatorSprite[0]->isEnabled()) {
+		for (int i = 0; i < 4; i++)
+			roundsIndicatorSprite[i]->Enable(true);
+	}
+
 	if (wonRounds[0] == 1)
 		roundsIndicatorSprite[0]->idle_anim = { 1167,249, 39, 39 };
 	else if (wonRounds[0] == 2)

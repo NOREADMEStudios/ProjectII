@@ -35,6 +35,21 @@ enum Input
 	BUTTON_SELECT,
 };
 
+struct InputButton
+{
+	Input input;
+	std::string name;
+	int tag;
+	CharInput char_input;
+	InputButton( Input i, std::string n, int t, CharInput ci )
+	{
+		input = i;
+		name = n;
+		tag = t;
+		char_input = ci;
+	}
+};
+
 enum WindowEvent
 {
 	WE_QUIT = 0,
@@ -142,6 +157,8 @@ public:
 	Input GetButtonFromController(int controllerNum, bool joystick = true ) const;
 	bool GetButtonDown(int controller, int input) const;
 	std::list<Input> GetInputListFromController(int controllerNum) const;
+	void SetBasicConfig();
+
 
 private:
 
@@ -153,6 +170,7 @@ private:
 	int			mouse_motion_y;
 	int			mouse_x, mouse_x_prev;
 	int			mouse_y, mouse_y_prev;
+	std::vector<InputButton> input_list;
 
 	Controller controllers[MAX_CONTROLLERS];
 };

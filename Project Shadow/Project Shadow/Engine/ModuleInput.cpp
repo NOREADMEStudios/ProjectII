@@ -189,7 +189,7 @@ bool ModuleInput::Update(float dt)
 	{
 		App->debug = !App->debug;
 		App->scenes->EnableDebugLab();
-		//App->gui->debugfpslab->Enable(!App->gui->debugfpslab->enabled);
+		
 	}
 
 	return true;
@@ -482,18 +482,37 @@ Input ModuleInput::GetButtonFromController(int controllerNum, bool joystick ) co
 void ModuleInput::SetBasicConfig() 
 {
 
-	input_list.push_back({ BUTTON_A, "A", 0 , LIGHT_ATTACK});
-	input_list.push_back({ BUTTON_B, "B", 1 , AB_1});
-	input_list.push_back({ BUTTON_X, "X", 2 , JUMPINPUT});
-	input_list.push_back({ BUTTON_Y, "Y", 3 , HEAVY_ATTACK});
-	input_list.push_back({ L_SHOULDER, "L_SHOULDER", 4 , DEFEND});
-	input_list.push_back({ R_SHOULDER, "R_SHOULDER", 5 , RUNINPUT});
-	input_list.push_back({ L2, "L_TRIGGER", 6 , AB_2});
-	input_list.push_back({ R2, "R_TRIGGER", 7 , AB_3});
+	input_list.push_back( new InputButton{ BUTTON_A, "A", 0 , LIGHT_ATTACK});		//0
+	input_list.push_back(new InputButton{ BUTTON_B, "B", 1 , AB_1});				//1
+	input_list.push_back(new InputButton{ BUTTON_X, "X", 2 , JUMPINPUT});			//2
+	input_list.push_back(new InputButton{ BUTTON_Y, "Y", 3 , HEAVY_ATTACK});		//3
+	input_list.push_back(new InputButton{ L_SHOULDER, "L_SHOULDER", 4 , DEFEND});	//4
+	input_list.push_back(new InputButton{ R_SHOULDER, "R_SHOULDER", 5 , RUNINPUT});	//5
+	input_list.push_back(new InputButton{ L2, "L_TRIGGER", 6 , AB_2});				//6
+	input_list.push_back(new InputButton{ R2, "R_TRIGGER", 7 , AB_3});				//7
 
 }
 
-InputButton ModuleInput::GetInputButton(Input i)
+InputButton* ModuleInput::GetInputButton(Input i)
 {
+	InputButton* ret = nullptr;
+
+	for (std::vector<InputButton*>::iterator item = input_list.begin(); item != input_list.end(); item++) {
+		if ((*item)->input == i)
+		{
+			ret = (*item);
+		}
+	}
+
+	return ret;
+}
+
+void ModuleInput::SwapInputs(InputButton* a, InputButton* b)
+{
+	InputButton aux = *a;
+	a->input = b->input;
+	a->name = b->name;
+	b->input = aux.input;
+	b->name = aux.name;
 
 }

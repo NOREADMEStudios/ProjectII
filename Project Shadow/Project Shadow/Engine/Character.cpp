@@ -319,33 +319,18 @@ std::list<CharInput> Character::RequestInputs() const {
 			case LEFT:
 				charInputs.push_back(CharInput::CH_LEFT);
 				break;
-			case BUTTON_A:
-				charInputs.push_back(CharInput::JUMPINPUT);
-				break;
-			case BUTTON_B:
-				charInputs.push_back(CharInput::AB_1);
-				break;
-			case BUTTON_X:
-				charInputs.push_back(CharInput::LIGHT_ATTACK);
-				break;
-			case BUTTON_Y:
-				charInputs.push_back(CharInput::HEAVY_ATTACK);
-				break;
-			case L_SHOULDER:
-				charInputs.push_back(CharInput::DEFEND);
-				break;
-			case R_SHOULDER:
-				charInputs.push_back(CharInput::RUNINPUT);
-				break;
 			case BUTTON_SELECT:
 				charInputs.push_back(CharInput::TAUNTINPUT);
 				break;
+			case BUTTON_A:
+			case BUTTON_B:
+			case BUTTON_X:
+			case BUTTON_Y:
+			case L_SHOULDER:		
+			case R_SHOULDER:
 			case R2:
-				charInputs.push_back(CharInput::AB_3);
-				break;
 			case L2:
-				charInputs.push_back(CharInput::AB_2);
-				break;
+				charInputs.push_back(App->input->GetInputButton(input)->char_input);
 			default:
 				break;
 			}

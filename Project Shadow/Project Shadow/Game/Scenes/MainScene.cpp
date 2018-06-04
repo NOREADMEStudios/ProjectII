@@ -97,6 +97,7 @@ bool MainScene::Start()
 	CreateSettingsWindow();
 	SetControllerFocus();
 	SetDebugLabels();
+	App->input->SetBasicConfig();
 	
 	return false;
 }
@@ -130,6 +131,11 @@ bool MainScene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && App->scenes->gameMode == GameMode::TWOvsTWO) {
 		((Character*)e4)->AdHp(-100);
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN ) {
+		App->input->SwapInputs(App->input->input_list[0], App->input->input_list[3]);
+	}
+
 
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		App->input->BlockKeyboardEvent(SDL_SCANCODE_P);

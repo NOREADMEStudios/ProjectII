@@ -131,12 +131,12 @@ void ItemSelecScene::LoadSceneUI() {
 bool ItemSelecScene::AllPlayersReady() {
 	
 	bool ret = true;
-	for (int i = 0; i < controllersNum; i++) {
+	for (int i = 0; i < players.size(); i++) {
 		if (players[i].locked == 2) {
 			players[i].ready = true;
 		}
 	}
-	for (int i = 0; i < controllersNum; i++) {
+	for (int i = 0; i < players.size(); i++) {
 		bool ret2 = players[i].ready;
 		ret &= ret2;
 	}
@@ -203,22 +203,48 @@ void ItemSelecScene::SetControllerFocus() {
 		return;
 	}
 
-	for (int i = 1; i <= controllersNum; i++) {
-		Player player ;		
-		player.focusedItem = items[0];
-		
-		int marginBetweenNames = sizeScreen.x * 0.20f;
-		
-		player.playerNum = i;
-		player.miniatureItemsFrame = App->gui->AddSprite((sizeScreen.x * ((i - 1) * 2 + 1)) / 8, sizeScreen.y * 7 / 8 + 15, nullptr, { 4500,43000,392,150 });//only used for having empty sprite
-		player.playerName = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 255,255,255,255 });
-		player.playerName->SetParent(player.miniatureItemsFrame);
-		player.playerName->setPosition(player.miniatureItemsFrame->rect.w / 2, 15);
-		player.playerName->setString("Player "+ std::to_string(player.playerNum));
-		
-		player.totalControllersNum = controllersNum;
-		player.LoadArrows();
-		players.push_back(player);
+	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
+		if (controllersNum != 4)
+			return;
+		for (int i = 1; i < 5; i++) {
+			Player player;
+			player.focusedItem = items[0];
+
+			int marginBetweenNames = sizeScreen.x * 0.20f;
+
+			player.playerNum = i;
+			player.miniatureItemsFrame = App->gui->AddSprite((sizeScreen.x * ((i - 1) * 2 + 1)) / 8, sizeScreen.y * 7 / 8 + 15, nullptr, { 4500,43000,392,150 });//only used for having empty sprite
+			player.playerName = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 255,255,255,255 });
+			player.playerName->SetParent(player.miniatureItemsFrame);
+			player.playerName->setPosition(player.miniatureItemsFrame->rect.w / 2, 15);
+			player.playerName->setString("Player " + std::to_string(player.playerNum));
+
+			player.totalControllersNum = 4;
+			player.LoadArrows();
+			players.push_back(player);
+		}
+	}
+
+	else if(App->scenes->gameMode == GameMode::ONEvsONE) {
+		if (controllersNum < 2)
+			return;
+		for (int i = 1; i < 3; i++) {
+			Player player;
+			player.focusedItem = items[0];
+
+			int marginBetweenNames = sizeScreen.x * 0.20f;
+
+			player.playerNum = i;
+			player.miniatureItemsFrame = App->gui->AddSprite((sizeScreen.x * i / 3), sizeScreen.y * 7 / 8 + 15, nullptr, { 4500,43000,392,150 });//only used for having empty sprite
+			player.playerName = App->gui->AddLabel(0, 0, 30, DEFAULT_FONT, { 255,255,255,255 });
+			player.playerName->SetParent(player.miniatureItemsFrame);
+			player.playerName->setPosition(player.miniatureItemsFrame->rect.w / 2, 15);
+			player.playerName->setString("Player " + std::to_string(player.playerNum));
+
+			player.totalControllersNum = 2;
+			player.LoadArrows();
+			players.push_back(player);
+		}
 	}
 
 }
@@ -230,7 +256,7 @@ void ItemSelecScene::ChooseFocus() {
 	int marginBetweenItemFrames = sizeScreen.x * 0.005f;
 	int marginBetweenPlayerFrames = sizeScreen.x * 0.085f;
 
-	for (int i = 0; i < controllersNum; i++) {
+	for (int i = 0; i < players.size(); i++) {
 		if (players[i].ready) {
 			continue;
 		}
@@ -249,7 +275,7 @@ void ItemSelecScene::ChooseFocus() {
 }
 void ItemSelecScene::RemoveSelectedItem() {
 
-	for (int i = 0; i < controllersNum; i++) {
+	for (int i = 0; i < players.size(); i++) {
 		Player* player = &players[i];
 		
 		if (App->input->GetButtonFromController(player->playerNum) == Input::BUTTON_B) {			
@@ -269,7 +295,7 @@ void ItemSelecScene::RemoveSelectedItem() {
 }
 
 void ItemSelecScene::ManageDisplacementFocus() {
-	for (int i = 0; i < controllersNum; i++) {
+	for (int i = 0; i < players.size(); i++) {
 		if (players[i].ready) {
 			continue;
 		}

@@ -84,28 +84,28 @@ void ItemSelecScene::LoadSceneUI() {
 
 	int i = 0;
 
-	items[i] = new Item("Staff of Thoth", STAFF, { 1282,1568,180,180 }, { 0,0,0,0,0,20,0 });
+	items[i] = new Item("Staff of Thoth", STAFF, { 1282,1568,180,180 }, { 360,1825,90,90 }, { 0,0,0,0,0,20,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y / 3, nullptr, items[i]->animRect, true, nullptr);
 	App->gui->setFocus(items[i]->butt);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 1467,1568,180,180 }, { 0,30,0,0,0,0,0,0 });
+	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 1467,1568,180,180 }, { 360,1735,90,90 }, { 0,30,0,0,0,0,0,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Plate Mail", PLATE, { 1652,1568,180,180 }, { 0,0,30,0,0,0,0,0 });
+	items[++i] = new Item("Plate Mail", PLATE, { 1652,1568,180,180 }, { 0,1645,90,90 }, { 0,0,30,0,0,0,0,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Ring of Protection", RING, { 1282,1753,180,180 }, { 0,0,0,0,0,0,30,0 });
+	items[++i] = new Item("Ring of Protection", RING, { 1282,1753,180,180 }, { 180,1735,90,90 }, { 0,0,0,0,0,0,30,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x / 4, sizeScreen.y * 2 / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Swift Boots", SWIFT_BOOTS, { 1467,1753,180,180 }, { 0,0,0,50,0,0,0,0 });
+	items[++i] = new Item("Swift Boots", SWIFT_BOOTS, { 1467,1753,180,180 }, { 180,1645,90,90 }, { 0,0,0,50,0,0,0,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y * 2 / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Tiara", TIARA, { 1652,1753,180,180 }, { 0,0,0,0,0,0,0,1 });
+	items[++i] = new Item("Tiara", TIARA, { 1652,1753,180,180 }, { 270,1735,90,90 }, { 0,0,0,0,0,0,0,1 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y * 2 / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
@@ -237,7 +237,7 @@ void ItemSelecScene::ChooseFocus() {
 			
 			Item* item = players[i].focusedItem;
 			players[i].playerItems[players[i].locked] = item;
-			players[i].miniatureItems[players[i].locked] = App->gui->AddSprite(-300, 0, nullptr, item->animRect);
+			players[i].miniatureItems[players[i].locked] = App->gui->AddSprite(-300, 0, nullptr, item->lockedRect);
 			players[i].miniatureItems[players[i].locked]->SetParent(players[i].miniatureItemsFrame);
 			players[i].miniatureItems[players[i].locked]->setPosition((players[i].miniatureItemsFrame->rect.w * (1 + i) / 3), players[i].miniatureItemsFrame->rect.h * 2 / 3);
 			players[i].LockedArrow(players[i].locked);

@@ -107,6 +107,8 @@ bool MainScene::Update(float dt)
 		ChooseFocus();
 	}
 
+	ChangeRoundsIndicator();
+
 #ifdef _DEBUG
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
 		((Character*)e)->AdHp(-100);
@@ -243,7 +245,26 @@ void MainScene::ChooseFocus() {
 	}
 }
 
+void MainScene::ChangeRoundsIndicator(){
+	if (wonRounds[0] == 1)
+		roundsIndicatorSprite[0]->idle_anim = { 1167,249, 39, 39 };
+	else if (wonRounds[0] == 2)
+		roundsIndicatorSprite[1]->idle_anim = { 1167,249, 39, 39 };
+
+	if (wonRounds[1] == 1)
+		roundsIndicatorSprite[2]->idle_anim = { 1167,249, 39, 39 };
+	else if (wonRounds[1] == 2)
+		roundsIndicatorSprite[3]->idle_anim = { 1167,249, 39, 39 };
+}
+
 void MainScene::CreateSettingsWindow() {
+	uiPoint win_size = App->gui->GetGuiSize();
+
+	roundsIndicatorSprite[0] = App->gui->AddSprite((win_size.x * 0.406f), (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+	roundsIndicatorSprite[1] = App->gui->AddSprite((win_size.x * 0.406f) + 49, (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+	roundsIndicatorSprite[2] = App->gui->AddSprite((win_size.x * 0.591f)- 49, (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+	roundsIndicatorSprite[3] = App->gui->AddSprite((win_size.x * 0.591f), (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+
 	//uiPoint win_size = App->gui->GetGuiSize();
 
 	////MUSIC SLIDER
@@ -313,7 +334,7 @@ void MainScene::CreateSettingsWindow() {
 
 	//fullscrenButt->SetRelation(settBackButt, InterfaceElement::Directions::DOWN);
 	//settBackButt->SetRelation(fullscrenButt, InterfaceElement::Directions::DOWN);
-	uiPoint win_size = App->gui->GetGuiSize();
+
 	//MUSIC SLIDER
 	music_sp = App->gui->AddSprite((win_size.x / 2), (win_size.y / 4)*1.5f - 100, atlas, { 455, 268, 427, 27 }, false);
 

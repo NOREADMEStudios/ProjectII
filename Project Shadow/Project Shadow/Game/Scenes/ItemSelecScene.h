@@ -31,10 +31,11 @@ public:
 	class Item {
 	public:
 		Item();
-		Item(std::string _name, ItemType _type, SDL_Rect _animRect, EntityStats _stats) {
+		Item(std::string _name, ItemType _type, SDL_Rect _animRect, SDL_Rect _lockedRect, EntityStats _stats) {
 			name = _name;
 			type = _type;
 			animRect = _animRect;
+			lockedRect = _lockedRect;
 			stats = _stats;
 		}
 		std::string name;
@@ -44,6 +45,7 @@ public:
 		
 		EntityStats stats;
 		SDL_Rect animRect;
+		SDL_Rect lockedRect;
 		Item* relations[InterfaceElement::Directions::AMOUNT];
 
 		Item* GetRelativeItem(InterfaceElement::Directions dir);

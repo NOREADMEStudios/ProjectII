@@ -59,6 +59,7 @@ bool IntroScene::Start()
 	SetControllerFocus();
 	SetDebugLabels();
 	ManageSettings(false);
+	
 	return true;
 }
 
@@ -132,7 +133,13 @@ void FullscreenPressCallb(size_t arg_size...) {
 
 	SDL_SetWindowFullscreen(App->win->window, winfullscr);
 }
+void InputPressCallb(size_t arg_size...) {
+	App->scenes->introSc->ManageInput(true);
+}
 
+void BackInputPressCallb(size_t arg_size...) {
+	App->scenes->introSc->ManageInput(false);
+}
 
 void ExitPressCallb(size_t arg_size...) {
 	App->Quit();
@@ -241,7 +248,7 @@ void IntroScene::ChooseFocus() {
 void IntroScene::CreateSettingsWindow() {
 	uiPoint win_size = App->gui->GetGuiSize();
 	//MUSIC SLIDER
-	music_sp = App->gui->AddSprite((win_size.x / 2), (win_size.y / 4)*1.5f, atlas, { 455, 268, 427, 27 }, false);
+	music_sp = App->gui->AddSprite((win_size.x / 2), (win_size.y / 4)*1.3f, atlas, { 455, 268, 427, 27 }, false);
 
 	float musicVol = App->audio->GetMusicVolumePercentage();
 	float step = music_sp->rect.w / 100;
@@ -264,7 +271,7 @@ void IntroScene::CreateSettingsWindow() {
 
 	//FX SLIDER
 
-	fx_sp = App->gui->AddSprite((win_size.x / 2), (win_size.y / 4)*2.1f, atlas, { 455, 268, 427, 27 }, false);
+	fx_sp = App->gui->AddSprite((win_size.x / 2), (win_size.y / 4)*1.6f, atlas, { 455, 268, 427, 27 }, false);
 
 	float FxVol = App->audio->GetFxVolumePercentage();
 	float step2 = fx_sp->rect.w / 100;
@@ -284,7 +291,14 @@ void IntroScene::CreateSettingsWindow() {
 	FxNameLabel->SetParent(fx_sp);
 	FxNameLabel->culled = false;
 	fx_sl->setLabel(FxNumLabel);
-
+	
+	//INPUT BUTTON
+	inputBut = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 2.2f, atlas, { 1282,883,400,98 }, false, InputPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	Label* InLabel = App->gui->AddLabel((inputBut->rect.w / 2) + 30, inputBut->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string InStr = "INPUT";
+	InLabel->setString(InStr);
+	InLabel->SetParent(inputBut);
+	InLabel->culled = false;
 
 	// FULLSCREEN BUTTON
 	fullscrenBut = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 2.7f, atlas,{ 1282,883,400,98 }, false, FullscreenPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
@@ -303,9 +317,19 @@ void IntroScene::CreateSettingsWindow() {
 	BckLabel->SetParent(settBack);
 	BckLabel->culled = false;
 
+
+	// BACK INPUT BUTTON
+	backInputBut = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3.6f, atlas, { 1282,883,400,98 }, false, BackInputPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	Label* BckILabel = App->gui->AddLabel((backInputBut->rect.w / 2) + 14, backInputBut->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string BckIStr = "BACK";
+	BckILabel->setString(BckIStr);
+	BckILabel->SetParent(backInputBut);
+	BckILabel->culled = false;
+
 	
 	music_sl->SetRelation(fx_sl, InterfaceElement::Directions::DOWN);
-	fx_sl->SetRelation(fullscrenBut, InterfaceElement::Directions::DOWN);
+	fx_sl->SetRelation(inputBut, InterfaceElement::Directions::DOWN);
+	inputBut->SetRelation(fullscrenBut, InterfaceElement::Directions::DOWN);
 	fullscrenBut->SetRelation(settBack, InterfaceElement::Directions::DOWN);
 	settBack->SetRelation(music_sl, InterfaceElement::Directions::DOWN);
 }
@@ -317,6 +341,7 @@ void IntroScene::ManageSettings(bool settingActive) {
 	settingButton->Enable(!settingActive);
 	exitButton->Enable(!settingActive);
 
+	inputBut->Enable(settingActive);
 	fullscrenBut->Enable(settingActive);
 	settBack->Enable(settingActive); 
 	music_sl->Enable(settingActive);
@@ -327,3 +352,17 @@ void IntroScene::ManageSettings(bool settingActive) {
 	App->gui->setFocus(settingActive ? music_sl : pvpButton);
 }
 
+void IntroScene::ManageInput(bool inputActive) {
+
+	inputBut->Enable(!inputActive);
+	fullscrenBut->Enable(!inputActive);
+	settBack->Enable(!inputActive);
+	music_sl->Enable(!inputActive);
+	music_sp->Enable(!inputActive);
+	fx_sl->Enable(!inputActive);
+	fx_sp->Enable(!inputActive);
+
+	backInputBut->Enable(inputActive);
+
+	App->gui->setFocus(inputActive ? backInputBut : inputBut);
+}

@@ -24,6 +24,8 @@ public:
 	Sprite* fx_sp;
 	Button* fullscrenBut ;
 	Button* settBack;
+	Button* inputBut;
+	Button* backInputBut;
 
 
 	IntroScene();
@@ -47,6 +49,7 @@ public:
 
 	void LoadUIButtons();
 	void ManageSettings(bool settingActive);
+	void ManageInput(bool inputActive);
 
 	//-------CONTROLLER MANAGEMENT
 private:

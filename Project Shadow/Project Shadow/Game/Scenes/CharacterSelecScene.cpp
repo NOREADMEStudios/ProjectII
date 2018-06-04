@@ -99,17 +99,13 @@ bool CharacterSelecScene::CleanUp()
 bool CharacterSelecScene::AllPlayersReady() {
 
 	bool ret = true;
-	int index = controllersNum;
-	for (int i = 0; i < controllersNum; i++) {
-		if (App->scenes->gameMode == GameMode::ONEvsONE && i >= 2)
-			i = controllersNum;
+	int index = players.size();
+	for (int i = 0; i < players.size(); i++) {
 		if (players[i].ready == true){
 			index--;
 		}
 	}
-	if (App->scenes->gameMode == GameMode::TWOvsTWO && index != 0)
-		ret = false;
-	else if(App->scenes->gameMode == GameMode::ONEvsONE && index != (controllersNum - 2))
+	if (index != 0)
 		ret = false;
 
 	return ret;
@@ -122,19 +118,38 @@ void CharacterSelecScene::SetControllerFocus() {
 		return;
 	}
 
-	for (int i = 1; (i <= controllersNum || i <= 4); i++) { //For only creating 4 players maximum
-		Player player;
+	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
+		for (int i = 1;  i < 5; i++) { //For only creating 4 players maximum
+			Player player;
 
-		player.playerNum = i;
-		player.ready = false;
-		player.totalControllersNum = controllersNum;
-		player.arrowLeftRect = { 1713,14,39,51 };
-		player.arrowRightRect = { 1784,14,39,51 };
-		player.arrowLockLeftRect = { 1713,68,39,51 };
-		player.arrowLockRightRect = { 1784,68,39,51 };
-		player.lockedLightRect = { 50,1200,216,298 };
+			player.playerNum = i;
+			player.ready = false;
+			player.totalControllersNum = 4;
+			player.arrowLeftRect = { 1713,14,39,51 };
+			player.arrowRightRect = { 1784,14,39,51 };
+			player.arrowLockLeftRect = { 1713,68,39,51 };
+			player.arrowLockRightRect = { 1784,68,39,51 };
+			player.lockedLightRect = { 50,1200,216,298 };
 
-		players.push_back(player);
+			players.push_back(player);
+		}
+	}
+
+	else if (App->scenes->gameMode == GameMode::ONEvsONE) {
+		for (int i = 1; i < 3; i++) { //For only creating 2 players maximum
+			Player player;
+
+			player.playerNum = i;
+			player.ready = false;
+			player.totalControllersNum = 2;
+			player.arrowLeftRect = { 1713,14,39,51 };
+			player.arrowRightRect = { 1784,14,39,51 };
+			player.arrowLockLeftRect = { 1713,68,39,51 };
+			player.arrowLockRightRect = { 1784,68,39,51 };
+			player.lockedLightRect = { 50,1200,216,298 };
+
+			players.push_back(player);
+		}
 	}
 }
 
@@ -157,10 +172,8 @@ void CharacterSelecScene::SetCharactersInfo(){
 
 void CharacterSelecScene::ChangeCharacter()
 {
-	for (int i = 0; i < controllersNum; i++) {
+	for (int i = 0; i < players.size(); i++) {
 		Player* player = &players[i];
-		if (App->scenes->gameMode == GameMode::ONEvsONE && i >= 2)
-			return;
 
 		if (App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT && !player->ready && player->teamSelected) { //CHANGE CHARACTER
 			if (indexSprites[i] < 3) {
@@ -219,7 +232,7 @@ void CharacterSelecScene::ChangeCharacter()
 
 void CharacterSelecScene::ChangeTeam(){
 	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
-		for (int i = 0; i < controllersNum; i++) {
+		for (int i = 0; i < players.size(); i++) {
 			Player* player = &players[i];
 			if ((App->input->GetButtonFromController(player->playerNum, false) == Input::RIGHT || App->input->GetButtonFromController(player->playerNum, false) == Input::LEFT) && !player->teamSelected) {
 				if (teamIndex[i] == 1) {
@@ -288,11 +301,11 @@ void CharacterSelecScene::ChangeTeam(){
 			}
 		}
 	}
-	else
+	else if (App->scenes->gameMode == GameMode::ONEvsONE)
 	{
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < players.size(); i++) {
 			Player* player = &players[i];
-			if (i = 1)			{
+			if (i == 1)			{
 				characTeamSprite[i]->idle_anim = teamRects[1];
 				teamIndex[i] = 1;
 			}
@@ -308,7 +321,7 @@ void CharacterSelecScene::ChangeTeam(){
 
 
 void CharacterSelecScene::ApplyCharacterSelection() {
-	for (int i = 0; i < controllersNum; i++) {
+	for (int i = 0; i < players.size(); i++) {
 		charactersInfo[i].chType = charactersType[indexSprites[i]];
 		if (App->scenes->gameMode == GameMode::TWOvsTWO)
 			charactersInfo[i].chTeam = charactersTeam[teamIndex[i]];
@@ -316,7 +329,7 @@ void CharacterSelecScene::ApplyCharacterSelection() {
 }
 
 void CharacterSelecScene::LoadArrows(){
-	for (int i = 0; i < controllersNum; i++) {
+	for (int i = 0; i < players.size(); i++) {
 		Player* player = &players[i];
 		player->arrows[0] = App->gui->AddSprite(0, 0, nullptr, player->arrowLeftRect);//LEFT TEAM ARROW
 		player->arrows[0]->SetParent(characterFrame[i]);

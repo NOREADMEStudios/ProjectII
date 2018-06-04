@@ -25,7 +25,9 @@ public:
 	Button* fullscrenBut ;
 	Button* settBack;
 	Button* inputBut;
+	
 	Button* backInputBut;
+	Label* hAtk, *lAtk, *ab1, *ab2, *ab3, *jump,* run, *prot;
 
 
 	IntroScene();
@@ -57,7 +59,7 @@ private:
 	void SetControllerFocus();
 	void ManageDisplacement();
 	void CreateSettingsWindow();
-		
+	void CreateInputWindow();
 };
 
 #endif

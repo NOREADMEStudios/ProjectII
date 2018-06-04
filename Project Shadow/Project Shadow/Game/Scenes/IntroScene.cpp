@@ -318,13 +318,6 @@ void IntroScene::CreateSettingsWindow() {
 	BckLabel->culled = false;
 
 
-	// BACK INPUT BUTTON
-	backInputBut = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3.6f, atlas, { 1282,883,400,98 }, false, BackInputPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
-	Label* BckILabel = App->gui->AddLabel((backInputBut->rect.w / 2) + 14, backInputBut->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
-	std::string BckIStr = "BACK";
-	BckILabel->setString(BckIStr);
-	BckILabel->SetParent(backInputBut);
-	BckILabel->culled = false;
 
 	
 	music_sl->SetRelation(fx_sl, InterfaceElement::Directions::DOWN);
@@ -332,7 +325,71 @@ void IntroScene::CreateSettingsWindow() {
 	inputBut->SetRelation(fullscrenBut, InterfaceElement::Directions::DOWN);
 	fullscrenBut->SetRelation(settBack, InterfaceElement::Directions::DOWN);
 	settBack->SetRelation(music_sl, InterfaceElement::Directions::DOWN);
+
+	CreateInputWindow();
 }
+
+void IntroScene::CreateInputWindow() {
+	uiPoint win_size = App->gui->GetGuiSize();
+
+	// BACK INPUT BUTTON
+	backInputBut = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3.6f, atlas, { 1282,883,400,98 }, false, BackInputPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	Label* BckILabel = App->gui->AddLabel((backInputBut->rect.w / 2) + 14, backInputBut->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string BckIStr = "BACK";
+	BckILabel->setString(BckIStr);
+	BckILabel->SetParent(backInputBut);
+	BckILabel->culled = false;
+	backInputBut->Enable(false);
+
+	hAtk = App->gui->AddLabel((win_size.x / 3), (win_size.y / 4) * 1.3f, 45, DEFAULT_FONT, { 0, 0, 0, 255 });
+	std::string hAStr = "Heavy Attack";
+	hAtk->setString(hAStr);
+	hAtk->culled = false;
+	hAtk->Enable(false);
+
+	lAtk = App->gui->AddLabel((win_size.x / 3), (win_size.y / 4) * 1.5f, 45, DEFAULT_FONT, { 0, 0, 0, 255 });
+	std::string lAStr = "Light Attack";
+	lAtk->setString(lAStr);
+	lAtk->culled = false;
+	lAtk->Enable(false);
+
+	ab1 = App->gui->AddLabel((win_size.x/ 3), (win_size.y / 4) * 1.7f, 45, DEFAULT_FONT, { 0, 0, 0, 255 });
+	std::string a1Str = "Ability 1";
+	ab1->setString(a1Str);
+	ab1->culled = false;
+	ab1->Enable(false);
+
+	ab2 = App->gui->AddLabel((win_size.x / 3), (win_size.y / 4) * 1.9f, 45, DEFAULT_FONT, { 0, 0, 0, 255 });
+	std::string a2Str = "Ability 2";
+	ab2->setString(a2Str);
+	ab2->culled = false;
+	ab2->Enable(false);
+
+	ab3 = App->gui->AddLabel((win_size.x  / 3), (win_size.y / 4) * 2.1f, 45, DEFAULT_FONT, { 0, 0, 0, 255 });
+	std::string a3Str = "Ability 3";
+	ab3->setString(a3Str);
+	ab3->culled = false;
+	ab3->Enable(false);
+
+	jump = App->gui->AddLabel((win_size.x / 3), (win_size.y / 4) * 2.3f, 45, DEFAULT_FONT, { 0, 0, 0, 255 });
+	std::string jStr = "Jump";
+	jump->setString(jStr);
+	jump->culled = false;
+	jump->Enable(false);
+
+	run = App->gui->AddLabel((win_size.x  / 3), (win_size.y / 4) * 2.5f, 45, DEFAULT_FONT, { 0, 0, 0, 255 });
+	std::string rStr = "Run";
+	run->setString(rStr);
+	run->culled = false;
+	run->Enable(false);
+
+	prot = App->gui->AddLabel((win_size.x  / 3), (win_size.y / 4) * 2.7f, 45, DEFAULT_FONT, { 0, 0, 0, 255 });
+	std::string pStr = "Protect";
+	prot->setString(pStr);
+	prot->culled = false;
+	prot->Enable(false);
+}
+
 
 void IntroScene::ManageSettings(bool settingActive) {
 
@@ -363,6 +420,15 @@ void IntroScene::ManageInput(bool inputActive) {
 	fx_sp->Enable(!inputActive);
 
 	backInputBut->Enable(inputActive);
+	hAtk->Enable(inputActive);
+	lAtk->Enable(inputActive);
+	ab1->Enable(inputActive);
+	ab2->Enable(inputActive);
+	ab3->Enable(inputActive);
+	jump->Enable(inputActive);
+	run->Enable(inputActive);
+	prot->Enable(inputActive);
+	
 
-	App->gui->setFocus(inputActive ? backInputBut : inputBut);
+	App->gui->setFocus(inputActive ? backInputBut : music_sl);
 }

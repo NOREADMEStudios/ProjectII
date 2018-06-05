@@ -94,7 +94,14 @@ void Icicle::OnCollisionEnter(Collider* _this, Collider* _other) {
 	if (_other->type == Collider::HITBOX)
 	{
 		_other->entity->AdBuff(COOL_DURATION - ((_other->entity->stats.ccr / 100) * COOL_DURATION), -COOL_EFFECT * _other->entity->stats.spd);
-		_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
+		int dmg = _this->entity->stats.atk - _other->entity->stats.def;
+
+		if (dmg <= 0)
+		{
+			dmg = 1;
+		}
+
+		_other->entity->stats.life -= dmg;
 		DeathMark* slow = new DeathMark{ *(DeathMark*)App->entities->slowed };
 		slow->SetPos(gamepos.x, gamepos.y + 40, gamepos.z);
 		slow->SetParent((Character*)_other->entity);

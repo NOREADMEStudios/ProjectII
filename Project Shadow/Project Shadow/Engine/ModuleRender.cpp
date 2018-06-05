@@ -99,24 +99,6 @@ bool ModuleRender::CleanUp(pugi::xml_node&)
 	return true;
 }
 
-bool ModuleRender::Load(pugi::xml_node& data)
-{
-	camera.x = data.child("camera").attribute("x").as_int();
-	camera.y = data.child("camera").attribute("y").as_int();
-
-	return true;
-}
-
-bool ModuleRender::Save(pugi::xml_node& data) const
-{
-	pugi::xml_node cam = data.append_child("camera");
-
-	cam.append_attribute("x") = camera.x;
-	cam.append_attribute("y") = camera.y;
-
-	return true;
-}
-
 void ModuleRender::SetBackgroundColor(SDL_Color color)
 {
 	background = color;
@@ -380,10 +362,11 @@ void ModuleRender::CheckCameraPos()
 			camera.w - (camera.w * cameraMarginInt * 2), camera.h - (camera.h * cameraMarginInt * 2 * 1.5f)
 		};
 
-#ifdef _DEBUG
-		DrawQuad(innerContainerExterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
-		DrawQuad(innerContainerInterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
-#endif
+		if (App->debug)
+		{
+			DrawQuad(innerContainerExterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
+			DrawQuad(innerContainerInterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
+		}
 
 		innerContainerInterior = innerContainerInterior * (1 / scale);
 		innerContainerExterior = innerContainerExterior * (1 / scale);

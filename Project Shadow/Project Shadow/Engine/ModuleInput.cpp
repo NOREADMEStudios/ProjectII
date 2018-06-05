@@ -7,7 +7,10 @@
 #include "ModuleCinematics.h"
 #include "ModuleGUI.h"
 #include "UI\Label.h"
+#include "../Game/Scenes/IntroScene.h"
 #include "../SDL/include/SDL.h"
+
+
 
 
 ModuleInput::ModuleInput() : Module() {
@@ -55,6 +58,8 @@ bool ModuleInput::Awake(pugi::xml_node& config) {
 // Called before the first frame
 bool ModuleInput::Start() {
 	SDL_StopTextInput();
+	SetBasicConfig();
+	SetDefaultConfig();
 	return true;
 }
 
@@ -193,7 +198,7 @@ bool ModuleInput::Update(float dt)
 	{
 		App->debug = !App->debug;
 		App->scenes->EnableDebugLab();
-		//App->gui->debugfpslab->Enable(!App->gui->debugfpslab->enabled);
+		
 	}
 
 	return true;
@@ -202,6 +207,7 @@ bool ModuleInput::Update(float dt)
 // Called before quitting
 bool ModuleInput::CleanUp(pugi::xml_node&) {
 	LOG("Quitting SDL event subsystem");
+	
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
@@ -470,6 +476,7 @@ Input ModuleInput::GetButtonFromController(int controllerNum, bool joystick ) co
 				break;
 			case SDL_CONTROLLER_BUTTON_MAX:
 				break;
+			
 			}
 		}
 		if (joystick) {
@@ -498,6 +505,12 @@ Input ModuleInput::GetButtonFromController(int controllerNum, bool joystick ) co
 							ret = Input::UP;
 						}
 						break;
+					case 4:
+						ret = Input::R2;
+						break;
+					case 5:
+						ret = Input::L2;
+						break;
 					}
 				}
 			}
@@ -505,3 +518,186 @@ Input ModuleInput::GetButtonFromController(int controllerNum, bool joystick ) co
 	}
 	return ret;
 }
+
+void ModuleInput::SetBasicConfig() 
+{
+
+	saved_list.push_back(new InputButton{ BUTTON_Y, "Y", 0 , HEAVY_ATTACK });	//0
+	saved_list.push_back(new InputButton{ BUTTON_X, "X", 1 , LIGHT_ATTACK });	//1
+	saved_list.push_back(new InputButton{ BUTTON_B, "B", 2 , AB_1 });			//2
+	saved_list.push_back(new InputButton{ L2, "LT", 3 , AB_2 });				//3
+	saved_list.push_back(new InputButton{ R2, "RT", 4 , AB_3 });				//4
+	saved_list.push_back(new InputButton{ BUTTON_A, "A", 5, JUMPINPUT });		//5
+	saved_list.push_back(new InputButton{ R_SHOULDER, "RB", 6 , RUNINPUT });	//6
+	saved_list.push_back(new InputButton{ L_SHOULDER, "LB", 7 , DEFEND });		//7
+
+}
+void ModuleInput::SetDefaultConfig()
+{
+	default_list.push_back(new InputButton{ BUTTON_Y, "Y", 0 , HEAVY_ATTACK });	//0 -> Y
+	default_list.push_back(new InputButton{ BUTTON_X, "X", 1 , LIGHT_ATTACK });	//1 -> X
+	default_list.push_back(new InputButton{ BUTTON_B, "B", 2 , AB_1 });			//2 -> B
+	default_list.push_back(new InputButton{ L2, "LT", 3 , AB_2 });				//3
+	default_list.push_back(new InputButton{ R2, "RT", 4 , AB_3 });				//4
+	default_list.push_back(new InputButton{ BUTTON_A, "A", 5, JUMPINPUT });		//5
+	default_list.push_back(new InputButton{ R_SHOULDER, "RB", 6 , RUNINPUT });	//6
+	default_list.push_back(new InputButton{ L_SHOULDER, "LB", 7 , DEFEND });	//7
+	
+	
+}
+
+
+void ModuleInput::EmptyConfig()
+{
+	Utils::ClearVector(saved_list);	
+	
+}
+
+void ModuleInput::ResetConfig() {
+	for (int i = 0; i < EDITABLE_BUTTONS; i++) {
+		saved_list[i]->input = default_list[i]->input;		
+		saved_list[i]->name = default_list[i]->name;
+		saved_list[i]->tag = default_list[i]->tag;
+	}
+}
+InputButton* ModuleInput::GetInputButton(Input i)
+{
+	InputButton* ret = nullptr;
+
+	for (std::vector<InputButton*>::iterator item = saved_list.begin(); item != saved_list.end(); item++) {
+		if ((*item)->input == i)
+		{
+			ret = (*item);
+		}
+	}
+
+	return ret;
+}
+
+void ModuleInput::SwapInputs(InputButton* a, InputButton* b)
+{
+	InputButton aux = *a;
+	a->input = b->input;
+	a->name = b->name;
+	a->tag = b->tag;
+	b->input = aux.input;
+	b->name = aux.name;
+	b->tag = aux.tag;
+
+}
+
+
+bool ModuleInput::Load(pugi::xml_node& data){ 
+	
+	pugi::xml_node but = data.child("buttons").child("button");
+	for (int i = 0; i<saved_list.size(); i++) {
+		savedInputTags[i] = but.attribute("tag").as_int();
+		
+		but = but.next_sibling();
+	}
+	LoadFromXML();
+	return true;
+}
+
+bool ModuleInput::Save(pugi::xml_node& data) const{ 
+
+
+	pugi::xml_node but = data.append_child("buttons");
+	for (int i = 0; i < EDITABLE_BUTTONS; i++) {
+		but.append_child("button").append_attribute("tag") = saved_list[i]->tag;
+	
+	}
+
+	return true;
+}
+
+void ModuleInput::LoadFromXML() {
+	if (savedInputTags) {
+		EmptyConfig();
+		for (int i = 0; i < EDITABLE_BUTTONS; i++) {
+			CharInput cInput;
+			switch (i)
+			{
+			case 0:
+				cInput = HEAVY_ATTACK;
+				break;
+			case 1:
+				cInput = LIGHT_ATTACK;
+				break;
+			case 2:
+				cInput = AB_1;
+				break;
+			case 3:
+				cInput = AB_2;
+				break;
+			case 4:
+				cInput = AB_3;
+				break;
+			case 5:
+				cInput = JUMPINPUT;
+				break;
+			case 6:
+				cInput = RUNINPUT;
+				break;
+			case 7:
+				cInput = DEFEND;
+				break;
+			}
+			
+			int tag;
+			std::string name;
+			Input input;
+			switch (savedInputTags[i])
+			{
+			case 0:
+				tag = savedInputTags[i];
+				name = "Y";
+				input = BUTTON_Y;
+				break;
+			case 1:
+				tag = savedInputTags[i];
+				name = "X";
+				input = BUTTON_X;
+				break;
+			case 2:
+				tag = savedInputTags[i];
+				name = "B";
+				input = BUTTON_B;
+				break;
+			case 3:
+				tag = savedInputTags[i];
+				name = "LT";
+				input = L2;
+				break;
+			case 4:
+				tag = savedInputTags[i];
+				name = "RT";
+				input = R2;
+				break;
+			case 5:
+				tag = savedInputTags[i];
+				name = "A";
+				input = BUTTON_A;
+				break;
+			case 6:
+				tag = savedInputTags[i];
+				name = "RB";
+				input = R_SHOULDER;
+				break;
+			case 7:
+				tag = savedInputTags[i];
+				name = "LB";
+				input = L_SHOULDER;
+				break;
+			}
+			
+			saved_list.push_back(new InputButton({input, name, tag, cInput}));
+		}
+		App->scenes->introSc->UpdateInputButtonOfInputFrame();
+	}
+	
+
+		
+}
+
+

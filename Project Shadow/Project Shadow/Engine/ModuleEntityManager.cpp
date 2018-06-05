@@ -111,6 +111,11 @@ bool ModuleEntityManager::PreUpdate() {
 
 bool ModuleEntityManager::Update(float dt) {
 	uint aliveCharacters = 0;
+	bool team = false;
+	bool first = true;
+	int curr_team = 0;
+	int prev_team = 0; // FALSE BLUE	TRUE RED
+
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		if ((*item)->active )
 		{
@@ -120,10 +125,30 @@ bool ModuleEntityManager::Update(float dt) {
 			winner = (*item)->heroNum;
 			winnerTeam = (*item)->team;
 			aliveCharacters++;
+
+			if ((*item)->team == RED)
+			{
+				if (first)
+					curr_team = 1;
+				else
+					prev_team = 1;
+			}
+			else if (first)
+				curr_team = 2;
+			else
+				prev_team = 2;
+
+			first = false;
 		}
 	}
 
-	if (numofplayers != 0 && aliveCharacters <= numofplayers / 2 && !locked)
+	if (curr_team == prev_team || (prev_team == 0 && aliveCharacters == 1))
+	{
+		team = true;
+	}
+
+
+	if (numofplayers != 0 && aliveCharacters <= numofplayers / 2 && !locked && team)
 	{
 		finish = true;
 		locked = true;
@@ -147,7 +172,8 @@ bool ModuleEntityManager::PostUpdate() {
 
 bool ModuleEntityManager::CleanUp(pugi::xml_node& n) {
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
-		(*item)->CleanUp(n);
+		if ((*item)->type != SPELLS)
+			(*item)->CleanUp(n);
 	}
 	locked = false;
 	finish = false;
@@ -388,9 +414,12 @@ Entity* ModuleEntityManager::GetSameTeam(Entity* c)
 	Entity* ret = nullptr;
 
 	for (std::list<Entity*>::const_iterator item = entities.begin(); item != entities.end(); item++) {
-		if ((*item)->team == c->team && (*item) != c)
+		if ((*item)->GetType() != SPELLS)
 		{
-			ret = (*item);
+			if ((*item)->team == c->team && (*item) != c)
+			{
+				ret = (*item);
+			}
 		}
 	}
 	return ret;

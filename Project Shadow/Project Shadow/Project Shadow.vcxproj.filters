@@ -194,6 +194,12 @@
     <ClCompile Include="Engine\Corpse.cpp">
       <Filter>Engine\Entities\Character\Heros</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Cinematic.cpp">
+      <Filter>Engine\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ModuleCinematics.cpp">
+      <Filter>Engine\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\App.h">
@@ -372,6 +378,12 @@
     </ClInclude>
     <ClInclude Include="Engine\Corpse.h">
       <Filter>Engine\Entities\Character\Heros</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Cinematic.h">
+      <Filter>Engine\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleCinematics.h">
+      <Filter>Engine\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

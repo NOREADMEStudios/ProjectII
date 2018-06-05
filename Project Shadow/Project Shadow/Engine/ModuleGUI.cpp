@@ -318,6 +318,8 @@ Healthbar * ModuleGUI::AddHealthbar(Character * character, int charNum, bool lef
 		break;
 	}
 
+
+
 	charFaceRect = {
 		initialPosSprites.x + (dimensionSprites + marginSprites) * character->charType,
 		initialPosSprites.y + (dimensionSprites + marginSprites) * (character->team - 1),

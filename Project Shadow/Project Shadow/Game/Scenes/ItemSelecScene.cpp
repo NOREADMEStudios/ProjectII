@@ -90,11 +90,11 @@ void ItemSelecScene::LoadSceneUI() {
 	App->gui->setFocus(items[i]->butt);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 1467,1568,180,180 }, { 360,1735,90,90 }, { 0,30,0,0,0,0,0,0 });
+	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 1467,1568,180,180 }, { 360,1735,90,90 }, { 0,3,0,0,0,0,0,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Plate Mail", PLATE, { 1652,1568,180,180 }, { 0,1645,90,90 }, { 0,0,30,0,0,0,0,0 });
+	items[++i] = new Item("Plate Mail", PLATE, { 1652,1568,180,180 }, { 0,1645,90,90 }, { 0,0,3,0,0,0,0,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
@@ -258,6 +258,7 @@ void ItemSelecScene::ChooseFocus() {
 
 	for (int i = 0; i < players.size(); i++) {
 		if (players[i].ready) {
+			players[i].arrow->Enable(false);
 			continue;
 		}
 		if (App->input->GetButtonFromController(players[i].playerNum) == Input::BUTTON_A ) {
@@ -266,7 +267,7 @@ void ItemSelecScene::ChooseFocus() {
 			players[i].playerItems[players[i].locked] = item;
 			players[i].miniatureItems[players[i].locked] = App->gui->AddSprite(-300, 0, nullptr, item->lockedRect);
 			players[i].miniatureItems[players[i].locked]->SetParent(players[i].miniatureItemsFrame);
-			players[i].miniatureItems[players[i].locked]->setPosition((players[i].miniatureItemsFrame->rect.w * (1 + i) / 3), players[i].miniatureItemsFrame->rect.h * 2 / 3);
+			players[i].miniatureItems[players[i].locked]->setPosition((players[i].miniatureItemsFrame->rect.w * (1 + players[i].locked) / 3), players[i].miniatureItemsFrame->rect.h * 2 / 3);
 			players[i].LockedArrow(players[i].locked);
 			players[i].locked++;
 			FindFirstFreeItem(i);

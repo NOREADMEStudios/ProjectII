@@ -38,7 +38,7 @@ bool Lightning::CleanUp(pugi::xml_node&)
 {
 	//UnLoadSprites();
 	spellAnim.Reset();
-	bool ret = App->collision->RemoveCollider(spellColl);
+	bool ret = App->collision->RemoveCollider(&spellColl);
 
 	return ret;
 }
@@ -99,7 +99,14 @@ void Lightning::OnCollisionStay(Collider* _this, Collider* _other) {
 		
 			if (dealingDmg){
 			
-				_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
+				int dmg = _this->entity->stats.atk - _other->entity->stats.def;
+
+				if (dmg <= 0)
+				{
+					dmg = 1;
+				}
+
+				_other->entity->stats.life -= dmg;
 		}
 	}
 }
@@ -142,7 +149,7 @@ bool Aura::Start() {
 bool Aura::CleanUp(pugi::xml_node&)
 {
 	//UnLoadSprites();
-	bool ret = App->collision->RemoveCollider(spellColl);
+	bool ret = App->collision->RemoveCollider(&spellColl);
 
 	return ret;
 }

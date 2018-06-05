@@ -186,6 +186,7 @@ bool Character::CleanUp(pugi::xml_node&)
 	App->textures->UnLoad(sprites);
 
 	UnloadShadow();
+
 	RemoveColliders();
 	Utils::ClearList(attacks);
 
@@ -199,7 +200,7 @@ bool Character::CleanUp(pugi::xml_node&)
 
 void Character::RemoveColliders() {
 
-	if (collAtk) {
+	/*if (collAtk) {
 		App->collision->RemoveCollider(collAtk); collAtk = nullptr;
 	}
 	if (collDef) {
@@ -213,7 +214,7 @@ void Character::RemoveColliders() {
 	}
 	if (collFeet) {
 		App->collision->RemoveCollider(collFeet); collFeet = nullptr;
-	}
+	}*/
 }
 
 void Character::ModifyStats(int attack, int defense, int speed, int magic)
@@ -452,9 +453,17 @@ void Character::UpdateMainStates()
 	{
 		if (!GetAbAtk(wantedTag)->active || (currentState == JUMP || (currentState == AD_ACTION && currentTag != 0 && GetAtk(currentTag)->air)))
 		{
-			wantedTag = currentTag;
+
 			if (!StateisAtk(currentState))
-				wantedState = currentState;
+			{
+
+				wantedState = IDLE;
+				wantedTag = 0;
+			}
+			else
+			{
+				wantedTag = currentTag;
+			}
 		}
 		else 
 			GetAbAtk(wantedTag)->Activate();
@@ -856,20 +865,19 @@ void Character::SetAnimations()
 		{
 			animations_name = CLERIC_ANIM_ROOT;
 			spritePath = CLERIC_SPRITE_ROOT;
-			cleric = true;
+
 			break;
 		}
 		
 	}
-	if (!cleric)
-	{
-		if (team == Team::BLUE) {
-			spritePath += blue;
-		}
-		else if (team == Team::RED) {
-			spritePath += red;
-		}
+
+	if (team == Team::BLUE) {
+		spritePath += blue;
 	}
+	else if (team == Team::RED) {
+		spritePath += red;
+	}
+	
 
 
 	sprites = App->textures->Load(spritePath.c_str());

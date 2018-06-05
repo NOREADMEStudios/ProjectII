@@ -42,7 +42,7 @@ bool FireBall::CleanUp(pugi::xml_node&)
 {
 	//UnLoadSprites();
 	currentAnimation->Reset();
-	bool ret = App->collision->RemoveCollider(spellColl);
+	bool ret = App->collision->RemoveCollider(&spellColl);
 
 	return ret;
 }
@@ -100,7 +100,14 @@ void FireBall::OnCollisionEnter(Collider* _this, Collider* _other) {
 	if (_other->type == Collider::HITBOX)
 	{
 		to_delete = true;
-		_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
+		int dmg = _this->entity->stats.atk - _other->entity->stats.def;
+
+		if (dmg <= 0)
+		{
+			dmg = 1;
+		}
+
+		_other->entity->stats.life -= dmg;
 
 	}
 

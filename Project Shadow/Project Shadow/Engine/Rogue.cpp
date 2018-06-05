@@ -252,6 +252,7 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			if (_other->entity->breaking)
 			{
+				currentAnimation->Reset();
 				currentState = HIT;
 				//App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
@@ -274,12 +275,14 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::PARRY)
 		{
+			currentAnimation->Reset();
 			currentTag = 0;
 			currentState = HIT;
 			//App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
+			currentAnimation->Reset();
 			currentState = HIT;
 			//App->SetTimeScale(0.f, hitStopFrames);
 			currentTag = 0;
@@ -434,14 +437,14 @@ void Rogue::CreateSounds()
 		case 11:
 			if (sound_avaliable)
 			{
-				App->audio->PlayFx(27);
+				App->audio->PlayFx(13);
 				sound_avaliable = false;
 			}
 			break;
 		case 12:
 			if (sound_avaliable)
 			{
-				App->audio->PlayFx(13);
+				App->audio->PlayFx(27);
 				sound_avaliable = false;
 			}
 			break;

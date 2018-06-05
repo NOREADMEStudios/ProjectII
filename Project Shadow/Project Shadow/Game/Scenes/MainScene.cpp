@@ -22,6 +22,8 @@
 #include "../../Engine/UI/Button.h"
 #include "../../Engine/ModuleFonts.h"
 #include "../../Engine/ModuleTransition.h"
+#include "../../Engine/ModuleCinematics.h"
+#include "../../Engine/Cinematic.h"
 #include <time.h>
 
 void MainMenuPressCallb(size_t arg_size...);
@@ -84,21 +86,108 @@ bool MainScene::Start()
 	{
 		e = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[0]);
 		e2 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[1]);
-		App->gui->AddHealthbar((Character*)e, 0, true,healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
-		App->gui->AddHealthbar((Character*)e2, 1, true, secHealtbarMargin, 240, atlas, true, { 304, 271, 577, 26 });
-
 		e3 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[2]);
 		e4 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[3]);
-		App->gui->AddHealthbar((Character*)e3, 2, false, sizeScreen.x - healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
-		App->gui->AddHealthbar((Character*)e4, 3, false, sizeScreen.x -secHealtbarMargin, 240, atlas, true, { 304, 271, 577, 26 });
+
+		Entity* first_blue = nullptr;
+		Entity* second_blue = nullptr;
+		Entity* first_red = nullptr;
+		Entity* second_red = nullptr;
+
+		if (e->team == BLUE)
+		{
+			first_blue = e;
+		}
+		else
+		{
+			first_red = e;
+		}
+
+		if (e2->team == BLUE)
+		{
+			if (first_blue == nullptr)
+			{
+				first_blue = e2;
+			}
+			else
+			{
+				second_blue = e2;
+			}
+		}
+		else
+		{
+			if (first_red == nullptr)
+			{
+				first_red = e2;
+			}
+			else
+			{
+				second_red = e2;
+			}
+		}
+
+		if (e3->team == BLUE)
+		{
+			if (first_blue == nullptr)
+			{
+				first_blue = e3;
+			}
+			else
+			{
+				second_blue = e3;
+			}
+		}
+		else
+		{
+			if (first_red == nullptr)
+			{
+				first_red = e3;
+			}
+			else
+			{
+				second_red = e3;
+			}
+		}
+
+		if (e4->team == BLUE)
+		{
+			if (first_blue == nullptr)
+			{
+				first_blue = e4;
+			}
+			else
+			{
+				second_blue = e4;
+			}
+		}
+		else
+		{
+			if (first_red == nullptr)
+			{
+				first_red = e4;
+			}
+			else
+			{
+				second_red = e4;
+			}
+		}
+
+		App->gui->AddHealthbar((Character*)first_red, 0, true,healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)second_red, 1, true, secHealtbarMargin, 240, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)first_blue, 2, false, sizeScreen.x - healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)second_blue, 3, false, sizeScreen.x -secHealtbarMargin, 240, atlas, true, { 304, 271, 577, 26 });
+
+
+
+
 	}
 
 	LoadSceneUI();
 	CreateSettingsWindow();
 	SetControllerFocus();
+	//LoadStartCinematic();
 	SetDebugLabels();
-	
-	
+
 	return false;
 }
 
@@ -245,6 +334,16 @@ void MainScene::WindowStates(){
 		pauseWindow->Enable(true);
 }
 
+void MainScene::LoadStartCinematic()
+{
+	/*Cinematic * c = new Cinematic();
+	CinematicFrame* frame = new CinematicFrame({ 0, 0 }, 1.f);
+	c->AddKeyFrame(frame, 0.f, false, false);
+	frame = new CinematicFrame({DEFAULT_RESOLUTION_X - 150, DEFAULT_RESOLUTION_Y / 2}, 2.5f);
+	c->AddKeyFrame(frame, 10.f);
+	App->cinematics->StartCinematic(c);*/
+}
+
 void MainScene::ManageDisplacement() {
 	if (App->input->GetButtonFromController(1, false) == Input::DOWN) {
 		InterfaceElement* elem = App->gui->getFocusedItem()->GetRelativeElement(InterfaceElement::Directions::DOWN);
@@ -297,10 +396,18 @@ void MainScene::ChangeRoundsIndicator(){
 void MainScene::CreateSettingsWindow() {
 	uiPoint win_size = App->gui->GetGuiSize();
 
-	roundsIndicatorSprite[0] = App->gui->AddSprite((win_size.x * 0.406f), (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
-	roundsIndicatorSprite[1] = App->gui->AddSprite((win_size.x * 0.406f) + 49, (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
-	roundsIndicatorSprite[2] = App->gui->AddSprite((win_size.x * 0.591f)- 49, (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
-	roundsIndicatorSprite[3] = App->gui->AddSprite((win_size.x * 0.591f), (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
+		roundsIndicatorSprite[0] = App->gui->AddSprite((win_size.x * 0.406f), (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+		roundsIndicatorSprite[1] = App->gui->AddSprite((win_size.x * 0.406f) + 49, (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+		roundsIndicatorSprite[2] = App->gui->AddSprite((win_size.x * 0.591f) - 49, (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+		roundsIndicatorSprite[3] = App->gui->AddSprite((win_size.x * 0.591f), (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+	}
+	else {
+		roundsIndicatorSprite[0] = App->gui->AddSprite((win_size.x * 0.322f), (win_size.y * 0.02f) + 2, nullptr, { 1113,249, 39, 39 });
+		roundsIndicatorSprite[1] = App->gui->AddSprite((win_size.x * 0.322f) + 49, (win_size.y * 0.02f) + 2, nullptr, { 1113,249, 39, 39 });
+		roundsIndicatorSprite[2] = App->gui->AddSprite((win_size.x * 0.678f) - 49, (win_size.y * 0.02f) + 2, nullptr, { 1113,249, 39, 39 });
+		roundsIndicatorSprite[3] = App->gui->AddSprite((win_size.x * 0.678f), (win_size.y * 0.02f) + 2, nullptr, { 1113,249, 39, 39 });
+	}
 
 	//uiPoint win_size = App->gui->GetGuiSize();
 

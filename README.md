@@ -1,32 +1,51 @@
 ﻿# UPC School Gold for Project II 
 
 
-- Check our website [here](https://github.com/NOREADMEStudios/ProjectII).
-- You can download our Gold Version (WIP) [here](https://github.com/NOREADMEStudios/ProjectII/releases).
+- Check our website [here](https://ninalb13.github.io/mystara_arena_webpage/).
+- You can download our Gold Version [here](https://github.com/NOREADMEStudios/ProjectII/releases/tag/1.0).
 
 ## Game Description
 
-Mystara Arena is a college project game that will be developed over the course of the subject, Project II by our team, NOREADME Studios. The objective of this project is to create a fully featured game that can be played completely and that can be learned in around 10 to 20 minutes. We will be taking most of the art & sounds from the arcade game "Dungeons and Dragons: Shadow over Mystara", a beat'em up game released by Capcom in 1996.
+Mystara Arena is a college project game that has been developed over the course in the subject Project II by our team, _NOREADME Studios_. The objective of this project was to create a fully featured game that could be learned in around 10 to 20 minutes and that could create a competitive environment for a group of friends to try and challenge each other in the 1vs1 and 2vs2 game modes, while ensuring a very fun gameplay. We have taken most of the art and sounds from the arcade game _"Dungeons and Dragons: Shadow over Mystara"_, a beat'em up game released by Capcom in 1996.
 
-In this Vertical Slice we want to show our game mechanics, before going on with the final game. You can play against a friend or against 3 of them together in our 1vs1 and 4-player free for all modes. Once selected you can choose different items that will help you face your opponents. Your hero is able to perform combos & linking your attacks to make your friends bite the dust. Are you ready to enter the Arena?
-
-## Tips 
-
-- For the gameplay, it's recommended the usage of a controller for each player. 
-- Test all your attacks to perform combos!
-- In the Arena, once your health bar is empty you will lose a life. But be careful, you only have 3 of them.
-- (Pro Tip) The parry state allows you to stun your enemy if performed on a precise moment of your oponent's attack.
+In the Gold version you will be able to enjoy the complete experience of a very fun fighting game with 1vs1 and 2vs2 game modes. That will allow you to have fun with three of your friends or to challenge each of them to a duel to see who is the best. Before starting a match, you will have to choose between two of six items that will help you face your opponents. Learning how to use each hero and item best, will help you achieve the victory. All heroes are able to perform combos and link their attacks but will require a a lot of practice to master. There are four very diferent charaters that will fit every player's playstyle with more defenssive/agressive and attack/spell based characters. Learn how to use and play against every one of them and you will make your friends bite the dust. Are you ready to enter the Arena?
 
 ## Controlls
-(XBox Controller)
--Arrows: Movement
--A: Jump
--B: Parry
--X: Light Attack
--Y: Strong Attack
--LB: Defend
--RB: Run
--Back: Taunt
+
+**(XBox Controller)**
+- Left Joystick/Arrows: Movement
+- A: Jump
+- B: Abbility 1
+- X: Light Attack
+- Y: Strong Attack
+- RT: Ability 2
+- LT: Ability 3
+- LB: Protect
+- RB: Run
+- Back: Taunt
+- Start: Settings
+
+## Change Log
+
+- **Vertical Slice:** In this release we started creating the core mechanics of the game and defining everything that we would include. We implemented a single character and two maps to show what it would look like in the future.
+- **Alpha:** In this release we reduced the size of the maps and added the rest of the characters. We improved the combat system and created the spells category.
+- **Gold:** In this last release we have improved all the characters' animations, improved some abilities and implemented the final art for the UI and items. We have also balanced every character to adapt to their role and created a better character, team and item selection process. We added a more responsive settings menu and a clearer in-game UI to distinguish the characters from each team.
+
+## How to install
+
+To be able to play the game you will only have to [download](https://github.com/NOREADMEStudios/ProjectII/releases/tag/1.0) the first ZIP that appears on the release page and extract it wherever you want to store it. Then just execute the aplication and you are ready!
+
+## How to play
+
+To play the game you will just need two to four controllers depending on how many friends do you have to play with. Then simply select the game mode you want to play and choose your favourite characterand items. If you are playing 2vs2 you will have to select which team do you want to be in (there has to be two players on each team, so after the first two have chosen, the last two will be automatically assigned).
+You can turn on/off the fullcreen mode and change the volume of the music and sound effects in the settings window.
+
+In order to win a 1vs1 match you will have to defeat your opponent on two of the three rounds.
+For the 2vs2 it will be the same but with the help of your partner and a second enemy to defeat.
+
+## Debug Features
+
+By pressing F1 on your keyboard you will be able to see the characters' colliders as well as the current FPS and the time that has passed since the applications started.
 
 ## Team members
 
@@ -54,16 +73,12 @@ QA
 **[@RogerJimbo](https://github.com/RogerJimbo)**
 UI
 
+## Follow us :)
 
-
-## Our Combos
-
-- LightAttack + LightAttack + LightAttack
-- Strong Attack + LightAttack
-- Strong Attack + Strong Attack
-- LightAttack + LightAttack + Strong Attack
-- Jump + Strong Attack
-- Jump + Light Attack
+- [Instagram](https://www.instagram.com/noreadmestudio/)
+- [Twitter](https://twitter.com/NoReadmeStudio)
+- [YouTube](https://www.youtube.com/channel/UCu9RR-TRzoO5rMn5E1fv8Xw)
+- [GitHub](https://github.com/NOREADMEStudios/ProjectII)
 
 ## License
 MIT License

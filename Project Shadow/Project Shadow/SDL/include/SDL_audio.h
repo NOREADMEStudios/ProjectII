@@ -159,7 +159,7 @@ typedef Uint16 SDL_AudioFormat;
  *  You can choose to avoid callbacks and use SDL_QueueAudio() instead, if
  *  you like. Just open your audio device with a NULL callback.
  */
-typedef void (SDLCALL * SDL_AudioCallback) (void *userdata, Uint8 * stream,
+typedef void (SDLCALL * SDL_AudioCallback) (void *userdata, Uint8 * videoStream,
                                             int len);
 
 /**

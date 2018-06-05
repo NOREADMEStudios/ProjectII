@@ -482,9 +482,9 @@ Input ModuleInput::GetButtonFromController(int controllerNum, bool joystick ) co
 void ModuleInput::SetBasicConfig() 
 {
 
-	input_list.push_back( new InputButton{ BUTTON_A, "A", 0 , LIGHT_ATTACK});		//0
+	input_list.push_back( new InputButton{ BUTTON_X, "X", 0 , LIGHT_ATTACK});		//0
 	input_list.push_back(new InputButton{ BUTTON_B, "B", 1 , AB_1});				//1
-	input_list.push_back(new InputButton{ BUTTON_X, "X", 2 , JUMPINPUT});			//2
+	input_list.push_back(new InputButton{ BUTTON_A, "A", 2 , JUMPINPUT});			//2
 	input_list.push_back(new InputButton{ BUTTON_Y, "Y", 3 , HEAVY_ATTACK});		//3
 	input_list.push_back(new InputButton{ L_SHOULDER, "L_SHOULDER", 4 , DEFEND});	//4
 	input_list.push_back(new InputButton{ R_SHOULDER, "R_SHOULDER", 5 , RUNINPUT});	//5

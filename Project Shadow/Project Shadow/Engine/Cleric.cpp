@@ -362,7 +362,7 @@ void Cleric::CreateSounds()
 	case TAUNT:
 		if (sound_avaliable)
 		{
-			App->audio->PlayFx(12);
+			App->audio->PlayFx(31);
 			sound_avaliable = false;
 		}
 		break;

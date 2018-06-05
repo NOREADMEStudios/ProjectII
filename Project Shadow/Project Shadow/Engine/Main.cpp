@@ -13,6 +13,9 @@
 #include "../Brofiler/Brofiler.h"
 #pragma comment( lib, "Brofiler/ProfilerCore32.lib" )
 
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+
+
 #ifdef main
 #undef main
 #endif

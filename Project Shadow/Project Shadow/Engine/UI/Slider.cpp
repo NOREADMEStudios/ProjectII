@@ -60,6 +60,10 @@ bool Slider::PreUpdate()
 	else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && dragging)
 		dragging = false;
 
+	if (in_focus) {
+		currentAnim = &pressed_anim;
+	}
+
 	return ret;
 }
 

@@ -24,6 +24,7 @@ public:
 	bool Save(pugi::xml_node&) const override { return true; }
 	void SetPath(std::string _name);
 	void SetBack() { z = -1; };
+	void SetLifeTime(uint msec) { lifetime = msec; };
 
 	bool cl;
 protected:

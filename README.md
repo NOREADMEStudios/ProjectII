@@ -1,7 +1,7 @@
 ﻿# UPC School Gold for Project II 
 
 
-- Check our website [here](https://github.com/NOREADMEStudios/ProjectII).
+- Check our website [here](https://ninalb13.github.io/mystara_arena_webpage/).
 - You can download our Gold Version (WIP) [here](https://github.com/NOREADMEStudios/ProjectII/releases).
 
 ## Game Description

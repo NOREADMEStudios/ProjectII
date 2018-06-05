@@ -42,6 +42,7 @@ public:
 	Sprite* music_sp = nullptr;
 	Slider* fx_sl = nullptr;
 	Sprite* fx_sp = nullptr;
+	Sprite* roundsIndicatorSprite[4];
 	Button* fullscrenButt = nullptr;
 	Button* settBackButt = nullptr;
 			
@@ -72,6 +73,7 @@ public:
 
 private:
 	void ChooseFocus();
+	void ChangeRoundsIndicator();
 	void SetControllerFocus();
 	void ManageDisplacement();
 	void CreateSettingsWindow();

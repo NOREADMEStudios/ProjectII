@@ -31,10 +31,11 @@ public:
 	class Item {
 	public:
 		Item();
-		Item(std::string _name, ItemType _type, SDL_Rect _animRect, EntityStats _stats) {
+		Item(std::string _name, ItemType _type, SDL_Rect _animRect, SDL_Rect _lockedRect, EntityStats _stats) {
 			name = _name;
 			type = _type;
 			animRect = _animRect;
+			lockedRect = _lockedRect;
 			stats = _stats;
 		}
 		std::string name;
@@ -44,6 +45,7 @@ public:
 		
 		EntityStats stats;
 		SDL_Rect animRect;
+		SDL_Rect lockedRect;
 		Item* relations[InterfaceElement::Directions::AMOUNT];
 
 		Item* GetRelativeItem(InterfaceElement::Directions dir);
@@ -58,12 +60,12 @@ public:
 		int totalControllersNum;
 		Sprite* arrow = nullptr;
 		SDL_Rect arrowRect;
-		Sprite* lockedArrows[3];		
+		Sprite* lockedArrows[2];		
 		SDL_Rect arrowLockRect;
 		uint locked = 0;
-		Item* playerItems[3];
+		Item* playerItems[2];
 		Sprite* miniatureItemsFrame;
-		Sprite* miniatureItems[3];
+		Sprite* miniatureItems[2];
 		Label* playerName;
 		bool ready = false;
 
@@ -75,6 +77,7 @@ public:
 	};
 
 	Item* items[6];
+	std::vector<Player> players;
 	/*String* statsItemsStr[6];
 	Label* stats*/
 
@@ -97,6 +100,8 @@ public:
 
 	bool Save(pugi::xml_node&) const override { return true; };
 
+
+
 private:
 	void LoadSceneUI();
 	void FindNextArrowUnlocked(uint player, InterfaceElement::Directions direction);
@@ -105,13 +110,13 @@ private:
 	void ManageDisplacementFocus();
 	void ChooseFocus();
 	void RemoveSelectedItem();
-	void ApplyItemAttributes();
 	bool AllPlayersReady();
 	void FindFirstFreeItem(uint playerNum);
 	void AddLabelToButton(Item* item);
-	
-	std::vector<Player> players;
+
+
 	std::list<Button*> buttonsForController;
+
 };
 
 #endif

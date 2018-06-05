@@ -6,6 +6,8 @@
 #include "ModuleAudio.h"
 #include "ModuleInput.h"
 #include "Corpse.h"
+#include "ModuleSceneManager.h"
+#include "../Game/Scenes/ItemSelecScene.h"
 
 #include "ModuleMap.h"
 
@@ -58,7 +60,7 @@ bool Character::Start()
 
 	invencible.dur = 3;
 	invencible.fr = 0.2f;
-	char_depth = 20;
+	char_depth = 30;
 
 
 	initialpos.x = gamepos.x;
@@ -76,6 +78,15 @@ bool Character::Start()
 
 	collider = currentAnimation->CurrentFrame().rect;
 
+	if (App->scenes->itemSc->players.size() >= heroNum)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			stats = stats + App->scenes->itemSc->players[heroNum - 1].playerItems[i]->stats;
+		}
+	}
+
+
 	active = true;
 	return true; 
 }
@@ -88,7 +99,7 @@ bool Character::PreUpdate()
 }
 
 bool Character::Update(float dt)
-{ 
+{
 
 	if (paused) {
 		resume = true;
@@ -99,7 +110,7 @@ bool Character::Update(float dt)
 		currentAnimation->ResumeFrame();
 		resume = false;
 	}
-	
+
 
 	if (stats.hpRecover && hpRecTimer.Count(5) && stats.life < initialLife)
 	{
@@ -158,6 +169,10 @@ bool Character::Update(float dt)
 	if (gamepos.z > App->map->GetMapBorders_Z() + App->map->GetMapBorders_H())
 		gamepos.z = App->map->GetMapBorders_Z() + App->map->GetMapBorders_H();
 
+	if (dead) {	
+		LeaveCorpse();
+		RemoveColliders();
+	}
 	return true; 
 }
 
@@ -172,21 +187,8 @@ bool Character::CleanUp(pugi::xml_node&)
 
 	UnloadShadow();
 
-	/*if (collAtk) {
-		App->collision->RemoveCollider(&collAtk);
-	}
-	if (collDef) {
-		App->collision->RemoveCollider(&collDef);
-	}
-	if (collParry) {
-		App->collision->RemoveCollider(&collParry);
-	}*/
-
+	RemoveColliders();
 	Utils::ClearList(attacks);
-
-
-	/*App->collision->RemoveCollider(&collHitBox);
-	App->collision->RemoveCollider(&collFeet);*/
 
 	if (heroCorpse) {
 		pugi::xml_node n;
@@ -196,6 +198,24 @@ bool Character::CleanUp(pugi::xml_node&)
 	return true;
 }
 
+void Character::RemoveColliders() {
+
+	/*if (collAtk) {
+		App->collision->RemoveCollider(collAtk); collAtk = nullptr;
+	}
+	if (collDef) {
+		App->collision->RemoveCollider(collDef); collDef = nullptr;
+	}
+	if (collParry) {
+		App->collision->RemoveCollider(collParry); collParry = nullptr;
+	}
+	if (collHitBox) {
+		App->collision->RemoveCollider(collHitBox); collHitBox = nullptr;
+	}
+	if (collFeet) {
+		App->collision->RemoveCollider(collFeet); collFeet = nullptr;
+	}*/
+}
 
 void Character::ModifyStats(int attack, int defense, int speed, int magic)
 {
@@ -351,7 +371,8 @@ void Character::RequestState() {
 	}
 
 	bool run = false,
-		block = false;
+		block = false,
+		jump = false;
 	directions.down = false;
 	directions.up = false;
 	directions.left = false;
@@ -386,10 +407,6 @@ void Character::RequestState() {
 			wantedState = ATTACK_HEAVY;
 			wantedTag = 2;
 			break;
-		case JUMPINPUT:
-			wantedState = JUMP;
-			wantedTag = 3;
-			break;
 		case RUNINPUT:
 			run = true;
 			break;
@@ -414,16 +431,33 @@ void Character::RequestState() {
 			wantedState = AD_ACTION;
 			wantedTag = 13;
 			break;
+		case JUMPINPUT:
+			jump = true;
+			break;
 		default:
 			break;
 		}
 	}
+
+	if (StateisAtk(currentState) && wantedState == AD_ACTION)
+	{
+		wantedState = IDLE;
+		wantedTag = 0;
+	}
+
+
 
 	if (wantedState == IDLE && (directions.down == true || directions.up == true || directions.left == true || directions.right == true))
 	{
 		wantedState = WALK;
 		if (run)
 			wantedState = RUN;
+	}
+
+	if (jump)
+	{
+		wantedState = JUMP;
+		wantedTag = 3;
 	}
 
 }
@@ -434,9 +468,17 @@ void Character::UpdateMainStates()
 	{
 		if (!GetAbAtk(wantedTag)->active || (currentState == JUMP || (currentState == AD_ACTION && currentTag != 0 && GetAtk(currentTag)->air)))
 		{
-			wantedTag = currentTag;
+
 			if (!StateisAtk(currentState))
-				wantedState = currentState;
+			{
+
+				wantedState = IDLE;
+				wantedTag = 0;
+			}
+			else
+			{
+				wantedTag = currentTag;
+			}
 		}
 		else 
 			GetAbAtk(wantedTag)->Activate();
@@ -492,7 +534,7 @@ void Character::UpdateMainStates()
 		if (currentAnimation->Finished() && gamepos.y <= 0)
 		{
 			currentAnimation->Reset();
-			currentState = IDLE;
+			currentState = STAND_UP;
 		}
 
 	}
@@ -500,8 +542,8 @@ void Character::UpdateMainStates()
 	{
 		if (currentState == DEATH)
 		{
-			active = false;
-			LeaveCorpse();
+			active = false;			
+			dead = true;
 		}
 		
 		if (StateisAtk(currentState))
@@ -754,7 +796,6 @@ void Character::LoadBasicStates()
 	LoadState(HIT, "hit");
 	LoadState(DEATH, "death");
 	LoadState(TAUNT, "win");
-	LoadState(KNOKED, "death");
 	LoadState(STUNED, "stuned");
 
 }

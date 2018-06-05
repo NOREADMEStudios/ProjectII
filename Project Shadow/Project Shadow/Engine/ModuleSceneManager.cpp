@@ -42,6 +42,8 @@ bool ModuleSceneManager::Start() {
 bool ModuleSceneManager::Update(float dt) {
 	if (currentScene != nullptr)
 		return currentScene->Update(dt);
+
+
 	return true;
 }
 
@@ -82,4 +84,9 @@ void ModuleSceneManager::ChangeScene(Scene* scene_to_change) {
 void ModuleSceneManager::UnloadScene(Scene* scene) {
 	scene->active = false;
 	scene->CleanUp();
+}
+
+void ModuleSceneManager::EnableDebugLab()
+{
+	currentScene->EnableDebugLabels();
 }

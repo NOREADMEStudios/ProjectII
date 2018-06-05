@@ -6,6 +6,8 @@
 
 
 struct SDL_Texture;
+struct Label;
+
 class Scene : public Module
 {
 public:
@@ -38,10 +40,14 @@ public:
 	bool paused = false;
 
 	bool enableMouse = false;
+	void SetDebugLabels();
+	void UpdateDebugLabels();
+	void EnableDebugLabels();
 
 	SDL_Texture* background;
 	SDL_Texture* atlas;
-
+	Label* fps;
+	Label* time_since_start;
 };
 #endif
 

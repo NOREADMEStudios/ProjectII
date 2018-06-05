@@ -156,15 +156,15 @@ void CharacterSelecScene::SetControllerFocus() {
 void CharacterSelecScene::SetCharactersInfo(){
 
 	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
-		charactersInfo[0] = { WARRIOR,{ 150,0,150 }, Team::BLUE };
-		charactersInfo[1] = { ROGUE,{ 100,0,500 }, Team::BLUE };
-		charactersInfo[2] = { WARRIOR,{ 700,0,150 }, Team::RED };
-		charactersInfo[3] = { ROGUE,{ 750,0,500 }, Team::RED };
+		charactersInfo[0] = { WARRIOR,{ 150,0,150 }, Team::RED };
+		charactersInfo[1] = { ROGUE,{ 100,0,500 }, Team::RED };
+		charactersInfo[2] = { WARRIOR,{ 700,0,150 }, Team::BLUE };
+		charactersInfo[3] = { ROGUE,{ 750,0,500 }, Team::BLUE };
 	}
 	else if (App->scenes->gameMode == GameMode::ONEvsONE) {
 
-		charactersInfo[0] = { CLERIC,{ 100 ,0,250 }, Team::BLUE };
-		charactersInfo[1] = { WARRIOR,{ 800, 0 ,250 }, Team::RED };
+		charactersInfo[0] = { CLERIC,{ 100 ,0,250 }, Team::RED };
+		charactersInfo[1] = { WARRIOR,{ 800, 0 ,250 }, Team::BLUE };
 
 	}
 
@@ -254,8 +254,18 @@ void CharacterSelecScene::ChangeTeam(){
 					player->lockedArrows[1]->SetParent(characterFrame[i]);
 					player->lockedArrows[1]->setPosition(220, 414);
 					blueTeamMembers++;
+					charactersInfo[0] = { WARRIOR,{ 150,0,150 }, Team::RED };
+					charactersInfo[1] = { ROGUE,{ 100,0,500 }, Team::RED };
+					charactersInfo[2] = { WARRIOR,{ 700,0,150 }, Team::BLUE };
+					charactersInfo[3] = { ROGUE,{ 750,0,500 }, Team::BLUE };
+					charactersInfo[i].pos = { 700,0,150 };
 					player->arrows[2]->Enable(true);
 					player->arrows[3]->Enable(true);
+					if (blueTeamMembers == 1)
+						charactersInfo[i].pos = { 700,0,150 };
+					else 
+						charactersInfo[i].pos = { 750,0,500 };
+
 				}
 				else if (teamIndex[i] == 0 && redTeamMembers < 2) {
 					characTeamSprite[i]->idle_anim = teamRects[2];
@@ -268,6 +278,10 @@ void CharacterSelecScene::ChangeTeam(){
 					redTeamMembers++;
 					player->arrows[2]->Enable(true);
 					player->arrows[3]->Enable(true);
+					if (redTeamMembers == 1)
+						charactersInfo[i].pos = { 150,0,150 };
+					else
+						charactersInfo[i].pos = { 100,0,500 };
 				}
 				player->teamSelected = true;
 			}
@@ -284,6 +298,10 @@ void CharacterSelecScene::ChangeTeam(){
 				player->teamSelected = true;
 				player->arrows[2]->Enable(true);
 				player->arrows[3]->Enable(true);
+				if (redTeamMembers == 1)
+					charactersInfo[i].pos = { 150,0,150 };
+				else
+					charactersInfo[i].pos = { 100,0,500 };
 			}
 			else if (!player->teamSelected && redTeamMembers == 2) {
 				characTeamSprite[i]->idle_anim = teamRects[3];
@@ -298,6 +316,10 @@ void CharacterSelecScene::ChangeTeam(){
 				player->teamSelected = true;
 				player->arrows[2]->Enable(true);
 				player->arrows[3]->Enable(true);
+				if (blueTeamMembers == 1)
+					charactersInfo[i].pos = { 700,0,150 };
+				else
+					charactersInfo[i].pos = { 750,0,500 };
 			}
 		}
 	}

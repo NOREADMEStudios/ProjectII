@@ -380,10 +380,11 @@ void ModuleRender::CheckCameraPos()
 			camera.w - (camera.w * cameraMarginInt * 2), camera.h - (camera.h * cameraMarginInt * 2 * 1.5f)
 		};
 
-#ifdef _DEBUG
-		DrawQuad(innerContainerExterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
-		DrawQuad(innerContainerInterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
-#endif
+		if (App->debug)
+		{
+			DrawQuad(innerContainerExterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
+			DrawQuad(innerContainerInterior.toSDL_Rect(), 255, 0, 0, 255, 0.f, false, false);
+		}
 
 		innerContainerInterior = innerContainerInterior * (1 / scale);
 		innerContainerExterior = innerContainerExterior * (1 / scale);

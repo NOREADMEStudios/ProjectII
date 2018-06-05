@@ -86,13 +86,100 @@ bool MainScene::Start()
 	{
 		e = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[0]);
 		e2 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[1]);
-		App->gui->AddHealthbar((Character*)e, 0, true,healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
-		App->gui->AddHealthbar((Character*)e2, 1, true, secHealtbarMargin, 240, atlas, true, { 304, 271, 577, 26 });
-
 		e3 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[2]);
 		e4 = App->entities->CreateCharacter(App->scenes->characterSc->charactersInfo[3]);
-		App->gui->AddHealthbar((Character*)e3, 2, false, sizeScreen.x - healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
-		App->gui->AddHealthbar((Character*)e4, 3, false, sizeScreen.x -secHealtbarMargin, 240, atlas, true, { 304, 271, 577, 26 });
+
+		Entity* first_blue = nullptr;
+		Entity* second_blue = nullptr;
+		Entity* first_red = nullptr;
+		Entity* second_red = nullptr;
+
+		if (e->team == BLUE)
+		{
+			first_blue = e;
+		}
+		else
+		{
+			first_red = e;
+		}
+
+		if (e2->team == BLUE)
+		{
+			if (first_blue != nullptr)
+			{
+				first_blue = e2;
+			}
+			else
+			{
+				second_blue = e2;
+			}
+		}
+		else
+		{
+			if (first_red == nullptr)
+			{
+				first_red = e2;
+			}
+			else
+			{
+				second_red = e2;
+			}
+		}
+
+		if (e3->team == BLUE)
+		{
+			if (first_blue == nullptr)
+			{
+				first_blue = e3;
+			}
+			else
+			{
+				second_blue = e3;
+			}
+		}
+		else
+		{
+			if (first_red == nullptr)
+			{
+				first_red = e3;
+			}
+			else
+			{
+				second_red = e3;
+			}
+		}
+
+		if (e4->team == BLUE)
+		{
+			if (first_blue == nullptr)
+			{
+				first_blue = e4;
+			}
+			else
+			{
+				second_blue = e4;
+			}
+		}
+		else
+		{
+			if (first_red == nullptr)
+			{
+				first_red = e4;
+			}
+			else
+			{
+				second_red = e4;
+			}
+		}
+
+		App->gui->AddHealthbar((Character*)first_red, 0, true,healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)second_red, 1, true, secHealtbarMargin, 240, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)first_blue, 2, false, sizeScreen.x - healthbarMargin, healthbarMargin, atlas, true, { 304, 271, 577, 26 });
+		App->gui->AddHealthbar((Character*)second_blue, 3, false, sizeScreen.x -secHealtbarMargin, 240, atlas, true, { 304, 271, 577, 26 });
+
+
+
+
 	}
 
 	LoadSceneUI();

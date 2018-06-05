@@ -880,20 +880,19 @@ void Character::SetAnimations()
 		{
 			animations_name = CLERIC_ANIM_ROOT;
 			spritePath = CLERIC_SPRITE_ROOT;
-			cleric = true;
+
 			break;
 		}
 		
 	}
-	if (!cleric)
-	{
-		if (team == Team::BLUE) {
-			spritePath += blue;
-		}
-		else if (team == Team::RED) {
-			spritePath += red;
-		}
+
+	if (team == Team::BLUE) {
+		spritePath += blue;
 	}
+	else if (team == Team::RED) {
+		spritePath += red;
+	}
+	
 
 
 	sprites = App->textures->Load(spritePath.c_str());

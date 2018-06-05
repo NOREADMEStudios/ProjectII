@@ -90,11 +90,11 @@ void ItemSelecScene::LoadSceneUI() {
 	App->gui->setFocus(items[i]->butt);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 1467,1568,180,180 }, { 360,1735,90,90 }, { 0,30,0,0,0,0,0,0 });
+	items[++i] = new Item("Dragon Slayer", DRAGONSLAYER, { 1467,1568,180,180 }, { 360,1735,90,90 }, { 0,3,0,0,0,0,0,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x / 2, sizeScreen.y / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 
-	items[++i] = new Item("Plate Mail", PLATE, { 1652,1568,180,180 }, { 0,1645,90,90 }, { 0,0,30,0,0,0,0,0 });
+	items[++i] = new Item("Plate Mail", PLATE, { 1652,1568,180,180 }, { 0,1645,90,90 }, { 0,0,3,0,0,0,0,0 });
 	items[i]->butt = App->gui->AddButton(sizeScreen.x * 3 / 4, sizeScreen.y / 3, nullptr, items[i]->animRect, true, nullptr);
 	AddLabelToButton(items[i]);
 

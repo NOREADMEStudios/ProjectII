@@ -558,7 +558,7 @@ bool Application::SavegameNow() const
 	{
 		xmlNode node = root.append_child((*item)->name.c_str());
 		ret = (*item)->Save(node);
-		item++;
+		
 	}
 
 	if(ret == true)

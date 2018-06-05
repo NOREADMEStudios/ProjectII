@@ -43,8 +43,8 @@ public:
 	bool CleanUp(pugi::xml_node&) override;
 
 	// Load / Save
-	bool Load(pugi::xml_node&) override;
-	bool Save(pugi::xml_node&) const override;
+	bool Load(pugi::xml_node& data) override { return true; }
+	bool Save(pugi::xml_node& data) const override { return true; }
 
 	int camera_speed;
 	bool vsync = false;

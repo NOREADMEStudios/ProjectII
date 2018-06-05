@@ -49,7 +49,7 @@ bool IntroScene::Start()
 		bg->scale = MIN((float)screenSize.y / (float)bg->rect.h, (float)screenSize.x / (float)bg->rect.w);
 	}
 
-	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
+	//App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
 	atlas = App->textures->Load("UI/atlas.png");	
 	LoadBackground("UI/MainMenu.png");
 	//App->gui->AddSprite(820, 540, bakc_menu, { 0,0,1750,1080 }, true);

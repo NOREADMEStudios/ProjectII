@@ -103,7 +103,7 @@ public:
 
 	Collider* CreateCollider(iCube dims, String tag, Collider::Type type = Collider::TRIGGER);
 	void AddCollider(Collider*, Entity*);
-	bool RemoveCollider(Collider*);
+	bool RemoveCollider(Collider**);
 
 	ARRAY(String) GetTags();
 	String GetTag(uint tag);

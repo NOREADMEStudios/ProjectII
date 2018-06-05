@@ -52,6 +52,7 @@ typedef void (*Callback)(size_t arg_size, ...);
 
 namespace Utils {
 	void Release(void* object);
+	void ReleasePtr(void** objectPtr);
 	void ReleaseArray(void* array);
 
 	int ParseInt(std::string);

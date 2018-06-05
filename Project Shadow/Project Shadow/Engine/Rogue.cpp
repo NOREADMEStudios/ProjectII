@@ -437,14 +437,14 @@ void Rogue::CreateSounds()
 		case 11:
 			if (sound_avaliable)
 			{
-				App->audio->PlayFx(27);
+				App->audio->PlayFx(13);
 				sound_avaliable = false;
 			}
 			break;
 		case 12:
 			if (sound_avaliable)
 			{
-				App->audio->PlayFx(13);
+				App->audio->PlayFx(27);
 				sound_avaliable = false;
 			}
 			break;

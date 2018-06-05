@@ -19,6 +19,7 @@ class ModuleTextures;
 class ModuleAudio;
 class ModuleMap;
 class ModuleCollision;
+class ModuleCinematics;
 /*class j1Scene;
 class j1PathFinding;*/
 class ModuleTransition;
@@ -119,6 +120,7 @@ public:
 	ModuleAudio*			audio = nullptr;
 	ModuleMap*				map = nullptr;
 	ModuleCollision*		collision = nullptr;
+	ModuleCinematics*		cinematics = nullptr;
 	/*j1Scene*			scene = nullptr;
 	j1PathFinding*		pathfinding = nullptr;*/
 	ModuleTransition*			transition = nullptr;

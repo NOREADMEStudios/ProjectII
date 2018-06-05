@@ -4,6 +4,10 @@
 #include "Module.h"
 #include "Defs.h"
 #include "Point.h"
+#include <dshow.h>
+#include <Vfw.h>
+#pragma comment( lib, "Vfw32.lib" )
+
 
 class Cinematic;
 
@@ -31,11 +35,26 @@ public:
 
 	iPoint GetInitialCameraPosition();
 
-	bool IsPlaying() { return currentCinematic != nullptr; }
+	bool PlayVideo(const char* path);
+	void CloseVideo();
+	void GetNextFrame();
+
+	bool IsPlaying() { return (currentCinematic != nullptr) && !videoPlaying; }
 
 private:
 	bool PlayCurrentCinematic();
 	Cinematic* currentCinematic = nullptr;
+	std::string assetsPath = "";
+
+	bool	videoPlaying = false;
+	long	videoWidth			= 0,
+			videoHeight			= 0,
+			videoLastFrame		= 0,
+			videoTimeLength		= 0,
+			videoCurrentFrame	= 0;
+
+	PAVISTREAM videoStream = nullptr;
+	PGETFRAME videoFrame = nullptr;
 };
 
 #endif

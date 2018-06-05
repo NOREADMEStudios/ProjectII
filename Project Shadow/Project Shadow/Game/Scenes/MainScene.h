@@ -76,6 +76,8 @@ private:
 	void ManageDisplacement();
 	void CreateSettingsWindow();
 	void WindowStates();
+
+	void LoadStartCinematic();
 };
 
 #endif

@@ -283,7 +283,7 @@ void ModuleInput::BlockKeyboard() {
 void ModuleInput::BlockAllControllers()
 {
 	for (size_t i = 0; i < 4; i++) {
-		for (size_t j = 0; j < SDL_CONTROLLER_AXIS_MAX + SDL_CONTROLLER_BUTTON_MAX; i++) {
+		for (size_t j = 0; j < SDL_CONTROLLER_AXIS_MAX + SDL_CONTROLLER_BUTTON_MAX; j++) {
 			BlockControllerEvent(i, j);
 		}
 	}

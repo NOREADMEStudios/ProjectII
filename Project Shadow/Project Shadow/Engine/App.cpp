@@ -648,5 +648,4 @@ void Application::Reload() {
 void Application::PauseGame(bool pause) {
 	SetTimeScale(pause ? 0.f : 1.f);
 	entities->PauseEntities(pause);
-
 }

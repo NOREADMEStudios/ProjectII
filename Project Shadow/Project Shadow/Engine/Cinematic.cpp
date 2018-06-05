@@ -16,16 +16,18 @@ Cinematic::~Cinematic()
 
 bool Cinematic::Update(float dt)
 {
+	bool ret = true;
 	CinematicTransition* ct = transitions[currentTransition];
 	float speed = dt / ct->duration;
 	currentRunningTime += dt;
+	float scale = App->win->GetScale();
 
-	if (ct->transcurredTime < ct->duration) {
+	if (ct->transcurredTime <= ct->duration) {
 		ct->transcurredTime += dt;
 
 		if (ct->interpolatePosition) {
-			App->render->camera.x = Utils::Interpolate((float)App->render->camera.x, (float)ct->endFrame->cameraPosition.x, speed);
-			App->render->camera.y = Utils::Interpolate((float)App->render->camera.y, (float)ct->endFrame->cameraPosition.y, speed);
+			App->render->camera.x = Utils::Interpolate((float)App->render->camera.x, (float)ct->endFrame->cameraPosition.x, speed) * scale;
+			App->render->camera.y = Utils::Interpolate((float)App->render->camera.y, (float)ct->endFrame->cameraPosition.y, speed) * scale;
 		}
 		else {
 			App->render->camera.x = ct->endFrame->cameraPosition.x;
@@ -33,7 +35,7 @@ bool Cinematic::Update(float dt)
 		}
 
 		if (ct->interpolateScale)
-			App->win->SetScale(Utils::Interpolate(App->win->GetScale(), ct->endFrame->cameraScale, speed));
+			App->win->SetScale(Utils::Interpolate(scale, ct->endFrame->cameraScale, speed));
 		else App->win->SetScale(ct->endFrame->cameraScale);
 	}
 	else {
@@ -41,14 +43,14 @@ bool Cinematic::Update(float dt)
 			ct->endFrame->OnEnd(0);
 
 		if (++currentTransition >= transitions.size())
-			return false;
+			ret = false;
 	}
 
 	if (OnProgressUpdate != nullptr) {
 		OnProgressUpdate(3, (float)currentTransition, currentRunningTime, duration);
 	}
 
-	return true;
+	return ret;
 }
 
 void Cinematic::AddKeyFrame(CinematicFrame * keyFrame, float duration, bool interpolatePosition, bool interpolateScale, Callback cb)

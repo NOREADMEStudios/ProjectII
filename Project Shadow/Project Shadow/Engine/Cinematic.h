@@ -8,6 +8,11 @@ struct CinematicFrame {
 	iPoint cameraPosition;
 	float cameraScale = 1.f;
 	Callback OnEnd = nullptr;
+
+	CinematicFrame(){}
+	CinematicFrame(iPoint pos, float scale) : cameraPosition(pos), cameraScale(scale){}
+	~CinematicFrame(){}
+
 };
 
 struct CinematicTransition {
@@ -19,6 +24,13 @@ struct CinematicTransition {
 
 	bool interpolatePosition = true,
 		interpolateScale = true;
+
+	CinematicTransition(){}
+	CinematicTransition(CinematicFrame*start, CinematicFrame*end, float duration) : initialFrame(start), endFrame(end), duration(duration){}
+	~CinematicTransition(){
+		Utils::Release(initialFrame);
+		Utils::Release(endFrame);
+	}
 };
 
 class Cinematic

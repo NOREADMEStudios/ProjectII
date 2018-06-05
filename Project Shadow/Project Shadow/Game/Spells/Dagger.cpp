@@ -110,7 +110,17 @@ void Dagger::OnCollisionEnter(Collider* _this, Collider* _other) {
 	{
 		to_delete = true;
 		if (_this->entity->team != _other->entity->team)
-		_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
+		{
+			int dmg = _this->entity->stats.atk - _other->entity->stats.def;
+
+			if (dmg <= 0)
+			{
+				dmg = 1;
+			}
+			
+			_other->entity->stats.life -= dmg;
+		}
+
 
 		parent->SetPos(gamepos.x + ((_other->collider.w - 100) * hit_dir), 1, gamepos.z);
 		parent->SetState(JUMP);

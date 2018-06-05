@@ -27,7 +27,7 @@ bool ModuleCinematics::Awake(pugi::xml_node & config)
 
 bool ModuleCinematics::Start()
 {
-	PlayVideo("Comp 1_3.avi", 30);
+	PlayVideo("Intro_video.avi", 30);
 
 	return true;
 }

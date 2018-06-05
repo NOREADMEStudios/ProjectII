@@ -319,6 +319,7 @@ void Cleric::CreateSounds()
 	switch (currentState)
 	{
 	case IDLE:
+	case WALK:
 		if (!sound_avaliable)
 		{
 			sound_avaliable = true;

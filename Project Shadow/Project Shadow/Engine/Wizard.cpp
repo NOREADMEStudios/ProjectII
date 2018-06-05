@@ -36,7 +36,7 @@ bool Wizard::HeroStart()
 
 	stats.spd = 180;
 	stats.life = 100;
-	stats.atk = 2;
+	stats.atk = 5;
 	stats.def = 0;
 
 	icicle = App->entities->CreateSpell({ ICICLE,team,{ gamepos.x, gamepos.y , gamepos.z} });
@@ -243,6 +243,9 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			if (_other->entity->breaking)
 			{
+				start_pose = false;
+				pose_bool = false;
+				currentAnimation->Reset();
 				currentState = HIT;
 				//App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
@@ -265,12 +268,18 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::PARRY)
 		{
+			start_pose = false;
+			pose_bool = false;
+			currentAnimation->Reset();
 			currentTag = 0;
 			currentState = HIT;
 			//App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
+			start_pose = false;
+			pose_bool = false;
+			currentAnimation->Reset();
 			currentTag = 0;
 			currentState = HIT;
 			//App->SetTimeScale(0.f, hitStopFrames);

@@ -105,7 +105,7 @@ bool MainScene::Start()
 
 		if (e2->team == BLUE)
 		{
-			if (first_blue != nullptr)
+			if (first_blue == nullptr)
 			{
 				first_blue = e2;
 			}

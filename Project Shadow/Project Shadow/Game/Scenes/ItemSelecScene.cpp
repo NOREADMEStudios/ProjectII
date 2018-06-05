@@ -258,6 +258,7 @@ void ItemSelecScene::ChooseFocus() {
 
 	for (int i = 0; i < players.size(); i++) {
 		if (players[i].ready) {
+			players[i].arrow->Enable(false);
 			continue;
 		}
 		if (App->input->GetButtonFromController(players[i].playerNum) == Input::BUTTON_A ) {

@@ -21,7 +21,7 @@ ModuleTransition::Transition ModuleTransition::GetTransitionType()
 
 bool ModuleTransition::MakeTransition(Callback _cb, Transition _type, float time)
 {
-	App->SetTimeScale(0.f, 60);
+	//App->SetTimeScale(0.f, 60);
 	completed = false;
 	callback = _cb;
 	transitionTimeTotal = time;

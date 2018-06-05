@@ -21,6 +21,7 @@
 				<Maps folder="Maps/" />
 			</Textures>
 			<Input folder="Input/" />
+			<Cinematics folder="Cinematics/" />
 		</Assets>
 	</app>
 	<renderer>
@@ -39,6 +40,7 @@
 	<textures folder="Textures/" />
 	<audio folder="Audio/" volumeFX="64" volumeBGM="64" />
 	<input folder="Input/" />
+	<cinematics folder="Cinematics/" />
 	<collision>
 		<colliderTags>
 			<tag value="default" interactions="default;default" />

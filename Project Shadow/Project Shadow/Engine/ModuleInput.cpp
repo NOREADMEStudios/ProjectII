@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
 #include "ModuleAudio.h"
+#include "ModuleCinematics.h"
 #include "ModuleGUI.h"
 #include "UI\Label.h"
 #include "../SDL/include/SDL.h"
@@ -59,6 +60,9 @@ bool ModuleInput::Start() {
 
 // Called each loop iteration
 bool ModuleInput::PreUpdate() {
+	if (App->cinematics->IsPlaying())
+		return true;
+
 	static SDL_Event event;
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
@@ -115,8 +119,6 @@ bool ModuleInput::PreUpdate() {
 					controllers[c].buttons[i] = B_DOWN;
 				else
 					controllers[c].buttons[i] = B_REPEAT;
-
-				ControllerLogInputs(c);
 			}
 			else
 			{
@@ -126,6 +128,8 @@ bool ModuleInput::PreUpdate() {
 					controllers[c].buttons[i] = B_IDLE;
 			}
 		}
+
+		ControllerLogInputs(c);
 	}
 
 	while (SDL_PollEvent(&event) != 0)
@@ -263,13 +267,36 @@ void ModuleInput::BlockKeyboardEvent(int event_id) {
 	keyboard[event_id].blocked = true;
 }
 
+void ModuleInput::BlockControllerEvent(int controller, int event_id)
+{
+	if (event_id < MAX_BUTTONS)
+		controllers[controller].buttons[event_id] = B_IDLE;
+	else controllers[controller].axis[event_id] = 0.f;
+}
+
+void ModuleInput::BlockAllInput()
+{
+	BlockKeyboard();
+	BlockMouse();
+	BlockAllControllers();
+}
+
 void ModuleInput::BlockMouse() {
 	mouse_x = mouse_y = INT_MAX - 2;
 }
 
 void ModuleInput::BlockKeyboard() {
-	for (uint i = 0; i < MAX_KEYS; i++) {
+	for (size_t i = 0; i < MAX_KEYS; i++) {
 		keyboard[i].blocked = true;
+	}
+}
+
+void ModuleInput::BlockAllControllers()
+{
+	for (size_t i = 0; i < 4; i++) {
+		for (size_t j = 0; j < SDL_CONTROLLER_AXIS_MAX + SDL_CONTROLLER_BUTTON_MAX; j++) {
+			BlockControllerEvent(i, j);
+		}
 	}
 }
 

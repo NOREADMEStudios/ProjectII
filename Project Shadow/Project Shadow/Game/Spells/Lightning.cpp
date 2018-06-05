@@ -99,7 +99,14 @@ void Lightning::OnCollisionStay(Collider* _this, Collider* _other) {
 		
 			if (dealingDmg){
 			
-				_other->entity->stats.life -= stats.atk - _other->entity->stats.def;
+				int dmg = _this->entity->stats.atk - _other->entity->stats.def;
+
+				if (dmg <= 0)
+				{
+					dmg = 1;
+				}
+
+				_other->entity->stats.life -= dmg;
 		}
 	}
 }

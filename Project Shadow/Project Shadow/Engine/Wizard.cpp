@@ -30,10 +30,13 @@ bool Wizard::Awake(pugi::xml_node&)
 
 bool Wizard::HeroStart()
 {
+	LoadState(KNOKED, "death");
+	LoadState(STAND_UP, "get_up");
+
 
 	stats.spd = 180;
 	stats.life = 100;
-	stats.atk = 2;
+	stats.atk = 5;
 	stats.def = 0;
 
 	icicle = App->entities->CreateSpell({ ICICLE,team,{ gamepos.x, gamepos.y , gamepos.z} });
@@ -49,8 +52,8 @@ bool Wizard::HeroStart()
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "attack_1", animations_name, 3);
 	Attack* heavy_1 = new Attack(2, HEAVY_ATTACK, "attack_dagger", animations_name, 5);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "attack_crouch", animations_name, 1);
-	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 20, true);
-	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, 20, true);
+	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 30, true);
+	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "attack_j1", animations_name, 0, 30, true);
 	Attack* ab_1 = new Attack(11, AB_1, "attack_m1", animations_name, 0, 20, false, true);
 	Attack* ab_2 = new Attack(12, AB_2, "attack_m2", animations_name, 0, 20, false, true);
 	Attack* ab_3 = new Attack(13, AB_3, "win", animations_name, 0,20, false, true);
@@ -240,8 +243,11 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			if (_other->entity->breaking)
 			{
+				start_pose = false;
+				pose_bool = false;
+				currentAnimation->Reset();
 				currentState = HIT;
-				App->SetTimeScale(0.f, hitStopFrames);
+				//App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 			}
@@ -262,15 +268,21 @@ void Wizard::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::PARRY)
 		{
+			start_pose = false;
+			pose_bool = false;
+			currentAnimation->Reset();
 			currentTag = 0;
 			currentState = HIT;
-			App->SetTimeScale(0.f, hitStopFrames);
+			//App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
+			start_pose = false;
+			pose_bool = false;
+			currentAnimation->Reset();
 			currentTag = 0;
 			currentState = HIT;
-			App->SetTimeScale(0.f, hitStopFrames);
+			//App->SetTimeScale(0.f, hitStopFrames);
 			hit_bool = true;
 
 

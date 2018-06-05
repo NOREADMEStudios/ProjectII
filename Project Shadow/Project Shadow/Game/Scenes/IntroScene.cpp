@@ -57,6 +57,8 @@ bool IntroScene::Start()
 	LoadUIButtons();
 	CreateSettingsWindow();
 	SetControllerFocus();
+	SetDebugLabels();
+	ManageSettings(false);
 	return true;
 }
 
@@ -70,7 +72,7 @@ bool IntroScene::Update(float dt)
 		ManageDisplacement();
 		ChooseFocus();
 	}
-
+	UpdateDebugLabels();
 	//Scene::Update(dt);
 
 	return true;
@@ -244,7 +246,7 @@ void IntroScene::CreateSettingsWindow() {
 	float musicVol = App->audio->GetMusicVolumePercentage();
 	float step = music_sp->rect.w / 100;
 	float displacement = musicVol - 50;
-	music_sl = App->gui->AddSlider((music_sp->rect.w / 2) + displacement*step , music_sp->rect.h / 2 + 2, atlas, { 456, 298, 28,15 }, false, SliderMPressCallb, {}, {}, true, music_sp);
+	music_sl = App->gui->AddSlider((music_sp->rect.w / 2) + displacement*step , music_sp->rect.h / 2 + 2, atlas, { 1152,197,45,21 }, false, SliderMPressCallb, { 1108, 198, 44, 21 }, { 1108, 198, 44, 21 }, true, music_sp);
 	
 	Label* MusNumLabel = App->gui->AddLabel((music_sl->rect.w / 2), (music_sl->rect.h / 2)+20, 20, DEFAULT_FONT, { 255, 255, 255, 255 });
 	
@@ -267,7 +269,7 @@ void IntroScene::CreateSettingsWindow() {
 	float FxVol = App->audio->GetFxVolumePercentage();
 	float step2 = fx_sp->rect.w / 100;
 	float displacement2 = FxVol - 50;
-	fx_sl = App->gui->AddSlider((fx_sp->rect.w / 2) + displacement2*step2, fx_sp->rect.h / 2 + 2, atlas, { 456, 298, 28,15 }, false, SliderFPressCallb, {}, {}, true, fx_sp);
+	fx_sl = App->gui->AddSlider((fx_sp->rect.w / 2) + displacement2*step2, fx_sp->rect.h / 2 + 2, atlas, { 1152,197,45,21 }, false, SliderFPressCallb, {1108, 198, 44, 21}, { 1108, 198, 44, 21 }, true, fx_sp);
 
 	Label* FxNumLabel = App->gui->AddLabel((fx_sl->rect.w / 2), (fx_sl->rect.h / 2) + 20, 20, DEFAULT_FONT, { 255, 255, 255, 255 });
 
@@ -286,7 +288,7 @@ void IntroScene::CreateSettingsWindow() {
 
 	// FULLSCREEN BUTTON
 	fullscrenBut = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 2.7f, atlas,{ 1282,883,400,98 }, false, FullscreenPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
-	Label* FSLabel = App->gui->AddLabel((fullscrenBut->rect.w / 2) + 20, fullscrenBut->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
+	Label* FSLabel = App->gui->AddLabel((fullscrenBut->rect.w / 2) + 30, fullscrenBut->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string FSStr = "FULLSCREEN";
 	FSLabel->setString(FSStr);
 	FSLabel->SetParent(fullscrenBut);

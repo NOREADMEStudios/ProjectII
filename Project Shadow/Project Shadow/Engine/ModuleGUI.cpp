@@ -37,6 +37,8 @@ bool ModuleGUI::Awake(pugi::xml_node& conf)
 	gui_size.y = DEFAULT_RESOLUTION_Y;
 	scale = App->win->GetScale();
 
+
+
 	return ret;
 }
 
@@ -44,6 +46,8 @@ bool ModuleGUI::Awake(pugi::xml_node& conf)
 bool ModuleGUI::Start()
 {
 	atlas_texture = App->textures->Load("UI/atlas.png");
+
+
 	return true;
 }
 
@@ -74,6 +78,10 @@ bool ModuleGUI::Update(float dt)
 		if ((*current_element)->isEnabled())
 			(*current_element)->Update(dt);
 	}
+
+
+
+
 	return true;
 }
 

@@ -32,6 +32,8 @@ bool Rogue::HeroStart()
 {
 	LoadState(RUN, "run");
 	LoadState(PROTECT, "protect");
+	LoadState(KNOKED, "ko");
+	LoadState(STAND_UP, "roll");
 
 	stats.spd = 180;
 	stats.life = 100;
@@ -43,7 +45,7 @@ bool Rogue::HeroStart()
 	dagger->SetParent(this);
 
 	death_m = App->entities->CreateSpell({ DEATH_MARK , team,{ 0,0,0 } });
-	((DeathMark*)death_m)->SetPath("dagger");
+	((DeathMark*)death_m)->SetPath("death_mark");
 
 
 	Attack* light_1 = new Attack(1, LIGHT_ATTACK, "L_Attack_2", animations_name, 1);
@@ -51,13 +53,15 @@ bool Rogue::HeroStart()
 	Attack* heavy_2 = new Attack(7, HEAVY_ATTACK, "H_Attack2", animations_name, 5, 40);
 	Attack* heavy_3 = new Attack(6, HEAVY_ATTACK, "H_Attack3", animations_name, 5, 40);
 	Attack* crouch = new Attack(4, LIGHT_ATTACK, "L_Attack_3", animations_name, 1);
-	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 20, true);
+	Attack* jump_a = new Attack(3, JUMPINPUT, "jump", animations_name, 0, 30, true);
 	Attack* jump_a2 = new Attack(5, LIGHT_ATTACK, "jump_attack", animations_name, 0, 40, true);
 
-	Attack* ab_1 = new Attack(11, AB_1, "dagger", animations_name, 0,20, false, true);
-	Attack* ab_2 = new Attack(12, AB_2, "stop", animations_name, 0, 20, false, true);
 
-	Attack* ab_3 = new Attack(13, AB_3, "dash", animations_name, 0, 20, false, true);
+	Attack* ab_1 = new Attack(11, AB_1, "stop", animations_name, 0, 20, false, true);
+	Attack* ab_2 = new Attack(12, AB_2, "dagger", animations_name, 0,20, false, true);
+
+
+	Attack* ab_3 = new Attack(13, AB_3, "dash", animations_name, 0, 30, false, true);
 
 	attacks.push_back(light_1);
 	attacks.push_back(heavy_1);
@@ -76,9 +80,9 @@ bool Rogue::HeroStart()
 	crouch->AddChild(heavy_2);
 	jump_a->AddChild(jump_a2);
 
-	behindU = new Ability(ab_1, 4 - ((stats.cdr / 100) * 4));
+	behindU = new Ability(ab_2, 4 - ((stats.cdr / 100) * 4));
 	behindU->ab_sprite = { 202,165, 50,50 };
-	parry = new Ability(ab_2, 3 - ((stats.cdr / 100) * 3));
+	parry = new Ability(ab_1, 3 - ((stats.cdr / 100) * 3));
 	parry->ab_sprite = { 152, 165, 50, 50 };
 
 	ulti = new Ability(ab_3, 8 - ((stats.cdr / 100) * 8));
@@ -148,18 +152,18 @@ bool Rogue::HeroUpdate(float dt)
 
 
 
-	if (GetAbAtk(11)->active && ab_1_active)
+	if (GetAbAtk(12)->active && ab_2_active)
 	{
-		ab_1_active = false;
+		ab_2_active = false;
 	}
 
-	if (!GetAbAtk(12)->active)
+	if (!GetAbAtk(11)->active)
 	{
-		ab_2_active = true;
+		ab_1_active = true;
 	}
 	else
 	{
-		ab_2_active = false;
+		ab_1_active = false;
 	}
 
 	if (!GetAbAtk(13)->active)
@@ -199,21 +203,21 @@ void Rogue::UpdateSpecStates()
 	}
 
 
-	if (currentTag == 11 && !ab_1_active && currentAnimation == &behindU->atk->anim && currentAnimation->getFrameIndex() >= 8)
+	if (currentTag == 12 && !ab_2_active && currentAnimation == &behindU->atk->anim && currentAnimation->getFrameIndex() >= 8)
 	{
 		Dagger* dag = new Dagger{ *(Dagger*)dagger };
 		dag->SetPos(gamepos.x, gamepos.y + 50, gamepos.z);
 		dag->SetDir(dir ,0 );
 		dag->Start();
 
-		ab_1_active = true;
+		ab_2_active = true;
 		
 	}
-	else if (currentTag == 12 && !ab_2_active)
+	else if (currentTag == 11 && !ab_1_active)
 	{
 
 		//Impulsate(2 * dir, 0, 0);
-		ab_2_active = true;
+		ab_1_active = true;
 	}
 	else if (currentTag == 13 && !ab_3_active)
 	{
@@ -248,8 +252,9 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			if (_other->entity->breaking)
 			{
+				currentAnimation->Reset();
 				currentState = HIT;
-				App->SetTimeScale(0.f, hitStopFrames);
+				//App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
 				hit_bool = true;
 			}
@@ -270,14 +275,16 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::PARRY)
 		{
+			currentAnimation->Reset();
 			currentTag = 0;
 			currentState = HIT;
-			App->SetTimeScale(0.f, hitStopFrames);
+			//App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
+			currentAnimation->Reset();
 			currentState = HIT;
-			App->SetTimeScale(0.f, hitStopFrames);
+			//App->SetTimeScale(0.f, hitStopFrames);
 			currentTag = 0;
 			hit_bool = true;
 
@@ -316,6 +323,7 @@ void Rogue::OnCollisionEnter(Collider* _this, Collider* _other)
 				DeathMark* death = new DeathMark{ *(DeathMark*)death_m };
 				death->SetParent((Character*)_other->entity);
 				death->Start();
+				death->SetLifeTime((10 - ((_other->entity->stats.ccr / 100) * 10)) * 1000);
 
 				_other->entity->AdBuff(10 - ((_other->entity->stats.ccr / 100) *10), 0, -5, -5);
 			}

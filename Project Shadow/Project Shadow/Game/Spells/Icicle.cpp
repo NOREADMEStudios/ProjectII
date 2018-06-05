@@ -99,6 +99,7 @@ void Icicle::OnCollisionEnter(Collider* _this, Collider* _other) {
 		slow->SetPos(gamepos.x, gamepos.y + 40, gamepos.z);
 		slow->SetParent((Character*)_other->entity);
 		slow->Start();
+		slow->SetLifeTime((COOL_DURATION - ((_other->entity->stats.ccr / 100) * COOL_DURATION)) * 1000);
 
 		entitiesHitted.push_back(_other->entity);
 	}

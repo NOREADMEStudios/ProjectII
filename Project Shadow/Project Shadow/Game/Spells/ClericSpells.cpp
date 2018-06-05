@@ -148,7 +148,7 @@ bool Area::Start() {
 
 	App->entities->entities.push_back(this);
 
-	spellColl = App->collision->CreateCollider({}, "Spell", Collider::SPELL);
+	spellColl = App->collision->CreateCollider({}, "Spell", Collider::TRIGGER);
 	App->collision->AddCollider(spellColl, this);
 
 	buffed = false;
@@ -218,7 +218,7 @@ void Area::Dead() {
 
 void Area::OnCollisionEnter(Collider* _this, Collider* _other) {
 
-	if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
+	//if ((_this->entity->team != NOTEAM) && (_other->entity->team != NOTEAM) && (_this->entity->team == _other->entity->team)) return;
 
 	if (team == _other->entity->team)
 	{

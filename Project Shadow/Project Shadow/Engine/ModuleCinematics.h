@@ -39,22 +39,25 @@ public:
 	void CloseVideo();
 	void GetNextFrame();
 
-	bool IsPlaying() { return (currentCinematic != nullptr) && !videoPlaying; }
+	bool IsPlaying() { return (currentCinematic != nullptr) || videoPlaying; }
 
 private:
 	bool PlayCurrentCinematic();
-	Cinematic* currentCinematic = nullptr;
-	std::string assetsPath = "";
 
-	bool	videoPlaying = false;
+	Cinematic* currentCinematic	= nullptr;
+
+	std::string assetsPath		= "";
+
+	bool	videoPlaying		= false,
+			videoEnded			= true;
 	long	videoWidth			= 0,
 			videoHeight			= 0,
 			videoLastFrame		= 0,
 			videoTimeLength		= 0,
 			videoCurrentFrame	= 0;
 
-	PAVISTREAM videoStream = nullptr;
-	PGETFRAME videoFrame = nullptr;
+	PAVISTREAM videoStream		= nullptr;
+	PGETFRAME videoFrame		= nullptr;
 };
 
 #endif

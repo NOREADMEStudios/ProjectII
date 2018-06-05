@@ -37,7 +37,7 @@ bool Icicle::CleanUp(pugi::xml_node&)
 {
 	//UnLoadSprites();
 	currentAnimation->Reset();
-	bool ret = App->collision->RemoveCollider(spellColl);
+	bool ret = App->collision->RemoveCollider(&spellColl);
 
 	return ret;
 }

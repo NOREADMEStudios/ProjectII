@@ -172,21 +172,21 @@ bool Character::CleanUp(pugi::xml_node&)
 
 	UnloadShadow();
 
-	if (collAtk) {
-		App->collision->RemoveCollider(collAtk);
+	/*if (collAtk) {
+		App->collision->RemoveCollider(&collAtk);
 	}
 	if (collDef) {
-		App->collision->RemoveCollider(collDef);
+		App->collision->RemoveCollider(&collDef);
 	}
 	if (collParry) {
-		App->collision->RemoveCollider(collParry);
-	}
+		App->collision->RemoveCollider(&collParry);
+	}*/
 
 	Utils::ClearList(attacks);
 
 
-	App->collision->RemoveCollider(collHitBox);
-	App->collision->RemoveCollider(collFeet);
+	/*App->collision->RemoveCollider(&collHitBox);
+	App->collision->RemoveCollider(&collFeet);*/
 
 	if (heroCorpse) {
 		pugi::xml_node n;

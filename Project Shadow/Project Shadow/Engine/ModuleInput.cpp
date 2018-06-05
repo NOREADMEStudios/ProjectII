@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
 #include "ModuleAudio.h"
+#include "ModuleCinematics.h"
 #include "../SDL/include/SDL.h"
 
 
@@ -57,6 +58,9 @@ bool ModuleInput::Start() {
 
 // Called each loop iteration
 bool ModuleInput::PreUpdate() {
+	if (App->cinematics->IsPlaying())
+		return true;
+
 	static SDL_Event event;
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);

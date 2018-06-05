@@ -46,7 +46,7 @@ bool Stun::CleanUp(pugi::xml_node&)
 {
 	//UnLoadSprites();
 	currentAnimation->Reset();
-	bool ret = App->collision->RemoveCollider(spellColl);
+	bool ret = App->collision->RemoveCollider(&spellColl);
 
 	return ret;
 }
@@ -174,7 +174,7 @@ bool Area::CleanUp(pugi::xml_node&)
 	secondParnter->cleric_ab = false;
 	buffed = false;
 
-	bool ret = App->collision->RemoveCollider(spellColl);
+	bool ret = App->collision->RemoveCollider(&spellColl);
 
 	return ret;
 }

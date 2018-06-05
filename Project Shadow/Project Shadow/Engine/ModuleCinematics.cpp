@@ -4,6 +4,7 @@
 #include <sstream>
 #include "ModuleRender.h"
 #include "ModuleAudio.h"
+#include "ModuleTextures.h"
 
 ModuleCinematics::ModuleCinematics()
 {
@@ -26,15 +27,13 @@ bool ModuleCinematics::Awake(pugi::xml_node & config)
 
 bool ModuleCinematics::Start()
 {
-	PlayVideo("drop.avi");
+	PlayVideo("Comp 1_1.avi");
+
 	return true;
 }
 
 bool ModuleCinematics::PreUpdate()
 {
-	if (IsPlaying())
-		App->input->BlockAllInput();
-
 	return true;
 }
 
@@ -46,6 +45,7 @@ bool ModuleCinematics::Update(float dt)
 			currentCinematic = nullptr;
 		}
 	}
+
 	return true;
 }
 
@@ -54,9 +54,11 @@ bool ModuleCinematics::PostUpdate()
 	if (videoPlaying) {
 		GetNextFrame();
 	}
-	else {
-		//App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
+	else if (videoEnded) {
+		videoEnded = false;
+		App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
 	}
+
 	return true;
 }
 
@@ -112,6 +114,7 @@ bool ModuleCinematics::PlayVideo(const char* path)
 
 	if (res != 0) {
 		LOG("Error opening video stream");
+
 		return false;
 	}
 
@@ -128,32 +131,46 @@ bool ModuleCinematics::PlayVideo(const char* path)
 
 	if (videoFrame == nullptr) {
 		LOG("Could not read the stream");
+
 		return false;
 	}
 
 	videoPlaying = true;
+
+	return true;
 }
 
 void ModuleCinematics::GetNextFrame()
 {
+
 	LPBITMAPINFOHEADER lpbi = (LPBITMAPINFOHEADER)AVIStreamGetFrame(videoFrame, videoCurrentFrame++);
-	void* pixelData = lpbi + lpbi->biSize + lpbi->biClrUsed * sizeof(RGBQUAD);
+	void* pixelData = (char*)lpbi + lpbi->biSize + lpbi->biClrUsed * sizeof(RGBQUAD);
 	
-	SDL_Surface* surf = SDL_CreateRGBSurfaceFrom(pixelData, videoWidth, videoHeight, lpbi->biBitCount, videoWidth * 3, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
-	SDL_Texture* tex = SDL_CreateTextureFromSurface(App->render->renderer, surf);
+	SDL_Surface* surf = SDL_CreateRGBSurfaceFrom(pixelData, videoWidth, videoHeight, lpbi->biBitCount, videoWidth * 3, 0, 0, 0, 0);
 
-	if (tex == nullptr) {
+	if (surf == nullptr) {
 		LOG("Error rendering video: %s", SDL_GetError());
-		return;
 	}
+	else {
+		SDL_Texture* tex = SDL_CreateTextureFromSurface(App->render->renderer, surf);
 
-	App->render->Blit(tex, 0, 0, nullptr, 0.0f);
-
-	SDL_DestroyTexture(tex);
+		if (tex == nullptr) {
+			LOG("Error rendering video: %s", SDL_GetError());
+			return;
+		}
+		else {
+			int posX = (DEFAULT_RESOLUTION_X / 2) - (videoWidth / 2);
+			int posY = (DEFAULT_RESOLUTION_Y / 2) - (videoHeight / 2);
+			App->render->DrawQuad({ 0, 0, DEFAULT_RESOLUTION_X, DEFAULT_RESOLUTION_Y }, 0x00, 0x00, 0x00, 0xFF, 0.0f, true, false);
+			App->render->Blit(tex, posX, posY, nullptr, 0.0f, 180.0, true);
+		}
+		SDL_DestroyTexture(tex);
+	}
 	SDL_FreeSurface(surf);
 
 	if (videoCurrentFrame >= videoLastFrame) {
 		videoPlaying = false;
+		videoEnded = true;
 		videoCurrentFrame = 0;
 		CloseVideo();
 	}

@@ -9,6 +9,16 @@ void Utils::Release(void* object) {
 	}
 }
 
+void Utils::ReleasePtr(void** objectPtr) {
+	try {
+		delete (*objectPtr);
+		(*objectPtr) = nullptr;
+	}
+	catch (int exception) {
+		LOG("Can't delete element at position: %d", *objectPtr);
+	}
+}
+
 void Utils::ReleaseArray(void* array) {
 	delete[] array;
 }

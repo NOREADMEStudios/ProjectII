@@ -200,12 +200,12 @@ extern DECLSPEC Mix_MusicType SDLCALL Mix_GetMusicType(const Mix_Music *music);
    This can be used to provide real-time visual display of the audio stream
    or add a custom mixer filter for the stream data.
 */
-extern DECLSPEC void SDLCALL Mix_SetPostMix(void (*mix_func)(void *udata, Uint8 *stream, int len), void *arg);
+extern DECLSPEC void SDLCALL Mix_SetPostMix(void (*mix_func)(void *udata, Uint8 *videoStream, int len), void *arg);
 
 /* Add your own music player or additional mixer function.
    If 'mix_func' is NULL, the default music player is re-enabled.
  */
-extern DECLSPEC void SDLCALL Mix_HookMusic(void (*mix_func)(void *udata, Uint8 *stream, int len), void *arg);
+extern DECLSPEC void SDLCALL Mix_HookMusic(void (*mix_func)(void *udata, Uint8 *videoStream, int len), void *arg);
 
 /* Add your own callback when the music has finished playing.
    This callback is only called if the music finishes naturally.
@@ -247,7 +247,7 @@ extern DECLSPEC void SDLCALL Mix_ChannelFinished(void (*channel_finished)(int ch
  *
  * DO NOT EVER call SDL_LockAudio() from your callback function!
  */
-typedef void (*Mix_EffectFunc_t)(int chan, void *stream, int len, void *udata);
+typedef void (*Mix_EffectFunc_t)(int chan, void *videoStream, int len, void *udata);
 
 /*
  * This is a callback that signifies that a channel has finished all its

@@ -78,7 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,9 +120,11 @@
   <ItemGroup>
     <ClCompile Include="Engine\App.cpp" />
     <ClCompile Include="Engine\Character.cpp" />
+    <ClCompile Include="Engine\Cinematic.cpp" />
     <ClCompile Include="Engine\Cleric.cpp" />
     <ClCompile Include="Engine\Corpse.cpp" />
     <ClCompile Include="Engine\Defs.cpp" />
+    <ClCompile Include="Engine\ModuleCinematics.cpp" />
     <ClCompile Include="Engine\ModuleCollision.cpp" />
     <ClCompile Include="Engine\Enemy.cpp" />
     <ClCompile Include="Engine\ModuleFonts.cpp" />
@@ -172,10 +174,12 @@
     <ClInclude Include="Engine\Animation.h" />
     <ClInclude Include="Engine\App.h" />
     <ClInclude Include="Engine\Character.h" />
+    <ClInclude Include="Engine\Cinematic.h" />
     <ClInclude Include="Engine\Cleric.h" />
     <ClInclude Include="Engine\Corpse.h" />
     <ClInclude Include="Engine\Cube.h" />
     <ClInclude Include="Engine\Defs.h" />
+    <ClInclude Include="Engine\ModuleCinematics.h" />
     <ClInclude Include="Engine\ModuleCollision.h" />
     <ClInclude Include="Engine\Enemy.h" />
     <ClInclude Include="Engine\ModuleFonts.h" />

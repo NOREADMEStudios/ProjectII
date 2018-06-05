@@ -252,6 +252,7 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 		{
 			if (_other->entity->breaking)
 			{
+				currentAnimation->Reset();
 				currentState = HIT;
 				//App->SetTimeScale(0.f, hitStopFrames);
 				stats.life -= _other->entity->stats.atk;
@@ -274,12 +275,14 @@ void Cleric::OnCollisionEnter(Collider* _this, Collider* _other)
 		}
 		else if (_this->type == Collider::ATK && _other->type == Collider::PARRY)
 		{
+			currentAnimation->Reset();
 			currentTag = 0;
 			currentState = HIT;
 			//App->SetTimeScale(0.f, hitStopFrames);
 		}
 		else if (_this->type == Collider::HITBOX && (_other->type == Collider::ATK || _other->type == Collider::SPELL))
 		{
+			currentAnimation->Reset();
 			currentTag = 0;
 			currentState = HIT;
 			hit_bool = true;

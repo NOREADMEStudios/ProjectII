@@ -186,6 +186,7 @@ bool Character::CleanUp(pugi::xml_node&)
 	App->textures->UnLoad(sprites);
 
 	UnloadShadow();
+
 	RemoveColliders();
 	Utils::ClearList(attacks);
 
@@ -199,7 +200,7 @@ bool Character::CleanUp(pugi::xml_node&)
 
 void Character::RemoveColliders() {
 
-	if (collAtk) {
+	/*if (collAtk) {
 		App->collision->RemoveCollider(collAtk); collAtk = nullptr;
 	}
 	if (collDef) {
@@ -213,7 +214,7 @@ void Character::RemoveColliders() {
 	}
 	if (collFeet) {
 		App->collision->RemoveCollider(collFeet); collFeet = nullptr;
-	}
+	}*/
 }
 
 void Character::ModifyStats(int attack, int defense, int speed, int magic)
@@ -467,9 +468,17 @@ void Character::UpdateMainStates()
 	{
 		if (!GetAbAtk(wantedTag)->active || (currentState == JUMP || (currentState == AD_ACTION && currentTag != 0 && GetAtk(currentTag)->air)))
 		{
-			wantedTag = currentTag;
+
 			if (!StateisAtk(currentState))
-				wantedState = currentState;
+			{
+
+				wantedState = IDLE;
+				wantedTag = 0;
+			}
+			else
+			{
+				wantedTag = currentTag;
+			}
 		}
 		else 
 			GetAbAtk(wantedTag)->Activate();

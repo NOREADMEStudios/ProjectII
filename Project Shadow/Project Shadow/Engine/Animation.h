@@ -6,6 +6,7 @@
 #include "Rect.h"
 #include <vector>
 #include "Log.h"
+#include "../PugiXml/src/pugixml.hpp"
 
 
 

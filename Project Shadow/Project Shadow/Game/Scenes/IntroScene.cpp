@@ -49,7 +49,7 @@ bool IntroScene::Start()
 		bg->scale = MIN((float)screenSize.y / (float)bg->rect.h, (float)screenSize.x / (float)bg->rect.w);
 	}
 
-	App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
+	//App->audio->PlayMusic("Assets/Audio/BGM/Character_Selection.ogg");
 	atlas = App->textures->Load("UI/atlas.png");	
 	LoadBackground("UI/MainMenu.png");
 	//App->gui->AddSprite(820, 540, bakc_menu, { 0,0,1750,1080 }, true);
@@ -88,12 +88,12 @@ bool IntroScene::CleanUp() {
 
 void PvPPressCallb(size_t arg_size...) {	
 	App->scenes->gameMode = GameMode::TWOvsTWO;
-	App->transition->MakeTransition(ChangeSceneCallback, ModuleTransition::Transition::SCROLL_LEFT, 1.0f);
+	App->transition->MakeTransition(ChangeSceneCallback, ModuleTransition::Transition::FADE_TO_BLACK, 1.0f);
 }
 
 void OnevsPressCallb(size_t arg_size...) {	
 	App->scenes->gameMode = GameMode::ONEvsONE;
-	App->transition->MakeTransition(ChangeSceneCallback, ModuleTransition::Transition::SCROLL_LEFT, 1.0f);
+	App->transition->MakeTransition(ChangeSceneCallback, ModuleTransition::Transition::FADE_TO_BLACK, 1.0f);
 }
 
 void SliderMPressCallb(size_t arg_size...) {

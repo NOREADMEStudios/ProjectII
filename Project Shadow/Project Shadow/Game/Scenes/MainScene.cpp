@@ -22,6 +22,8 @@
 #include "../../Engine/UI/Button.h"
 #include "../../Engine/ModuleFonts.h"
 #include "../../Engine/ModuleTransition.h"
+#include "../../Engine/ModuleCinematics.h"
+#include "../../Engine/Cinematic.h"
 #include <time.h>
 
 void MainMenuPressCallb(size_t arg_size...);
@@ -183,8 +185,8 @@ bool MainScene::Start()
 	LoadSceneUI();
 	CreateSettingsWindow();
 	SetControllerFocus();
+	//LoadStartCinematic();
 	SetDebugLabels();
-	
 	return false;
 }
 
@@ -324,6 +326,16 @@ void MainScene::WindowStates(){
 	}
 	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)//ONLY FOR TESTING WITHOUT CONTROLLER
 		pauseWindow->Enable(true);
+}
+
+void MainScene::LoadStartCinematic()
+{
+	/*Cinematic * c = new Cinematic();
+	CinematicFrame* frame = new CinematicFrame({ 0, 0 }, 1.f);
+	c->AddKeyFrame(frame, 0.f, false, false);
+	frame = new CinematicFrame({DEFAULT_RESOLUTION_X - 150, DEFAULT_RESOLUTION_Y / 2}, 2.5f);
+	c->AddKeyFrame(frame, 10.f);
+	App->cinematics->StartCinematic(c);*/
 }
 
 void MainScene::ManageDisplacement() {

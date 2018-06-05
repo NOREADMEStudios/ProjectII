@@ -41,7 +41,7 @@ bool Dagger::Start() {
 bool Dagger::CleanUp(pugi::xml_node&)
 {
 	//UnLoadSprites();
-	bool ret = App->collision->RemoveCollider(spellColl);
+	bool ret = App->collision->RemoveCollider(&spellColl);
 
 	return ret;
 }

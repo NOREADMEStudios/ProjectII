@@ -5,6 +5,7 @@
 #include "ModuleRender.h"
 #include "ModuleEntityManager.h"
 #include "ModuleMap.h"
+#include "ModuleCinematics.h"
 
 
 #include "ModuleInput.h"
@@ -333,7 +334,7 @@ void ModuleRender::SetCameraInitialPos()
 
 void ModuleRender::CheckCameraPos()
 {
-	if (App->entities->numofplayers > 0) {
+	if (App->entities->numofplayers > 0 && !App->cinematics->IsPlaying()) {
 		float min_x = 0;
 		float max_x = 0;
 		float min_y = 0;

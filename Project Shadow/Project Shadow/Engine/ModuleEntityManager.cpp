@@ -172,7 +172,8 @@ bool ModuleEntityManager::PostUpdate() {
 
 bool ModuleEntityManager::CleanUp(pugi::xml_node& n) {
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
-		(*item)->CleanUp(n);
+		if ((*item)->type != SPELLS)
+			(*item)->CleanUp(n);
 	}
 	locked = false;
 	finish = false;

@@ -186,11 +186,15 @@ void ModuleCollision::AddCollider(Collider * c, Entity * e)
 	colliders.push_back(c);
 }
 
-bool ModuleCollision::RemoveCollider(Collider * c)
+bool ModuleCollision::RemoveCollider(Collider ** c)
 {
-	bool ret = Utils::RemoveFromVector<Collider*>(c, colliders);
-	c->CleanUp();
-	Utils::Release(c);
+	Collider* col = *c;
+	if (col == nullptr)
+		return false;
+	bool ret = Utils::RemoveFromVector<Collider*>(col, colliders);
+	col->CleanUp();
+	Utils::Release(col);
+	*c = nullptr;
 	return ret;
 }
 

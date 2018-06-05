@@ -38,7 +38,7 @@ bool Lightning::CleanUp(pugi::xml_node&)
 {
 	//UnLoadSprites();
 	spellAnim.Reset();
-	bool ret = App->collision->RemoveCollider(spellColl);
+	bool ret = App->collision->RemoveCollider(&spellColl);
 
 	return ret;
 }
@@ -149,7 +149,7 @@ bool Aura::Start() {
 bool Aura::CleanUp(pugi::xml_node&)
 {
 	//UnLoadSprites();
-	bool ret = App->collision->RemoveCollider(spellColl);
+	bool ret = App->collision->RemoveCollider(&spellColl);
 
 	return ret;
 }

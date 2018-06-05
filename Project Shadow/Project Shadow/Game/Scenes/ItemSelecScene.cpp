@@ -258,6 +258,7 @@ void ItemSelecScene::ChooseFocus() {
 
 	for (int i = 0; i < players.size(); i++) {
 		if (players[i].ready) {
+			players[i].arrow->Enable(false);
 			continue;
 		}
 		if (App->input->GetButtonFromController(players[i].playerNum) == Input::BUTTON_A ) {
@@ -266,7 +267,7 @@ void ItemSelecScene::ChooseFocus() {
 			players[i].playerItems[players[i].locked] = item;
 			players[i].miniatureItems[players[i].locked] = App->gui->AddSprite(-300, 0, nullptr, item->lockedRect);
 			players[i].miniatureItems[players[i].locked]->SetParent(players[i].miniatureItemsFrame);
-			players[i].miniatureItems[players[i].locked]->setPosition((players[i].miniatureItemsFrame->rect.w * (1 + i) / 3), players[i].miniatureItemsFrame->rect.h * 2 / 3);
+			players[i].miniatureItems[players[i].locked]->setPosition((players[i].miniatureItemsFrame->rect.w * (1 + players[i].locked) / 3), players[i].miniatureItemsFrame->rect.h * 2 / 3);
 			players[i].LockedArrow(players[i].locked);
 			players[i].locked++;
 			FindFirstFreeItem(i);

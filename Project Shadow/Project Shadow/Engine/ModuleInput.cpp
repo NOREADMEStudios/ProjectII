@@ -54,6 +54,8 @@ bool ModuleInput::Awake(pugi::xml_node& config) {
 // Called before the first frame
 bool ModuleInput::Start() {
 	SDL_StopTextInput();
+	SetBasicConfig();
+	SetDefaultConfig();
 	return true;
 }
 
@@ -198,6 +200,7 @@ bool ModuleInput::Update(float dt)
 // Called before quitting
 bool ModuleInput::CleanUp(pugi::xml_node&) {
 	LOG("Quitting SDL event subsystem");
+	
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
@@ -443,6 +446,7 @@ Input ModuleInput::GetButtonFromController(int controllerNum, bool joystick ) co
 				break;
 			case SDL_CONTROLLER_BUTTON_MAX:
 				break;
+			
 			}
 		}
 		if (joystick) {
@@ -471,6 +475,12 @@ Input ModuleInput::GetButtonFromController(int controllerNum, bool joystick ) co
 							ret = Input::UP;
 						}
 						break;
+					case 4:
+						ret = Input::R2;
+						break;
+					case 5:
+						ret = Input::L2;
+						break;
 					}
 				}
 			}
@@ -482,22 +492,45 @@ Input ModuleInput::GetButtonFromController(int controllerNum, bool joystick ) co
 void ModuleInput::SetBasicConfig() 
 {
 
-	input_list.push_back( new InputButton{ BUTTON_X, "X", 0 , LIGHT_ATTACK});		//0
-	input_list.push_back(new InputButton{ BUTTON_B, "B", 1 , AB_1});				//1
-	input_list.push_back(new InputButton{ BUTTON_A, "A", 2 , JUMPINPUT});			//2
-	input_list.push_back(new InputButton{ BUTTON_Y, "Y", 3 , HEAVY_ATTACK});		//3
-	input_list.push_back(new InputButton{ L_SHOULDER, "L_SHOULDER", 4 , DEFEND});	//4
-	input_list.push_back(new InputButton{ R_SHOULDER, "R_SHOULDER", 5 , RUNINPUT});	//5
-	input_list.push_back(new InputButton{ L2, "L_TRIGGER", 6 , AB_2});				//6
-	input_list.push_back(new InputButton{ R2, "R_TRIGGER", 7 , AB_3});				//7
+	saved_list.push_back(new InputButton{ BUTTON_Y, "Y", 0 , HEAVY_ATTACK });	//0
+	saved_list.push_back(new InputButton{ BUTTON_X, "X", 1 , LIGHT_ATTACK });	//1
+	saved_list.push_back(new InputButton{ BUTTON_B, "B", 2 , AB_1 });			//2
+	saved_list.push_back(new InputButton{ L2, "LT", 3 , AB_2 });				//3
+	saved_list.push_back(new InputButton{ R2, "RT", 4 , AB_3 });				//4
+	saved_list.push_back(new InputButton{ BUTTON_A, "A", 5, JUMPINPUT });		//5
+	saved_list.push_back(new InputButton{ R_SHOULDER, "RB", 6 , RUNINPUT });	//6
+	saved_list.push_back(new InputButton{ L_SHOULDER, "LB", 7 , DEFEND });	//7
 
 }
+void ModuleInput::SetDefaultConfig()
+{
+	default_list.push_back(new InputButton{ BUTTON_Y, "Y", 0 , HEAVY_ATTACK });	//0
+	default_list.push_back(new InputButton{ BUTTON_X, "X", 1 , LIGHT_ATTACK });	//1
+	default_list.push_back(new InputButton{ BUTTON_B, "B", 2 , AB_1 });			//2
+	default_list.push_back(new InputButton{ L2, "LT", 3 , AB_2 });				//3
+	default_list.push_back(new InputButton{ R2, "RT", 4 , AB_3 });				//4
+	default_list.push_back(new InputButton{ BUTTON_A, "A", 5, JUMPINPUT });		//5
+	default_list.push_back(new InputButton{ R_SHOULDER, "RB", 6 , RUNINPUT });	//6
+	default_list.push_back(new InputButton{ L_SHOULDER, "LB", 7 , DEFEND });	//7
+	
+	
+}
 
+
+void ModuleInput::EmptyConfig()
+{
+	Utils::ClearVector(saved_list);	
+	
+}
+
+void ModuleInput::ResetConfig() {
+	saved_list = default_list;
+}
 InputButton* ModuleInput::GetInputButton(Input i)
 {
 	InputButton* ret = nullptr;
 
-	for (std::vector<InputButton*>::iterator item = input_list.begin(); item != input_list.end(); item++) {
+	for (std::vector<InputButton*>::iterator item = saved_list.begin(); item != saved_list.end(); item++) {
 		if ((*item)->input == i)
 		{
 			ret = (*item);

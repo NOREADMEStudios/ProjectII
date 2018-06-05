@@ -8,6 +8,15 @@ class Button;
 class Label; 
 class Slider;
 class Sprite;
+class InputButton;
+
+struct InputFrame {
+
+	InputFrame(Button* b, InputButton* ib) { but = b; inBut = ib; }
+	Button* but;
+	InputButton* inBut;
+
+};
 
 class IntroScene:
 	public Scene
@@ -27,8 +36,10 @@ public:
 	Button* inputBut;
 	
 	Button* backInputBut;
+	Button* defaultInput;
 	Label* hAtk, *lAtk, *ab1, *ab2, *ab3, *jump,* run, *prot;
-
+	InputFrame* b1, *b2, *b3, *b4, *b5, *b6, *b7, *b8;
+	bool input = false;
 
 	IntroScene();
 	virtual ~IntroScene();
@@ -52,6 +63,9 @@ public:
 	void LoadUIButtons();
 	void ManageSettings(bool settingActive);
 	void ManageInput(bool inputActive);
+	void ChangeInput();
+	void UpdateInputLabels()const ;
+	void DefaultInputList();
 
 	//-------CONTROLLER MANAGEMENT
 private:
@@ -60,6 +74,9 @@ private:
 	void ManageDisplacement();
 	void CreateSettingsWindow();
 	void CreateInputWindow();
+	
+
+	std::vector<InputFrame*> inFrames;
 };
 
 #endif

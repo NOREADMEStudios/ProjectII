@@ -158,10 +158,13 @@ public:
 	bool GetButtonDown(int controller, int input) const;
 	std::list<Input> GetInputListFromController(int controllerNum) const;
 	void SetBasicConfig();
+	void SetDefaultConfig();
+	
 	InputButton* GetInputButton(Input i);
 	void SwapInputs(InputButton* a, InputButton* b);
-	std::vector<InputButton*> input_list;
-
+	std::vector<InputButton*> saved_list;
+	std::vector<InputButton*> default_list;
+	void ResetConfig();
 
 private:
 
@@ -173,6 +176,9 @@ private:
 	int			mouse_motion_y;
 	int			mouse_x, mouse_x_prev;
 	int			mouse_y, mouse_y_prev;
+
+	void EmptyConfig();
+	void CleanUpConfig();
 
 	Controller controllers[MAX_CONTROLLERS];
 };

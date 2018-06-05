@@ -60,6 +60,7 @@ bool IntroScene::Start()
 	SetDebugLabels();
 	ManageSettings(false);
 	
+	
 	return true;
 }
 
@@ -72,6 +73,10 @@ bool IntroScene::Update(float dt)
 	if (controllersNum != 0) {
 		ManageDisplacement();
 		ChooseFocus();
+		
+	}
+	if (input) {
+		ChangeInput();	
 	}
 	UpdateDebugLabels();
 	//Scene::Update(dt);
@@ -139,6 +144,13 @@ void InputPressCallb(size_t arg_size...) {
 
 void BackInputPressCallb(size_t arg_size...) {
 	App->scenes->introSc->ManageInput(false);
+
+}
+void DefaultInputPressCallb(size_t arg_size...) {
+	
+	
+	App->scenes->introSc->DefaultInputList();
+	App->scenes->introSc->UpdateInputLabels();
 }
 
 void ExitPressCallb(size_t arg_size...) {
@@ -148,6 +160,11 @@ void ExitPressCallb(size_t arg_size...) {
 void ChangeSceneCallback(size_t arg_size...) {
 	App->scenes->ChangeScene(App->scenes->characterSc);
 }
+
+void VoidFuncCallback(size_t arg_size...) {
+
+}
+
 
 void IntroScene::LoadUIButtons() {
 
@@ -341,6 +358,15 @@ void IntroScene::CreateInputWindow() {
 	BckILabel->culled = false;
 	backInputBut->Enable(false);
 
+	// DEFAULT INPUT BUTTON
+	defaultInput = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3.0f, atlas, { 1282,883,400,98 }, false, DefaultInputPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	Label* DfILabel = App->gui->AddLabel((defaultInput->rect.w / 2), defaultInput->rect.h / 2, 40, DEFAULT_FONT, { 255, 255, 255, 255 });
+	std::string DfIStr = "DEFAULT";
+	DfILabel->setString(DfIStr);
+	DfILabel->SetParent(defaultInput);
+	DfILabel->culled = false;
+	defaultInput->Enable(false);
+
 	hAtk = App->gui->AddLabel((win_size.x / 3), (win_size.y / 4) * 1.3f, 45, DEFAULT_FONT, { 0, 0, 0, 255 });
 	std::string hAStr = "Heavy Attack";
 	hAtk->setString(hAStr);
@@ -388,6 +414,107 @@ void IntroScene::CreateInputWindow() {
 	prot->setString(pStr);
 	prot->culled = false;
 	prot->Enable(false);
+
+
+	Button* bb1 = App->gui->AddButton((win_size.x*2 / 3), (win_size.y / 4) * 1.3f, atlas, { 102,396,48,48}, false, VoidFuncCallback, {102,448,48,48}, {102,505,48,48});
+	Label* lb1 = App->gui->AddLabel((bb1->rect.w / 2) , bb1->rect.h / 2, 40, DEFAULT_FONT, { 255, 255, 255, 255 });
+	InputButton* ib1 = App->input->GetInputButton(Input::BUTTON_Y);	
+	std::string b1Str = ib1->name;
+	lb1->setString(b1Str);
+	lb1->SetParent(bb1);
+	lb1->culled = false;
+	bb1->Enable(false);
+	b1 = new InputFrame(bb1, ib1);
+	inFrames.push_back(b1);
+	
+
+	Button*  bb2 = App->gui->AddButton((win_size.x * 2 / 3), (win_size.y / 4) * 1.5f, atlas, { 102,396,48,48 }, false, VoidFuncCallback, { 102,448,48,48 }, { 102,505,48,48 });
+	Label* lb2 = App->gui->AddLabel((bb2->rect.w / 2), bb2->rect.h / 2, 40, DEFAULT_FONT, { 255, 255, 255, 255 });
+	InputButton* ib2 = App->input->GetInputButton(Input::BUTTON_X);
+	std::string b2Str = ib2->name;
+	lb2->setString(b2Str);
+	lb2->SetParent(bb2);
+	lb2->culled = false;
+	bb2->Enable(false);
+	b2 = new InputFrame(bb2, ib2);
+	inFrames.push_back(b2);
+
+	Button* bb3 = App->gui->AddButton((win_size.x * 2 / 3), (win_size.y / 4) * 1.7f, atlas, { 102,396,48,48 }, false, VoidFuncCallback, { 102,448,48,48 }, { 102,505,48,48 });
+	Label* lb3 = App->gui->AddLabel((bb3->rect.w / 2), bb3->rect.h / 2, 40, DEFAULT_FONT, { 255, 255, 255, 255 });
+	InputButton* ib3 = App->input->GetInputButton(Input::BUTTON_B);
+	std::string b3Str = ib3->name;
+	lb3->setString(b3Str);
+	lb3->SetParent(bb3);
+	lb3->culled = false;
+	bb3->Enable(false);
+	b3 = new InputFrame(bb3, ib3);
+	inFrames.push_back(b3);
+
+	Button* bb4 = App->gui->AddButton((win_size.x * 2 / 3), (win_size.y / 4) * 1.9f, atlas, { 102,396,48,48 }, false, VoidFuncCallback, { 102,448,48,48 }, { 102,505,48,48 });
+	Label* lb4 = App->gui->AddLabel((bb4->rect.w / 2), bb4->rect.h / 2, 40, DEFAULT_FONT, { 255, 255, 255, 255 });
+	InputButton* ib4 = App->input->GetInputButton(Input::L2);
+	std::string b4Str = ib4->name;
+	lb4->setString(b4Str);
+	lb4->SetParent(bb4);
+	lb4->culled = false;
+	bb4->Enable(false);
+	b4 = new InputFrame(bb4, ib4);
+	inFrames.push_back(b4);
+
+	Button* bb5 = App->gui->AddButton((win_size.x * 2 / 3), (win_size.y / 4) * 2.1f, atlas, { 102,396,48,48 }, false, VoidFuncCallback, { 102,448,48,48 }, { 102,505,48,48 });
+	Label* lb5 = App->gui->AddLabel((bb5->rect.w / 2), bb5->rect.h / 2, 40, DEFAULT_FONT, { 255, 255, 255, 255 });
+	InputButton* ib5 = App->input->GetInputButton(Input::R2);
+	std::string b5Str = ib5->name;
+	lb5->setString(b5Str);
+	lb5->SetParent(bb5);
+	lb5->culled = false;
+	bb5->Enable(false);
+	b5 = new InputFrame(bb5, ib5);
+	inFrames.push_back(b5);
+
+	Button* bb6 = App->gui->AddButton((win_size.x * 2 / 3), (win_size.y / 4) * 2.3f, atlas, { 102,396,48,48 }, false, VoidFuncCallback, { 102,448,48,48 }, { 102,505,48,48 });
+	Label* lb6 = App->gui->AddLabel((bb6->rect.w / 2), bb6->rect.h / 2, 40, DEFAULT_FONT, { 255, 255, 255, 255 });
+	InputButton* ib6 = App->input->GetInputButton(Input::BUTTON_A);
+	std::string b6Str = ib6->name;
+	lb6->setString(b6Str);
+	lb6->SetParent(bb6);
+	lb6->culled = false;
+	bb6->Enable(false);
+	b6 = new InputFrame(bb6, ib6);
+	inFrames.push_back(b6);
+
+	Button* bb7 = App->gui->AddButton((win_size.x * 2 / 3), (win_size.y / 4) * 2.5f, atlas, { 102,396,48,48 }, false, VoidFuncCallback, { 102,448,48,48 }, { 102,505,48,48 });
+	Label* lb7 = App->gui->AddLabel((bb7->rect.w / 2), bb7->rect.h / 2, 40, DEFAULT_FONT, { 255, 255, 255, 255 });
+	InputButton* ib7 = App->input->GetInputButton(Input::R_SHOULDER);
+	std::string b7Str = ib7->name;
+	lb7->setString(b7Str);
+	lb7->SetParent(bb7);
+	lb7->culled = false;
+	bb7->Enable(false);
+	b7 = new InputFrame(bb7, ib7);
+	inFrames.push_back(b7);
+
+	Button* bb8 = App->gui->AddButton((win_size.x * 2 / 3), (win_size.y / 4) * 2.7f, atlas, { 102,396,48,48 }, false, VoidFuncCallback, { 102,448,48,48 }, { 102,505,48,48 });
+	Label* lb8 = App->gui->AddLabel((bb8->rect.w / 2), bb8->rect.h / 2, 40, DEFAULT_FONT, { 255, 255, 255, 255 });
+	InputButton* ib8 = App->input->GetInputButton(Input::L_SHOULDER);
+	std::string b8Str = ib8->name;
+	lb8->setString(b8Str);
+	lb8->SetParent(bb8);
+	lb8->culled = false;
+	bb8->Enable(false);
+	b8 = new InputFrame(bb8, ib8);
+	inFrames.push_back(b8);
+
+	bb1->SetRelation(bb2, InterfaceElement::Directions::DOWN);
+	bb2->SetRelation(bb3, InterfaceElement::Directions::DOWN);
+	bb3->SetRelation(bb4, InterfaceElement::Directions::DOWN);
+	bb4->SetRelation(bb5, InterfaceElement::Directions::DOWN);
+	bb5->SetRelation(bb6, InterfaceElement::Directions::DOWN);
+	bb6->SetRelation(bb7, InterfaceElement::Directions::DOWN);
+	bb7->SetRelation(bb8, InterfaceElement::Directions::DOWN);
+	bb8->SetRelation(defaultInput, InterfaceElement::Directions::DOWN);
+	defaultInput->SetRelation(backInputBut, InterfaceElement::Directions::DOWN);
+	backInputBut->SetRelation(bb1, InterfaceElement::Directions::DOWN);
 }
 
 
@@ -420,6 +547,7 @@ void IntroScene::ManageInput(bool inputActive) {
 	fx_sp->Enable(!inputActive);
 
 	backInputBut->Enable(inputActive);
+	defaultInput->Enable(inputActive);
 	hAtk->Enable(inputActive);
 	lAtk->Enable(inputActive);
 	ab1->Enable(inputActive);
@@ -428,7 +556,37 @@ void IntroScene::ManageInput(bool inputActive) {
 	jump->Enable(inputActive);
 	run->Enable(inputActive);
 	prot->Enable(inputActive);
-	
+	for(int i = 0; i<inFrames.size();i++){
+	inFrames[i]->but->Enable(inputActive);
+	}
 
 	App->gui->setFocus(inputActive ? backInputBut : music_sl);
+	input = inputActive;
+}
+
+void IntroScene::ChangeInput() {
+	for (int i = 0; i < inFrames.size(); i++) {
+		if (inFrames[i]->but->in_focus) {
+			Input in = App->input->GetButtonFromController(1);
+			InputButton* inb = App->input->GetInputButton(in);
+			if (in == BUTTON_A || in == BUTTON_B || in == BUTTON_X || in == BUTTON_Y || in == L_SHOULDER || in == R_SHOULDER || in == L2 || in == R2) {
+				App->input->SwapInputs(inFrames[i]->inBut, inb);
+				UpdateInputLabels();
+			}
+		}
+	}
+}
+
+void IntroScene::UpdateInputLabels() const{
+
+	for (int i = 0; i < inFrames.size(); i++) {
+		inFrames[i]->but->getLabel()->setString(inFrames[i]->inBut->name);
+	}
+}
+
+void IntroScene::DefaultInputList() {
+	for (int i = 0; i < inFrames.size(); i++) {
+		inFrames[i]->inBut = App->input->default_list[i];
+	}
+	App->input->ResetConfig();
 }

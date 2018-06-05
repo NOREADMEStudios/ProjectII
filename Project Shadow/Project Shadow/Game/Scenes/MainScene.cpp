@@ -97,7 +97,7 @@ bool MainScene::Start()
 	CreateSettingsWindow();
 	SetControllerFocus();
 	SetDebugLabels();
-	App->input->SetBasicConfig();
+	
 	
 	return false;
 }
@@ -133,7 +133,7 @@ bool MainScene::Update(float dt)
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN ) {
-		App->input->SwapInputs(App->input->input_list[0], App->input->input_list[3]);
+		App->input->SwapInputs(App->input->saved_list[0], App->input->saved_list[3]);
 	}
 
 

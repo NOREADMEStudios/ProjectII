@@ -37,7 +37,7 @@ public:
 	
 	Button* backInputBut;
 	Button* defaultInput;
-	Label* hAtk, *lAtk, *ab1, *ab2, *ab3, *jump,* run, *prot;
+	Label* hAtk, *lAtk, *ab1, *ab2, *ab3, *jump,* run, *prot, *save, *load;
 	InputFrame* b1, *b2, *b3, *b4, *b5, *b6, *b7, *b8;
 	bool input = false;
 
@@ -66,6 +66,9 @@ public:
 	void ChangeInput();
 	void UpdateInputLabels()const ;
 	void DefaultInputList();
+	void UpdateInputButtonOfInputFrame();
+
+	
 
 	//-------CONTROLLER MANAGEMENT
 private:

@@ -10,6 +10,7 @@
 #define MAX_BUTTONS 16
 #define MAX_AXIS 6
 #define MAX_CONTROLLERS 4
+#define EDITABLE_BUTTONS 8
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
 struct _SDL_GameController;
@@ -41,12 +42,19 @@ struct InputButton
 	std::string name;
 	int tag;
 	CharInput char_input;
-	InputButton( Input i, std::string n, int t, CharInput ci )
+	InputButton( Input i, std::string n, int _tag, CharInput ci )
 	{
 		input = i;
 		name = n;
-		tag = t;
+		tag = _tag;
 		char_input = ci;
+	}
+	InputButton(InputButton* i)
+	{
+		input = i->input;
+		name = i->name;
+		tag = i->tag;
+		char_input =i->char_input;
 	}
 };
 
@@ -112,7 +120,7 @@ public:
 
 	// Gather relevant win events
 	bool GetWindowEvent(WindowEvent ev);
-
+	
 	//
 	bool CheckControllers();
 	void ControllerLogInputs(uint controller) {
@@ -166,6 +174,9 @@ public:
 	std::vector<InputButton*> default_list;
 	void ResetConfig();
 
+	bool Load(pugi::xml_node& data)override;
+	bool Save(pugi::xml_node&) const override;
+
 private:
 
 	int			numSticks;
@@ -179,8 +190,10 @@ private:
 
 	void EmptyConfig();
 	void CleanUpConfig();
+	void LoadFromXML();
 
 	Controller controllers[MAX_CONTROLLERS];
+	int savedInputTags[EDITABLE_BUTTONS];
 };
 
 #endif // __INPUT_H__

@@ -370,6 +370,11 @@ void MainScene::ChooseFocus() {
 	if (App->input->GetButtonDown(1, SDL_CONTROLLER_BUTTON_A) && paused) {
 		((Button*)App->gui->getFocusedItem())->OnClick(0);
 	}
+	if (App->input->GetButtonFromController(1) == Input::RIGHT || App->input->GetButtonFromController(1) == Input::LEFT) {
+		if (((Button*)App->gui->getFocusedItem()) == music_sl || ((Button*)App->gui->getFocusedItem()) == fx_sl) {
+			((Button*)App->gui->getFocusedItem())->OnClick(0);
+		}
+	}
 }
 
 void MainScene::ChangeRoundsIndicator(){
@@ -480,12 +485,12 @@ void MainScene::CreateSettingsWindow() {
 	//settBackButt->SetRelation(fullscrenButt, InterfaceElement::Directions::DOWN);
 
 	//MUSIC SLIDER
-	music_sp = App->gui->AddSprite((win_size.x / 2), (win_size.y / 4)*1.5f - 100, atlas, { 455, 268, 427, 27 }, false);
+	music_sp = App->gui->AddSprite((pauseWindow->rect.w / 2), (pauseWindow->rect.h / 4)*1.5f - 100, atlas, { 455, 268, 427, 27 }, false);
 
 	float musicVol = App->audio->GetMusicVolumePercentage();
 	float step = music_sp->rect.w / 100;
 	float displacement = musicVol - 50;
-	music_sl = App->gui->AddSlider((music_sp->rect.w / 2) + displacement * step, music_sp->rect.h / 2 + 2, atlas, { 456, 298, 28,15 }, false, SliderMusicPressCallb, {}, {}, true, music_sp);
+	music_sl = App->gui->AddSlider((music_sp->rect.w / 2) + displacement * step, music_sp->rect.h / 2 + 2, atlas, { 1152,197,45,21 }, false, SliderMusicPressCallb, { 1108, 198, 44, 21 }, { 1108, 198, 44, 21 }, true, music_sp);
 
 	Label* MusNumLabel = App->gui->AddLabel((music_sl->rect.w / 2), (music_sl->rect.h / 2) + 20, 20, DEFAULT_FONT, { 255, 255, 255, 255 });
 
@@ -503,12 +508,12 @@ void MainScene::CreateSettingsWindow() {
 
 	//FX SLIDER
 
-	fx_sp = App->gui->AddSprite((win_size.x / 2), (win_size.y / 4)*2.1f - 100, atlas, { 455, 268, 427, 27 }, false);
+	fx_sp = App->gui->AddSprite((pauseWindow->rect.w / 2), ((pauseWindow->rect.h / 4)*2.1f) - 100, atlas, { 455, 268, 427, 27 }, false);
 
 	float FxVol = App->audio->GetFxVolumePercentage();
 	float step2 = fx_sp->rect.w / 100;
 	float displacement2 = FxVol - 50;
-	fx_sl = App->gui->AddSlider((fx_sp->rect.w / 2) + displacement2 * step2, fx_sp->rect.h / 2 + 2, atlas, { 456, 298, 28,15 }, false, SliderFxPressCallb, {}, {}, true, fx_sp);
+	fx_sl = App->gui->AddSlider((fx_sp->rect.w / 2) + displacement2 * step2, fx_sp->rect.h / 2 + 2, atlas, { 1152,197,45,21 }, false, SliderFxPressCallb, { 1108, 198, 44, 21 }, { 1108, 198, 44, 21 }, true, fx_sp);
 
 	Label* FxNumLabel = App->gui->AddLabel((fx_sl->rect.w / 2), (fx_sl->rect.h / 2) + 20, 20, DEFAULT_FONT, { 255, 255, 255, 255 });
 
@@ -526,7 +531,7 @@ void MainScene::CreateSettingsWindow() {
 
 
 	// FULLSCREEN BUTTON
-	fullscrenButt = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 2.7f - 100, atlas, { 1282,883,400,98 }, false, FullscreenPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	fullscrenButt = App->gui->AddButton((pauseWindow->rect.w / 2), ((pauseWindow->rect.h / 4) * 2.7f) - 100, atlas, { 1282,883,400,98 }, false, FullscreenPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
 	Label* FSLabel = App->gui->AddLabel((fullscrenButt->rect.w / 2) + 20, fullscrenButt->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string FSStr = "FULLSCREEN";
 	FSLabel->setString(FSStr);
@@ -535,7 +540,7 @@ void MainScene::CreateSettingsWindow() {
 
 
 	// BACK BUTTON
-	settBackButt = App->gui->AddButton((win_size.x / 2), (win_size.y / 4) * 3.3f - 100, atlas, { 1282,883,400,98 }, false, BackButtPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
+	settBackButt = App->gui->AddButton((pauseWindow->rect.w / 2), ((pauseWindow->rect.h / 4) * 3.3f) - 100, atlas, { 1282,883,400,98 }, false, BackButtPressCallb, { 1283,782,400,100 }, { 1283,982,400,100 });
 	Label* BckLabel = App->gui->AddLabel((settBackButt->rect.w / 2) + 14, settBackButt->rect.h / 2, 45, DEFAULT_FONT, { 255, 255, 255, 255 });
 	std::string BckStr = "BACK";
 	BckLabel->setString(BckStr);
@@ -570,7 +575,7 @@ void MainScene::ManageSettings(bool settingActive){
 		fx_sl->Enable(settingActive);
 		fx_sp->Enable(settingActive);
 
-		App->gui->setFocus(settingActive ? fullscrenButt : mainMenuButt);
+		App->gui->setFocus(settingActive ? music_sl : mainMenuButt);
 	}
 	else {
 		fullscrenButt->Enable(settingActive);
@@ -593,14 +598,14 @@ void ChangeCharactersPressCallb(size_t arg_size...) {
 }
 
 void SliderMusicPressCallb(size_t arg_size...) {
-	Slider* sl = App->scenes->introSc->music_sl;
+	Slider* sl = App->scenes->mainSc->music_sl;
 	float currVol = (sl->GetValue() * 100);
 	App->audio->SetMusicVolumePercentage(currVol);
 	std::string vol = std::to_string((int)currVol);
 	sl->getLabel()->setString(vol);
 }
 void SliderFxPressCallb(size_t arg_size...) {
-	Slider* sl = App->scenes->introSc->fx_sl;
+	Slider* sl = App->scenes->mainSc->fx_sl;
 	float currVol = (sl->GetValue() * 100);
 	App->audio->SetFxVolumePercentage(currVol);
 	std::string vol = std::to_string((int)currVol);

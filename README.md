@@ -10,9 +10,9 @@ Mystara Arena is a college project game that has been developed over the course 
 
 In the Gold version you will be able to enjoy the complete experience of a very fun fighting game with 1vs1 and 2vs2 game modes. That will allow you to have fun with three of your friends or to challenge each of them to a duel to see who is the best. Before starting a match, you will have to choose between two of six items that will help you face your opponents. Learning how to use each hero and item best, will help you achieve the victory. All heroes are able to perform combos and link their attacks but will require a a lot of practice to master. There are four very diferent charaters that will fit every player's playstyle with more defenssive/agressive and attack/spell based characters. Learn how to use and play against every one of them and you will make your friends bite the dust. Are you ready to enter the Arena?
 
-## Controlls
+## Controls
 
-**(XBox Controller)**
+**(For XBox Controller)**
 - Left Joystick/Arrows: Movement
 - A: Jump
 - B: Abbility 1
@@ -45,7 +45,7 @@ For the 2vs2 it will be the same but with the help of your partner and a second 
 
 ## Debug Features
 
-By pressing F1 on your keyboard you will be able to see the characters' colliders as well as the current FPS and the time that has passed since the applications started.
+By pressing F1 on your keyboard you will be able to see the characters' colliders as well as the current FPS and the time that has passed since the applications started. You can also instantly kill any character by pressing their respective player number on the keyboard (1 for Player1...) and heal them all by pressing 5.
 
 ## Team members
 
@@ -83,7 +83,7 @@ UI
 ## License
 MIT License
 
-Copyright (c) [2017] [NOREADMEStudios]
+Copyright (c) [2018] [NOREADMEStudios]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

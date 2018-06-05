@@ -303,10 +303,18 @@ void MainScene::ChangeRoundsIndicator(){
 void MainScene::CreateSettingsWindow() {
 	uiPoint win_size = App->gui->GetGuiSize();
 
-	roundsIndicatorSprite[0] = App->gui->AddSprite((win_size.x * 0.406f), (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
-	roundsIndicatorSprite[1] = App->gui->AddSprite((win_size.x * 0.406f) + 49, (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
-	roundsIndicatorSprite[2] = App->gui->AddSprite((win_size.x * 0.591f)- 49, (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
-	roundsIndicatorSprite[3] = App->gui->AddSprite((win_size.x * 0.591f), (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+	if (App->scenes->gameMode == GameMode::TWOvsTWO) {
+		roundsIndicatorSprite[0] = App->gui->AddSprite((win_size.x * 0.406f), (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+		roundsIndicatorSprite[1] = App->gui->AddSprite((win_size.x * 0.406f) + 49, (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+		roundsIndicatorSprite[2] = App->gui->AddSprite((win_size.x * 0.591f) - 49, (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+		roundsIndicatorSprite[3] = App->gui->AddSprite((win_size.x * 0.591f), (win_size.y * 0.211f), nullptr, { 1113,249, 39, 39 });
+	}
+	else {
+		roundsIndicatorSprite[0] = App->gui->AddSprite((win_size.x * 0.322f), (win_size.y * 0.02f) + 2, nullptr, { 1113,249, 39, 39 });
+		roundsIndicatorSprite[1] = App->gui->AddSprite((win_size.x * 0.322f) + 49, (win_size.y * 0.02f) + 2, nullptr, { 1113,249, 39, 39 });
+		roundsIndicatorSprite[2] = App->gui->AddSprite((win_size.x * 0.678f) - 49, (win_size.y * 0.02f) + 2, nullptr, { 1113,249, 39, 39 });
+		roundsIndicatorSprite[3] = App->gui->AddSprite((win_size.x * 0.678f), (win_size.y * 0.02f) + 2, nullptr, { 1113,249, 39, 39 });
+	}
 
 	//uiPoint win_size = App->gui->GetGuiSize();
 

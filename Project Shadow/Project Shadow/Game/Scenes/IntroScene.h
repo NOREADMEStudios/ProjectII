@@ -74,6 +74,7 @@ private:
 	void ManageDisplacement();
 	void CreateSettingsWindow();
 	void CreateInputWindow();
+	InputFrame* GetInputFrame(InputButton* ibut);
 	
 
 	std::vector<InputFrame*> inFrames;

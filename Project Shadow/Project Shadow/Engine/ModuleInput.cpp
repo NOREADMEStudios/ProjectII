@@ -499,7 +499,7 @@ void ModuleInput::SetBasicConfig()
 	saved_list.push_back(new InputButton{ R2, "RT", 4 , AB_3 });				//4
 	saved_list.push_back(new InputButton{ BUTTON_A, "A", 5, JUMPINPUT });		//5
 	saved_list.push_back(new InputButton{ R_SHOULDER, "RB", 6 , RUNINPUT });	//6
-	saved_list.push_back(new InputButton{ L_SHOULDER, "LB", 7 , DEFEND });	//7
+	saved_list.push_back(new InputButton{ L_SHOULDER, "LB", 7 , DEFEND });		//7
 
 }
 void ModuleInput::SetDefaultConfig()
@@ -524,7 +524,10 @@ void ModuleInput::EmptyConfig()
 }
 
 void ModuleInput::ResetConfig() {
-	saved_list = default_list;
+	for (int i = 0; i < saved_list.size(); i++) {
+		saved_list[i]->input = default_list[i]->input;		
+		saved_list[i]->name = default_list[i]->name;
+	}
 }
 InputButton* ModuleInput::GetInputButton(Input i)
 {

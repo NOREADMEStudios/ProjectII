@@ -567,10 +567,11 @@ void IntroScene::ManageInput(bool inputActive) {
 void IntroScene::ChangeInput() {
 	for (int i = 0; i < inFrames.size(); i++) {
 		if (inFrames[i]->but->in_focus) {
-			Input in = App->input->GetButtonFromController(1);
-			InputButton* inb = App->input->GetInputButton(in);
+			Input in = App->input->GetButtonFromController(1);			
 			if (in == BUTTON_A || in == BUTTON_B || in == BUTTON_X || in == BUTTON_Y || in == L_SHOULDER || in == R_SHOULDER || in == L2 || in == R2) {
-				App->input->SwapInputs(inFrames[i]->inBut, inb);
+				InputButton* inb = App->input->GetInputButton(in);
+				InputFrame* ifr = GetInputFrame(inb);				
+				App->input->SwapInputs(inFrames[i]->inBut, ifr->inBut);
 				UpdateInputLabels();
 			}
 		}
@@ -589,4 +590,16 @@ void IntroScene::DefaultInputList() {
 		inFrames[i]->inBut = App->input->default_list[i];
 	}
 	App->input->ResetConfig();
+}
+
+InputFrame* IntroScene::GetInputFrame(InputButton* ibut) {
+	InputFrame* ret = nullptr;
+	
+	for (int i = 0; i < inFrames.size(); i++) {
+		if (inFrames[i]->inBut->input==ibut->input)
+		{
+			ret = inFrames[i];
+		}
+	}
+	return ret;
 }

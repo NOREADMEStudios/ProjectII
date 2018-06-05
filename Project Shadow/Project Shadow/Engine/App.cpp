@@ -340,7 +340,8 @@ void Application::FinishUpdate()
 	int delay_ms = (1000 / framerate_cap) - last_frame_ms;
 	if (delay_ms > 0)
 		SDL_Delay(delay_ms);
-
+	if (frames_to_framerate_reset-- == 0)
+		framerate_cap = prev_framerate_cap;
 	uint wait_ms = delay_time.Read();
 	//LOG("Expected frame delay: %d, Actual frame delay: %d", delay_ms, wait_ms);
 }
@@ -350,9 +351,11 @@ uint32 Application::GetFramerateCap() const
 	return framerate_cap;
 }
 
-void Application::SetFramerateCap(uint32 cap)
+void Application::SetFramerateCap(uint32 cap, int frames)
 {
+	prev_framerate_cap = framerate_cap;
 	framerate_cap = cap;
+	frames_to_framerate_reset = frames;
 }
 
 // Call modules before each loop iteration

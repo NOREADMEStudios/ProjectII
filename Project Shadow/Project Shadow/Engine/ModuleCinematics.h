@@ -35,7 +35,7 @@ public:
 
 	iPoint GetInitialCameraPosition();
 
-	bool PlayVideo(const char* path);
+	bool PlayVideo(const char* path, int framerate = 60);
 	void CloseVideo();
 	void GetNextFrame();
 

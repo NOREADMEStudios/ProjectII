@@ -67,7 +67,7 @@ public:
 	void PauseGame(bool pause);
 
 	uint32 GetFramerateCap() const;
-	void SetFramerateCap(uint32 cap);
+	void SetFramerateCap(uint32 cap, int frames = -1);
 
 	float GetTimeScale()const;
 	void SetTimeScale(float ts, int frameNumber = -1);
@@ -155,6 +155,8 @@ private:
 	PerfTimer			ptimer;
 	uint64				frame_count = 0;
 	uint32				framerate_cap = 0;
+	uint32				prev_framerate_cap = 0;
+	uint32					frames_to_framerate_reset = -1;
 	uint32				delta_time = 0;
 	Timer				delay_time;
 	Timer				startup_time;

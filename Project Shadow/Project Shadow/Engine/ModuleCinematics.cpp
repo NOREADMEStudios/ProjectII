@@ -27,7 +27,7 @@ bool ModuleCinematics::Awake(pugi::xml_node & config)
 
 bool ModuleCinematics::Start()
 {
-	PlayVideo("Intro_video.avi");
+	PlayVideo("Intro_video.avi", 30);
 
 	return true;
 }
@@ -103,7 +103,7 @@ bool ModuleCinematics::PlayCurrentCinematic() //No use really
 	return false;
 }
 
-bool ModuleCinematics::PlayVideo(const char* path)
+bool ModuleCinematics::PlayVideo(const char* path, int framerate)
 {
 	std::stringstream _path;
 	_path << assetsPath.c_str() << path;
@@ -135,6 +135,7 @@ bool ModuleCinematics::PlayVideo(const char* path)
 		return false;
 	}
 
+	App->SetFramerateCap(framerate, videoLastFrame);
 	videoPlaying = true;
 
 	return true;

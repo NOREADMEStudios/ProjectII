@@ -111,13 +111,13 @@ void OnevsPressCallb(size_t arg_size...) {
 }
 
 void SliderMPressCallb(size_t arg_size...) {
-	
 	Slider* sl = App->scenes->introSc->music_sl;
 	float currVol = (sl->GetValue() * 100);
 	App->audio->SetMusicVolumePercentage(currVol);
 	std::string vol = std::to_string((int)currVol);
 	sl->getLabel()->setString(vol);
 }
+
 void SliderFPressCallb(size_t arg_size...) {
 	Slider* sl = App->scenes->introSc->fx_sl;
 	float currVol = (sl->GetValue() * 100);

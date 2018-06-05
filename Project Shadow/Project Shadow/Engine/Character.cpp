@@ -467,9 +467,17 @@ void Character::UpdateMainStates()
 	{
 		if (!GetAbAtk(wantedTag)->active || (currentState == JUMP || (currentState == AD_ACTION && currentTag != 0 && GetAtk(currentTag)->air)))
 		{
-			wantedTag = currentTag;
+
 			if (!StateisAtk(currentState))
-				wantedState = currentState;
+			{
+
+				wantedState = IDLE;
+				wantedTag = 0;
+			}
+			else
+			{
+				wantedTag = currentTag;
+			}
 		}
 		else 
 			GetAbAtk(wantedTag)->Activate();

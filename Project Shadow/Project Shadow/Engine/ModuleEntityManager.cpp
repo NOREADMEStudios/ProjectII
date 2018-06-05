@@ -111,6 +111,11 @@ bool ModuleEntityManager::PreUpdate() {
 
 bool ModuleEntityManager::Update(float dt) {
 	uint aliveCharacters = 0;
+	bool team = false;
+	bool first = true;
+	int curr_team = 0;
+	int prev_team = 0; // FALSE BLUE	TRUE RED
+
 	for (std::list<Entity*>::iterator item = entities.begin(); item != entities.end(); item++) {
 		if ((*item)->active )
 		{
@@ -120,10 +125,30 @@ bool ModuleEntityManager::Update(float dt) {
 			winner = (*item)->heroNum;
 			winnerTeam = (*item)->team;
 			aliveCharacters++;
+
+			if ((*item)->team == RED)
+			{
+				if (first)
+					curr_team = 1;
+				else
+					prev_team = 1;
+			}
+			else if (first)
+				curr_team = 2;
+			else
+				prev_team = 2;
+
+			first = false;
 		}
 	}
 
-	if (numofplayers != 0 && aliveCharacters <= numofplayers / 2 && !locked)
+	if (curr_team == prev_team || (prev_team == 0 && aliveCharacters == 1))
+	{
+		team = true;
+	}
+
+
+	if (numofplayers != 0 && aliveCharacters <= numofplayers / 2 && !locked && team)
 	{
 		finish = true;
 		locked = true;
